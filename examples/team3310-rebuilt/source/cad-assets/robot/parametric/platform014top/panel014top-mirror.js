@@ -1,0 +1,1 @@
+import {mirror} from 'brepjs';import build from './panel014top-procedural.js';export {parameters} from './panel014top-procedural.js';export default function model(options={}){return mirror(build(options),{normal:[0,1,0],at:[0,0,0]});}

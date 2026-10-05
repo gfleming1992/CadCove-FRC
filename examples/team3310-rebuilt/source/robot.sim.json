@@ -1,0 +1,1040 @@
+{
+  "schema": 1,
+  "id": "team-example",
+  "name": "Team 3310 Amarillo \u2014 REBUILT practice",
+  "cad": {
+    "robot": "cad-assets/robot",
+    "field": "cad-assets/field"
+  },
+  "build": "build/cadcove",
+  "runtime": {
+    "adapter": "wpilib-java-phoenix6",
+    "clock": "physics",
+    "autonomousChooser": "/SmartDashboard/Autonomous Mode",
+    "project": "robot-code",
+    "jar": "robot-code/build/libs/robot.jar",
+    "nativeLibraries": "robot-code/build/jni/release",
+    "assetRoot": "physics-assets",
+    "controlSource": "driverstation",
+    "driverStation": "gui"
+  },
+  "calibration": [
+    {
+      "subject": "CAD geometry and occurrence bindings",
+      "status": "derived",
+      "evidence": "Pinned assembly/catalog hashes and scene-bindings.json"
+    },
+    {
+      "subject": "Motor ratios and frame directions",
+      "status": "estimated",
+      "evidence": "config/robot-bindings.json and config/devices.json; qualification incomplete"
+    },
+    {
+      "subject": "Mass, inertia and center of gravity",
+      "status": "estimated",
+      "evidence": "Authored body parameters; actual robot measurements required"
+    },
+    {
+      "subject": "Tire, fuel and mechanism contact behavior",
+      "status": "estimated",
+      "evidence": "docs/PHYSICS-BINDINGS.md and docs/COUNTER-PHYSICS.md"
+    },
+    {
+      "subject": "Complete mechanism articulation and sensors",
+      "status": "unknown",
+      "evidence": "Intake/four-bar/sliding-hopper and sensing need qualification"
+    },
+    {
+      "subject": "Full-match hardware comparison",
+      "status": "unknown",
+      "evidence": "Not performed"
+    },
+    {
+      "subject": "Camera mounting, optics and observation noise",
+      "status": "estimated",
+      "evidence": "config/vision.json and docs/VISION.md; three practice-sheet mounts, missing front camera, nominal LL4 optics and provisional latency/noise"
+    },
+    {
+      "subject": "Experimental fidelity tradeoff",
+      "status": "estimated",
+      "evidence": "baseline; uncalibrated practice experiment, not mechanism validation"
+    }
+  ],
+  "practiceControls": [
+    {
+      "id": "collect",
+      "label": "Collect",
+      "kind": "pulse",
+      "group": "mode",
+      "state": "COLLECT",
+      "description": "Deploy intake and collect fuel. Operator B.",
+      "binding": {
+        "port": 0,
+        "button": 2
+      }
+    },
+    {
+      "id": "stow",
+      "label": "Stow intake",
+      "kind": "pulse",
+      "group": "mode",
+      "state": "DEFENCEIN",
+      "description": "Retract intake and stop collection. Operator A.",
+      "binding": {
+        "port": 0,
+        "button": 1
+      }
+    },
+    {
+      "id": "deploy",
+      "label": "Deploy intake",
+      "kind": "pulse",
+      "group": "mode",
+      "state": "DEFENCEOUT",
+      "description": "Deploy intake with rollers off. Operator X.",
+      "binding": {
+        "port": 0,
+        "button": 3
+      }
+    },
+    {
+      "id": "snowblow",
+      "label": "Snowblow",
+      "kind": "pulse",
+      "group": "mode",
+      "state": "SNOWBLOW",
+      "description": "Select the robot snowblow mode. Operator Y.",
+      "binding": {
+        "port": 0,
+        "button": 4
+      }
+    },
+    {
+      "id": "shoot",
+      "label": "Shoot",
+      "kind": "hold",
+      "allowedStates": [
+        "DEFENCEOUT",
+        "COLLECT"
+      ],
+      "description": "Hold to spin up shooters and feed when ready. Use Collect or Deploy intake first. Operator right trigger.",
+      "binding": {
+        "port": 0,
+        "axis": 3
+      }
+    },
+    {
+      "id": "intake",
+      "label": "Intake rollers",
+      "kind": "hold",
+      "description": "Hold to run intake rollers. Driver left trigger.",
+      "binding": {
+        "port": 1,
+        "axis": 2
+      }
+    },
+    {
+      "id": "reverse",
+      "label": "Reverse intake",
+      "kind": "hold",
+      "description": "Hold to reverse intake rollers. Driver left bumper.",
+      "binding": {
+        "port": 1,
+        "button": 5
+      }
+    },
+    {
+      "id": "jam",
+      "label": "Clear jam",
+      "kind": "hold",
+      "allowedStates": [
+        "DEFENCEOUT",
+        "COLLECT"
+      ],
+      "description": "Hold to reverse intake and feed mechanisms. Use Collect or Deploy intake first. Operator left bumper.",
+      "binding": {
+        "port": 0,
+        "button": 5
+      }
+    }
+  ],
+  "physicsMode": {
+    "name": "gameplay",
+    "sourceWorldHash": "741adcc4aa338a045dcd3f7e5bf2fd2a6ead3ff2f337fce6f572541bb8075a5b",
+    "worldHash": "99b9a93ca0d544f8bdbbf53b849f3cc0c181ad14fc10112a945dda13eba3b5e1",
+    "description": "Practice model: collision-checked hopper slots with physical stored balls; simplified intake/feed and powered hub passages. Eight conservative storage slots for the current authored hopper geometry; not a measured robot capacity.",
+    "settings": {
+      "gameplay": {
+        "carrier": "chassis",
+        "balls": [
+          "fuel/step:0/0",
+          "fuel/step:0/1",
+          "fuel/step:0/2",
+          "fuel/step:0/3",
+          "fuel/step:0/4",
+          "fuel/step:0/5",
+          "fuel/step:0/6",
+          "fuel/step:0/7",
+          "fuel/step:0/8",
+          "fuel/step:0/9",
+          "fuel/step:0/10",
+          "fuel/step:0/11",
+          "fuel/step:0/12",
+          "fuel/step:0/13",
+          "fuel/step:0/14",
+          "fuel/step:0/15",
+          "fuel/step:0/16",
+          "fuel/step:0/17",
+          "fuel/step:0/18",
+          "fuel/step:0/19",
+          "fuel/step:0/20",
+          "fuel/step:0/21",
+          "fuel/step:0/22",
+          "fuel/step:0/23",
+          "fuel/step:0/24",
+          "fuel/step:0/25",
+          "fuel/step:0/26",
+          "fuel/step:0/27",
+          "fuel/step:0/28",
+          "fuel/step:0/29",
+          "fuel/step:0/30",
+          "fuel/step:0/31",
+          "fuel/step:0/32",
+          "fuel/step:0/33",
+          "fuel/step:0/34",
+          "fuel/step:0/35",
+          "fuel/step:0/36",
+          "fuel/step:0/37",
+          "fuel/step:0/38",
+          "fuel/step:0/39",
+          "fuel/step:0/40",
+          "fuel/step:0/42",
+          "fuel/step:0/43",
+          "fuel/step:0/44",
+          "fuel/step:0/45",
+          "fuel/step:0/46",
+          "fuel/step:0/47",
+          "fuel/step:0/48",
+          "fuel/step:0/49",
+          "fuel/step:0/50",
+          "fuel/step:0/51",
+          "fuel/step:0/52",
+          "fuel/step:0/53",
+          "fuel/step:0/55",
+          "fuel/step:0/56",
+          "fuel/step:0/57",
+          "fuel/step:0/58",
+          "fuel/step:0/59",
+          "fuel/step:0/60",
+          "fuel/step:0/61",
+          "fuel/step:0/62",
+          "fuel/step:0/63",
+          "fuel/step:0/64",
+          "fuel/step:0/65",
+          "fuel/step:0/66",
+          "fuel/step:0/67",
+          "fuel/step:0/68",
+          "fuel/step:0/69",
+          "fuel/step:0/70",
+          "fuel/step:0/71",
+          "fuel/step:0/72",
+          "fuel/step:0/73",
+          "fuel/step:0/74",
+          "fuel/step:0/75",
+          "fuel/step:0/76",
+          "fuel/step:0/77",
+          "fuel/step:0/78",
+          "fuel/step:0/79",
+          "fuel/step:0/80",
+          "fuel/step:0/81",
+          "fuel/step:0/82",
+          "fuel/step:0/83",
+          "fuel/step:0/84",
+          "fuel/step:0/85",
+          "fuel/step:0/86",
+          "fuel/step:0/87",
+          "fuel/step:0/88",
+          "fuel/step:0/89",
+          "fuel/step:0/90",
+          "fuel/step:0/91",
+          "fuel/step:0/92",
+          "fuel/step:0/93",
+          "fuel/step:0/94",
+          "fuel/step:0/95",
+          "fuel/step:0/96",
+          "fuel/step:0/97",
+          "fuel/step:0/98",
+          "fuel/step:0/99",
+          "fuel/step:0/100",
+          "fuel/step:0/101",
+          "fuel/step:0/102",
+          "fuel/step:0/103",
+          "fuel/step:0/104",
+          "fuel/step:0/105",
+          "fuel/step:0/106",
+          "fuel/step:0/107",
+          "fuel/step:0/109",
+          "fuel/step:0/110",
+          "fuel/step:0/112",
+          "fuel/step:0/113",
+          "fuel/step:0/114",
+          "fuel/step:0/115",
+          "fuel/step:0/116",
+          "fuel/step:0/117",
+          "fuel/step:0/118",
+          "fuel/step:0/119",
+          "fuel/step:0/120",
+          "fuel/step:0/121",
+          "fuel/step:0/122",
+          "fuel/step:0/123",
+          "fuel/step:0/124",
+          "fuel/step:0/125",
+          "fuel/step:0/126",
+          "fuel/step:0/127",
+          "fuel/step:0/128",
+          "fuel/step:0/129",
+          "fuel/step:0/130",
+          "fuel/step:0/131",
+          "fuel/step:0/133",
+          "fuel/step:0/134",
+          "fuel/step:0/135",
+          "fuel/step:0/136",
+          "fuel/step:0/137",
+          "fuel/step:0/138",
+          "fuel/step:0/139",
+          "fuel/step:0/140",
+          "fuel/step:0/141",
+          "fuel/step:0/142",
+          "fuel/step:0/143",
+          "fuel/step:0/144",
+          "fuel/step:0/145",
+          "fuel/step:0/146",
+          "fuel/step:0/147",
+          "fuel/step:0/148",
+          "fuel/step:0/149",
+          "fuel/step:0/150",
+          "fuel/step:0/151",
+          "fuel/step:0/152",
+          "fuel/step:0/153",
+          "fuel/step:0/154",
+          "fuel/step:0/155",
+          "fuel/step:0/156",
+          "fuel/step:0/157",
+          "fuel/step:0/158",
+          "fuel/step:0/159",
+          "fuel/step:0/160",
+          "fuel/step:0/161",
+          "fuel/step:0/162",
+          "fuel/step:0/163",
+          "fuel/step:0/164",
+          "fuel/step:0/165",
+          "fuel/step:0/166",
+          "fuel/step:0/167",
+          "fuel/step:0/169",
+          "fuel/step:0/170",
+          "fuel/step:0/171",
+          "fuel/step:0/172",
+          "fuel/step:0/173",
+          "fuel/step:0/174",
+          "fuel/step:0/175",
+          "fuel/step:0/176",
+          "fuel/step:0/177",
+          "fuel/step:0/178",
+          "fuel/step:0/179",
+          "fuel/step:0/180",
+          "fuel/step:0/181",
+          "fuel/step:0/182",
+          "fuel/step:0/183",
+          "fuel/step:0/184",
+          "fuel/step:0/185",
+          "fuel/step:0/186",
+          "fuel/step:0/187",
+          "fuel/step:0/188",
+          "fuel/step:0/189",
+          "fuel/step:0/190",
+          "fuel/step:0/191",
+          "fuel/step:0/192",
+          "fuel/step:0/193",
+          "fuel/step:0/194",
+          "fuel/step:0/195",
+          "fuel/step:0/196",
+          "fuel/step:0/197",
+          "fuel/step:0/198",
+          "fuel/step:0/199",
+          "fuel/step:0/200",
+          "fuel/step:0/201",
+          "fuel/step:0/202",
+          "fuel/step:0/203",
+          "fuel/step:0/204",
+          "fuel/step:0/205",
+          "fuel/step:0/206",
+          "fuel/step:0/207",
+          "fuel/step:0/208",
+          "fuel/step:0/209",
+          "fuel/step:0/210",
+          "fuel/step:0/211",
+          "fuel/step:0/212",
+          "fuel/step:0/213",
+          "fuel/step:0/214",
+          "fuel/step:0/215",
+          "fuel/step:0/216",
+          "fuel/step:0/217",
+          "fuel/step:0/218",
+          "fuel/step:0/219",
+          "fuel/step:0/220",
+          "fuel/step:0/221",
+          "fuel/step:0/222",
+          "fuel/step:0/223",
+          "fuel/step:0/224",
+          "fuel/step:0/225",
+          "fuel/step:0/226",
+          "fuel/step:0/227",
+          "fuel/step:0/228",
+          "fuel/step:0/229",
+          "fuel/step:0/230",
+          "fuel/step:0/231",
+          "fuel/step:0/232",
+          "fuel/step:0/234",
+          "fuel/step:0/235",
+          "fuel/step:0/236",
+          "fuel/step:0/237",
+          "fuel/step:0/238",
+          "fuel/step:0/239",
+          "fuel/step:0/240",
+          "fuel/step:0/241",
+          "fuel/step:0/242",
+          "fuel/step:0/243",
+          "fuel/step:0/244",
+          "fuel/step:0/245",
+          "fuel/step:0/246",
+          "fuel/step:0/248",
+          "fuel/step:0/249",
+          "fuel/step:0/251",
+          "fuel/step:0/252",
+          "fuel/step:0/253",
+          "fuel/step:0/254",
+          "fuel/step:0/255",
+          "fuel/step:0/256",
+          "fuel/step:0/257",
+          "fuel/step:0/258",
+          "fuel/step:0/259",
+          "fuel/step:0/260",
+          "fuel/step:0/262",
+          "fuel/step:0/263",
+          "fuel/step:0/264",
+          "fuel/step:0/265",
+          "fuel/step:0/266",
+          "fuel/step:0/267",
+          "fuel/step:0/268",
+          "fuel/step:0/269",
+          "fuel/step:0/270",
+          "fuel/step:0/271",
+          "fuel/step:0/272",
+          "fuel/step:0/274",
+          "fuel/step:0/275",
+          "fuel/step:0/276",
+          "fuel/step:0/277",
+          "fuel/step:0/278",
+          "fuel/step:0/279",
+          "fuel/step:0/280",
+          "fuel/step:0/281",
+          "fuel/step:0/282",
+          "fuel/step:0/283",
+          "fuel/step:0/284",
+          "fuel/step:0/285",
+          "fuel/step:0/286",
+          "fuel/step:0/287",
+          "fuel/step:0/288",
+          "fuel/step:0/289",
+          "fuel/step:0/290",
+          "fuel/step:0/291",
+          "fuel/step:0/292",
+          "fuel/step:0/293",
+          "fuel/step:0/294",
+          "fuel/step:0/295",
+          "fuel/step:0/296",
+          "fuel/step:0/297",
+          "fuel/step:0/298",
+          "fuel/step:0/299",
+          "fuel/step:0/300",
+          "fuel/step:0/301",
+          "fuel/step:0/302",
+          "fuel/step:0/303",
+          "fuel/step:0/304",
+          "fuel/step:0/305",
+          "fuel/step:0/306",
+          "fuel/step:0/307",
+          "fuel/step:0/308",
+          "fuel/step:0/309",
+          "fuel/step:0/310",
+          "fuel/step:0/311",
+          "fuel/step:0/312",
+          "fuel/step:0/313",
+          "fuel/step:0/314",
+          "fuel/step:0/315",
+          "fuel/step:0/316",
+          "fuel/step:0/317",
+          "fuel/step:0/318",
+          "fuel/step:0/319",
+          "fuel/step:0/320",
+          "fuel/step:0/321",
+          "fuel/step:0/322",
+          "fuel/step:0/323",
+          "fuel/step:0/324",
+          "fuel/step:0/325",
+          "fuel/step:0/326",
+          "fuel/step:0/327",
+          "fuel/step:0/328",
+          "fuel/step:0/329",
+          "fuel/step:0/330",
+          "fuel/step:0/331",
+          "fuel/step:0/332",
+          "fuel/step:0/333",
+          "fuel/step:0/335",
+          "fuel/step:0/336",
+          "fuel/step:0/337",
+          "fuel/step:0/338",
+          "fuel/step:0/339",
+          "fuel/step:0/340",
+          "fuel/step:0/341",
+          "fuel/step:0/342",
+          "fuel/step:0/344",
+          "fuel/step:0/345",
+          "fuel/step:0/346",
+          "fuel/step:0/347",
+          "fuel/step:0/348",
+          "fuel/step:0/349",
+          "fuel/step:0/350",
+          "fuel/step:0/351",
+          "fuel/step:0/352",
+          "fuel/step:0/353",
+          "fuel/step:0/354",
+          "fuel/step:0/355",
+          "fuel/step:0/356",
+          "fuel/step:0/357",
+          "fuel/step:0/358",
+          "fuel/step:0/359",
+          "fuel/step:0/360",
+          "fuel/step:0/361",
+          "fuel/step:0/362",
+          "fuel/step:0/363",
+          "fuel/step:0/364",
+          "fuel/step:0/365",
+          "fuel/step:0/368",
+          "fuel/step:0/369",
+          "fuel/step:0/370",
+          "fuel/step:0/371",
+          "fuel/step:0/372",
+          "fuel/step:0/373",
+          "fuel/step:0/374",
+          "fuel/step:0/375",
+          "fuel/step:0/376",
+          "fuel/step:0/377",
+          "fuel/step:0/378",
+          "fuel/step:0/379",
+          "fuel/step:0/380",
+          "fuel/step:0/381",
+          "fuel/step:0/382",
+          "fuel/step:0/383",
+          "fuel/step:0/384",
+          "fuel/step:0/385",
+          "fuel/step:0/386",
+          "fuel/step:0/387",
+          "fuel/step:0/388",
+          "fuel/step:0/389",
+          "fuel/step:0/390",
+          "fuel/step:0/391",
+          "fuel/step:0/392",
+          "fuel/step:0/393",
+          "fuel/step:0/394",
+          "fuel/step:0/395",
+          "fuel/step:0/396",
+          "fuel/step:0/397",
+          "fuel/step:0/398",
+          "fuel/step:0/399",
+          "fuel/step:0/400",
+          "fuel/step:0/401",
+          "fuel/step:0/402",
+          "fuel/step:0/403",
+          "fuel/step:0/404",
+          "fuel/step:0/405",
+          "fuel/step:0/406",
+          "fuel/step:0/407",
+          "fuel/step:0/408",
+          "fuel/step:0/409",
+          "fuel/step:0/410",
+          "fuel/step:0/411",
+          "fuel/step:0/412",
+          "fuel/step:0/413",
+          "fuel/step:0/414",
+          "fuel/step:0/415",
+          "fuel/step:0/416",
+          "fuel/step:0/417",
+          "fuel/step:0/418",
+          "fuel/step:0/419",
+          "fuel/step:0/420",
+          "fuel/step:0/421",
+          "fuel/step:0/422",
+          "fuel/step:0/423",
+          "fuel/step:0/424",
+          "fuel/step:0/425",
+          "fuel/step:0/426",
+          "fuel/step:0/427",
+          "fuel/step:0/430",
+          "fuel/step:0/431",
+          "fuel/step:0/432",
+          "fuel/step:0/433",
+          "fuel/step:0/434",
+          "fuel/step:0/435",
+          "fuel/step:0/436",
+          "fuel/step:0/437",
+          "fuel/step:0/438",
+          "fuel/step:0/439",
+          "fuel/step:0/440",
+          "fuel/step:0/441",
+          "fuel/step:0/442",
+          "fuel/step:0/443",
+          "fuel/step:0/444",
+          "fuel/step:0/445",
+          "fuel/step:0/446",
+          "fuel/step:0/447",
+          "fuel/step:0/448",
+          "fuel/step:0/449",
+          "fuel/step:0/450",
+          "fuel/step:0/451",
+          "fuel/step:0/452",
+          "fuel/step:0/454",
+          "fuel/step:0/455",
+          "fuel/step:0/456",
+          "fuel/step:0/457",
+          "fuel/step:0/458",
+          "fuel/step:0/459",
+          "fuel/step:0/460",
+          "fuel/step:0/461",
+          "fuel/step:0/462",
+          "fuel/step:0/463",
+          "fuel/step:0/464",
+          "fuel/step:0/465",
+          "fuel/step:0/466",
+          "fuel/step:0/467",
+          "fuel/step:0/468",
+          "fuel/step:0/469",
+          "fuel/step:0/470",
+          "fuel/step:0/471",
+          "fuel/step:0/472",
+          "fuel/step:0/478"
+        ],
+        "intake_body": "intake/pivot",
+        "intake_center": [
+          0.1304621272604382,
+          0,
+          0.0285648188713119
+        ],
+        "intake_half": [
+          0.14641215392924456,
+          0.33194626966862756,
+          0.16933911323073114
+        ],
+        "intake_motor": "talon/13",
+        "storage_origin": [
+          -0.2,
+          -0.225,
+          0.28
+        ],
+        "storage_spacing": 0.15,
+        "capacity": 8,
+        "transport_seconds": 0.35,
+        "launchers": [
+          {
+            "frame": "turret/left",
+            "hood_joint": "axis/23",
+            "flywheel_joint": "axis/24",
+            "feed_motor": "talon/21",
+            "pivot": [
+              0.10296940189277193,
+              0.05315752603486476,
+              0.08874080016585251
+            ],
+            "forward": [
+              0.8879930306205024,
+              0.4598569098854724,
+              0
+            ],
+            "wheel_radius": 0.0508,
+            "guide_radius": 0.18102194761333856,
+            "speed_ratio": 0.42,
+            "seconds_per_ball": 0.25
+          },
+          {
+            "frame": "turret/right",
+            "hood_joint": "axis/28",
+            "flywheel_joint": "axis/29",
+            "feed_motor": "talon/26",
+            "pivot": [
+              0.10296940189277193,
+              0.05316131883486451,
+              0.08874080016585251
+            ],
+            "forward": [
+              0.8879930306205024,
+              0.4598569098854724,
+              0
+            ],
+            "wheel_radius": 0.0508,
+            "guide_radius": 0.18102194761333856,
+            "speed_ratio": 0.42,
+            "seconds_per_ball": 0.25
+          }
+        ],
+        "storage_slots": [
+          [
+            0.225,
+            -0.234,
+            0.32
+          ],
+          [
+            0.225,
+            -0.078,
+            0.32
+          ],
+          [
+            0.225,
+            0.078,
+            0.32
+          ],
+          [
+            0.225,
+            0.234,
+            0.32
+          ],
+          [
+            0.225,
+            -0.234,
+            0.51
+          ],
+          [
+            0.225,
+            -0.078,
+            0.51
+          ],
+          [
+            0.225,
+            0.078,
+            0.51
+          ],
+          [
+            0.225,
+            0.234,
+            0.51
+          ]
+        ],
+        "field_conveyors": [
+          {
+            "id": "hub/red/0",
+            "frame": "field",
+            "capture_center": [
+              3.5948999999999973,
+              0,
+              1.1
+            ],
+            "capture_half": [
+              0.45,
+              0.61,
+              0.25
+            ],
+            "path": [
+              [
+                3.4948999999999977,
+                -0.41572000488328076,
+                1.1
+              ],
+              [
+                3.1958931676156226,
+                -0.41572000488328076,
+                0.9561776208210474
+              ],
+              [
+                2.7448999999999977,
+                -0.41572000488328076,
+                0.8361776208210474
+              ]
+            ],
+            "motor": "field-drive/red/counter",
+            "direction": 1,
+            "metres_per_rotor_turn": 0.01595929068023615,
+            "required_motors": [
+              "field-drive/red/tube"
+            ]
+          },
+          {
+            "id": "hub/red/1",
+            "frame": "field",
+            "capture_center": [
+              3.5948999999999973,
+              0,
+              1.1
+            ],
+            "capture_half": [
+              0.45,
+              0.61,
+              0.25
+            ],
+            "path": [
+              [
+                3.4948999999999977,
+                -0.13594259511671858,
+                1.1
+              ],
+              [
+                3.2262943270876807,
+                -0.13594259511671858,
+                0.8769798927263563
+              ],
+              [
+                2.7448999999999977,
+                -0.13594259511671858,
+                0.7569798927263564
+              ]
+            ],
+            "motor": "field-drive/red/counter",
+            "direction": 1,
+            "metres_per_rotor_turn": 0.01595929068023615,
+            "required_motors": [
+              "field-drive/red/tube"
+            ]
+          },
+          {
+            "id": "hub/red/2",
+            "frame": "field",
+            "capture_center": [
+              3.5948999999999973,
+              0,
+              1.1
+            ],
+            "capture_half": [
+              0.45,
+              0.61,
+              0.25
+            ],
+            "path": [
+              [
+                3.4948999999999977,
+                0.13155750488328177,
+                1.1
+              ],
+              [
+                3.2262943270876807,
+                0.13155750488328177,
+                0.8769798927263563
+              ],
+              [
+                2.7448999999999977,
+                0.13155750488328177,
+                0.7569798927263564
+              ]
+            ],
+            "motor": "field-drive/red/counter",
+            "direction": 1,
+            "metres_per_rotor_turn": 0.01595929068023615,
+            "required_motors": [
+              "field-drive/red/tube"
+            ]
+          },
+          {
+            "id": "hub/red/3",
+            "frame": "field",
+            "capture_center": [
+              3.5948999999999973,
+              0,
+              1.1
+            ],
+            "capture_half": [
+              0.45,
+              0.61,
+              0.25
+            ],
+            "path": [
+              [
+                3.4948999999999977,
+                0.41572000488328076,
+                1.1
+              ],
+              [
+                3.2262943270876807,
+                0.41572000488328076,
+                0.8769798927263563
+              ],
+              [
+                2.7448999999999977,
+                0.41572000488328076,
+                0.7569798927263564
+              ]
+            ],
+            "motor": "field-drive/red/counter",
+            "direction": 1,
+            "metres_per_rotor_turn": 0.01595929068023615,
+            "required_motors": [
+              "field-drive/red/tube"
+            ]
+          },
+          {
+            "id": "hub/blue/0",
+            "frame": "field",
+            "capture_center": [
+              -3.594899999999999,
+              0,
+              1.1
+            ],
+            "capture_half": [
+              0.45,
+              0.61,
+              0.25
+            ],
+            "path": [
+              [
+                -3.4948999999999986,
+                -0.41572000488328076,
+                1.1
+              ],
+              [
+                -3.2262943270876807,
+                -0.41572000488328076,
+                0.8769798927263563
+              ],
+              [
+                -2.7448999999999986,
+                -0.41572000488328076,
+                0.7569798927263564
+              ]
+            ],
+            "motor": "field-drive/blue/counter",
+            "direction": 1,
+            "metres_per_rotor_turn": 0.01595929068023615,
+            "required_motors": [
+              "field-drive/blue/tube"
+            ]
+          },
+          {
+            "id": "hub/blue/1",
+            "frame": "field",
+            "capture_center": [
+              -3.594899999999999,
+              0,
+              1.1
+            ],
+            "capture_half": [
+              0.45,
+              0.61,
+              0.25
+            ],
+            "path": [
+              [
+                -3.4948999999999986,
+                -0.13155750488328088,
+                1.1
+              ],
+              [
+                -3.2262943270876807,
+                -0.13155750488328088,
+                0.8769798927263563
+              ],
+              [
+                -2.7448999999999986,
+                -0.13155750488328088,
+                0.7569798927263564
+              ]
+            ],
+            "motor": "field-drive/blue/counter",
+            "direction": 1,
+            "metres_per_rotor_turn": 0.01595929068023615,
+            "required_motors": [
+              "field-drive/blue/tube"
+            ]
+          },
+          {
+            "id": "hub/blue/2",
+            "frame": "field",
+            "capture_center": [
+              -3.594899999999999,
+              0,
+              1.1
+            ],
+            "capture_half": [
+              0.45,
+              0.61,
+              0.25
+            ],
+            "path": [
+              [
+                -3.4948999999999986,
+                0.13594259511671947,
+                1.1
+              ],
+              [
+                -3.2262943270876807,
+                0.13594259511671947,
+                0.8769798927263563
+              ],
+              [
+                -2.7448999999999986,
+                0.13594259511671947,
+                0.7569798927263564
+              ]
+            ],
+            "motor": "field-drive/blue/counter",
+            "direction": 1,
+            "metres_per_rotor_turn": 0.01595929068023615,
+            "required_motors": [
+              "field-drive/blue/tube"
+            ]
+          },
+          {
+            "id": "hub/blue/3",
+            "frame": "field",
+            "capture_center": [
+              -3.594899999999999,
+              0,
+              1.1
+            ],
+            "capture_half": [
+              0.45,
+              0.61,
+              0.25
+            ],
+            "path": [
+              [
+                -3.4948999999999986,
+                0.41572000488328076,
+                1.1
+              ],
+              [
+                -3.195893167615613,
+                0.41572000488328076,
+                0.9561776208210474
+              ],
+              [
+                -2.7448999999999986,
+                0.41572000488328076,
+                0.8361776208210474
+              ]
+            ],
+            "motor": "field-drive/blue/counter",
+            "direction": 1,
+            "metres_per_rotor_turn": 0.01595929068023615,
+            "required_motors": [
+              "field-drive/blue/tube"
+            ]
+          }
+        ]
+      }
+    },
+    "evidence": "CAD clearance probes and cargo contact regression tests; hardware hopper calibration remains required.",
+    "intakeAlignmentRepair": {
+      "record": ".cadcove/example/intake-alignment.json",
+      "reason": "Center rotating visual meshes on physical shafts."
+    }
+  },
+  "practiceInput": {
+    "driverPort": 1
+  }
+}

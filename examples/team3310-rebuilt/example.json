@@ -5,11 +5,11 @@
   "name": "Amarillo on the 2026 REBUILT field",
   "robot": {
     "name": "BHR-2026-000 AMARILLO",
-    "cadDirectory": "assets/robot",
+    "cadDirectory": "source/cad-assets/robot",
     "sourceHash": "7f28584565cc1e725b559b18df88f2dcea0cdb3eda31995f867f1ae7efcc3674",
     "codeUpstream": "https://github.com/Team3310/2026",
     "localCodeRevision": "27505f3e45ea3eab76d3015794dbf60be2b7e440",
-    "codeDirectory": "vendor/team3310-2026",
+    "codeDirectory": "source/robot-code",
     "bindings": "config/robot-bindings.json",
     "devices": "config/devices.json",
     "vision": "config/vision.json"
@@ -37,12 +37,13 @@
     "rebuild": "Rebuild world and scene bindings with the new source hashes, then audit and commission. Swapping a directory alone is insufficient."
   },
   "distribution": {
-    "mode": "optional-platform-content-pack",
+    "mode": "source-example-with-official-field-download",
     "includedInCore": false,
+    "teamSourceIncluded": true,
     "publicRedistributionReady": false,
-    "reason": "Team code/CAD and FIRST asset redistribution permission must be established independently. No large team assets or SDK binaries enter the generic extension/source export.",
-    "extensionCommand": "cadcove.example.play",
-    "exampleCommand": "cadcove example-create --workspace NEW_DIRECTORY"
+    "reason": "Team source publication authorized. FIRST geometry and vendor runtime binaries are resolved locally and retain their own terms.",
+    "setupCommand": "bun run example:team --output NEW_WORKSPACE",
+    "extensionCommand": "cadcove.simulation.open"
   },
   "practiceInput": {
     "driverPort": 1

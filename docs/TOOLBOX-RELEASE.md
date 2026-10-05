@@ -9,10 +9,10 @@ and Marketplace publication are separate actions.
 
 The public source is an allowlisted export, not the development repository's
 history. It includes an original small training robot, replaceable season/device
-contracts and instructions for obtaining external assets. Team CAD, robot code,
-private manuals, demo videos, runtime sessions, credentials and benchmark dumps
-are excluded. The larger team example contains a replacement contract, not its
-private CAD/code assets.
+contracts and instructions for obtaining external assets. The authorized Team 3310 example includes editable CAD, robot source and physics
+bindings. Official FIRST field geometry is downloaded and rebuilt locally by
+example setup. SDK binaries, private manuals, demo videos, runtime sessions,
+credentials and benchmark dumps are excluded.
 
 ## GitHub source candidate
 
@@ -72,3 +72,12 @@ candidate evidence does not qualify new binaries automatically.
 The checked packager refuses a production VSIX while licensing/publication
 metadata is unresolved. A locally tested development candidate is useful for
 review but is not represented as a fully cleared Marketplace release.
+
+## Main robot example source
+
+The Team 3310 robot CAD/code publication was authorized on 2026-10-05.
+`examples/team3310-rebuilt/source` is the reviewed source and collision baseline;
+`field-source.json` pins FIRST's separately downloaded field. Run `bun run
+example:team --output NEW_WORKSPACE` and `scripts/verify-team-example.js` to exercise
+this example. Generic source CI uses a dependency-closure test without downloading
+the field or vendor SDKs. The full example's platform qualification is separate.

@@ -137,7 +137,13 @@
     "lib/mcp-server.js",
     "lib/mcp-proxy.js",
     "web/editor-robot.js",
-    "tests/mcp.test.js"
+    "tests/mcp.test.js",
+    "scripts/setup-team-example.js",
+    "scripts/build-example-field.js",
+    "scripts/extract-appearance.js",
+    "scripts/component-model.js",
+    "tests/team-example-source.test.js",
+    "scripts/verify-team-example.js"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

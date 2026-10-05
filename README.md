@@ -4,9 +4,9 @@ Part of **CadCove**: an MIT open-source monorepo for agent-assisted CAD,
 robot code, and local FRC simulation.
 
 **Source release:** build instructions are below. Public prebuilt VSIX releases
-are not available yet; the Team Robot content pack described below is a local
-example and is not included in this repository. The original training example
-is included.
+are not available yet. The Team 3310 robot CAD, code and simulation bindings
+are included. Setup downloads REBUILT field geometry directly from FIRST and
+builds the robot with your installed WPILib toolchain.
 
 ## Agent tools start with the editor
 
@@ -102,30 +102,37 @@ entry blocks are added without replacing existing root instructions.
 
 ### Play the team robot
 
-Install the **Team Robot edition** VSIX for your platform and the WPILib 2026
-JDK. Run **CadCove: Play Team Robot Example** from the Command Palette. Choose a
-new workspace folder; CadCove copies Team 3310's Amarillo robot, the REBUILT field,
-actual Java/Phoenix program, and matching native vendor libraries, then opens the
-workspace, live simulator and WPILib Sim GUI. Map plugged-in controllers to
-driver port 1 and operator port 0, enable Xbox mapping, then select Teleoperated
-in Sim GUI. See [Driver Station setup](docs/DRIVER-STATION.md). No robot-code build is required to
-try the packaged example. Invoking the command again inside that example reopens
-its simulator without making another copy.
+The main example is Team 3310's Amarillo: 1,958 CAD occurrences, 109 converted
+brepjs part designs, retained STEP parts, the actual Java/Phoenix robot program,
+and the reviewed gameplay world and intake alignment. Robot source lives in
+[examples/team3310-rebuilt/source](examples/team3310-rebuilt/source).
 
-Agents can create the same workspace with:
+Install Bun and the WPILib 2026 toolchain/JDK, then run from this repository:
 
 ```sh
-cadcove example-create --workspace /path/to/new-team-robot
+bun install --frozen-lockfile
+bun run example:team --output ../Amarillo-REBUILT
 ```
 
-The default is `team3310-rebuilt`. Source CAD, robot code and agent guidance are
-included for editing. Rebuild the robot JAR after code changes. Mass, friction
-and sensor calibration remain provisional. The platform content pack is separate
-from the generic MIT source and retains team/FIRST/vendor ownership; the current
-team edition is a local distribution, not a cleared public asset release.
+Setup downloads the checksum-pinned field directly from FIRST, rebuilds colored
+field meshes and collision data, adds agent guidance, then uses Gradle to build
+the robot JAR and obtain the current platform's vendor libraries. The first run
+needs internet and may take several minutes. It creates a new folder and never
+overwrites an existing project. Open that folder in VS Code/WPILib with the
+CadCove extension installed; run **CadCove: Open Robot CAD** or **Open Live Simulation**.
+Map controllers in WPILib Sim GUI (driver port 1, operator port 0), then enable
+Teleoperated. See [Driver Station setup](docs/DRIVER-STATION.md).
 
-The small `--example training-robot` remains available explicitly for lightweight
-contract tests. It is not the primary robot demonstration.
+Use `--skip-robot-build` for CAD/artifact preparation without Java; simulation
+then requires the documented robot build. Use `--field-step /path/to/field.step`
+for an already downloaded, matching official field. See the
+[example setup guide](examples/team3310-rebuilt/README.md) for details and licenses.
+A locally built Team Robot edition can still package the prepared workspace with
+`scripts/package-runtime.js --team-example /path/to/Amarillo-REBUILT`.
+The installed `example-create` command consumes that pack; a generic runtime
+without it uses the source setup above. Generated FIRST assets stay local.
+
+The small `training-robot` remains available for fast independent contract tests.
 
 ## Live practice and detailed simulation
 
@@ -220,7 +227,7 @@ GitHub source publication and Marketplace publication are separate steps.
 `config/toolbox-source.json` defines the source distribution. From a committed
 checkout, `bun scripts/export-toolbox-source.js --output NEW_DIRECTORY` exports
 only approved tracked files, with per-file hashes and source revision. It omits
-team robot code/CAD, recordings, profiles, local credentials, development assets,
+unapproved team fixtures, FIRST field geometry/manuals, recordings, profiles, local credentials, development assets,
 benchmark experiments and repository history. The development checkout keeps
 those fixtures separately for engineering evidence; they are not required to
 build the exported toolbox. This export is a reviewable candidate, not a license

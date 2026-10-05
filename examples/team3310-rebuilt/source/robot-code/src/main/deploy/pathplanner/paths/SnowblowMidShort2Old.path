@@ -1,0 +1,204 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.580858676207513,
+        "y": 0.5222003577817531
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.7921603529008188,
+        "y": 0.7207118530125163
+      },
+      "isLocked": false,
+      "linkedName": "OutStart"
+    },
+    {
+      "anchor": {
+        "x": 7.361377459749552,
+        "y": 0.6520035778175304
+      },
+      "prevControl": {
+        "x": 6.777262969588551,
+        "y": 0.21391771019677863
+        "y": 0.21391771019677863
+      },
+      "nextControl": {
+        "x": 8.651687244007695,
+        "y": 1.6197359160111389
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.247799642218247,
+        "y": 3.8321824686940964
+      },
+      "prevControl": {
+        "x": 7.991156145775863,
+        "y": 3.8342008990275684
+      },
+      "nextControl": {
+        "x": 5.850576796814551,
+        "y": 3.828388599991414
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.5014311270125225,
+        "y": 1.1387656529516994
+      },
+      "prevControl": {
+        "x": 7.051440914161939,
+        "y": 2.042353160411457
+      },
+      "nextControl": {
+        "x": 6.047119856887299,
+        "y": 0.39239713774597473
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.580858676207513,
+        "y": 0.5222003577817531
+      },
+      "prevControl": {
+        "x": 3.830776726633113,
+        "y": 0.5935025983519902
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "OutStart"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5783132530120483,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 1.1101573676680974,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.4524822695035497,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.764705882352941,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 2.4,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 2.812834224598935,
+      "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 3.25,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 3.6779661016949143,
+      "maxWaypointRelativePos": 4.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.4847396768402161,
+      "constraints": {
+        "maxVelocity": 2.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "switchToCollect",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "switchToCollect"
+        }
+      }
+    },
+    {
+      "name": "switchToSnowblow",
+      "waypointRelativePos": 0.49999999999999994,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "switchToSnowblow"
+        }
+      }
+    },
+    {
+      "name": "switchToCollect",
+      "waypointRelativePos": 2.45,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "switchToCollect"
+        }
+      }
+    },
+    {
+      "name": "switchToSnowblow",
+      "waypointRelativePos": 4.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "switchToSnowblow"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 2.8,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "New Folder",
+  "idealStartingState": {
+    "velocity": 0.0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": false
+}

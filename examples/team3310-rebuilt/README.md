@@ -1,70 +1,114 @@
-# Primary worked example: Amarillo + REBUILT
+# Team 3310 Amarillo on REBUILT
 
-This is the detailed team robot/field already used by the demo. The small
-`training-robot` remains a fast, independently authored contract test. Neither
-is a universal robot configuration.
+This is CadCove-FRC's main runnable example: the team's robot, the 2026 field,
+actual Java/WPILib/Phoenix controls and the corrected intake/cargo gameplay model.
+The robot CAD and code are included in `source/`; FIRST field geometry and SDK
+binaries are obtained locally during setup. The small `training-robot` remains a
+fast independent contract test, not a substitute for this full example.
 
-`example.json` keeps robot and field identities independent. `components.json`
-records the actual component families and uncertainties. The existing
-`robot.sim.json` and chosen practice/accuracy profiles supply executable bindings.
-The generic CAD core and runtime do not import these manifests or team constants.
+## Fresh-clone setup
 
-The Team Robot edition packages this local content pack with the extension.
-The current local conversion pack contains 109 editable brepjs part designs
-(178 occurrences). Its remaining 23 custom designs, 22 unclassified designs,
-and vendor/standard components retain their original STEP geometry. Open
-`cad-assets/robot/model.js`; `parametric/parts/` contains the editable builders,
-and `PARAMETRIC-README.md` plus `parametric/migration.json` describe the exact
-conversion and retention decisions. Instance IDs, placements and colors are
-preserved. Geometry edits still require reviewing the corresponding simulation
-bindings; converting a part does not automatically recalibrate its mechanism.
-
-Run **CadCove: Play Team Robot Example** to create a new workspace and launch live
-practice. The pack includes the platform JAR/libraries and referenced collision
-caches; only the WPILib JDK must already be installed. Controller port 1 is
-the team driver; operator uses port 0. The view has no controls. Map physical
-controllers in WPILib Sim GUI and enable Teleoperated there; see
-[Driver Station setup](../../docs/DRIVER-STATION.md). The generic source/runtime can still be
-built without the pack using the explicit training example for contract tests.
-
-The large CAD, team's robot program, vendor binaries and FIRST field remain a
-separate local content pack. Public redistribution is not yet cleared. FIRST
-explicitly asks that its posted content not be re-hosted; obtain source assets
-from its official links. Preserve upstream attribution and team ownership.
-
-Create a portable local snapshot from a reviewed profile, with explicit asset
-root (needed by older demo profiles whose collider paths were repository-relative):
+Install Bun 1.4.2 and WPILib 2026 (including its JDK). Install a locally built
+CadCove extension as described in the root README. From the monorepo root:
 
 ```sh
-bun scripts/export-example-workspace.js --project /path/to/robot.sim.json --asset-root /path/to/source/workspace --output /path/to/new-example --bridge-source /path/to/source/workspace/bridge --component-catalog examples/team3310-rebuilt/components.json
+bun install --frozen-lockfile
+bun run example:team --output ../Amarillo-REBUILT
 ```
 
-This copies source CAD/component files, compiled world/bindings and their collision
-dependencies, selected robot source files, the selected JAR and desktop native
-libraries. It excludes live sessions, tokens, logs, git history and unrelated build
-outputs. The result is for the current machine platform, not a public release.
-The optional component catalog is copied into the workspace and selected in
-`.cadcove/frc.json`; other robots should supply their own catalog or omit it.
-It never rebuilds or executes copied robot code. Runtime provenance records the
-copied bytes. Run `cadcove doctor`, open the simulation and commission before use.
+Setup performs these steps:
 
-To replace the robot, supply its independent CAD and explicit mechanism/device
-bindings, actual program and calibration. To replace the field, supply its CAD,
-collision geometry, frame-aligned tag layout, season knowledge and observer.
-Recompile world/scene hashes in either case. The old team-specific compiler cannot
-infer an arbitrary replacement robot. The agent skills guide this integration.
+1. Copy the included CAD source, robot program and reviewed simulation bindings.
+2. Download the pinned official REBUILT STEP from FIRST (35.7 MB), verifying its
+   size and SHA-256. Later runs reuse the verified download.
+3. Rebuild the 6,186 field occurrences, surface colors and collision buffers with
+   the pinned OCCT-WASM kernel. The first run takes several minutes.
+4. Audit CAD identities, intake axes, collision hashes and world/view consistency.
+5. Resolve WPILib/CTRE dependencies through Gradle and compile `robot.jar` plus
+   desktop native libraries for the current machine. No Mac libraries are copied
+   into Windows/Linux examples. No robot program is executed during setup.
+6. Create the Codex, Claude and Copilot guidance and a configured CAD workspace.
 
-Never reuse the demo's shooter calibration, estimated sleeve/friction values,
-CAN mappings or camera assumptions as validated data for a different robot.
+Open the output folder in VS Code/WPILib. Run **CadCove: Open Robot CAD** or
+**CadCove: Open Live Simulation**. Map plugged-in controllers in WPILib Sim GUI:
+driver port **1**, operator port **0**, Xbox mapping; enable **Teleoperated**.
+See [Driver Station setup](../../docs/DRIVER-STATION.md).
 
-### Intake alignment regression
+The output directory must be new; setup never overwrites student work. To use a
+previous official download, add `--field-step /path/to/field.step`. A different
+field revision is rejected because occurrence bindings must be reviewed together.
+To prepare CAD and simulation artifacts without Java, add `--skip-robot-build`.
+Before playing that workspace, run in its `robot-code` directory (with the WPILib
+JDK as `JAVA_HOME`):
 
-The updated local content pack restores the original intake joint anchors,
-collider positions and 110 occurrence bindings after an experimental 50.8 mm
-extension offset was applied twice. Four explicit shaft-point `axisChecks` now
-travel with its scene bindings. Project audit and content packaging reject a
-roller visual that would orbit its revolute axis. Validate rotating geometry as
-well as pickup/scoring counters. The corrected workspace's dynamic check found
-less than 0.023 mm radial error while spinning; this is simulation evidence,
-not hardware calibration. Public source includes the generic check and synthetic
-regression test; the team CAD/field content remains a separate asset pack.
+```sh
+./gradlew --no-daemon jar extractReleaseNative
+# Windows: .\gradlew.bat --no-daemon jar extractReleaseNative
+```
+
+`example-setup.json` records download/world hashes, platform and build status.
+The example team number is zero for simulation; configure deployment separately
+only for a robot you own. Calibration remains provisional. Passing artifact
+validation does not establish hardware fidelity.
+
+## Editable source and test scope
+
+`source/cad-assets/robot/model.js` assembles the 1,958 occurrences, preserving
+part IDs, transforms and colors. It contains 109 converted brepjs part designs
+(178 occurrences); retained vendor, unclassified and remaining custom designs
+use STEP. The registry is the active set; see its migration record. Only the
+source dependency closure and required view meshes are included, not conversion
+experiments, recordings or workstation caches.
+
+`source/robot-code` contains the actual team program with its simulation bridge.
+Vendor dependency descriptors and Gradle resolve upstream libraries. Source CAD
+edits require corresponding physics-binding review: the shipped collision
+snapshot is the reviewed baseline, not automatic arbitrary CAD-to-physics inference.
+The four shaft axis checks preserve the repaired intake alignment.
+
+The included world is the demonstrated **gameplay** profile. Its reduced-order
+intake/feed, conservative eight-slot cargo storage and powered hub passage
+approximations are explicit in `robot.sim.json`. Do not call it a detailed-mode
+qualification. The generic runtime still supports independently authored detailed
+profiles; hardware mass/friction/shooter calibration remains required.
+
+For a local Team Robot edition, pass the completed workspace to
+`scripts/package-runtime.js --team-example WORKSPACE` alongside that command's
+normal arguments. Its pack includes locally obtained field/vendor assets and is
+not automatically cleared for public binary redistribution.
+
+## Attribution and distribution
+
+Publication of the team's CAD and robot code was authorized by the project owner.
+Original team/CadCove contributions in this example use the repository MIT license.
+Existing third-party notices and ownership remain intact: vendor component designs,
+WPILib, AdvantageKit, Limelight and SDK dependencies are not relicensed by CadCove.
+See [example notices](THIRD-PARTY-NOTICES.md).
+
+FIRST requests that its posted content remain on its own servers. `field-source.json`
+contains the official URL, checksum, occurrence identifiers and our collision
+rebuild recipe; the actual field STEP, extracted geometry and meshes are excluded
+from Git. Setup obtains them directly from [FIRST's official field page](https://www.firstinspires.org/resources/library/frc/playing-field).
+No game manual or local API credentials are included.
+
+## Integration smoke test
+
+After building the native engine (`bun scripts/build-native-runtime.js`):
+
+```sh
+# Select target/distribution/release/instantcad-sim via INSTANTCAD_SIM_BINARY
+# if your source checkout has no target/release build; append .exe on Windows.
+bun scripts/verify-team-example.js ../Amarillo-REBUILT/robot.sim.json
+```
+
+This launches the real team robot with agent-owned input in a temporary test
+profile, drives briefly, verifies physical displacement and shuts it down. It
+leaves the main Driver Station profile unchanged. It is a functional integration
+check, not a full-match regression or hardware calibration.
+
+On macOS arm64, the source setup rebuilt all 6,186 field occurrences and 431
+prototypes; all 283 referenced field collider hashes matched the reviewed local
+example. Native loading accepted 517 bodies, 59 joints and 25 motors. The actual
+rebuilt robot/CTRE smoke test advanced 456 physics ticks and drove 1.43 m. Portable
+source tests passed. Windows/Linux execution of this large example is not yet
+qualified by those results.

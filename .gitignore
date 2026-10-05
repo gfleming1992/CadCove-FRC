@@ -8,3 +8,7 @@ assets/**/*.bin
 .DS_Store
 .env
 .env.*
+
+# The reviewed example source intentionally includes baseline collision artifacts.
+!examples/team3310-rebuilt/source/physics-assets/build/
+!examples/team3310-rebuilt/source/physics-assets/build/**

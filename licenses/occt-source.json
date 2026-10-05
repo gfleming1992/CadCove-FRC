@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "package": "occt-wasm",
+  "version": "5.3.2",
+  "publishedWasmSha256": "cf9dd9b549d7650c0a2da83f0b44c80023dae07a1005457eba6de3145d7b4be1",
+  "toolchain": {
+    "rust": "1.95.0",
+    "emsdk": "5.0.3",
+    "emscriptenRelease": "065bfade0ee2c02138b83cb10049d8be95e146b6",
+    "emscriptenCommit": "285c424dfa9e83b03cf8490c65ceadb7c45f28eb",
+    "testedNinja": "1.13.0"
+  },
+  "archives": [
+    {
+      "name": "occt-wasm-5.3.2.tar.gz",
+      "url": "https://codeload.github.com/andymai/occt-wasm/tar.gz/648410061fd93f2c97c65b3401f9883faaa3699e",
+      "sha256": "1d30fb7832f790c14d74109dc84d0a2359f5b5daf1d3d44562f6fa28191e5d7f",
+      "prefix": "occt-wasm-648410061fd93f2c97c65b3401f9883faaa3699e",
+      "destination": "source",
+      "strip": 1
+    },
+    {
+      "name": "OCCT-055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765.tar.gz",
+      "url": "https://codeload.github.com/andymai/OCCT/tar.gz/055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
+      "sha256": "498f7cdbf6b6d8a5729fc09d3983d418d92532931b21b52c2f2ba285382d8324",
+      "prefix": "OCCT-055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
+      "destination": "source/occt",
+      "strip": 1
+    },
+    {
+      "name": "rapidjson-1.1.0.tar.gz",
+      "url": "https://codeload.github.com/Tencent/rapidjson/tar.gz/f54b0e47a08782a6131cc3d60f94d038fa6e0a51",
+      "sha256": "4a76453d36770c9628d7d175a2e9baccbfbd2169ced44f0cb72e86c5f5f2f7cd",
+      "prefix": "rapidjson-f54b0e47a08782a6131cc3d60f94d038fa6e0a51",
+      "destination": "source/3rdparty/rapidjson",
+      "strip": 2,
+      "subtree": "include"
+    },
+    {
+      "name": "emsdk-5.0.3.tar.gz",
+      "url": "https://codeload.github.com/emscripten-core/emsdk/tar.gz/a620cf1d71c62dfdfbb0c01fe0a371e2af2dda6c",
+      "sha256": "9913121bce5d295d771a8354a6bbf834e60b0b534d39a63fadd94a2abb03c475",
+      "prefix": "emsdk-a620cf1d71c62dfdfbb0c01fe0a371e2af2dda6c",
+      "destination": "emsdk",
+      "strip": 1
+    },
+    {
+      "name": "emscripten-285c424dfa9e83b03cf8490c65ceadb7c45f28eb.tar.gz",
+      "url": "https://codeload.github.com/emscripten-core/emscripten/tar.gz/285c424dfa9e83b03cf8490c65ceadb7c45f28eb",
+      "sha256": "8c8c413026dd7b86b0acf7e4b48cb718956c21a053887f2a628168dd1ba2cb33",
+      "prefix": "emscripten-285c424dfa9e83b03cf8490c65ceadb7c45f28eb",
+      "destination": "toolchain-sources/emscripten",
+      "strip": 1
+    }
+  ],
+  "inTreeComponents": [
+    {
+      "id": "delabella",
+      "name": "DELABELLA triangulation source in OCCT",
+      "license": "MIT",
+      "scope": "Conservative source inventory; inclusion does not establish linkage in a particular WASM build",
+      "sourceFiles": [
+        "src/ModelingAlgorithms/TKMesh/BRepMesh/delabella.cpp",
+        "src/ModelingAlgorithms/TKMesh/BRepMesh/delabella.pxx"
+      ],
+      "noticeFiles": [
+        "upstream/occt-delabella-cpp-notice.txt",
+        "upstream/occt-delabella-pxx-notice.txt"
+      ]
+    },
+    {
+      "id": "flexlexer",
+      "name": "FlexLexer header in OCCT",
+      "license": "BSD-style permission and disclaimer as preserved in source",
+      "scope": "Conservative source inventory; inclusion does not establish linkage in a particular WASM build",
+      "sourceFiles": [
+        "src/FoundationClasses/TKernel/FlexLexer/FlexLexer.h"
+      ],
+      "noticeFiles": [
+        "upstream/occt-flexlexer-notice.txt"
+      ]
+    },
+    {
+      "id": "dejavu-font",
+      "name": "DejaVu Sans font source in OCCT",
+      "license": "Bitstream Vera font license; DejaVu changes public domain; OCCT wrapper LGPL notice",
+      "scope": "Conservative source inventory; inclusion does not establish linkage in a particular WASM build",
+      "sourceFiles": [
+        "src/Visualization/TKService/Font/Font_DejavuSans_Latin_woff.pxx"
+      ],
+      "noticeFiles": [
+        "upstream/occt-dejavu-font-notice.txt"
+      ]
+    },
+    {
+      "id": "halton-sampler",
+      "name": "Halton sampler source in OCCT",
+      "license": "MIT-style permission and disclaimer as preserved in source",
+      "scope": "Conservative source inventory; inclusion does not establish linkage in a particular WASM build",
+      "sourceFiles": [
+        "src/Visualization/TKOpenGl/OpenGl/OpenGl_HaltonSampler.hxx"
+      ],
+      "noticeFiles": [
+        "upstream/occt-halton-sampler-notice.txt"
+      ]
+    },
+    {
+      "id": "khrplatform",
+      "name": "Khronos platform header in OCCT",
+      "license": "MIT-style permission and disclaimer as preserved in source",
+      "scope": "Conservative source inventory; inclusion does not establish linkage in a particular WASM build",
+      "sourceFiles": [
+        "src/Visualization/TKOpenGl/OpenGl/OpenGl_khrplatform.h"
+      ],
+      "noticeFiles": [
+        "upstream/occt-khrplatform-notice.txt"
+      ]
+    }
+  ]
+}

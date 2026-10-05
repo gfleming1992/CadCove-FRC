@@ -1,0 +1,41 @@
+// Release-engineering entry point. Always include esbuild's JS API and the
+// matching native compiler; a VSIX that merely builds is not installable proof.
+import path from 'node:path';
+import {createHash,randomUUID} from 'node:crypto';
+import {mkdir,lstat,readFile,rename,rm} from 'node:fs/promises';
+import {createVSIX} from '@vscode/vsce';
+import {readZip} from '@vscode/vsce/out/zip.js';
+import {validateRuntimeManifest} from '../lib/runtime-install.js';
+import {validateCliBuild} from '../lib/cli-build-provenance.js';
+const args=process.argv.slice(2),options={};
+while(args.length){const key=args.shift();if(!['--extension','--output','--development'].includes(key)||key in options)throw Error('Usage: bun scripts/package-toolbox-extension.js --extension DIRECTORY --output NEW_VSIX [--development]');const value=key==='--development'?true:args.shift();if(!value||typeof value==='string'&&value.startsWith('--'))throw Error('Missing value for '+key);options[key]=value;}
+if(!options['--extension']||!options['--output'])throw Error('extension and output are required');
+const cwd=path.resolve(options['--extension']),output=path.resolve(options['--output']),development=!!options['--development'];
+if(!output.endsWith('.vsix'))throw Error('Output must end in .vsix');
+try{await lstat(output);throw Error('Output already exists');}catch(e){if(e.code!=='ENOENT')throw e;}
+const manifest=validateRuntimeManifest(JSON.parse(await readFile(path.join(cwd,'runtime/manifest.json'),'utf8')));
+const inventory=JSON.parse(await readFile(path.join(cwd,'dependency-inventory.json'),'utf8'));
+const extension=JSON.parse(await readFile(path.join(cwd,'package.json'),'utf8'));
+if(!development&&(!inventory.releaseReady||!extension.license||extension.license==='UNLICENSED'||!extension.repository||!extension.publisher||extension.publisher==='cadcove-dev'))throw Error('Production VSIX requires resolved licensing and publication identity; use --development only for a local candidate');
+const required=['package.json','build-provenance.json','dependency-inventory.json','occt-source.json','out/extension.cjs','media/main.js','media/worker.js','media/occt.wasm','media/simulation.js','runtime/manifest.json','THIRD-PARTY-NOTICES.txt','node_modules/esbuild/lib/main.js','node_modules/esbuild/package.json',`node_modules/@esbuild/${manifest.target}/package.json`,`node_modules/@esbuild/${manifest.target}/`+(manifest.target.startsWith('win32-')?'esbuild.exe':'bin/esbuild')];
+const expected=new Map();
+required.push('LICENSE.txt');
+for(const name of [...required,...manifest.files.map(f=>'runtime/'+f.name)]){const bytes=await readFile(path.join(cwd,name));expected.set('extension/'+name.toLowerCase(),createHash('sha256').update(bytes).digest('hex'));}
+for(const file of manifest.files)if(expected.get('extension/runtime/'+file.name.toLowerCase())!==file.sha256)throw Error('Staged runtime checksum mismatch: '+file.name);
+const kernelHash=expected.get('extension/media/occt.wasm');
+const provenance=JSON.parse(await readFile(path.join(cwd,'build-provenance.json'),'utf8'));
+if(!manifest.files.some(f=>f.name==='cli-build.json'&&!f.executable))throw Error('Runtime lacks a hashed CLI build record');
+const cliName='cadcove'+(manifest.target.startsWith('win32-')?'.exe':'');
+const cliBuild=validateCliBuild(JSON.parse(await readFile(path.join(cwd,'runtime/cli-build.json'),'utf8')),await readFile(path.join(cwd,'runtime',cliName)),await readFile(path.resolve(import.meta.dir,'../bun.lock')),{target:manifest.target,version:manifest.version});
+if(JSON.stringify(provenance.cliBuild)!==JSON.stringify(cliBuild))throw Error('Extension CLI provenance differs from its packaged runtime');
+if(provenance.occt?.wasmSha256!==kernelHash||inventory.components.find(c=>c.id==='wasm:occt-wasm@5.3.2')?.artifactSha256!==kernelHash)throw Error('Staged OCCT kernel differs from its build/dependency records');
+await mkdir(path.dirname(output),{recursive:true});const temporary=path.join(path.dirname(output),'.vsix-'+randomUUID()+'.vsix');
+try{
+ await createVSIX({cwd,packagePath:temporary,target:manifest.target,dependencies:true,useYarn:false,allowMissingRepository:development,skipLicense:development});
+ // readZip is pinned with vsce 4.0.0. This inspects our just-created archive,
+ // not arbitrary user-supplied ZIPs; then compare critical bytes with staging.
+ const entries=await readZip(temporary,name=>expected.has(name));
+ for(const [name,hash] of expected){const bytes=entries.get(name);if(!bytes||createHash('sha256').update(bytes).digest('hex')!==hash)throw Error('VSIX missing or changed required file: '+name);}
+ await rename(temporary,output);
+ console.log(JSON.stringify({ok:true,output,target:manifest.target,runtime:manifest.version,development,verifiedFiles:expected.size,published:false}));
+}finally{await rm(temporary,{force:true});}

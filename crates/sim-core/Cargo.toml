@@ -1,0 +1,22 @@
+[package]
+name = "instantcad-sim"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+[features]
+x86-support-batch = ["rapier3d/x86-support-batch"]
+contact-audit = ["rapier3d/contact-audit"]
+parallel = ["rapier3d/parallel"]
+parallel-composite = ["parallel", "dep:rayon"]
+composite-bounds = ["parallel-composite"]
+composite-filter = ["composite-bounds", "rapier3d/query-motion"]
+composite-compact = ["composite-filter"]
+composite-filter-audit = ["composite-filter", "composite-audit"]
+composite-audit = ["composite-bounds", "rapier3d/manifold-audit"]
+[dependencies]
+rapier3d = { version = "=0.36.0", features = ["serde-serialize", "profiler"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+anyhow = "1"
+sha2 = "0.10"
+rayon = { version = "1", optional = true }

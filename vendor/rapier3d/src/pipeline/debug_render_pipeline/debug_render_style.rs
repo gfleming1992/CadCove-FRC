@@ -1,0 +1,119 @@
+use crate::math::Real;
+
+/// A color for debug-rendering, as `[hue, saturation, lightness, alpha]` in HSLA format:
+/// - `hue` in `0..=360` (degrees),
+/// - `saturation` in `0..=1`,
+/// - `lightness` in `0..=1`,
+/// - `alpha` in `0..=1`.
+///
+/// Every [`DebugRenderStyle`] color and every color passed to the
+/// [`DebugRenderBackend`](super::DebugRenderBackend) uses it; backends working in another
+/// color space (e.g. RGBA) are responsible for the conversion.
+pub type DebugColor = [f32; 4];
+
+/// Style used for computing colors when rendering the scene.
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub struct DebugRenderStyle {
+    /// The number of subdivisions used to approximate the curved
+    /// parts of a shape with smooth faces.
+    pub subdivisions: u32,
+    /// The number of subdivisions used to approximate the curved
+    /// borders of round shapes.
+    pub border_subdivisions: u32,
+    /// The color of colliders attached to dynamic rigid-bodies.
+    pub collider_dynamic_color: DebugColor,
+    /// The color of colliders attached to fixed rigid-bodies.
+    pub collider_fixed_color: DebugColor,
+    /// The color of colliders attached to kinematic rigid-bodies.
+    pub collider_kinematic_color: DebugColor,
+    /// The color of colliders not attached to any rigid-body.
+    pub collider_parentless_color: DebugColor,
+    /// The color of the line between a rigid-body’s center-of-mass and the
+    /// anchors of its attached impulse joints.
+    pub impulse_joint_anchor_color: DebugColor,
+    /// The color of the line between the two anchors of an impulse joint.
+    pub impulse_joint_separation_color: DebugColor,
+    /// The color of the line between a rigid-body’s center-of-mass and the
+    /// anchors of its attached multibody joints.
+    pub multibody_joint_anchor_color: DebugColor,
+    /// The color of the line between the two anchors of a multibody joint.
+    pub multibody_joint_separation_color: DebugColor,
+    /// If a rigid-body is sleeping, its attached entities will have their colors
+    /// multiplied by this array. (For a joint, both attached rigid-bodies must be sleeping
+    /// or non-dynamic for this multiplier to be applied).
+    pub sleep_color_multiplier: DebugColor,
+    /// If a rigid-body is awake but eligible for sleep, its attached entities will have their
+    /// colors multiplied by this array: the plain awake color then marks what holds a pile awake.
+    pub sleep_eligible_color_multiplier: DebugColor,
+    /// If a rigid-body is disabled, its attached entities will have their colors
+    /// multiplied by this array. (For a joint, both attached rigid-bodies must be disabled
+    /// for this multiplier to be applied).
+    pub disabled_color_multiplier: DebugColor,
+    /// The length of the local coordinate axes rendered for a rigid-body.
+    pub rigid_body_axes_length: Real,
+    /// The color for the segments joining the two contact points.
+    pub contact_depth_color: DebugColor,
+    /// The color of the contact normals.
+    pub contact_normal_color: DebugColor,
+    /// The length of the contact normals.
+    pub contact_normal_length: Real,
+    /// The color of the soft bodies' elements (structural edges, cell edges).
+    pub soft_body_element_color: DebugColor,
+    /// The color of an unloaded soft-body element when the elements are colored by their load
+    /// (`DebugRenderMode::SOFT_BODY_STRESS`); the color runs from it to
+    /// `soft_body_loaded_color`, component by component (hue included), as the load grows.
+    pub soft_body_slack_color: DebugColor,
+    /// The color of a soft-body element at its tear threshold when the elements are colored by
+    /// their load (`DebugRenderMode::SOFT_BODY_STRESS`).
+    pub soft_body_loaded_color: DebugColor,
+    /// Color of the soft-body cluster frames (the joint anchors' axes).
+    pub soft_body_frame_color: DebugColor,
+    /// The color of the colliders' [`Aabb`](crate::geometry::Aabb)s.
+    pub collider_aabb_color: DebugColor,
+    /// The color of the vertex pseudo-normals of triangle-meshes and polylines.
+    pub vertex_pseudo_normal_color: DebugColor,
+    /// The color of the edge pseudo-normals of triangle-meshes (3D only).
+    pub edge_pseudo_normal_color: DebugColor,
+    /// The length of the pseudo-normals.
+    pub pseudo_normal_length: Real,
+    /// Color of the soft bodies' volume constraints' normals.
+    pub volume_contact_normal_color: DebugColor,
+    /// Color of the volume gradients drawn at the particles of a volume constraint.
+    pub volume_gradient_color: DebugColor,
+}
+
+impl Default for DebugRenderStyle {
+    fn default() -> Self {
+        Self {
+            subdivisions: 20,
+            border_subdivisions: 5,
+            collider_dynamic_color: [340.0, 1.0, 0.3, 1.0],
+            collider_kinematic_color: [20.0, 1.0, 0.3, 1.0],
+            collider_fixed_color: [30.0, 1.0, 0.4, 1.0],
+            collider_parentless_color: [30.0, 1.0, 0.4, 1.0],
+            impulse_joint_anchor_color: [240.0, 0.5, 0.4, 1.0],
+            impulse_joint_separation_color: [0.0, 0.5, 0.4, 1.0],
+            multibody_joint_anchor_color: [300.0, 1.0, 0.4, 1.0],
+            multibody_joint_separation_color: [0.0, 1.0, 0.4, 1.0],
+            sleep_color_multiplier: [1.0, 1.0, 0.2, 1.0],
+            // A hue rotation, not a dimming: the three sleep states must be told apart at a
+            // glance, and lightness steps of one hue are not enough.
+            sleep_eligible_color_multiplier: [0.35, 1.0, 1.4, 1.0],
+            disabled_color_multiplier: [0.0, 0.0, 1.0, 1.0],
+            rigid_body_axes_length: 0.5,
+            contact_depth_color: [120.0, 1.0, 0.4, 1.0],
+            contact_normal_color: [0.0, 1.0, 1.0, 1.0],
+            contact_normal_length: 0.3,
+            soft_body_element_color: [200.0, 0.8, 0.5, 1.0],
+            soft_body_slack_color: [220.0, 0.8, 0.5, 1.0],
+            soft_body_loaded_color: [0.0, 1.0, 0.5, 1.0],
+            soft_body_frame_color: [40.0, 0.9, 0.6, 1.0],
+            collider_aabb_color: [124.0, 1.0, 0.4, 1.0],
+            vertex_pseudo_normal_color: [180.0, 1.0, 0.6, 1.0],
+            edge_pseudo_normal_color: [280.0, 1.0, 0.6, 1.0],
+            pseudo_normal_length: 0.2,
+            volume_contact_normal_color: [0.0, 0.9, 0.35, 1.0],
+            volume_gradient_color: [270.0, 0.8, 0.3, 1.0],
+        }
+    }
+}

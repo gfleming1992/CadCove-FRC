@@ -1,0 +1,36 @@
+{
+  "name": "cadcove-frc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "cadcove": "bin/cadcove.js"
+  },
+  "scripts": {
+    "test:toolbox": "bun test ./tests/toolbox.test.js ./tests/runtime-install.test.js ./tests/robot-project.test.js ./tests/physics-modes.test.js ./tests/cad-feedback.test.js ./tests/simulation-session.test.js ./tests/bridge-export.test.js ./vendor/cad-core/tests/vscode-host.test.js ./vendor/cad-core/tests/component-cache.test.js ./vendor/cad-core/tests/component-worker.test.js ./tests/simulation-scene.test.js ./tests/viewer-client.test.js ./tests/practice-input.test.js ./tests/practice-controls.test.js ./tests/live-motion.test.js ./tests/native-build-provenance.test.js ./tests/season-knowledge.test.js ./tests/example-export.test.js ./tests/guidance-update.test.js ./tests/simulation-tasks.test.js ./tests/example-bundle.test.js ./tests/dependency-notices.test.js ./tests/bun-source.test.js ./tests/cli-build-provenance.test.js ./tests/source-checkout.test.js ./tests/mcp.test.js",
+    "build:native": "bun scripts/build-native-runtime.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.0",
+    "brepjs": "19.0.5",
+    "es-module-lexer": "1.7.0",
+    "occt-wasm": "5.3.2",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@vscode/test-electron": "3.1.0",
+    "@vscode/vsce": "4.0.0",
+    "esbuild": "0.28.2",
+    "playwright": "1.58.2"
+  },
+  "license": "MIT",
+  "description": "CadCove FRC monorepo: agent-assisted CAD, robot code, and native local simulation.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gfleming1992/CadCove-FRC.git"
+  },
+  "homepage": "https://github.com/gfleming1992/CadCove-FRC#readme",
+  "bugs": {
+    "url": "https://github.com/gfleming1992/CadCove-FRC/issues"
+  }
+}

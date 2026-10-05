@@ -1,0 +1,10 @@
+node_modules/
+target/
+build/
+artifacts/
+assets/**/*.step
+assets/**/*.bin
+**/.instantcad/
+.DS_Store
+.env
+.env.*

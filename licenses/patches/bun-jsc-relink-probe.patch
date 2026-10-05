@@ -1,0 +1,23 @@
+diff --git a/Source/JavaScriptCore/runtime/InitializeThreading.cpp b/Source/JavaScriptCore/runtime/InitializeThreading.cpp
+index 4db13e38c..33fe6ba1a 100644
+--- a/Source/JavaScriptCore/runtime/InitializeThreading.cpp
++++ b/Source/JavaScriptCore/runtime/InitializeThreading.cpp
+@@ -49,6 +49,8 @@
+ #include "WasmThunks.h"
+ #include <bmalloc/BPlatform.h>
+ #include <mutex>
++#include <cstdio>
++#include <cstdlib>
+ #include <wtf/Condition.h>
+ #include <wtf/Threading.h>
+ #include <wtf/threads/Signals.h>
+@@ -88,6 +90,9 @@ void initializeWithOptionsCustomization(const ScopedLambda<void()>& optionsCusto
+     static std::once_flag onceFlag;
+ 
+     std::call_once(onceFlag, [&] {
++        // CadCove qualification-only modification: observable proof of JSC relinking.
++        if (std::getenv("CADCOVE_JSC_RELINK_PROBE"))
++            std::fputs("cadcove-jsc-relink-verified\n", stderr);
+         WTF::initialize();
+         Options::initialize(optionsCustomizationCallback);
+ 

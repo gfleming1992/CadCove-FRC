@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "adapter": "example.training-zone",
+  "config": {
+    "schema": 1,
+    "bodies": ["practice-piece"],
+    "goalX": 2,
+    "duration": 150
+  }
+}

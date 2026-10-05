@@ -1,0 +1,118 @@
+{
+  "name": "cadcove-toolbox",
+  "displayName": "CadCove FRC",
+  "description": "Local, agent-driven CAD and FRC simulation workspace tools.",
+  "version": "0.1.8",
+  "publisher": "cadcove-dev",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "main": "./out/extension.cjs",
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "CAD executes workspace JavaScript; simulation executes the team's robot program."
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  },
+  "activationEvents": [
+    "workspaceContains:.cadcove/project.json"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "cadcove.example.play",
+        "title": "CadCove: Play Team Robot Example"
+      },
+      {
+        "command": "cadcove.initialize",
+        "title": "CadCove: Initialize Team Workspace"
+      },
+      {
+        "command": "cadcove.guidance.update",
+        "title": "CadCove: Update Agent Guidance"
+      },
+      {
+        "command": "cadcove.open",
+        "title": "CadCove: Open in CAD Canvas"
+      },
+      {
+        "command": "cadcove.terminal",
+        "title": "CadCove: Open Toolbox Terminal"
+      },
+      {
+        "command": "cadcove.doctor",
+        "title": "CadCove: Check Project"
+      },
+      {
+        "command": "cadcove.runtime.repair",
+        "title": "CadCove: Repair Runtime"
+      },
+      {
+        "command": "cadcove.simulation.start",
+        "title": "CadCove: Start Robot Simulation"
+      },
+      {
+        "command": "cadcove.simulation.stop",
+        "title": "CadCove: Stop Robot Simulation"
+      },
+      {
+        "command": "cadcove.simulation.open",
+        "title": "CadCove: Open Live Simulation"
+      },
+      {
+        "command": "cadcove.simulation.capture",
+        "title": "CadCove: Capture Simulation Scene"
+      },
+      {
+        "command": "cadcove.diagnostics",
+        "title": "CadCove: Show Diagnostics"
+      },
+      {
+        "command": "cadcove.robot.open",
+        "title": "CadCove: Open Robot CAD"
+      },
+      {
+        "command": "cadcove.mcp.start",
+        "title": "CadCove: Start MCP Server"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "cadcove.open",
+          "when": "resourceExtname =~ /\\.(js|step|stp)$/i",
+          "group": "navigation"
+        }
+      ]
+    },
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "cadcove.mcp",
+        "label": "CadCove"
+      }
+    ]
+  },
+  "dependencies": {
+    "esbuild": "0.28.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gfleming1992/CadCove-FRC.git",
+    "directory": "extensions/vscode"
+  },
+  "homepage": "https://github.com/gfleming1992/CadCove-FRC#readme",
+  "bugs": {
+    "url": "https://github.com/gfleming1992/CadCove-FRC/issues"
+  }
+}

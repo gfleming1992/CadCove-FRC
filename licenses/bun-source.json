@@ -1,0 +1,588 @@
+{
+  "schema": 1,
+  "package": "bun",
+  "version": "1.4.2",
+  "revision": "744846f844374847c902b5e7fd59b4342a51ef99",
+  "archive": {
+    "name": "bun-1.4.2.tar.gz",
+    "url": "https://codeload.github.com/oven-sh/bun/tar.gz/744846f844374847c902b5e7fd59b4342a51ef99",
+    "sha256": "25e09a8804535b8fbea1dad9f95af8402fc9133d28127d5594ff00df1549590e",
+    "bytes": 64602344
+  },
+  "nativeGitHubArchives": [
+    {
+      "id": "boringssl",
+      "repository": "oven-sh/boringssl",
+      "revision": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+      "archiveUrl": "https://codeload.github.com/oven-sh/boringssl/tar.gz/41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+      "declaration": "scripts/build/deps/boringssl.ts",
+      "declarationSha256": "11fd3fc19c070a601ee6bc20a2f7b51a9d655e76002da9770366df25abb86484",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-boringssl-41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f.tar.gz",
+        "bytes": 74564872,
+        "sha256": "a5028d5475f1eaf0ad785c18666b330027a923121d601129f4a61e7bfc89a1dd"
+      },
+      "licenseSummary": "Apache-2.0 and preserved support-code notices",
+      "noticeFiles": [
+        "upstream/bun-boringssl-AUTHORS.txt",
+        "upstream/bun-boringssl-LICENSE.txt",
+        "upstream/bun-boringssl-third_party--benchmark--AUTHORS.txt",
+        "upstream/bun-boringssl-third_party--benchmark--LICENSE.txt",
+        "upstream/bun-boringssl-third_party--fiat--AUTHORS.txt",
+        "upstream/bun-boringssl-third_party--fiat--LICENSE.txt",
+        "upstream/bun-boringssl-third_party--googletest--LICENSE.txt",
+        "upstream/bun-boringssl-third_party--wycheproof_testvectors--LICENSE.txt"
+      ]
+    },
+    {
+      "id": "brotli",
+      "repository": "google/brotli",
+      "revision": "v1.1.0",
+      "archiveUrl": "https://codeload.github.com/google/brotli/tar.gz/v1.1.0",
+      "declaration": "scripts/build/deps/brotli.ts",
+      "declarationSha256": "c39e86c4bcbad74b9e39c7ae7bbc7657e64af042150395c484831beb55655d41",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-brotli-v1.1.0.tar.gz",
+        "bytes": 511969,
+        "sha256": "e720a6ca29428b803f4ad165371771f5398faba397edf6778837a18599ea13ff"
+      },
+      "licenseSummary": "MIT",
+      "noticeFiles": [
+        "upstream/bun-brotli-LICENSE.txt"
+      ]
+    },
+    {
+      "id": "cares",
+      "repository": "c-ares/c-ares",
+      "revision": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+      "archiveUrl": "https://codeload.github.com/c-ares/c-ares/tar.gz/c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+      "declaration": "scripts/build/deps/cares.ts",
+      "declarationSha256": "8d2b52e89024e8d0759ed5e201614052088b5631d53f4cd040552175d1f7fd45",
+      "referencedPatches": [
+        "patches/cares/accept-rdata-compression.patch"
+      ],
+      "archive": {
+        "name": "bun-cares-c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab.tar.gz",
+        "bytes": 608129,
+        "sha256": "c9ea1b3029b23b04376c229bd519489cee180874ec48cd863a5dcba628c0fe03"
+      },
+      "licenseSummary": "MIT",
+      "noticeFiles": [
+        "upstream/bun-cares-AUTHORS.txt",
+        "upstream/bun-cares-LICENSE.md"
+      ]
+    },
+    {
+      "id": "hdrhistogram",
+      "repository": "HdrHistogram/HdrHistogram_c",
+      "revision": "be60a9987ee48d0abf0d7b6a175bad8d6c1585d1",
+      "archiveUrl": "https://codeload.github.com/HdrHistogram/HdrHistogram_c/tar.gz/be60a9987ee48d0abf0d7b6a175bad8d6c1585d1",
+      "declaration": "scripts/build/deps/hdrhistogram.ts",
+      "declarationSha256": "5f50be6a4f57d7ec957dd082641c75ed487ffea587acadadabfe281c4f02bca1",
+      "referencedPatches": [
+        "patches/hdrhistogram/bitscan-type.patch"
+      ],
+      "archive": {
+        "name": "bun-hdrhistogram-be60a9987ee48d0abf0d7b6a175bad8d6c1585d1.tar.gz",
+        "bytes": 306742,
+        "sha256": "811c5e5ae5303a75ade50688880af6aad5d2f951ec5785f68186bd18635cdfc9"
+      },
+      "licenseSummary": "CC0-1.0 OR BSD-2-Clause",
+      "noticeFiles": [
+        "upstream/bun-hdrhistogram-COPYING.txt",
+        "upstream/bun-hdrhistogram-LICENSE.txt"
+      ]
+    },
+    {
+      "id": "highway",
+      "repository": "google/highway",
+      "revision": "2607d3b5b0113992fe84d3848859eae13b3b52c1",
+      "archiveUrl": "https://codeload.github.com/google/highway/tar.gz/2607d3b5b0113992fe84d3848859eae13b3b52c1",
+      "declaration": "scripts/build/deps/highway.ts",
+      "declarationSha256": "05f7361696eba255c3ece1ef80aa3ba6e16dbd3ab8c1773b8353f1ee04181f42",
+      "referencedPatches": [
+        "patches/highway/silence-warnings.patch"
+      ],
+      "archive": {
+        "name": "bun-highway-2607d3b5b0113992fe84d3848859eae13b3b52c1.tar.gz",
+        "bytes": 3692133,
+        "sha256": "741d705781e0b3e406beda8f1f994fbae01321237ce8023a1ad90fbaf7940c25"
+      },
+      "licenseSummary": "Apache-2.0 / BSD-3-Clause / CC0-1.0; see upstream file-level terms",
+      "noticeFiles": [
+        "upstream/bun-highway-LICENSE.txt",
+        "upstream/bun-highway-debian--copyright.txt"
+      ]
+    },
+    {
+      "id": "libarchive",
+      "repository": "libarchive/libarchive",
+      "revision": "ded82291ab41d5e355831b96b0e1ff49e24d8939",
+      "archiveUrl": "https://codeload.github.com/libarchive/libarchive/tar.gz/ded82291ab41d5e355831b96b0e1ff49e24d8939",
+      "declaration": "scripts/build/deps/libarchive.ts",
+      "declarationSha256": "66579ffb4afacae280db72582e0da5f99c0326cb926d9781647c3dd605c37c91",
+      "referencedPatches": [
+        "patches/libarchive/archive_write_add_filter_gzip.c.patch",
+        "patches/libarchive/select-registered-only.patch",
+        "patches/libarchive/nonblocking-read.patch",
+        "patches/libarchive/archive_string-codepage-cache.patch"
+      ],
+      "archive": {
+        "name": "bun-libarchive-ded82291ab41d5e355831b96b0e1ff49e24d8939.tar.gz",
+        "bytes": 6134289,
+        "sha256": "042f0efe7147063ff9ba10f1a38ed080e949bcbd04bdbf3592b8846dd11b1da2"
+      },
+      "licenseSummary": "BSD-style and file-specific terms described in COPYING",
+      "noticeFiles": [
+        "upstream/bun-libarchive-COPYING.txt"
+      ]
+    },
+    {
+      "id": "libdeflate",
+      "repository": "ebiggers/libdeflate",
+      "revision": "c8c56a20f8f621e6a966b716b31f1dedab6a41e3",
+      "archiveUrl": "https://codeload.github.com/ebiggers/libdeflate/tar.gz/c8c56a20f8f621e6a966b716b31f1dedab6a41e3",
+      "declaration": "scripts/build/deps/libdeflate.ts",
+      "declarationSha256": "a5579e22a93158eebe9e646ef9200ad738944af3194ddfced67f00b5fdba76c5",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-libdeflate-c8c56a20f8f621e6a966b716b31f1dedab6a41e3.tar.gz",
+        "bytes": 197522,
+        "sha256": "1e5cc06bdbf3e1245d8b89c9e3588f507e3c8bc53fe8b8229770a9e8661dea81"
+      },
+      "licenseSummary": "MIT",
+      "noticeFiles": [
+        "upstream/bun-libdeflate-COPYING.txt"
+      ]
+    },
+    {
+      "id": "libjpeg-turbo",
+      "repository": "libjpeg-turbo/libjpeg-turbo",
+      "revision": "e352b02f794f701407b39af08576035ba3360d60",
+      "archiveUrl": "https://codeload.github.com/libjpeg-turbo/libjpeg-turbo/tar.gz/e352b02f794f701407b39af08576035ba3360d60",
+      "declaration": "scripts/build/deps/libjpeg-turbo.ts",
+      "declarationSha256": "f9eac59f427a9081934015fc9221d2ebbc2f484aef72cf1d6ce34159e24a116f",
+      "referencedPatches": [
+        "patches/libjpeg-turbo/8bit-only.patch",
+        "patches/libjpeg-turbo/jbun_stubs.c"
+      ],
+      "archive": {
+        "name": "bun-libjpeg-turbo-e352b02f794f701407b39af08576035ba3360d60.tar.gz",
+        "bytes": 2529165,
+        "sha256": "440f3a94390c78eab88f74b92944d2f6b248e592e984412e389885dfb5796bf0"
+      },
+      "licenseSummary": "IJG, BSD-3-Clause and zlib; see upstream license inventory",
+      "noticeFiles": [
+        "upstream/bun-libjpeg-turbo-LICENSE.md",
+        "upstream/bun-libjpeg-turbo-README.ijg",
+        "upstream/bun-libjpeg-turbo-java--doc--legal--LICENSE.txt",
+        "upstream/bun-libjpeg-turbo-release--License.rtf"
+      ]
+    },
+    {
+      "id": "libspng",
+      "repository": "randy408/libspng",
+      "revision": "fb768002d4288590083a476af628e51c3f1d47cd",
+      "archiveUrl": "https://codeload.github.com/randy408/libspng/tar.gz/fb768002d4288590083a476af628e51c3f1d47cd",
+      "declaration": "scripts/build/deps/libspng.ts",
+      "declarationSha256": "edbee47fa24adef03bb7d47f56e9224000f2eebf4ffc7de6c617f4d0033ab371",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-libspng-fb768002d4288590083a476af628e51c3f1d47cd.tar.gz",
+        "bytes": 159282,
+        "sha256": "d656813290d70a750b69e768323ff3b3875adf8c2e8c2fdb4e57ca1467abf86a"
+      },
+      "licenseSummary": "BSD-2-Clause",
+      "noticeFiles": [
+        "upstream/bun-libspng-LICENSE.txt"
+      ]
+    },
+    {
+      "id": "libuv",
+      "repository": "oven-sh/libuv",
+      "revision": "8023581113b276e7c1aee3f82da57ca0893faab1",
+      "archiveUrl": "https://codeload.github.com/oven-sh/libuv/tar.gz/8023581113b276e7c1aee3f82da57ca0893faab1",
+      "declaration": "scripts/build/deps/libuv.ts",
+      "declarationSha256": "1568beb4fc65cbfd5a45d79149de1a0c2ccffe7b14f79391219bbadc3d2e5fb6",
+      "referencedPatches": [
+        "patches/libuv/win-poll-rearm-before-callback.patch",
+        "patches/libuv/win-poll-abort-with-disconnect.patch"
+      ],
+      "archive": {
+        "name": "bun-libuv-8023581113b276e7c1aee3f82da57ca0893faab1.tar.gz",
+        "bytes": 1368857,
+        "sha256": "93bb95e613d8c324e673607282fac0ae25a07368eabcc12c0e2539eaa95b0ecc"
+      },
+      "licenseSummary": "MIT plus externally maintained library notices",
+      "noticeFiles": [
+        "upstream/bun-libuv-AUTHORS.txt",
+        "upstream/bun-libuv-LICENSE.txt",
+        "upstream/bun-libuv-LICENSE-docs.txt",
+        "upstream/bun-libuv-LICENSE-extra.txt"
+      ]
+    },
+    {
+      "id": "libwebp",
+      "repository": "webmproject/libwebp",
+      "revision": "b7e29b9d75bd31422b00c2a446d49d7af06c328d",
+      "archiveUrl": "https://codeload.github.com/webmproject/libwebp/tar.gz/b7e29b9d75bd31422b00c2a446d49d7af06c328d",
+      "declaration": "scripts/build/deps/libwebp.ts",
+      "declarationSha256": "2de96d4330dc32e2dcbc9cdfc7d290fd6c90aedf33dc3734213ce61bb446a1d4",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-libwebp-b7e29b9d75bd31422b00c2a446d49d7af06c328d.tar.gz",
+        "bytes": 3834595,
+        "sha256": "76fb89b4454ff2161bb0cca2cf832e19b8b4001b0ef42fbcc2b4a437c945b2b6"
+      },
+      "licenseSummary": "BSD-3-Clause and additional patent grant",
+      "noticeFiles": [
+        "upstream/bun-libwebp-AUTHORS.txt",
+        "upstream/bun-libwebp-COPYING.txt",
+        "upstream/bun-libwebp-PATENTS.txt"
+      ]
+    },
+    {
+      "id": "lolhtml",
+      "repository": "oven-sh/lol-html",
+      "revision": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+      "archiveUrl": "https://codeload.github.com/oven-sh/lol-html/tar.gz/725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+      "declaration": "scripts/build/deps/lolhtml.ts",
+      "declarationSha256": "6aef2f249226b843359e971879109a221c3c38dc8c51ececbb85cf71757a6bba",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-lolhtml-725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e.tar.gz",
+        "bytes": 570130,
+        "sha256": "afd83edbe1a2d4accb72e869cd4218bb8665fda2b7cb2c5106fc4be80001a748"
+      },
+      "licenseSummary": "BSD-3-Clause",
+      "noticeFiles": [
+        "upstream/bun-lolhtml-LICENSE.txt"
+      ]
+    },
+    {
+      "id": "lshpack",
+      "repository": "litespeedtech/ls-hpack",
+      "revision": "8905c024b6d052f083a3d11d0a169b3c2735c8a1",
+      "archiveUrl": "https://codeload.github.com/litespeedtech/ls-hpack/tar.gz/8905c024b6d052f083a3d11d0a169b3c2735c8a1",
+      "declaration": "scripts/build/deps/lshpack.ts",
+      "declarationSha256": "b4a70b9ad9ea9d99a8c915400614295395a670e28636adb91acae82bbdb502c2",
+      "referencedPatches": [
+        "patches/lshpack/bss-huff-tables.patch",
+        "patches/lshpack/no-name-trim.patch"
+      ],
+      "archive": {
+        "name": "bun-lshpack-8905c024b6d052f083a3d11d0a169b3c2735c8a1.tar.gz",
+        "bytes": 952726,
+        "sha256": "07d8bf901bb1b15543f38eabd23938519e1210eebadb52f3d651d6ef130ef973"
+      },
+      "licenseSummary": "MIT",
+      "noticeFiles": [
+        "upstream/bun-lshpack-LICENSE.txt"
+      ]
+    },
+    {
+      "id": "lsqpack",
+      "repository": "litespeedtech/ls-qpack",
+      "revision": "1e9c5b8e59f8161c54f168a570c8bfdc59ded0c3",
+      "archiveUrl": "https://codeload.github.com/litespeedtech/ls-qpack/tar.gz/1e9c5b8e59f8161c54f168a570c8bfdc59ded0c3",
+      "declaration": "scripts/build/deps/lsqpack.ts",
+      "declarationSha256": "740681661b56616e5fb665de6d8928b2c07bc0f1c7d06675def8b0e83eba62fa",
+      "referencedPatches": [
+        "patches/lsqpack/bss-huff-tables.patch"
+      ],
+      "archive": {
+        "name": "bun-lsqpack-1e9c5b8e59f8161c54f168a570c8bfdc59ded0c3.tar.gz",
+        "bytes": 710309,
+        "sha256": "e9d8abe5b7c1e35b9908a9521e2acd7c1d17547babc01d73c7297e02aebbcc2d"
+      },
+      "licenseSummary": "MIT",
+      "noticeFiles": [
+        "upstream/bun-lsqpack-LICENSE.txt"
+      ]
+    },
+    {
+      "id": "lsquic",
+      "repository": "litespeedtech/lsquic",
+      "revision": "3181911301b1aa4f54c1ed690901abc674ee08fb",
+      "archiveUrl": "https://codeload.github.com/litespeedtech/lsquic/tar.gz/3181911301b1aa4f54c1ed690901abc674ee08fb",
+      "declaration": "scripts/build/deps/lsquic.ts",
+      "declarationSha256": "37bafb7b3f9a08d74a708fd7c18fabf338427809b30ab35872c25d15e383d594",
+      "referencedPatches": [
+        "patches/lsquic/versions-to-string.patch",
+        "patches/lsquic/allow-no-sni.patch",
+        "patches/lsquic/skip-priority-walk.patch",
+        "patches/lsquic/hash-nested-iter.patch",
+        "patches/lsquic/abort-error-tickable.patch",
+        "patches/lsquic/disable-gquic.patch",
+        "patches/lsquic/requeue-unsent-coalesced.patch",
+        "patches/lsquic/node-quic-accessors.patch",
+        "patches/lsquic/coalesce-batch-drop.patch",
+        "patches/lsquic/connection-close-pns.patch"
+      ],
+      "archive": {
+        "name": "bun-lsquic-3181911301b1aa4f54c1ed690901abc674ee08fb.tar.gz",
+        "bytes": 1952886,
+        "sha256": "f8cb90fb327eb91597c23163bf596c0d1882560be35b661d9ba84891cc461735"
+      },
+      "licenseSummary": "MIT plus Chromium BSD-3-Clause notice",
+      "noticeFiles": [
+        "upstream/bun-lsquic-LICENSE.txt",
+        "upstream/bun-lsquic-LICENSE.chrome"
+      ]
+    },
+    {
+      "id": "mimalloc",
+      "repository": "oven-sh/mimalloc",
+      "revision": "6a64e1ba7f5b2130d4efccb67ec87fd0003f0f6a",
+      "archiveUrl": "https://codeload.github.com/oven-sh/mimalloc/tar.gz/6a64e1ba7f5b2130d4efccb67ec87fd0003f0f6a",
+      "declaration": "scripts/build/deps/mimalloc.ts",
+      "declarationSha256": "6174fd196e531253c2b23bf820877acdc8d9ac1afd60a31afdf58098799a1984",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-mimalloc-6a64e1ba7f5b2130d4efccb67ec87fd0003f0f6a.tar.gz",
+        "bytes": 1582650,
+        "sha256": "f36343416ad823dfcca61bd18ad4bb7f0d8814ab77e0fd5ef169f4a9cddeb8b8"
+      },
+      "licenseSummary": "MIT",
+      "noticeFiles": [
+        "upstream/bun-mimalloc-LICENSE.txt"
+      ]
+    },
+    {
+      "id": "picohttpparser",
+      "repository": "h2o/picohttpparser",
+      "revision": "066d2b1e9ab820703db0837a7255d92d30f0c9f5",
+      "archiveUrl": "https://codeload.github.com/h2o/picohttpparser/tar.gz/066d2b1e9ab820703db0837a7255d92d30f0c9f5",
+      "declaration": "scripts/build/deps/picohttpparser.ts",
+      "declarationSha256": "12c3d58955bcecf4084078ab63f35b68cca5b60e568c7241085cd8207a4eb5b6",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-picohttpparser-066d2b1e9ab820703db0837a7255d92d30f0c9f5.tar.gz",
+        "bytes": 15163,
+        "sha256": "637ff2ab6f5c7f7e05a5b5dc393d5cf2fea8d4754fcaceaaf935ffff5c1323ee"
+      },
+      "licenseSummary": "MIT OR Perl; MIT text retained from source header",
+      "noticeFiles": [
+        "upstream/bun-picohttpparser-picohttpparser.c"
+      ]
+    },
+    {
+      "id": "rust-argon2",
+      "repository": "sru-systems/rust-argon2",
+      "revision": "ed81866f163f0c7026aa6fd8388adf37242eb32a",
+      "archiveUrl": "https://codeload.github.com/sru-systems/rust-argon2/tar.gz/ed81866f163f0c7026aa6fd8388adf37242eb32a",
+      "declaration": "scripts/build/deps/rust-argon2.ts",
+      "declarationSha256": "ed22b7c925bf530673126292e4ed751d9bf8210801bdda5a30671c56fc77cd99",
+      "referencedPatches": [
+        "patches/rust-argon2/legacy-low-memory.patch"
+      ],
+      "archive": {
+        "name": "bun-rust-argon2-ed81866f163f0c7026aa6fd8388adf37242eb32a.tar.gz",
+        "bytes": 30025,
+        "sha256": "e77c797444f191faf488d49c76c4f45c10b3d9275e0364ee10b6d05cfbe57baf"
+      },
+      "licenseSummary": "MIT OR Apache-2.0",
+      "noticeFiles": [
+        "upstream/bun-rust-argon2-LICENSE-APACHE.txt",
+        "upstream/bun-rust-argon2-LICENSE-MIT.txt"
+      ]
+    },
+    {
+      "id": "tinycc",
+      "repository": "oven-sh/tinycc",
+      "revision": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+      "archiveUrl": "https://codeload.github.com/oven-sh/tinycc/tar.gz/05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+      "declaration": "scripts/build/deps/tinycc.ts",
+      "declarationSha256": "2dfa447e46b8f8ff9a0327e49892869fcea201074e6dd8eff6abbe0f88879298",
+      "referencedPatches": [
+        "patches/tinycc/tcc.h.patch"
+      ],
+      "archive": {
+        "name": "bun-tinycc-05f0fafaa3be31e31d7b4b5c17dc60f62c991171.tar.gz",
+        "bytes": 1036641,
+        "sha256": "50750680312923a59fdd36ae41f7091d8e35e51909d0e0b25b0b33ea9534bc08"
+      },
+      "licenseSummary": "LGPL; upstream COPYING contains LGPL-2.1, with individual source notices retained in the pinned archive",
+      "noticeFiles": [
+        "upstream/bun-tinycc-COPYING.txt",
+        "upstream/bun-tinycc-tests--tests2--LICENSE.txt"
+      ]
+    },
+    {
+      "id": "zlib",
+      "repository": "zlib-ng/zlib-ng",
+      "revision": "12731092979c6d07f42da27da673a9f6c7b13586",
+      "archiveUrl": "https://codeload.github.com/zlib-ng/zlib-ng/tar.gz/12731092979c6d07f42da27da673a9f6c7b13586",
+      "declaration": "scripts/build/deps/zlib.ts",
+      "declarationSha256": "1d240589025ed3a9af56310d35702b1d165013d88ee9afc4815e67f834fb8e8f",
+      "referencedPatches": [
+        "patches/zlib/clang-cl-arm64.patch"
+      ],
+      "archive": {
+        "name": "bun-zlib-12731092979c6d07f42da27da673a9f6c7b13586.tar.gz",
+        "bytes": 2450038,
+        "sha256": "a0d2a5d122c84b56a793a1553a9c3327fb2eb7469bf7a86b79e3c7be5d92e8d6"
+      },
+      "licenseSummary": "Zlib",
+      "noticeFiles": [
+        "upstream/bun-zlib-LICENSE.md"
+      ]
+    },
+    {
+      "id": "zstd",
+      "repository": "facebook/zstd",
+      "revision": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "archiveUrl": "https://codeload.github.com/facebook/zstd/tar.gz/f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+      "declaration": "scripts/build/deps/zstd.ts",
+      "declarationSha256": "37e42ed52e960248e67d9ddfb7ffcfada6a1dd4dbba99592eb41360cc5f514dc",
+      "referencedPatches": [],
+      "archive": {
+        "name": "bun-zstd-f8745da6ff1ad1e7bab384bd1f9d742439278e99.tar.gz",
+        "bytes": 2453329,
+        "sha256": "4b0bd1f0cfb25e61b9103c35f27395530ff5b4c0d2513a00fd745849e85ea52c"
+      },
+      "licenseSummary": "BSD-3-Clause OR GPL-2.0; see upstream notices",
+      "noticeFiles": [
+        "upstream/bun-zstd-COPYING.txt",
+        "upstream/bun-zstd-LICENSE.txt",
+        "upstream/bun-zstd-build--LICENSE.txt"
+      ]
+    }
+  ],
+  "webkit": {
+    "repository": "oven-sh/WebKit",
+    "revision": "2e2aa2290fac856d6f451ceacb58f7f5b44dd057",
+    "declaration": "scripts/build/deps/webkit.ts",
+    "declarationSha256": "21d397951be3ac93def2fea1756c4815e9ace068a6a01a8530c1f0c65ac4b343",
+    "noticeFiles": [
+      "upstream/bun-webkit-Source--JavaScriptCore--COPYING.LIB",
+      "upstream/bun-webkit-Source--JavaScriptCore--disassembler--ARM64--LICENSE-binja.txt",
+      "upstream/bun-webkit-Source--JavaScriptCore--disassembler--zydis--LICENSE-zycore.txt",
+      "upstream/bun-webkit-Source--JavaScriptCore--disassembler--zydis--LICENSE-zydis.txt",
+      "upstream/bun-webkit-Source--JavaScriptCore--runtime--temporal--core--LICENSE-icu4x.txt",
+      "upstream/bun-webkit-Source--JavaScriptCore--runtime--temporal--core--LICENSE-temporal_rs.txt",
+      "upstream/bun-webkit-Source--WTF--LICENSE-LLVM.txt",
+      "upstream/bun-webkit-Source--WTF--LICENSE-dragonbox.txt",
+      "upstream/bun-webkit-Source--WTF--LICENSE-libcpp.txt",
+      "upstream/bun-webkit-Source--WTF--LICENSE-simde.txt",
+      "upstream/bun-webkit-Source--WTF--icu--LICENSE.txt",
+      "upstream/bun-webkit-Source--WTF--wtf--dtoa--COPYING.txt",
+      "upstream/bun-webkit-Source--WTF--wtf--dtoa--LICENSE.txt",
+      "upstream/bun-webkit-Source--WTF--wtf--fast_float--LICENSE.txt",
+      "upstream/bun-webkit-Source--WTF--wtf--simdutf--LICENSE-simdutf.txt",
+      "upstream/bun-webkit-Source--bmalloc--mimalloc--mimalloc--LICENSE.txt"
+    ],
+    "sourceAcquisition": {
+      "method": "git",
+      "ref": "autobuild-2e2aa2290fac856d6f451ceacb58f7f5b44dd057",
+      "verifiedRevision": "2e2aa2290fac856d6f451ceacb58f7f5b44dd057",
+      "archiveDownloadStatus": "GitHub archive endpoint returned HTTP 422: Content creation is blocked",
+      "scope": "Sparse checkout of JSC build source; not a complete WebKit source archive"
+    }
+  },
+  "scope": "Source-level pins and local macOS rebuild/relink evidence; not a complete linked-binary inventory or cross-platform distribution qualification",
+  "remaining": [
+    "Complete file-level notice review of native, in-tree, Rust, WebKit and polyfill sources; archive-level notices and locked external dependency inventories are collected",
+    "Assemble and verify redistributable corresponding source and rebuild/relink materials, including the pinned WebKit build source",
+    "Qualify each supported platform configuration and review the resulting distribution"
+  ],
+  "buildToolchain": {
+    "llvm": "21.1.8",
+    "rust": "nightly-2026-07-20",
+    "rustRelease": "1.99.0-nightly",
+    "rustCommit": "9f36de775bc636c8e88c31a173c2bcb6995956a0",
+    "rustComponents": [
+      "rust-src"
+    ],
+    "source": "scripts/build/tools.ts and rust-toolchain.toml in the pinned Bun archive",
+    "qualification": "Unmodified local release build, standalone CLI and installed WPILib editor tests passed on macOS 26 arm64; modified-JSC marker verified in rebuilt Bun and compiled CLI; other platforms and full-distribution qualification remain",
+    "standardLibrary": {
+      "sourceArchive": {
+        "name": "bun-rust-src-nightly-20260720.tar.xz",
+        "url": "https://static.rust-lang.org/dist/2026-07-20/rust-src-nightly.tar.xz",
+        "sha256": "d4ffe57cc99d8846761bdbefc631bfd8f06fc001d7208576887e381c5709341a",
+        "bytes": 5804680
+      },
+      "compilerDistribution": {
+        "name": "bun-rustc-nightly-20260720-aarch64-apple-darwin.tar.xz",
+        "url": "https://static.rust-lang.org/dist/2026-07-20/rustc-nightly-aarch64-apple-darwin.tar.xz",
+        "sha256": "d7bae1d1f860fb12cc17c1649136e6be0c3967559f3f4c4e22455efb8cb6435e",
+        "bytes": 48997680
+      },
+      "noticeFiles": [
+        "upstream/bun-rust-std-nightly-20260720-COPYRIGHT-library.html"
+      ]
+    }
+  },
+  "rustDependencyInventory": {
+    "file": "bun-rust.json",
+    "sha256": "55dc2d44dfdc2c4149c53c03af6bfb2f8861dc0ebb07ff1184c13e66bbcc66dd"
+  },
+  "relinkProbe": {
+    "patch": "patches/bun-jsc-relink-probe.patch",
+    "sha256": "a5744f6bee35beba436f043f10072eb82e3aff0ae5e8e87a355668ad76232370",
+    "scope": "Qualification-only opt-in diagnostic; not a production runtime patch"
+  },
+  "inTreeComponents": [
+    {
+      "id": "usockets",
+      "name": "uSockets",
+      "license": "Apache-2.0",
+      "noticeFiles": [
+        "upstream/bun-in-tree-usockets-LICENSE.txt"
+      ],
+      "scope": "In-tree Bun build source; additional per-file attribution review remains"
+    },
+    {
+      "id": "uwebsockets",
+      "name": "uWebSockets",
+      "license": "Apache-2.0",
+      "noticeFiles": [
+        "upstream/bun-in-tree-uwebsockets-LICENSE.txt"
+      ],
+      "scope": "In-tree Bun build source; additional per-file attribution review remains"
+    },
+    {
+      "id": "clap",
+      "name": "Bun clap source",
+      "license": "Unlicense",
+      "noticeFiles": [
+        "upstream/bun-in-tree-clap-LICENSE.txt"
+      ],
+      "scope": "In-tree Bun build source; additional per-file attribution review remains"
+    },
+    {
+      "id": "sqlite",
+      "name": "SQLite amalgamation",
+      "license": "Public-domain disclaimer in the upstream source",
+      "noticeFiles": [
+        "upstream/bun-in-tree-sqlite-LICENSE.txt"
+      ],
+      "scope": "In-tree Bun build source; SQLite is statically built on Linux/Windows and loaded from the system on default macOS builds"
+    }
+  ],
+  "polyfillDependencyInventory": {
+    "file": "bun-polyfills.json",
+    "sha256": "4bbca080b8c0ca03efbcc9a6d3e7f94c3702fd08ccb5e62ac70f9065f40336f7"
+  },
+  "nodeHeaders": {
+    "version": "26.3.0",
+    "sourceRevision": "b7e6a5d37e7a14ef0f2cc95214b95d66c4081415",
+    "archive": {
+      "name": "node-v26.3.0-headers.tar.gz",
+      "url": "https://nodejs.org/dist/v26.3.0/node-v26.3.0-headers.tar.gz",
+      "sha256": "fca113c5d5add8bfb1aa31129a24acb8d49aa69ab3c22a2cc569aec88960526d",
+      "bytes": 9957179
+    },
+    "publisherChecksums": {
+      "url": "https://nodejs.org/dist/v26.3.0/SHASUMS256.txt",
+      "sha256": "77508a2192b9a80cdd5c0fd36cc423799db92d791703651a9afabe738797effb"
+    },
+    "noticeFiles": [
+      "upstream/bun-nodejs-headers-26.3.0-LICENSE"
+    ],
+    "scope": "Headers for Bun N-API compatibility; upstream removes OpenSSL and libuv header subdirectories. No Node.js runtime is packaged."
+  }
+}

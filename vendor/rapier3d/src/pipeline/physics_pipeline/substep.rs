@@ -1,0 +1,717 @@
+//! The pipeline's inner step loop: CCD substepping and motion clamping, plus
+//! end-of-step advancement of bodies, colliders and broad-phase AABBs.
+
+use crate::alloc_prelude::*;
+
+use crate::dynamics::{
+    CCDSolver, ImpulseJointSet, IntegrationParameters, IslandManager, MultibodyJointSet,
+    RigidBodyChanges, RigidBodySet, RigidBodyType, SoftBodySet,
+};
+#[cfg(feature = "parallel")]
+use crate::geometry::ColliderHandle;
+use crate::geometry::{
+    BroadPhaseBvh, ColliderChanges, ColliderSet, ModifiedColliders, NarrowPhase,
+};
+use crate::math::{Real, Vector};
+use crate::pipeline::{EventHandler, PhysicsHooks};
+use crate::prelude::ModifiedRigidBodies;
+
+use super::PhysicsPipeline;
+
+impl PhysicsPipeline {
+    fn clear_modified_colliders(
+        &mut self,
+        colliders: &mut ColliderSet,
+        modified_colliders: &mut ModifiedColliders,
+    ) {
+        // Every collider with a non-empty change flag is in the modified set (flags are
+        // only set by the user-modification paths; internal motion doesn't use flags), so
+        // clearing the listed colliders is exhaustive — O(modified), not an O(total) sweep.
+        for handle in modified_colliders.iter() {
+            if let Some(co) = colliders.get_mut_internal(*handle) {
+                co.changes = ColliderChanges::empty();
+            }
+        }
+
+        modified_colliders.clear();
+    }
+
+    fn clear_modified_bodies(
+        &mut self,
+        bodies: &mut RigidBodySet,
+        modified_bodies: &mut ModifiedRigidBodies,
+    ) {
+        for handle in modified_bodies.iter() {
+            if let Some(rb) = bodies.get_mut_internal(*handle) {
+                rb.changes = RigidBodyChanges::empty();
+            }
+        }
+
+        modified_bodies.clear();
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn run_ccd_motion_clamping(
+        &mut self,
+        integration_parameters: &IntegrationParameters,
+        islands: &IslandManager,
+        bodies: &mut RigidBodySet,
+        colliders: &mut ColliderSet,
+        soft_bodies: &SoftBodySet,
+        broad_phase: &mut BroadPhaseBvh,
+        narrow_phase: &NarrowPhase,
+        ccd_solver: &mut CCDSolver,
+        hooks: &dyn PhysicsHooks,
+        events: &dyn EventHandler,
+    ) {
+        self.counters.ccd.toi_computation_time.start();
+        // Handle CCD: sweep the fast bodies and clamp their `next_position` to their
+        // earliest time of impact (velocities are preserved).
+        ccd_solver.solve_continuous(
+            integration_parameters,
+            islands,
+            bodies,
+            colliders,
+            soft_bodies,
+            broad_phase,
+            narrow_phase,
+            hooks,
+            events,
+        );
+        self.counters.ccd.toi_computation_time.pause();
+    }
+
+    /// `integration_parameters.dt` is the length of the interval the soft-CCD prediction of the
+    /// broad-phase AABBs covers: the next CCD pass, or the next step after the last pass.
+    fn advance_to_final_positions(
+        &mut self,
+        integration_parameters: &IntegrationParameters,
+        islands: &IslandManager,
+        bodies: &mut RigidBodySet,
+        colliders: &mut ColliderSet,
+    ) {
+        // Set bodies to their final position, propagate to colliders, update world mass-properties
+        // (user code between steps applies forces w.r.t. the fresh CoM). NOTE: internal motion skips the
+        // user-modification tracking: moved colliders are harvested here for the broad-phase update and narrow-phase walk (no flags).
+        use parry::bounding_volume::BoundingVolume;
+
+        self.end_step_collider_aabbs.clear();
+        let prediction = integration_parameters.prediction_distance();
+        let dt = integration_parameters.dt;
+
+        // Broad-phase AABB of a just-moved collider, with its parent body in hand
+        // (same semantics as `Collider::compute_broad_phase_aabb`, minus its
+        // per-collider body-arena lookup for the soft-CCD check).
+        let collider_aabb = |co: &crate::geometry::Collider,
+                             rb: &crate::dynamics::RigidBody|
+         -> crate::geometry::Aabb {
+            let mut aabb = co.compute_collision_aabb(prediction / 2.0 + co.soft_motion_margin(rb));
+            if rb.soft_ccd_prediction() > 0.0 {
+                let next_pose = rb.predict_position_using_velocity_and_forces_with_max_dist(
+                    dt,
+                    rb.soft_ccd_prediction(),
+                ) * co.parent.as_ref().unwrap().pos_wrt_parent;
+                let next_aabb = co
+                    .shape
+                    .compute_aabb(&next_pose)
+                    .loosened(co.contact_skin() + prediction / 2.0);
+                aabb.merge(&next_aabb);
+            }
+            aabb
+        };
+
+        #[cfg(not(feature = "parallel"))]
+        {
+            for handle in islands.active_bodies() {
+                let rb = bodies.index_mut_internal(handle);
+                // Non-finite pose: leave the body at its last valid state for
+                // `Quarantine::apply_end_step` to neutralize.
+                if !rb.pos.next_position.is_finite() {
+                    self.quarantine
+                        .body_workspace
+                        .push((handle, rb.pos.position));
+                    continue;
+                }
+                rb.pos.position = rb.pos.next_position;
+                // A cluster proxy's pose isn't integrated: the end-of-step soft-body sync moves
+                // its colliders to its fresh pose and refreshes their AABBs instead.
+                if !rb.is_soft_frame() {
+                    for co_handle in rb.colliders.0.iter() {
+                        let co = colliders.index_mut_internal(*co_handle);
+                        let new_pos = rb.pos.position * co.parent.as_ref().unwrap().pos_wrt_parent;
+                        co.pos = crate::geometry::ColliderPosition(new_pos);
+                        if co.is_enabled() {
+                            let aabb = collider_aabb(co, rb);
+                            if aabb.mins.is_finite() && aabb.maxs.is_finite() {
+                                self.end_step_collider_aabbs.push((*co_handle, aabb));
+                            } else {
+                                // Finite body pose but non-finite AABB: the collider's own
+                                // geometry is invalid.
+                                self.quarantine.collider_workspace.push(*co_handle);
+                            }
+                        }
+                    }
+                }
+                rb.mprops
+                    .update_world_mass_properties(rb.body_type, &rb.pos.position);
+            }
+        }
+
+        #[cfg(feature = "parallel")]
+        {
+            use rayon::prelude::*;
+
+            self.active_body_handles.clear();
+            self.active_body_handles.extend(islands.active_bodies());
+            let bodies_ptr = core::sync::atomic::AtomicPtr::new(bodies as *mut RigidBodySet);
+            let colliders_ptr = core::sync::atomic::AtomicPtr::new(colliders as *mut ColliderSet);
+
+            type ChunkResult = (
+                Vec<(ColliderHandle, crate::geometry::Aabb)>,
+                Vec<(crate::dynamics::RigidBodyHandle, crate::math::Pose)>,
+                Vec<ColliderHandle>,
+            );
+            let moved: Vec<ChunkResult> = self
+                .active_body_handles
+                .par_chunks(256)
+                .map(|chunk| {
+                    // SAFETY: the body handles are distinct, and each collider has a
+                    //         single parent, so all the mutated bodies and colliders
+                    //         are disjoint across this loop.
+                    let bodies =
+                        unsafe { &mut *bodies_ptr.load(core::sync::atomic::Ordering::Relaxed) };
+                    let colliders =
+                        unsafe { &mut *colliders_ptr.load(core::sync::atomic::Ordering::Relaxed) };
+                    let mut moved = Vec::new();
+                    let mut quarantined_bodies = Vec::new();
+                    let mut quarantined_colliders = Vec::new();
+
+                    for handle in chunk {
+                        let rb = bodies.index_mut_internal(*handle);
+                        // Non-finite pose containment; see the serial branch.
+                        if !rb.pos.next_position.is_finite() {
+                            quarantined_bodies.push((*handle, rb.pos.position));
+                            continue;
+                        }
+                        rb.pos.position = rb.pos.next_position;
+
+                        // Cluster proxies' colliders: see the serial branch.
+                        if !rb.is_soft_frame() {
+                            for co_handle in rb.colliders.0.iter() {
+                                let co = colliders.index_mut_internal(*co_handle);
+                                let new_pos =
+                                    rb.pos.position * co.parent.as_ref().unwrap().pos_wrt_parent;
+                                co.pos = crate::geometry::ColliderPosition(new_pos);
+                                if co.is_enabled() {
+                                    let aabb = collider_aabb(co, rb);
+                                    if aabb.mins.is_finite() && aabb.maxs.is_finite() {
+                                        moved.push((*co_handle, aabb));
+                                    } else {
+                                        quarantined_colliders.push(*co_handle);
+                                    }
+                                }
+                            }
+                        }
+
+                        rb.mprops
+                            .update_world_mass_properties(rb.body_type, &rb.pos.position);
+                    }
+
+                    (moved, quarantined_bodies, quarantined_colliders)
+                })
+                .collect();
+
+            // Chunks are collected in order, so the harvested lists are deterministic.
+            for (chunk, quarantined_bodies, quarantined_colliders) in &moved {
+                self.end_step_collider_aabbs.extend_from_slice(chunk);
+                self.quarantine
+                    .body_workspace
+                    .extend_from_slice(quarantined_bodies);
+                self.quarantine
+                    .collider_workspace
+                    .extend_from_slice(quarantined_colliders);
+            }
+        }
+    }
+
+    /// Feeds the broad-phase the AABBs computed by the last `advance_to_final_positions`
+    /// call, through `set_aabb` (whose `pending_set_aabb` protocol makes the next
+    /// broad-phase update account for them in change-flag resolution and stale-pair detection).
+    fn update_moved_collider_aabbs(
+        &mut self,
+        integration_parameters: &IntegrationParameters,
+        broad_phase: &mut BroadPhaseBvh,
+    ) {
+        // Join the concurrent tree-optimization pass right before the tree writes.
+        self.join_deferred_bvh_optimize(broad_phase);
+
+        for (handle, aabb) in &self.end_step_collider_aabbs {
+            broad_phase.set_aabb(integration_parameters, *handle, *aabb);
+        }
+    }
+
+    /// Feeds the broad-phase the AABBs of the colliders the soft-body sync deformed or moved to
+    /// their proxies' fresh poses, like `update_moved_collider_aabbs` does for the advanced bodies.
+    fn update_soft_synced_collider_aabbs(
+        &mut self,
+        integration_parameters: &IntegrationParameters,
+        bodies: &RigidBodySet,
+        colliders: &ColliderSet,
+        broad_phase: &mut BroadPhaseBvh,
+    ) {
+        if self.soft_synced_colliders.is_empty() {
+            return;
+        }
+        self.join_deferred_bvh_optimize(broad_phase);
+
+        for handle in &self.soft_synced_colliders {
+            let Some(co) = colliders.get(*handle) else {
+                continue;
+            };
+            if !co.is_enabled() {
+                continue;
+            }
+            // The AABB the next broad-phase update computes (soft-body motion margin included
+            // for the deformable colliders only).
+            let aabb = co.compute_broad_phase_aabb(integration_parameters, bodies);
+            // A non-finite AABB would corrupt the tree; the next steps' quarantine handles it.
+            if aabb.mins.is_finite() && aabb.maxs.is_finite() {
+                broad_phase.set_aabb(integration_parameters, *handle, aabb);
+            }
+        }
+    }
+
+    fn interpolate_kinematic_velocities(
+        &mut self,
+        integration_parameters: &IntegrationParameters,
+        islands: &IslandManager,
+        bodies: &mut RigidBodySet,
+    ) {
+        // Update kinematic bodies velocities.
+        // TODO: what is the best place for this? It should at least be
+        // located before the island computation because we test the velocity
+        // there to determine if this kinematic body should wake-up dynamic
+        // bodies it is touching.
+        for handle in islands.active_bodies() {
+            // TODO PERF: only iterate on kinematic position-based bodies
+            let rb = bodies.index_mut_internal(handle);
+
+            if rb.body_type == RigidBodyType::KinematicPositionBased {
+                rb.vels = rb.pos.interpolate_velocity(
+                    integration_parameters.inv_dt(),
+                    rb.mprops.local_mprops.local_com,
+                );
+            }
+        }
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub(super) fn step_inner(
+        &mut self,
+        gravity: Vector,
+        integration_parameters: &IntegrationParameters,
+        islands: &mut IslandManager,
+        broad_phase: &mut BroadPhaseBvh,
+        narrow_phase: &mut NarrowPhase,
+        bodies: &mut RigidBodySet,
+        colliders: &mut ColliderSet,
+        impulse_joints: &mut ImpulseJointSet,
+        multibody_joints: &mut MultibodyJointSet,
+        soft_bodies: &mut SoftBodySet,
+        ccd_solver: &mut CCDSolver,
+        hooks: &dyn PhysicsHooks,
+        events: &dyn EventHandler,
+    ) {
+        self.counters.reset();
+        self.counters.step_started();
+        self.quarantine.clear();
+
+        // Apply some of delayed wake-ups.
+        self.counters.stages.user_changes.start();
+        #[cfg(feature = "enhanced-determinism")]
+        let to_wake_up_iterator = impulse_joints
+            .to_wake_up
+            .drain(..)
+            .chain(multibody_joints.to_wake_up.drain(..));
+        #[cfg(not(feature = "enhanced-determinism"))]
+        let to_wake_up_iterator = impulse_joints
+            .to_wake_up
+            .drain()
+            .chain(multibody_joints.to_wake_up.drain());
+        for handle in to_wake_up_iterator {
+            islands.wake_up(bodies, handle, true);
+        }
+
+        // Quarantine user-introduced non-finite state before it reaches the broad-phase.
+        self.quarantine.detect_user_changes(bodies, colliders);
+
+        // Soft bodies whose settings changed must wake up for the change to take effect; the
+        // colliders of the ones whose particles were moved follow them (picked up as modified
+        // colliders below).
+        soft_bodies.apply_user_changes(
+            bodies,
+            colliders,
+            integration_parameters,
+            &mut self.quarantine.soft_bodies,
+        );
+
+        // Apply modifications.
+        let mut modified_colliders = colliders.take_modified();
+        let mut removed_colliders = colliders.take_removed();
+
+        crate::pipeline::user_changes::handle_user_changes_to_colliders(
+            bodies,
+            colliders,
+            &modified_colliders[..],
+        );
+
+        let mut modified_bodies = bodies.take_modified();
+        crate::pipeline::user_changes::handle_user_changes_to_rigid_bodies(
+            Some(islands),
+            bodies,
+            colliders,
+            impulse_joints,
+            multibody_joints,
+            &modified_bodies,
+            &mut modified_colliders,
+        );
+
+        // Disabled colliders are treated as if they were removed.
+        // NOTE: this must be called here, after handle_user_changes_to_rigid_bodies to take into
+        //       account colliders disabled because of their parent rigid-body.
+        removed_colliders.extend(
+            modified_colliders
+                .iter()
+                .copied()
+                .filter(|h| colliders.get(*h).map(|c| !c.is_enabled()).unwrap_or(false)),
+        );
+
+        // If a user change could have added, removed, or moved a FIXED
+        // collider this step, invalidate the cache.
+        // (internal motion never touches fixed colliders nor these lists).
+        if !modified_colliders.is_empty()
+            || !removed_colliders.is_empty()
+            || !modified_bodies.is_empty()
+        {
+            ccd_solver.invalidate_fixed_targets_cache();
+        }
+
+        // Join islands based on new joints.
+        #[cfg(feature = "enhanced-determinism")]
+        let to_join_iterator = impulse_joints
+            .to_join
+            .drain(..)
+            .chain(multibody_joints.to_join.drain(..));
+        #[cfg(not(feature = "enhanced-determinism"))]
+        let to_join_iterator = impulse_joints
+            .to_join
+            .drain()
+            .chain(multibody_joints.to_join.drain());
+        for (handle1, handle2) in to_join_iterator {
+            islands.interaction_changed(bodies, Some(handle1), Some(handle2), false);
+        }
+
+        // Persistent islands: apply the joint connectivity edits (in order).
+        impulse_joints.flush_modified_joints();
+        let joint_island_events: Vec<_> = core::mem::take(&mut impulse_joints.island_events);
+        for event in joint_island_events {
+            islands.apply_impulse_joint_island_event(bodies, event);
+        }
+        let mut mb_chain_events = core::mem::take(&mut multibody_joints.island_chain_events);
+        for mb_id in &mb_chain_events {
+            islands.update_multibody_chain(bodies, multibody_joints, *mb_id);
+        }
+        mb_chain_events.clear();
+        multibody_joints.island_chain_events = mb_chain_events;
+        // Soft bodies inserted/removed or reattached since the last step: update their
+        // attachment links.
+        let mut sb_events = core::mem::take(&mut soft_bodies.island_events);
+        for event in &sb_events {
+            islands.update_soft_body_attachments(bodies, soft_bodies, event.handle);
+        }
+        sb_events.clear();
+        soft_bodies.island_events = sb_events;
+        self.counters.stages.user_changes.pause();
+
+        // TODO: do this only on user-change.
+        // TODO: do we want some kind of automatic inverse kinematics?
+        for multibody in &mut multibody_joints.multibodies {
+            multibody.1.forward_kinematics(bodies, true);
+            multibody
+                .1
+                .update_rigid_bodies_internal(bodies, true, false, false);
+        }
+
+        // The soft meshes' vertex caches, read by the soft contact passes.
+        soft_bodies.refresh_vertex_caches();
+        self.detect_collisions(
+            integration_parameters,
+            islands,
+            broad_phase,
+            narrow_phase,
+            bodies,
+            colliders,
+            impulse_joints,
+            multibody_joints,
+            &modified_colliders,
+            &removed_colliders,
+            hooks,
+            events,
+            true,
+            soft_bodies,
+        );
+
+        self.counters.stages.user_changes.resume();
+        self.clear_modified_colliders(colliders, &mut modified_colliders);
+        self.clear_modified_bodies(bodies, &mut modified_bodies);
+        removed_colliders.clear();
+        self.counters.stages.user_changes.pause();
+
+        // A zero-length step only applies the user changes and updates the contacts: no time
+        // passes, so the dynamics (solver, integration, CCD, soft-body tears) are skipped.
+        if integration_parameters.dt <= 0.0 {
+            // The solver graph consumes this step's contact updates, as the solve would have.
+            narrow_phase.maintain_solver_contact_graph(
+                islands,
+                bodies,
+                colliders,
+                multibody_joints,
+            );
+            colliders.set_modified(modified_colliders);
+            self.counters.step_completed();
+            return;
+        }
+
+        let mut remaining_time = integration_parameters.dt;
+        // The CCD passes shrink `integration_parameters.dt`: what predicts the next step (the
+        // end-of-step AABBs and soft-body sync) reads the full step's parameters instead.
+        let step_parameters = *integration_parameters;
+        let mut integration_parameters = *integration_parameters;
+
+        // CCD substeps are only reported when the CCD had to act during the step.
+        let mut num_passes = 0;
+        let mut any_ccd_active = false;
+        let (ccd_is_enabled, mut remaining_substeps) =
+            if integration_parameters.max_ccd_substeps == 0 {
+                (false, 1)
+            } else {
+                (true, integration_parameters.max_ccd_substeps)
+            };
+
+        while remaining_substeps > 0 {
+            // If there are more than one CCD substep, we need to split
+            // the timestep into multiple intervals. First, estimate the
+            // size of the time slice we will integrate for this substep.
+            //
+            // Note that we must do this now, before the constraints resolution
+            // because we need to use the correct timestep length for the
+            // integration of external forces.
+            //
+            // If there is only one or zero CCD substep, there is no need
+            // to split the timestep interval. So we can just skip this part.
+            if ccd_is_enabled && remaining_substeps > 1 {
+                // NOTE: Take forces into account when updating the bodies CCD activation flags
+                //       these forces have not been integrated to the body's velocity yet.
+                let ccd_active =
+                    ccd_solver.update_ccd_active_flags(islands, bodies, remaining_time, true);
+                any_ccd_active |= ccd_active;
+                self.join_deferred_bvh_optimize(broad_phase);
+                let first_impact = if ccd_active {
+                    ccd_solver.find_first_impact(
+                        remaining_time,
+                        &integration_parameters,
+                        islands,
+                        bodies,
+                        colliders,
+                        broad_phase,
+                        narrow_phase,
+                        hooks,
+                    )
+                } else {
+                    None
+                };
+
+                if let Some(toi) = first_impact {
+                    let original_interval = remaining_time / (remaining_substeps as Real);
+
+                    if toi < original_interval {
+                        integration_parameters.dt = original_interval;
+                    } else {
+                        integration_parameters.dt =
+                            toi + (remaining_time - toi) / (remaining_substeps as Real);
+                    }
+
+                    remaining_substeps -= 1;
+                } else {
+                    // No impact, don't do any other substep after this one.
+                    integration_parameters.dt = remaining_time;
+                    remaining_substeps = 0;
+                }
+
+                remaining_time -= integration_parameters.dt;
+
+                // Avoid substep length that are too small.
+                if remaining_time <= integration_parameters.min_ccd_dt {
+                    integration_parameters.dt += remaining_time;
+                    remaining_substeps = 0;
+                }
+            } else {
+                integration_parameters.dt = remaining_time;
+                remaining_time = 0.0;
+                remaining_substeps = 0;
+            }
+
+            num_passes += 1;
+
+            self.counters.custom.resume();
+            self.interpolate_kinematic_velocities(&integration_parameters, islands, bodies);
+            self.counters.custom.pause();
+            self.build_islands_and_solve_velocity_constraints(
+                gravity,
+                &integration_parameters,
+                islands,
+                narrow_phase,
+                bodies,
+                colliders,
+                impulse_joints,
+                multibody_joints,
+                soft_bodies,
+                events,
+            );
+
+            // A substep with no CCD work must not retain the previous pass's diagnostics.
+            ccd_solver.clear_profiles();
+            // If CCD is enabled, execute the CCD motion clamping.
+            if ccd_is_enabled {
+                // The staged solver's body writeback already computed the post-solve CCD flags;
+                // a serial walk is only needed when that verdict is unavailable (multibodies).
+                // NOTE: don't include forces — the solver already integrated them into the velocities.
+                let ccd_active = match self.staged_solver.post_solve_ccd_active {
+                    Some(any_active) => any_active,
+                    None => ccd_solver.update_ccd_active_flags(
+                        islands,
+                        bodies,
+                        integration_parameters.dt,
+                        false,
+                    ),
+                };
+                any_ccd_active |= ccd_active;
+                if ccd_active {
+                    self.join_deferred_bvh_optimize(broad_phase);
+                    self.run_ccd_motion_clamping(
+                        &integration_parameters,
+                        islands,
+                        bodies,
+                        colliders,
+                        soft_bodies,
+                        broad_phase,
+                        narrow_phase,
+                        ccd_solver,
+                        hooks,
+                        events,
+                    );
+                }
+            }
+
+            self.counters.stages.update_time.resume();
+            // After the last pass, the AABBs predict the whole next step, not another pass.
+            let prediction_parameters = if remaining_substeps > 0 {
+                &integration_parameters
+            } else {
+                &step_parameters
+            };
+            self.advance_to_final_positions(prediction_parameters, islands, bodies, colliders);
+            // Neutralize bodies whose integrated pose went non-finite before the remaining
+            // CCD substeps can spread their velocities.
+            self.quarantine.apply_end_step(bodies, colliders);
+            self.counters.stages.update_time.pause();
+
+            if remaining_substeps > 0 {
+                // Feed the just-moved colliders' AABBs to the broad-phase before
+                // re-running collision detection for the next CCD substep.
+                self.counters.stages.collision_detection_time.resume();
+                self.counters.cd.final_broad_phase_time.resume();
+                self.update_moved_collider_aabbs(&integration_parameters, broad_phase);
+                self.counters.cd.final_broad_phase_time.pause();
+                self.counters.stages.collision_detection_time.pause();
+
+                soft_bodies.refresh_vertex_caches();
+                self.detect_collisions(
+                    &integration_parameters,
+                    islands,
+                    broad_phase,
+                    narrow_phase,
+                    bodies,
+                    colliders,
+                    impulse_joints,
+                    multibody_joints,
+                    &modified_colliders,
+                    &[],
+                    hooks,
+                    events,
+                    false,
+                    soft_bodies,
+                );
+
+                self.clear_modified_colliders(colliders, &mut modified_colliders);
+            } else {
+                // If we ran the last substep, just update the broad-phase bvh instead
+                // of a full collision-detection step. Internal motion doesn't go
+                // through the modification tracking anymore: the moved colliders were
+                // harvested by `advance_to_final_positions`.
+                self.counters.stages.collision_detection_time.resume();
+                self.counters.cd.final_broad_phase_time.resume();
+                self.update_moved_collider_aabbs(&step_parameters, broad_phase);
+                self.counters.cd.final_broad_phase_time.pause();
+                self.counters.stages.collision_detection_time.pause();
+            }
+        }
+
+        if any_ccd_active {
+            self.counters.ccd.num_substeps = num_passes;
+        }
+
+        // Finally, make sure we update the world mass-properties of the rigid-bodies
+        // that moved. Otherwise, users may end up applying forces with respect to an
+        // outdated center of mass.
+        // TODO: avoid updating the world mass properties twice (here, and
+        //       at the beginning of the next timestep) for bodies that were
+        //       not modified by the user in the mean time.
+        // NOTE: the world mass-properties of the bodies that moved were updated by
+        //       `advance_to_final_positions`.
+
+        // Re-insert the modified vector we extracted for the borrow-checker.
+        colliders.set_modified(modified_colliders);
+
+        // The tears the solver marked come first: the pieces they leave get their derived state
+        // synced below like any other body.
+        soft_bodies.apply_pending_tears(
+            islands,
+            bodies,
+            colliders,
+            impulse_joints,
+            multibody_joints,
+            events,
+        );
+        // Update the soft bodies' derived state (sleep state, surface orientation, substep
+        // requests) and their colliders (picked up by the next step's user-changes handling).
+        self.soft_synced_colliders.clear();
+        soft_bodies.sync_particle_positions_and_collect(
+            bodies,
+            colliders,
+            &step_parameters,
+            integration_parameters.dt,
+            &mut self.quarantine.soft_bodies,
+            &mut self.soft_synced_colliders,
+        );
+        // The surfaces followed the particles and the rigid colliders on the proxies moved with
+        // them: the broad phase follows, so scene queries between steps see their final geometry.
+        self.counters.stages.collision_detection_time.resume();
+        self.counters.cd.final_broad_phase_time.resume();
+        self.update_soft_synced_collider_aabbs(&step_parameters, bodies, colliders, broad_phase);
+        self.counters.cd.final_broad_phase_time.pause();
+        self.counters.stages.collision_detection_time.pause();
+
+        self.counters.step_completed();
+    }
+}

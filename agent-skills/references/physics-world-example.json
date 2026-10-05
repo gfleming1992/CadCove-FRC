@@ -1,0 +1,19 @@
+{
+  "dt": 0.005,
+  "gravity": [0, 0, 0],
+  "bodies": [
+    {"id":"chassis","fixed":true,"position":[0,0,0.2],"mass":1,"colliders":[{"kind":"box","half":[0.1,0.1,0.1]}]},
+    {"id":"driver","position":[0.2,0,0.4],"mass":0.2,"colliders":[{"kind":"cylinder","radius":0.04,"half_height":0.02}]},
+    {"id":"follower","position":[0.45,0,0.4],"mass":0.2,"colliders":[{"kind":"cylinder","radius":0.04,"half_height":0.02}]}
+  ],
+  "joints": [
+    {"id":"driver-axis","parent":"chassis","child":"driver","kind":"revolute","axis":[0,1,0],"anchor_parent":[0.2,0,0.2],"anchor_child":[0,0,0]},
+    {"id":"follower-axis","parent":"chassis","child":"follower","kind":"revolute","axis":[0,1,0],"anchor_parent":[0.45,0,0.2],"anchor_child":[0,0,0]}
+  ],
+  "motors": [
+    {"id":"bench-motor","joint":"driver-axis","rotor_per_unit":10,"efficiency":0.8,"resistance":0.12,"torque_constant":0.02,"velocity_constant":50,"current_limit":20}
+  ],
+  "transmissions": [
+    {"id":"reversing-gears","driver":"driver-axis","follower":"follower-axis","ratio":-1,"stiffness":20,"damping":0.1,"max_effort":2}
+  ]
+}

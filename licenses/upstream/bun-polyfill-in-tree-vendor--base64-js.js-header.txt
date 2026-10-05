@@ -1,0 +1,2 @@
+// Vendored version of https://www.npmjs.com/package/base64-js version 1.5.1
+// Converted manually to an ES module for higher tree-shaking compatibility

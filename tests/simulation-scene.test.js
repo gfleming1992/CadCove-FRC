@@ -1,0 +1,51 @@
+import {test,expect} from 'bun:test';
+import {loadAssembly,bindSimulationScene,poseTransforms,assetURL,digest} from '../web/simulation-scene.js';
+import {encodeScene} from '../vendor/cad-core/src/core/mesh.js';
+import {identity,translation} from '../lib/transforms.js';
+async function fixture(){
+ const bytes=encodeScene({parts:[{id:'p',name:'plate',color:'#dd4400',positions:new Float32Array([0,0,0,1000,0,0,0,1000,0]),normals:new Float32Array([0,0,1,0,0,1,0,0,1]),indices:new Uint32Array([0,1,2])}]}),hash=await digest(bytes);
+ const catalog={p:{mesh:'meshes/plate.bin',meshSha256:hash}},instances=[{id:'plate',asset:'p',transform:translation([1000,0,0]),color:'#dd4400'}];
+ let appearance={schema:1,instancesHash:await digest(new TextEncoder().encode(JSON.stringify(instances))),catalog:{},instances:{plate:{color:'#1122ff'}}};
+ let mesh=bytes;const fetcher=async url=>url.endsWith('catalog.json')?Response.json(catalog):url.endsWith('instances.json')?Response.json(instances):url.endsWith('appearance.json')?Response.json(appearance):new Response(mesh);
+ return {catalog,instances,fetcher,appearance,corrupt:()=>{mesh=new Uint8Array(bytes.byteLength);}};
+}
+test('shared scene loader checks mesh digests and CAD appearance then converts mm to metres once',async()=>{
+ const f=await fixture(),robot=await loadAssembly('robot','https://assets/robot',{fetcher:f.fetcher}),field={prototypes:[],instances:[]};
+ expect(robot.instances[0].color).toBe('#1122ff');expect(robot.instances[0].matrix[3]).toBe(1);
+ const scene=bindSimulationScene(robot,field,{schema:1,robot:{plate:{body:'chassis',local:identity()}},field:{},start:[2,0,0],fieldOrigin:[0,0,0]});
+ expect(scene.instances[0].transform[0]).toBe(.001);expect(scene.instances[0].transform[3]).toBe(3);
+ const transforms=poseTransforms(scene.instances,{bodies:{chassis:{position:[4,5,6],quaternion:[0,0,0,1]}}});expect(transforms['robot/plate']).toEqual([.001,0,0,4,0,.001,0,5,0,0,.001,6]);
+ f.corrupt();await expect(loadAssembly('robot','https://assets/robot',{fetcher:f.fetcher})).rejects.toThrow('integrity');
+});
+test('stale color bindings and unsafe asset paths fail closed',async()=>{
+ const f=await fixture();f.appearance.instancesHash='0'.repeat(64);await expect(loadAssembly('robot','https://assets/robot',{fetcher:f.fetcher})).rejects.toThrow('Stale');
+ for(const p of ['../secret','a/../b','/etc/passwd','a\\b','https://evil','a?query'])expect(()=>assetURL('https://local',p)).toThrow();
+ expect(assetURL('https://local','meshes/my plate.bin')).toBe('https://local/meshes/my%20plate.bin');
+});
+
+test('rotated moving field parts preserve the CAD bind pose and follow the physical body',()=>{
+ const empty={prototypes:[],instances:[]};
+ const field={prototypes:[],instances:[{id:'field/gate',sourceId:'gate',matrix:[0,-1,0,7,1,0,0,16.5,0,0,1,1.2]}]};
+ const scene=bindSimulationScene(empty,field,{schema:1,start:[0,0,0],fieldOrigin:[3,4,0],robot:{},field:{gate:{body:'gate-body',local:translation([.5,0,.2])}}});
+ const bind=poseTransforms(scene.instances,{bodies:{'gate-body':{position:[10,20,1],quaternion:[0,0,Math.SQRT1_2,Math.SQRT1_2]}}})['field/gate'];
+ bind.forEach((v,i)=>expect(v).toBeCloseTo(scene.instances[0].transform[i],9));
+ const moved=poseTransforms(scene.instances,{bodies:{'gate-body':{position:[11,19,2],quaternion:[0,0,1,0]}}})['field/gate'];
+ [-.001,0,0,10.5,0,-.001,0,19,0,0,.001,2.2].forEach((v,i)=>expect(moved[i]).toBeCloseTo(v,9));
+});
+
+test('existing translation-only field bindings retain their placement and orientation',()=>{
+ const field={prototypes:[],instances:[{id:'field/gate',sourceId:'gate',matrix:[0,-1,0,7,1,0,0,16.5,0,0,1,1.2]}]};
+ const scene=bindSimulationScene({prototypes:[],instances:[]},field,{schema:1,start:[0,0,0],fieldOrigin:[3,4,0],robot:{},field:{gate:{body:'gate-body',bindPosition:[7,16,1]}}});
+ const bind=poseTransforms(scene.instances,{bodies:{'gate-body':{position:[10,20,1],quaternion:[0,0,0,1]}}})['field/gate'];
+ bind.forEach((v,i)=>expect(v).toBeCloseTo(scene.instances[0].transform[i],9));
+});
+
+test('viewer refuses malformed, scaled, mirrored and ambiguous bindings before use',()=>{
+ const base={schema:1,start:[0,0,0],fieldOrigin:[0,0,0],robot:{part:{body:'chassis',local:identity()}},field:{}};
+ for(const local of [null,[],Array(16).fill(0),[1000,0,0,0,0,1,0,0,0,0,1,0],[-1,0,0,0,0,1,0,0,0,0,1,0],[1,.2,0,0,0,1,0,0,0,0,1,0],[1,0,0,Infinity,0,1,0,0,0,0,1,0]]){
+  const bindings=structuredClone(base);bindings.robot.part.local=local;
+  expect(()=>bindSimulationScene({prototypes:[],instances:[]},{prototypes:[],instances:[]},bindings)).toThrow('local');
+ }
+ const bindings=structuredClone(base);bindings.field.gate={body:'gate-body',local:identity(),bindPosition:[0,0,0]};
+ expect(()=>bindSimulationScene({prototypes:[],instances:[]},{prototypes:[],instances:[]},bindings)).toThrow('not both');
+});

@@ -1,0 +1,2 @@
+pluginManagement { repositories { mavenLocal(); gradlePluginPortal() } }
+rootProject.name='cadcove-training-robot'

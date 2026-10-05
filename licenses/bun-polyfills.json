@@ -1,0 +1,1988 @@
+{
+  "schema": 1,
+  "bunRevision": "744846f844374847c902b5e7fd59b4342a51ef99",
+  "lockfile": {
+    "path": "src/node-fallbacks/bun.lock",
+    "sha256": "f2694f1fbc8689075bf005d90cecaeb393967cf96b735a8315198144278ea11d",
+    "archiveEntry": "bun-744846f844374847c902b5e7fd59b4342a51ef99/src/node-fallbacks/bun.lock"
+  },
+  "scope": "Conservative complete locked browser-polyfill dependency graph, including multiple versions. Release Bun embeds compressed browser fallbacks; not every package is necessarily present in every fallback bundle. File-level attribution review remains.",
+  "components": [
+    {
+      "name": "abort-controller",
+      "version": "3.0.0",
+      "license": "MIT",
+      "source": "git+https://github.com/mysticatea/abort-controller.git",
+      "lockKeys": [
+        "abort-controller"
+      ],
+      "archive": {
+        "name": "abort-controller-3.0.0.tgz",
+        "url": "https://registry.npmjs.org/abort-controller/-/abort-controller-3.0.0.tgz",
+        "sha256": "d2e249d5d010eb18e57c12c610d63e3ca3fa9dd0a5378009c1f465e21f50ab2f",
+        "bytes": 17548,
+        "integrity": "sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-abort-controller-3.0.0-LICENSE"
+      ]
+    },
+    {
+      "name": "asn1.js",
+      "version": "4.10.1",
+      "license": "MIT",
+      "source": "git@github.com:indutny/asn1.js",
+      "lockKeys": [
+        "asn1.js"
+      ],
+      "archive": {
+        "name": "asn1.js-4.10.1.tgz",
+        "url": "https://registry.npmjs.org/asn1.js/-/asn1.js-4.10.1.tgz",
+        "sha256": "bda81e4bac55f74f62a1e9244017b80fcd1e1b7de947a9a67f3e37694fcf12d5",
+        "bytes": 12480,
+        "integrity": "sha512-p32cOF5q0Zqs9uBiONKYLm6BClCoBCM5O9JfeUSlnQLBTxYdTK+pW+nXflm8UkKd2UYlEbYz5qEi0JuZR9ckSw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-asn1.js-4.10.1-README-license.txt"
+      ]
+    },
+    {
+      "name": "assert",
+      "version": "2.1.0",
+      "license": "MIT",
+      "source": "browserify/commonjs-assert",
+      "lockKeys": [
+        "assert"
+      ],
+      "archive": {
+        "name": "assert-2.1.0.tgz",
+        "url": "https://registry.npmjs.org/assert/-/assert-2.1.0.tgz",
+        "sha256": "90027e5efd4bc03eabe781aa7a05d6bcef7098bf125f75c0452830558d66a054",
+        "bytes": 21877,
+        "integrity": "sha512-eLHpSK/Y4nhMJ07gDaAzoX/XAKS8PSaojml3M0DM4JpV1LAi5JOJ/p6H/XWrl8L+DzVEvVCW1z3vWAaB9oTsQw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-assert-2.1.0-LICENSE"
+      ]
+    },
+    {
+      "name": "available-typed-arrays",
+      "version": "1.0.7",
+      "license": "MIT",
+      "source": "git+https://github.com/inspect-js/available-typed-arrays.git",
+      "lockKeys": [
+        "available-typed-arrays"
+      ],
+      "archive": {
+        "name": "available-typed-arrays-1.0.7.tgz",
+        "url": "https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.7.tgz",
+        "sha256": "8b140e0fa3fede3d81d1dffcc400c9755d7388e8a4add228487f5e20c9cf7863",
+        "bytes": 7360,
+        "integrity": "sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-available-typed-arrays-1.0.7-LICENSE"
+      ]
+    },
+    {
+      "name": "base64-js",
+      "version": "1.5.1",
+      "license": "MIT",
+      "source": "git://github.com/beatgammit/base64-js.git",
+      "lockKeys": [
+        "base64-js"
+      ],
+      "archive": {
+        "name": "base64-js-1.5.1.tgz",
+        "url": "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz",
+        "sha256": "b1b7a945b52685269083425216d6597e33d97bf21699d656e92fdb3eb5210a85",
+        "bytes": 4109,
+        "integrity": "sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-base64-js-1.5.1-LICENSE"
+      ]
+    },
+    {
+      "name": "bn.js",
+      "version": "4.12.2",
+      "license": "MIT",
+      "source": "git@github.com:indutny/bn.js",
+      "lockKeys": [
+        "asn1.js/bn.js",
+        "create-ecdh/bn.js",
+        "diffie-hellman/bn.js",
+        "elliptic/bn.js",
+        "miller-rabin/bn.js",
+        "public-encrypt/bn.js"
+      ],
+      "archive": {
+        "name": "bn.js-4.12.2.tgz",
+        "url": "https://registry.npmjs.org/bn.js/-/bn.js-4.12.2.tgz",
+        "sha256": "2f551372e49a2905d8915b2fd2252fdda0e12b46cde9a233f944b290a3a59a68",
+        "bytes": 21853,
+        "integrity": "sha512-n4DSx829VRTRByMRGdjQ9iqsN0Bh4OolPsFnaZBLcbi8iXcB+kJ9s7EnRt4wILZNV3kPLHkRVfOc/HvhC3ovDw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-bn.js-4.12.2-LICENSE"
+      ]
+    },
+    {
+      "name": "bn.js",
+      "version": "5.2.2",
+      "license": "MIT",
+      "source": "git@github.com:indutny/bn.js",
+      "lockKeys": [
+        "bn.js"
+      ],
+      "archive": {
+        "name": "bn.js-5.2.2.tgz",
+        "url": "https://registry.npmjs.org/bn.js/-/bn.js-5.2.2.tgz",
+        "sha256": "6c776e2fc33ea1eb38dd3d03cb532d27b4abcedc527c7f67961a323d0054cede",
+        "bytes": 21983,
+        "integrity": "sha512-v2YAxEmKaBLahNwE1mjp4WON6huMNeuDvagFZW+ASCuA/ku0bXR9hSMw0XpiqMoA3+rmnyck/tPRSFQkoC9Cuw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-bn.js-5.2.2-LICENSE"
+      ]
+    },
+    {
+      "name": "brorand",
+      "version": "1.1.0",
+      "license": "MIT",
+      "source": "git@github.com:indutny/brorand",
+      "lockKeys": [
+        "brorand"
+      ],
+      "archive": {
+        "name": "brorand-1.1.0.tgz",
+        "url": "https://registry.npmjs.org/brorand/-/brorand-1.1.0.tgz",
+        "sha256": "6add0656db12f5694a96d922916edf764f1a52ee332e2773271733a38fa51225",
+        "bytes": 2509,
+        "integrity": "sha512-cKV8tMCEpQs4hK/ik71d6LrPOnpkpGBR0wzxqr68g2m/LB2GxVYQroAjMJZRVM1Y4BCjCKc3vAamxSzOY2RP+w=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-brorand-1.1.0-README-license.txt"
+      ]
+    },
+    {
+      "name": "browserify-aes",
+      "version": "1.2.0",
+      "license": "MIT",
+      "source": "git://github.com/crypto-browserify/browserify-aes.git",
+      "lockKeys": [
+        "browserify-aes"
+      ],
+      "archive": {
+        "name": "browserify-aes-1.2.0.tgz",
+        "url": "https://registry.npmjs.org/browserify-aes/-/browserify-aes-1.2.0.tgz",
+        "sha256": "9b64ba05c9ad861e2f61933cda370d031d0adcb0582428a212b6746c9ca2e168",
+        "bytes": 7794,
+        "integrity": "sha512-+7CHXqGuspUn/Sl5aO7Ea0xWGAtETPXNSAjHo48JfLdPWcMng33Xe4znFvQweqc/uzk5zSOI3H52CYnjCfb5hA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-browserify-aes-1.2.0-LICENSE"
+      ]
+    },
+    {
+      "name": "browserify-cipher",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "git@github.com:crypto-browserify/browserify-cipher.git",
+      "lockKeys": [
+        "browserify-cipher"
+      ],
+      "archive": {
+        "name": "browserify-cipher-1.0.1.tgz",
+        "url": "https://registry.npmjs.org/browserify-cipher/-/browserify-cipher-1.0.1.tgz",
+        "sha256": "2d28155c2ae999ae5b69a6223f591ffcced3985d607d5d63238327327c6a06e4",
+        "bytes": 2363,
+        "integrity": "sha512-sPhkz0ARKbf4rRQt2hTpAHqn47X3llLkUGn+xEJzLjwY8LRs2p0v7ljvI5EyoRO/mexrNunNECisZs+gw2zz1w=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-browserify-cipher-1.0.1-LICENSE"
+      ]
+    },
+    {
+      "name": "browserify-des",
+      "version": "1.0.2",
+      "license": "MIT",
+      "source": "git+https://github.com/crypto-browserify/browserify-des.git",
+      "lockKeys": [
+        "browserify-des"
+      ],
+      "archive": {
+        "name": "browserify-des-1.0.2.tgz",
+        "url": "https://registry.npmjs.org/browserify-des/-/browserify-des-1.0.2.tgz",
+        "sha256": "b7503b6a58abbd1a3b0f0aabfcd978edff54ad33ebf97a6f0bbdf45bebda9421",
+        "bytes": 2310,
+        "integrity": "sha512-BioO1xf3hFwz4kc6iBhI3ieDFompMhrMlnDFC4/0/vd5MokpuAc3R+LYbwTA9A5Yc9pq9UYPqffKpW2ObuwX5A=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-browserify-des-1.0.2-license"
+      ]
+    },
+    {
+      "name": "browserify-rsa",
+      "version": "4.1.1",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/browserify-rsa.git",
+      "lockKeys": [
+        "browserify-rsa"
+      ],
+      "archive": {
+        "name": "browserify-rsa-4.1.1.tgz",
+        "url": "https://registry.npmjs.org/browserify-rsa/-/browserify-rsa-4.1.1.tgz",
+        "sha256": "a08e2687fed5134712e22e814a3afcbcb9d6aa033259fd080824e0e46aeb0d46",
+        "bytes": 4274,
+        "integrity": "sha512-YBjSAiTqM04ZVei6sXighu679a3SqWORA3qZTEqZImnlkDIFtKc6pNutpjyZ8RJTjQtuYfeetkxM11GwoYXMIQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-browserify-rsa-4.1.1-LICENSE"
+      ]
+    },
+    {
+      "name": "browserify-sign",
+      "version": "4.2.5",
+      "license": "ISC",
+      "source": "https://github.com/crypto-browserify/browserify-sign.git",
+      "lockKeys": [
+        "browserify-sign"
+      ],
+      "archive": {
+        "name": "browserify-sign-4.2.5.tgz",
+        "url": "https://registry.npmjs.org/browserify-sign/-/browserify-sign-4.2.5.tgz",
+        "sha256": "b11875fb8c15cf5a26d459d9e084ab84a569e491b11031740253130a63fc5ae0",
+        "bytes": 11902,
+        "integrity": "sha512-C2AUdAJg6rlM2W5QMp2Q4KGQMVBwR1lIimTsUnutJ8bMpW5B52pGpR2gEnNBNwijumDo5FojQ0L9JrXA8m4YEw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-browserify-sign-4.2.5-LICENSE"
+      ]
+    },
+    {
+      "name": "browserify-zlib",
+      "version": "0.2.0",
+      "license": "MIT",
+      "source": "git+https://github.com/devongovett/browserify-zlib.git",
+      "lockKeys": [
+        "browserify-zlib"
+      ],
+      "archive": {
+        "name": "browserify-zlib-0.2.0.tgz",
+        "url": "https://registry.npmjs.org/browserify-zlib/-/browserify-zlib-0.2.0.tgz",
+        "sha256": "f6c4d0f3881e160ba83900fa38cfa22aec5073ee5d44950842495a1bb8bda36e",
+        "bytes": 48061,
+        "integrity": "sha512-Z942RysHXmJrhqk88FmKBVq/v5tqmSkDz7p54G/MGyjMnCFFnC79XWNbg+Vta8W6Wb2qtSZTSxIGkJrRpCFEiA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-browserify-zlib-0.2.0-LICENSE"
+      ]
+    },
+    {
+      "name": "buffer-xor",
+      "version": "1.0.3",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/buffer-xor.git",
+      "lockKeys": [
+        "buffer-xor"
+      ],
+      "archive": {
+        "name": "buffer-xor-1.0.3.tgz",
+        "url": "https://registry.npmjs.org/buffer-xor/-/buffer-xor-1.0.3.tgz",
+        "sha256": "6befb068400e62690f9da28489425f3eaf6ef50f2943e49d0126969ed4c64f4a",
+        "bytes": 2294,
+        "integrity": "sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-buffer-xor-1.0.3-LICENSE"
+      ]
+    },
+    {
+      "name": "buffer",
+      "version": "5.0.5",
+      "license": "MIT",
+      "source": "git://github.com/feross/buffer.git",
+      "lockKeys": [
+        "buffer"
+      ],
+      "archive": {
+        "name": "buffer-5.0.5.tgz",
+        "url": "https://registry.npmjs.org/buffer/-/buffer-5.0.5.tgz",
+        "sha256": "a088304aa705c94739533a8a83c7a1d40fe7577e9894d32eb76e715af9e864d8",
+        "bytes": 55573,
+        "integrity": "sha512-ye69HVxM0Htf+E5YhFLOfHX8dXOkammTDtqCU5xLFMlPYTQkNJ7Kv6I90TjZiPH1yXBHQdRvSAK28EZSwSm3Dg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-buffer-5.0.5-LICENSE",
+        "upstream/bun-polyfill-buffer-5.0.5-AUTHORS.md"
+      ]
+    },
+    {
+      "name": "buffer",
+      "version": "6.0.3",
+      "license": "MIT",
+      "source": "git://github.com/feross/buffer.git",
+      "lockKeys": [
+        "readable-stream/buffer"
+      ],
+      "archive": {
+        "name": "buffer-6.0.3.tgz",
+        "url": "https://registry.npmjs.org/buffer/-/buffer-6.0.3.tgz",
+        "sha256": "555b6f49224afcf6b2c5a9aea7cd34a7f443f395b10532bc5580022d57aa51f5",
+        "bytes": 23108,
+        "integrity": "sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-buffer-6.0.3-LICENSE",
+        "upstream/bun-polyfill-buffer-6.0.3-AUTHORS.md"
+      ]
+    },
+    {
+      "name": "builtin-status-codes",
+      "version": "3.0.0",
+      "license": "MIT",
+      "source": "bendrucker/builtin-status-codes",
+      "lockKeys": [
+        "builtin-status-codes"
+      ],
+      "archive": {
+        "name": "builtin-status-codes-3.0.0.tgz",
+        "url": "https://registry.npmjs.org/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz",
+        "sha256": "316e1896e859fcbfb492c4af3e7bf5d74e2443e98c04929b36e96c7541b79db8",
+        "bytes": 2374,
+        "integrity": "sha512-HpGFw18DgFWlncDfjTa2rcQ4W88O1mC8e8yZ2AvQY5KDaktSTwo+KRf6nHK6FRI5FyRyb/5T6+TSxfP7QyGsmQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-builtin-status-codes-3.0.0-license"
+      ]
+    },
+    {
+      "name": "call-bind-apply-helpers",
+      "version": "1.0.2",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/call-bind-apply-helpers.git",
+      "lockKeys": [
+        "call-bind-apply-helpers"
+      ],
+      "archive": {
+        "name": "call-bind-apply-helpers-1.0.2.tgz",
+        "url": "https://registry.npmjs.org/call-bind-apply-helpers/-/call-bind-apply-helpers-1.0.2.tgz",
+        "sha256": "073e9ff9dbabedf5c128020a677381e9f92c90188d118830b30a7656a7c37d2c",
+        "bytes": 6067,
+        "integrity": "sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-call-bind-apply-helpers-1.0.2-LICENSE"
+      ]
+    },
+    {
+      "name": "call-bind",
+      "version": "1.0.8",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/call-bind.git",
+      "lockKeys": [
+        "call-bind"
+      ],
+      "archive": {
+        "name": "call-bind-1.0.8.tgz",
+        "url": "https://registry.npmjs.org/call-bind/-/call-bind-1.0.8.tgz",
+        "sha256": "30e2bdf3ce00c012527ae4161df4145cbf4c797e9fa30e43fc7324b2e07b0523",
+        "bytes": 7779,
+        "integrity": "sha512-oKlSFMcMwpUg2ednkhQ454wfWiU/ul3CkJe/PEHcTKuiX6RpbehUiFMXu13HalGZxfUwCQzZG747YXBn1im9ww=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-call-bind-1.0.8-LICENSE"
+      ]
+    },
+    {
+      "name": "call-bound",
+      "version": "1.0.4",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/call-bound.git",
+      "lockKeys": [
+        "call-bound"
+      ],
+      "archive": {
+        "name": "call-bound-1.0.4.tgz",
+        "url": "https://registry.npmjs.org/call-bound/-/call-bound-1.0.4.tgz",
+        "sha256": "32086f492fedf1b9b34811f2ee50ca2cca53da5c783f7cd5f939d3f1e86bbd32",
+        "bytes": 6382,
+        "integrity": "sha512-+ys997U96po4Kx/ABpBCqhA9EuxJaQWDQg7295H4hBphv3IZg0boBKuwYpt4YXp6MZ5AmZQnU/tyMTlRpaSejg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-call-bound-1.0.4-LICENSE"
+      ]
+    },
+    {
+      "name": "cipher-base",
+      "version": "1.0.7",
+      "license": "MIT",
+      "source": "git+https://github.com/crypto-browserify/cipher-base.git",
+      "lockKeys": [
+        "cipher-base"
+      ],
+      "archive": {
+        "name": "cipher-base-1.0.7.tgz",
+        "url": "https://registry.npmjs.org/cipher-base/-/cipher-base-1.0.7.tgz",
+        "sha256": "ad2a22688accc96cd6a42624821931427b9f61d04f5e20ab11eb92928577044b",
+        "bytes": 5621,
+        "integrity": "sha512-Mz9QMT5fJe7bKI7MH31UilT5cEK5EHHRCccw/YRFsRY47AuNgaV6HY3rscp0/I4Q+tTW/5zoqpSeRRI54TkDWA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-cipher-base-1.0.7-LICENSE"
+      ]
+    },
+    {
+      "name": "core-util-is",
+      "version": "1.0.3",
+      "license": "MIT",
+      "source": "git://github.com/isaacs/core-util-is",
+      "lockKeys": [
+        "core-util-is"
+      ],
+      "archive": {
+        "name": "core-util-is-1.0.3.tgz",
+        "url": "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.3.tgz",
+        "sha256": "4430fdc71f2cf3b5e297113b9a692da2d6cff96cf84da00f0ecef5e5a6e74d0c",
+        "bytes": 1897,
+        "integrity": "sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-core-util-is-1.0.3-LICENSE"
+      ]
+    },
+    {
+      "name": "create-ecdh",
+      "version": "4.0.4",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/createECDH.git",
+      "lockKeys": [
+        "create-ecdh"
+      ],
+      "archive": {
+        "name": "create-ecdh-4.0.4.tgz",
+        "url": "https://registry.npmjs.org/create-ecdh/-/create-ecdh-4.0.4.tgz",
+        "sha256": "990182d062df4f280785c5eac9cd0c28d10d0105b93fcf53e4580c3901713ce1",
+        "bytes": 2486,
+        "integrity": "sha512-mf+TCx8wWc9VpuxfP2ht0iSISLZnt0JgWlrOKZiNqyUZWnjIaCIVNQArMHnCZKfEYRg6IM7A+NeJoN8gf/Ws0A=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-create-ecdh-4.0.4-LICENSE"
+      ]
+    },
+    {
+      "name": "create-hash",
+      "version": "1.2.0",
+      "license": "MIT",
+      "source": "git@github.com:crypto-browserify/createHash.git",
+      "lockKeys": [
+        "create-hash"
+      ],
+      "archive": {
+        "name": "create-hash-1.2.0.tgz",
+        "url": "https://registry.npmjs.org/create-hash/-/create-hash-1.2.0.tgz",
+        "sha256": "fe4079490bd932ccf1f1530f49a88aaca57dbdb6f337c9144749a225e2014bad",
+        "bytes": 2444,
+        "integrity": "sha512-z00bCGNHDG8mHAkP7CtT1qVu+bFQUPjYq/4Iv3C3kWjTFV10zIjfSoeqXo9Asws8gwSHDGj/hl2u4OGIjapeCg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-create-hash-1.2.0-LICENSE"
+      ]
+    },
+    {
+      "name": "create-hmac",
+      "version": "1.1.7",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/createHmac.git",
+      "lockKeys": [
+        "create-hmac"
+      ],
+      "archive": {
+        "name": "create-hmac-1.1.7.tgz",
+        "url": "https://registry.npmjs.org/create-hmac/-/create-hmac-1.1.7.tgz",
+        "sha256": "fd77daf860b84566d8ccc30561eaba00a9efc4fbba94d4a5f417f4f636337aa7",
+        "bytes": 2429,
+        "integrity": "sha512-MJG9liiZ+ogc4TzUwuvbER1JRdgvUFSB5+VR/g5h82fGaIRWMWddtKBHi7/sVhfjQZ6SehlyhvQYrcYkaUIpLg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-create-hmac-1.1.7-LICENSE"
+      ]
+    },
+    {
+      "name": "crypto-browserify",
+      "version": "3.12.1",
+      "license": "MIT",
+      "source": "git://github.com/browserify/crypto-browserify.git",
+      "lockKeys": [
+        "crypto-browserify"
+      ],
+      "archive": {
+        "name": "crypto-browserify-3.12.1.tgz",
+        "url": "https://registry.npmjs.org/crypto-browserify/-/crypto-browserify-3.12.1.tgz",
+        "sha256": "ef67d3aa5192e1596bcabe5e7f3e76bca80f94584fe55a83c98e2d9bb7c1fe85",
+        "bytes": 17139,
+        "integrity": "sha512-r4ESw/IlusD17lgQi1O20Fa3qNnsckR126TdUuBgAu7GBYSIPvdNyONd3Zrxh0xCwA4+6w/TDArBPsMvhur+KQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-crypto-browserify-3.12.1-LICENSE"
+      ]
+    },
+    {
+      "name": "define-data-property",
+      "version": "1.1.4",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/define-data-property.git",
+      "lockKeys": [
+        "define-data-property"
+      ],
+      "archive": {
+        "name": "define-data-property-1.1.4.tgz",
+        "url": "https://registry.npmjs.org/define-data-property/-/define-data-property-1.1.4.tgz",
+        "sha256": "16304ad73df1364ca8623c28a8969de01cd7189b4f9b05668fadb598f110e4d2",
+        "bytes": 8913,
+        "integrity": "sha512-rBMvIzlpA8v6E+SJZoo++HAYqsLrkg7MSfIinMPFhmkorw7X+dOXVJQs+QT69zGkzMyfDnIMN2Wid1+NbL3T+A=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-define-data-property-1.1.4-LICENSE"
+      ]
+    },
+    {
+      "name": "define-properties",
+      "version": "1.2.1",
+      "license": "MIT",
+      "source": "git://github.com/ljharb/define-properties.git",
+      "lockKeys": [
+        "define-properties"
+      ],
+      "archive": {
+        "name": "define-properties-1.2.1.tgz",
+        "url": "https://registry.npmjs.org/define-properties/-/define-properties-1.2.1.tgz",
+        "sha256": "5de7e3804fadee9d773cd494b695e6efedfee8837e751fd9b9b77c3e9c6b40f4",
+        "bytes": 5203,
+        "integrity": "sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-define-properties-1.2.1-LICENSE"
+      ]
+    },
+    {
+      "name": "des.js",
+      "version": "1.1.0",
+      "license": "MIT",
+      "source": "git+ssh://git@github.com/indutny/des.js.git",
+      "lockKeys": [
+        "des.js"
+      ],
+      "archive": {
+        "name": "des.js-1.1.0.tgz",
+        "url": "https://registry.npmjs.org/des.js/-/des.js-1.1.0.tgz",
+        "sha256": "9a06b8294e38ca9bb70a6257290cc217e9172dfc0059f7639f59f074a924ef9d",
+        "bytes": 9982,
+        "integrity": "sha512-r17GxjhUCjSRy8aiJpr8/UadFIzMzJGexI3Nmz4ADi9LYSFx4gTBp80+NaX/YsXWWLhpZ7v/v/ubEc/bCNfKwg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-des.js-1.1.0-README-license.txt"
+      ]
+    },
+    {
+      "name": "diffie-hellman",
+      "version": "5.0.3",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/diffie-hellman.git",
+      "lockKeys": [
+        "diffie-hellman"
+      ],
+      "archive": {
+        "name": "diffie-hellman-5.0.3.tgz",
+        "url": "https://registry.npmjs.org/diffie-hellman/-/diffie-hellman-5.0.3.tgz",
+        "sha256": "67809ae0f25353a16b0dae4c4faffecf32525d238e45506fa27da6d2d4fbe53a",
+        "bytes": 5334,
+        "integrity": "sha512-kqag/Nl+f3GwyK25fhUMYj81BUOrZ9IuJsjIcDE5icNM9FJHAVm3VcUDxdLPoQtTuUylWm6ZIknYJwwaPxsUzg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-diffie-hellman-5.0.3-LICENSE"
+      ]
+    },
+    {
+      "name": "domain-browser",
+      "version": "4.23.0",
+      "license": "Artistic-2.0",
+      "source": "https://github.com/bevry/domain-browser.git",
+      "lockKeys": [
+        "domain-browser"
+      ],
+      "archive": {
+        "name": "domain-browser-4.23.0.tgz",
+        "url": "https://registry.npmjs.org/domain-browser/-/domain-browser-4.23.0.tgz",
+        "sha256": "7120ea4ac2e85039a17cb45f5987ee5b6741efc59853644de9c729a6138e0cf0",
+        "bytes": 7210,
+        "integrity": "sha512-ArzcM/II1wCCujdCNyQjXrAFwS4mrLh4C7DZWlaI8mdh7h3BfKdNd3bKXITfl2PT9FtfQqaGvhi1vPRQPimjGA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-domain-browser-4.23.0-LICENSE.md"
+      ]
+    },
+    {
+      "name": "dunder-proto",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "git+https://github.com/es-shims/dunder-proto.git",
+      "lockKeys": [
+        "dunder-proto"
+      ],
+      "archive": {
+        "name": "dunder-proto-1.0.1.tgz",
+        "url": "https://registry.npmjs.org/dunder-proto/-/dunder-proto-1.0.1.tgz",
+        "sha256": "ed1342228c82c10df9921c59d684df516a0cd6ed25b61e5f9d6330895326cfdb",
+        "bytes": 5049,
+        "integrity": "sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-dunder-proto-1.0.1-LICENSE"
+      ]
+    },
+    {
+      "name": "elliptic",
+      "version": "6.6.1",
+      "license": "MIT",
+      "source": "git@github.com:indutny/elliptic",
+      "lockKeys": [
+        "elliptic"
+      ],
+      "archive": {
+        "name": "elliptic-6.6.1.tgz",
+        "url": "https://registry.npmjs.org/elliptic/-/elliptic-6.6.1.tgz",
+        "sha256": "ae5132b694f62afc1738293c1b319be9a8822a4823fe15c515e39e7152a229c0",
+        "bytes": 41251,
+        "integrity": "sha512-RaddvvMatK2LJHqFJ+YA4WysVN5Ita9E35botqIYspQ4TkRAlCicdzKOjlyv/1Za5RyTNn7di//eEV0uTAfe3g=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-elliptic-6.6.1-README-license.txt"
+      ]
+    },
+    {
+      "name": "es-define-property",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/es-define-property.git",
+      "lockKeys": [
+        "es-define-property"
+      ],
+      "archive": {
+        "name": "es-define-property-1.0.1.tgz",
+        "url": "https://registry.npmjs.org/es-define-property/-/es-define-property-1.0.1.tgz",
+        "sha256": "5986b8b13121340a8b0d5c7d8f0f961aa80ef3a74515ca9cb7a78d86ed0385f7",
+        "bytes": 4431,
+        "integrity": "sha512-e3nRfgfUZ4rNGL232gUgX06QNyyez04KdjFrF+LTRoOXmrOgFKDg4BCdsjW8EnT69eqdYGmRpJwiPVYNrCaW3g=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-es-define-property-1.0.1-LICENSE"
+      ]
+    },
+    {
+      "name": "es-errors",
+      "version": "1.3.0",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/es-errors.git",
+      "lockKeys": [
+        "es-errors"
+      ],
+      "archive": {
+        "name": "es-errors-1.3.0.tgz",
+        "url": "https://registry.npmjs.org/es-errors/-/es-errors-1.3.0.tgz",
+        "sha256": "d14dd1c35b4bd3b8aca3219fd3627eb7f3eb49cf6b4c8a7ca58b91fd7a190993",
+        "bytes": 5338,
+        "integrity": "sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-es-errors-1.3.0-LICENSE"
+      ]
+    },
+    {
+      "name": "es-object-atoms",
+      "version": "1.1.1",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/es-object-atoms.git",
+      "lockKeys": [
+        "es-object-atoms"
+      ],
+      "archive": {
+        "name": "es-object-atoms-1.1.1.tgz",
+        "url": "https://registry.npmjs.org/es-object-atoms/-/es-object-atoms-1.1.1.tgz",
+        "sha256": "3e18e4d757818aee7bf1921686c6c3e7f9676d17c5c6fec560567c6beee579ce",
+        "bytes": 4658,
+        "integrity": "sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-es-object-atoms-1.1.1-LICENSE"
+      ]
+    },
+    {
+      "name": "event-target-shim",
+      "version": "5.0.1",
+      "license": "MIT",
+      "source": "https://github.com/mysticatea/event-target-shim.git",
+      "lockKeys": [
+        "event-target-shim"
+      ],
+      "archive": {
+        "name": "event-target-shim-5.0.1.tgz",
+        "url": "https://registry.npmjs.org/event-target-shim/-/event-target-shim-5.0.1.tgz",
+        "sha256": "f0717da2cde5c703b92e66906623724959c23ac14e9439c436b84c8a4f5b26bc",
+        "bytes": 37216,
+        "integrity": "sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-event-target-shim-5.0.1-LICENSE"
+      ]
+    },
+    {
+      "name": "events",
+      "version": "3.3.0",
+      "license": "MIT",
+      "source": "git://github.com/Gozala/events.git",
+      "lockKeys": [
+        "events"
+      ],
+      "archive": {
+        "name": "events-3.3.0.tgz",
+        "url": "https://registry.npmjs.org/events/-/events-3.3.0.tgz",
+        "sha256": "2c30dd630b58299bdfaac8688f763c6f312d29779c500b1e3701a1d4fb3b534b",
+        "bytes": 16574,
+        "integrity": "sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-events-3.3.0-LICENSE"
+      ]
+    },
+    {
+      "name": "evp_bytestokey",
+      "version": "1.0.3",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/EVP_BytesToKey.git",
+      "lockKeys": [
+        "evp_bytestokey"
+      ],
+      "archive": {
+        "name": "evp_bytestokey-1.0.3.tgz",
+        "url": "https://registry.npmjs.org/evp_bytestokey/-/evp_bytestokey-1.0.3.tgz",
+        "sha256": "c10a145896ed84fb886f273bd583d3895390561d6b513b17f5cf70312f7c40e1",
+        "bytes": 2610,
+        "integrity": "sha512-/f2Go4TognH/KvCISP7OUsHn85hT9nUkxxA9BEWxFn+Oj9o8ZNLm/40hdlgSLyuOimsrTKLUMEorQexp/aPQeA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-evp_bytestokey-1.0.3-LICENSE"
+      ]
+    },
+    {
+      "name": "for-each",
+      "version": "0.3.5",
+      "license": "MIT",
+      "source": "https://github.com/Raynos/for-each.git",
+      "lockKeys": [
+        "for-each"
+      ],
+      "archive": {
+        "name": "for-each-0.3.5.tgz",
+        "url": "https://registry.npmjs.org/for-each/-/for-each-0.3.5.tgz",
+        "sha256": "4bd2cfc8e674c93cf7abb3bd3d6fd8e388fa10324bec011223a8fa4f287185d1",
+        "bytes": 8133,
+        "integrity": "sha512-dKx12eRCVIzqCxFGplyFKJMPvLEWgmNtUrpTiJIR5u97zEhRG8ySrtboPHZXx7daLxQVrl643cTzbab2tkQjxg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-for-each-0.3.5-LICENSE"
+      ]
+    },
+    {
+      "name": "function-bind",
+      "version": "1.1.2",
+      "license": "MIT",
+      "source": "https://github.com/Raynos/function-bind.git",
+      "lockKeys": [
+        "function-bind"
+      ],
+      "archive": {
+        "name": "function-bind-1.1.2.tgz",
+        "url": "https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz",
+        "sha256": "704402651b02a1454f17d445fc7dd716efc282d059407126d58ef30a47e807aa",
+        "bytes": 9799,
+        "integrity": "sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-function-bind-1.1.2-LICENSE"
+      ]
+    },
+    {
+      "name": "generator-function",
+      "version": "2.0.1",
+      "license": "MIT",
+      "source": "git+https://github.com/TimothyGu/generator-function.git",
+      "lockKeys": [
+        "generator-function"
+      ],
+      "archive": {
+        "name": "generator-function-2.0.1.tgz",
+        "url": "https://registry.npmjs.org/generator-function/-/generator-function-2.0.1.tgz",
+        "sha256": "817d539f17b5c53295c82f50380c4c79608a15d70f753d26496cdf1a194acb66",
+        "bytes": 4441,
+        "integrity": "sha512-SFdFmIJi+ybC0vjlHN0ZGVGHc3lgE0DxPAT0djjVg+kjOnSqclqmj0KQ7ykTOLP6YxoqOvuAODGdcHJn+43q3g=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-generator-function-2.0.1-LICENSE.md"
+      ]
+    },
+    {
+      "name": "get-intrinsic",
+      "version": "1.3.0",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/get-intrinsic.git",
+      "lockKeys": [
+        "get-intrinsic"
+      ],
+      "archive": {
+        "name": "get-intrinsic-1.3.0.tgz",
+        "url": "https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.3.0.tgz",
+        "sha256": "662e27e54e00fe46fbb08f9f4aacb054e3695dbe72cc14b436613fbcfb780544",
+        "bytes": 13800,
+        "integrity": "sha512-9fSjSaos/fRIVIp+xSJlE6lfwhES7LNtKaCBIamHsjr2na1BiABJPo0mOjjz8GJDURarmCPGqaiVg5mfjb98CQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-get-intrinsic-1.3.0-LICENSE"
+      ]
+    },
+    {
+      "name": "get-proto",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/get-proto.git",
+      "lockKeys": [
+        "get-proto"
+      ],
+      "archive": {
+        "name": "get-proto-1.0.1.tgz",
+        "url": "https://registry.npmjs.org/get-proto/-/get-proto-1.0.1.tgz",
+        "sha256": "eb2cc52afb1f1fd82c5fc2a58c2380f0f16fdcdb5631538f3c66887435d70681",
+        "bytes": 4474,
+        "integrity": "sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-get-proto-1.0.1-LICENSE"
+      ]
+    },
+    {
+      "name": "gopd",
+      "version": "1.2.0",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/gopd.git",
+      "lockKeys": [
+        "gopd"
+      ],
+      "archive": {
+        "name": "gopd-1.2.0.tgz",
+        "url": "https://registry.npmjs.org/gopd/-/gopd-1.2.0.tgz",
+        "sha256": "d536d0de4dd285dc1468fbb7f39334a47ee0eec9c27f9b626a6e71466c9fda82",
+        "bytes": 4584,
+        "integrity": "sha512-ZUKRh6/kUFoAiTAtTYPZJ3hw9wNxx+BIBOijnlG9PnrJsCcSjs1wyyD6vJpaYtgnzDrKYRSqf3OO6Rfa93xsRg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-gopd-1.2.0-LICENSE"
+      ]
+    },
+    {
+      "name": "has-property-descriptors",
+      "version": "1.0.2",
+      "license": "MIT",
+      "source": "git+https://github.com/inspect-js/has-property-descriptors.git",
+      "lockKeys": [
+        "has-property-descriptors"
+      ],
+      "archive": {
+        "name": "has-property-descriptors-1.0.2.tgz",
+        "url": "https://registry.npmjs.org/has-property-descriptors/-/has-property-descriptors-1.0.2.tgz",
+        "sha256": "0219bbd8f32e268eeb6efff55a2c6ff2d502098f49c583ff023b2d9d5a8bfa87",
+        "bytes": 4429,
+        "integrity": "sha512-55JNKuIW+vq4Ke1BjOTjM2YctQIvCT7GFzHwmfZPGo5wnrgkid0YQtnAleFSqumZm4az3n2BS+erby5ipJdgrg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-has-property-descriptors-1.0.2-LICENSE"
+      ]
+    },
+    {
+      "name": "has-symbols",
+      "version": "1.1.0",
+      "license": "MIT",
+      "source": "git://github.com/inspect-js/has-symbols.git",
+      "lockKeys": [
+        "has-symbols"
+      ],
+      "archive": {
+        "name": "has-symbols-1.1.0.tgz",
+        "url": "https://registry.npmjs.org/has-symbols/-/has-symbols-1.1.0.tgz",
+        "sha256": "4460c7532f28b8df2ddc9a1ec17816d43c24d4b9591dc6c5936b82f7f86ae7c5",
+        "bytes": 8059,
+        "integrity": "sha512-1cDNdwJ2Jaohmb3sg4OmKaMBwuC48sYni5HUw2DvsC8LjGTLK9h+eb1X6RyuOHe4hT0ULCW68iomhjUoKUqlPQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-has-symbols-1.1.0-LICENSE"
+      ]
+    },
+    {
+      "name": "has-tostringtag",
+      "version": "1.0.2",
+      "license": "MIT",
+      "source": "git+https://github.com/inspect-js/has-tostringtag.git",
+      "lockKeys": [
+        "has-tostringtag"
+      ],
+      "archive": {
+        "name": "has-tostringtag-1.0.2.tgz",
+        "url": "https://registry.npmjs.org/has-tostringtag/-/has-tostringtag-1.0.2.tgz",
+        "sha256": "dc1c74e3f1179a6271f84747d72c89f258aa46ad3e6464fae0e41737a7f0ef7b",
+        "bytes": 6465,
+        "integrity": "sha512-NqADB8VjPFLM2V0VvHUewwwsw0ZWBaIdgo+ieHtK3hasLz4qeCRjYcqfB6AQrBggRKppKF8L52/VqdVsO47Dlw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-has-tostringtag-1.0.2-LICENSE"
+      ]
+    },
+    {
+      "name": "hash-base",
+      "version": "3.0.5",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/hash-base.git",
+      "lockKeys": [
+        "hash-base"
+      ],
+      "archive": {
+        "name": "hash-base-3.0.5.tgz",
+        "url": "https://registry.npmjs.org/hash-base/-/hash-base-3.0.5.tgz",
+        "sha256": "879ae6664433339b002938a96b603e9cd7df5c92d857d93f3d802c40af0536ee",
+        "bytes": 3270,
+        "integrity": "sha512-vXm0l45VbcHEVlTCzs8M+s0VeYsB2lnlAaThoLKGXr3bE/VWDOelNUnycUPEhKEaXARL2TEFjBOyUiM6+55KBg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-hash-base-3.0.5-LICENSE"
+      ]
+    },
+    {
+      "name": "hash-base",
+      "version": "3.1.2",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/hash-base.git",
+      "lockKeys": [
+        "ripemd160/hash-base"
+      ],
+      "archive": {
+        "name": "hash-base-3.1.2.tgz",
+        "url": "https://registry.npmjs.org/hash-base/-/hash-base-3.1.2.tgz",
+        "sha256": "d953692177a8ca0513399bb009702cefd54cc62605ec2b4a99c2e1f092b4eb0d",
+        "bytes": 6596,
+        "integrity": "sha512-Bb33KbowVTIj5s7Ked1OsqHUeCpz//tPwR+E2zJgJKo9Z5XolZ9b6bdUgjmYlwnWhoOQKoTd1TYToZGn5mAYOg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-hash-base-3.1.2-LICENSE"
+      ]
+    },
+    {
+      "name": "hash.js",
+      "version": "1.1.7",
+      "license": "MIT",
+      "source": "git@github.com:indutny/hash.js",
+      "lockKeys": [
+        "hash.js"
+      ],
+      "archive": {
+        "name": "hash.js-1.1.7.tgz",
+        "url": "https://registry.npmjs.org/hash.js/-/hash.js-1.1.7.tgz",
+        "sha256": "8eadfe0cbd33052fedb65ed4bf9acfe4645eafaabf877d99e3b1d9d771668ca6",
+        "bytes": 12589,
+        "integrity": "sha512-taOaskGt4z4SOANNseOviYDvjEJinIkRgmp7LbKP2YTTmVxWBl87s/uzK9r+44BclBSp2X7K1hqeNfz9JbBeXA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-hash.js-1.1.7-README-license.txt"
+      ]
+    },
+    {
+      "name": "hasown",
+      "version": "2.0.2",
+      "license": "MIT",
+      "source": "git+https://github.com/inspect-js/hasOwn.git",
+      "lockKeys": [
+        "hasown"
+      ],
+      "archive": {
+        "name": "hasown-2.0.2.tgz",
+        "url": "https://registry.npmjs.org/hasown/-/hasown-2.0.2.tgz",
+        "sha256": "50cdc4d2cd11ae04b6ee29f328d09022244962e5dfab303c8fc223ff8dfa807d",
+        "bytes": 4109,
+        "integrity": "sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-hasown-2.0.2-LICENSE"
+      ]
+    },
+    {
+      "name": "hmac-drbg",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "git+ssh://git@github.com/indutny/hmac-drbg.git",
+      "lockKeys": [
+        "hmac-drbg"
+      ],
+      "archive": {
+        "name": "hmac-drbg-1.0.1.tgz",
+        "url": "https://registry.npmjs.org/hmac-drbg/-/hmac-drbg-1.0.1.tgz",
+        "sha256": "321370d938a49a55cbdfcef124f63cde6d3a947b7231aeab1a5ba0ca62e35962",
+        "bytes": 12509,
+        "integrity": "sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-hmac-drbg-1.0.1-README-license.txt"
+      ]
+    },
+    {
+      "name": "https-browserify",
+      "version": "1.0.0",
+      "license": "MIT",
+      "source": "git://github.com/substack/https-browserify.git",
+      "lockKeys": [
+        "https-browserify"
+      ],
+      "archive": {
+        "name": "https-browserify-1.0.0.tgz",
+        "url": "https://registry.npmjs.org/https-browserify/-/https-browserify-1.0.0.tgz",
+        "sha256": "d4f14d0676ed3c0c43a2cdd081bb2e2355db116d4c46e07493ea3d499c8107bc",
+        "bytes": 1586,
+        "integrity": "sha512-J+FkSdyD+0mA0N+81tMotaRMfSL9SGi+xpD3T6YApKsc3bGSXJlfXri3VyFOeYkfLRQisDk1W+jIFFKBeUBbBg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-https-browserify-1.0.0-LICENSE"
+      ]
+    },
+    {
+      "name": "ieee754",
+      "version": "1.2.1",
+      "license": "BSD-3-Clause",
+      "source": "git://github.com/feross/ieee754.git",
+      "lockKeys": [
+        "ieee754"
+      ],
+      "archive": {
+        "name": "ieee754-1.2.1.tgz",
+        "url": "https://registry.npmjs.org/ieee754/-/ieee754-1.2.1.tgz",
+        "sha256": "8ef14b9b397e339db89db97881fb714f49319d8f0eb1275901f45567b28f9dac",
+        "bytes": 2886,
+        "integrity": "sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-ieee754-1.2.1-LICENSE"
+      ]
+    },
+    {
+      "name": "inherits",
+      "version": "2.0.4",
+      "license": "ISC",
+      "source": "git://github.com/isaacs/inherits",
+      "lockKeys": [
+        "inherits"
+      ],
+      "archive": {
+        "name": "inherits-2.0.4.tgz",
+        "url": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz",
+        "sha256": "d94dbc6c1bb3c5ac0fb12a73ade187108fc60de273a1b754f55044eb5e24afaf",
+        "bytes": 2030,
+        "integrity": "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-inherits-2.0.4-LICENSE"
+      ]
+    },
+    {
+      "name": "is-arguments",
+      "version": "1.2.0",
+      "license": "MIT",
+      "source": "git://github.com/inspect-js/is-arguments.git",
+      "lockKeys": [
+        "is-arguments"
+      ],
+      "archive": {
+        "name": "is-arguments-1.2.0.tgz",
+        "url": "https://registry.npmjs.org/is-arguments/-/is-arguments-1.2.0.tgz",
+        "sha256": "476c29799ec4f51b694d576fc70a27631c8ffe00e4269b7608027e12c7b0e51c",
+        "bytes": 11027,
+        "integrity": "sha512-7bVbi0huj/wrIAOzb8U1aszg9kdi3KN/CyU19CTI7tAoZYEZoL9yCDXpbXN+uPsuWnP02cyug1gleqq+TU+YCA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-is-arguments-1.2.0-LICENSE"
+      ]
+    },
+    {
+      "name": "is-callable",
+      "version": "1.2.7",
+      "license": "MIT",
+      "source": "git://github.com/inspect-js/is-callable.git",
+      "lockKeys": [
+        "is-callable"
+      ],
+      "archive": {
+        "name": "is-callable-1.2.7.tgz",
+        "url": "https://registry.npmjs.org/is-callable/-/is-callable-1.2.7.tgz",
+        "sha256": "1b5c6e4e8ab142a6857fca2fb79d880ba64f2c4ad87907b583934d04b503c3a1",
+        "bytes": 9896,
+        "integrity": "sha512-1BC0BVFhS/p0qtw6enp8e+8OD0UrK0oFLztSjNzhcKA3WDuJxxAPXzPuPtKkjEY9UUoEWlX/8fgKeu2S8i9JTA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-is-callable-1.2.7-LICENSE"
+      ]
+    },
+    {
+      "name": "is-generator-function",
+      "version": "1.1.2",
+      "license": "MIT",
+      "source": "git://github.com/inspect-js/is-generator-function.git",
+      "lockKeys": [
+        "is-generator-function"
+      ],
+      "archive": {
+        "name": "is-generator-function-1.1.2.tgz",
+        "url": "https://registry.npmjs.org/is-generator-function/-/is-generator-function-1.1.2.tgz",
+        "sha256": "11b6db078092427ac985003432e9ae1fad56d1df398ad87a02b8ce1b81d803d0",
+        "bytes": 11594,
+        "integrity": "sha512-upqt1SkGkODW9tsGNG5mtXTXtECizwtS2kA161M+gJPc1xdb/Ax629af6YrTwcOeQHbewrPNlE5Dx7kzvXTizA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-is-generator-function-1.1.2-LICENSE"
+      ]
+    },
+    {
+      "name": "is-nan",
+      "version": "1.3.2",
+      "license": "MIT",
+      "source": "git://github.com/es-shims/is-nan.git",
+      "lockKeys": [
+        "is-nan"
+      ],
+      "archive": {
+        "name": "is-nan-1.3.2.tgz",
+        "url": "https://registry.npmjs.org/is-nan/-/is-nan-1.3.2.tgz",
+        "sha256": "f0a66f9818c5cd398979ad3acc8fc21526c586622fb62697524c0e3f2a628653",
+        "bytes": 4501,
+        "integrity": "sha512-E+zBKpQ2t6MEo1VsonYmluk9NxGrbzpeeLC2xIViuO2EjU2xsXsBPwTr3Ykv9l08UYEVEdWeRZNouaZqF6RN0w=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-is-nan-1.3.2-LICENSE"
+      ]
+    },
+    {
+      "name": "is-regex",
+      "version": "1.2.1",
+      "license": "MIT",
+      "source": "git://github.com/inspect-js/is-regex.git",
+      "lockKeys": [
+        "is-regex"
+      ],
+      "archive": {
+        "name": "is-regex-1.2.1.tgz",
+        "url": "https://registry.npmjs.org/is-regex/-/is-regex-1.2.1.tgz",
+        "sha256": "a73e499153621af82d1f0f1ba77f21a01f95612b09d50d57253fc9e123a98b0d",
+        "bytes": 12196,
+        "integrity": "sha512-MjYsKHO5O7mCsmRGxWcLWheFqN9DJ/2TmngvjKXihe6efViPqc274+Fx/4fYj/r03+ESvBdTXK0V6tA3rgez1g=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-is-regex-1.2.1-LICENSE"
+      ]
+    },
+    {
+      "name": "is-typed-array",
+      "version": "1.1.15",
+      "license": "MIT",
+      "source": "git://github.com/inspect-js/is-typed-array.git",
+      "lockKeys": [
+        "is-typed-array"
+      ],
+      "archive": {
+        "name": "is-typed-array-1.1.15.tgz",
+        "url": "https://registry.npmjs.org/is-typed-array/-/is-typed-array-1.1.15.tgz",
+        "sha256": "d1ef6229208ce395c816f88637e45b970f6d742d616d3c980fb0dbb679cb7690",
+        "bytes": 7454,
+        "integrity": "sha512-p3EcsicXjit7SaskXHs1hA91QxgTw46Fv6EFKKGS5DRFLD8yKnohjF3hxoju94b/OcMZoQukzpPpBE9uLVKzgQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-is-typed-array-1.1.15-LICENSE"
+      ]
+    },
+    {
+      "name": "isarray",
+      "version": "1.0.0",
+      "license": "MIT",
+      "source": "git://github.com/juliangruber/isarray.git",
+      "lockKeys": [
+        "isarray"
+      ],
+      "archive": {
+        "name": "isarray-1.0.0.tgz",
+        "url": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz",
+        "sha256": "e23c76f14f5222e07e39d89858b61e8e33f96956de9e0df3659cbdf8db950c87",
+        "bytes": 2021,
+        "integrity": "sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-isarray-1.0.0-README-license.txt"
+      ]
+    },
+    {
+      "name": "isarray",
+      "version": "2.0.5",
+      "license": "MIT",
+      "source": "git://github.com/juliangruber/isarray.git",
+      "lockKeys": [
+        "to-buffer/isarray"
+      ],
+      "archive": {
+        "name": "isarray-2.0.5.tgz",
+        "url": "https://registry.npmjs.org/isarray/-/isarray-2.0.5.tgz",
+        "sha256": "72bae463b81a604b4a118c00012c76ee9b8d155b9da62d1f362876c9f8b5f793",
+        "bytes": 1859,
+        "integrity": "sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-isarray-2.0.5-LICENSE"
+      ]
+    },
+    {
+      "name": "math-intrinsics",
+      "version": "1.1.0",
+      "license": "MIT",
+      "source": "git+https://github.com/es-shims/math-intrinsics.git",
+      "lockKeys": [
+        "math-intrinsics"
+      ],
+      "archive": {
+        "name": "math-intrinsics-1.1.0.tgz",
+        "url": "https://registry.npmjs.org/math-intrinsics/-/math-intrinsics-1.1.0.tgz",
+        "sha256": "b8c2c35575493dc086df88cfc468a9e2651b6617336480ab3f00fcf853f443a7",
+        "bytes": 6355,
+        "integrity": "sha512-/IXtbwEk5HTPyEwyKX6hGkYXxM9nbj64B+ilVJnC/R6B0pH5G4V3b0pVbL7DBj4tkhBAppbQUlf6F6Xl9LHu1g=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-math-intrinsics-1.1.0-LICENSE"
+      ]
+    },
+    {
+      "name": "md5.js",
+      "version": "1.3.5",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/md5.js.git",
+      "lockKeys": [
+        "md5.js"
+      ],
+      "archive": {
+        "name": "md5.js-1.3.5.tgz",
+        "url": "https://registry.npmjs.org/md5.js/-/md5.js-1.3.5.tgz",
+        "sha256": "06777b61b01229c755ab4c6f4208d8f692222db4201abc9263877e4415693d03",
+        "bytes": 3147,
+        "integrity": "sha512-xitP+WxNPcTTOgnTJcrhM0xvdPepipPSf3I8EIpGKeFLjt3PlJLIDG3u8EX53ZIubkb+5U2+3rELYpEhHhzdkg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-md5.js-1.3.5-LICENSE"
+      ]
+    },
+    {
+      "name": "miller-rabin",
+      "version": "4.0.1",
+      "license": "MIT",
+      "source": "git@github.com:indutny/miller-rabin",
+      "lockKeys": [
+        "miller-rabin"
+      ],
+      "archive": {
+        "name": "miller-rabin-4.0.1.tgz",
+        "url": "https://registry.npmjs.org/miller-rabin/-/miller-rabin-4.0.1.tgz",
+        "sha256": "55bc46e7a4150804a546e634a971ea28844b47abbbe3136cb895951d84d6b8c9",
+        "bytes": 4146,
+        "integrity": "sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-miller-rabin-4.0.1-README-license.txt"
+      ]
+    },
+    {
+      "name": "minimalistic-assert",
+      "version": "1.0.1",
+      "license": "ISC",
+      "source": "https://github.com/calvinmetcalf/minimalistic-assert.git",
+      "lockKeys": [
+        "minimalistic-assert"
+      ],
+      "archive": {
+        "name": "minimalistic-assert-1.0.1.tgz",
+        "url": "https://registry.npmjs.org/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz",
+        "sha256": "f16522c947d6dbe3a99f5ff4296ccc253090b838959abdddc45fe81edb03f3a0",
+        "bytes": 1020,
+        "integrity": "sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-minimalistic-assert-1.0.1-LICENSE"
+      ]
+    },
+    {
+      "name": "minimalistic-crypto-utils",
+      "version": "1.0.1",
+      "license": "MIT",
+      "source": "git+ssh://git@github.com/indutny/minimalistic-crypto-utils.git",
+      "lockKeys": [
+        "minimalistic-crypto-utils"
+      ],
+      "archive": {
+        "name": "minimalistic-crypto-utils-1.0.1.tgz",
+        "url": "https://registry.npmjs.org/minimalistic-crypto-utils/-/minimalistic-crypto-utils-1.0.1.tgz",
+        "sha256": "f35f6e02efe1b2d6e8764fea48ef6d1211693c838f54d6ef50f0bc9fe6fa9db3",
+        "bytes": 3039,
+        "integrity": "sha512-JIYlbt6g8i5jKfJ3xz7rF0LXmv2TkDxBLUkiBeZ7bAx4GnnNMr8xFpGnOxn6GhTEHx3SjRrZEoU+j04prX1ktg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-minimalistic-crypto-utils-1.0.1-README-license.txt"
+      ]
+    },
+    {
+      "name": "object-is",
+      "version": "1.1.6",
+      "license": "MIT",
+      "source": "git://github.com/es-shims/object-is.git",
+      "lockKeys": [
+        "object-is"
+      ],
+      "archive": {
+        "name": "object-is-1.1.6.tgz",
+        "url": "https://registry.npmjs.org/object-is/-/object-is-1.1.6.tgz",
+        "sha256": "ed20196adebc0396b4fa793a13730858771ff7ea4b6cce14e30442f1b75eea2c",
+        "bytes": 9493,
+        "integrity": "sha512-F8cZ+KfGlSGi09lJT7/Nd6KJZ9ygtvYC0/UYYLI9nmQKLMnydpB9yvbv9K1uSkEu7FU9vYPmVwLg328tX+ot3Q=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-object-is-1.1.6-LICENSE"
+      ]
+    },
+    {
+      "name": "object-keys",
+      "version": "1.1.1",
+      "license": "MIT",
+      "source": "git://github.com/ljharb/object-keys.git",
+      "lockKeys": [
+        "object-keys"
+      ],
+      "archive": {
+        "name": "object-keys-1.1.1.tgz",
+        "url": "https://registry.npmjs.org/object-keys/-/object-keys-1.1.1.tgz",
+        "sha256": "9678d9055619767c8a134033709e88a6e0a19600f3d3f2cda40acdfd75e7f212",
+        "bytes": 7677,
+        "integrity": "sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-object-keys-1.1.1-LICENSE"
+      ]
+    },
+    {
+      "name": "object.assign",
+      "version": "4.1.7",
+      "license": "MIT",
+      "source": "git://github.com/ljharb/object.assign.git",
+      "lockKeys": [
+        "object.assign"
+      ],
+      "archive": {
+        "name": "object.assign-4.1.7.tgz",
+        "url": "https://registry.npmjs.org/object.assign/-/object.assign-4.1.7.tgz",
+        "sha256": "08e4dcd218f7ac619100ac3d3bb76b54c66257cabf0b2409dbfbb6dff01bfcf3",
+        "bytes": 20235,
+        "integrity": "sha512-nK28WOo+QIjBkDduTINE4JkF/UJJKyf2EJxvJKfblDpyg0Q+pkOHNTL0Qwy6NP6FhE/EnzV73BxxqcJaXY9anw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-object.assign-4.1.7-LICENSE"
+      ]
+    },
+    {
+      "name": "pako",
+      "version": "1.0.11",
+      "license": "(MIT AND Zlib)",
+      "source": "nodeca/pako",
+      "lockKeys": [
+        "pako"
+      ],
+      "archive": {
+        "name": "pako-1.0.11.tgz",
+        "url": "https://registry.npmjs.org/pako/-/pako-1.0.11.tgz",
+        "sha256": "0d4028dc0352a740c30cbfd772917f2744986d42bfa0b06ec7642bffe7ad3941",
+        "bytes": 204482,
+        "integrity": "sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-pako-1.0.11-LICENSE"
+      ]
+    },
+    {
+      "name": "parse-asn1",
+      "version": "5.1.9",
+      "license": "ISC",
+      "source": "git://github.com/crypto-browserify/parse-asn1.git",
+      "lockKeys": [
+        "parse-asn1"
+      ],
+      "archive": {
+        "name": "parse-asn1-5.1.9.tgz",
+        "url": "https://registry.npmjs.org/parse-asn1/-/parse-asn1-5.1.9.tgz",
+        "sha256": "73b5e179260ce351067fba0cd28e9aeeeb2706ec3c99c0b1782d0aa43498a9f1",
+        "bytes": 8508,
+        "integrity": "sha512-fIYNuZ/HastSb80baGOuPRo1O9cf4baWw5WsAp7dBuUzeTD/BoaG8sVTdlPFksBE2lF21dN+A1AnrpIjSWqHHg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-parse-asn1-5.1.9-LICENSE"
+      ]
+    },
+    {
+      "name": "pbkdf2",
+      "version": "3.1.5",
+      "license": "MIT",
+      "source": "https://github.com/browserify/pbkdf2.git",
+      "lockKeys": [
+        "pbkdf2"
+      ],
+      "archive": {
+        "name": "pbkdf2-3.1.5.tgz",
+        "url": "https://registry.npmjs.org/pbkdf2/-/pbkdf2-3.1.5.tgz",
+        "sha256": "f63117895bd2e95853d14bcb53735ce7fe163fd98aee7301d4e71f41cae9d669",
+        "bytes": 13833,
+        "integrity": "sha512-Q3CG/cYvCO1ye4QKkuH7EXxs3VC/rI1/trd+qX2+PolbaKG0H+bgcZzrTt96mMyRtejk+JMCiLUn3y29W8qmFQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-pbkdf2-3.1.5-LICENSE"
+      ]
+    },
+    {
+      "name": "possible-typed-array-names",
+      "version": "1.1.0",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/possible-typed-array-names.git",
+      "lockKeys": [
+        "possible-typed-array-names"
+      ],
+      "archive": {
+        "name": "possible-typed-array-names-1.1.0.tgz",
+        "url": "https://registry.npmjs.org/possible-typed-array-names/-/possible-typed-array-names-1.1.0.tgz",
+        "sha256": "c29791211b8e2f181c049247214843292380e4134c140c5105376b7c6ae3e3c7",
+        "bytes": 4178,
+        "integrity": "sha512-/+5VFTchJDoVj3bhoqi6UeymcD00DAwb1nJwamzPvHEszJ4FpF6SNNbUbOS8yI56qHzdV8eK0qEfOSiodkTdxg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-possible-typed-array-names-1.1.0-LICENSE"
+      ]
+    },
+    {
+      "name": "process-nextick-args",
+      "version": "2.0.1",
+      "license": "MIT",
+      "source": "https://github.com/calvinmetcalf/process-nextick-args.git",
+      "lockKeys": [
+        "process-nextick-args"
+      ],
+      "archive": {
+        "name": "process-nextick-args-2.0.1.tgz",
+        "url": "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz",
+        "sha256": "425bf8c725d23bc5ac76bcedd10d9cdbbd6354c7273dd7def44417cfbca8889b",
+        "bytes": 1654,
+        "integrity": "sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-process-nextick-args-2.0.1-license.md"
+      ]
+    },
+    {
+      "name": "process",
+      "version": "0.11.10",
+      "license": "MIT",
+      "source": "git://github.com/shtylman/node-process.git",
+      "lockKeys": [
+        "process"
+      ],
+      "archive": {
+        "name": "process-0.11.10.tgz",
+        "url": "https://registry.npmjs.org/process/-/process-0.11.10.tgz",
+        "sha256": "7c10569b3c9cb056152ad630d40f9f4fcc321a0013c2bb8384f036aaa674e6bb",
+        "bytes": 4669,
+        "integrity": "sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-process-0.11.10-LICENSE"
+      ]
+    },
+    {
+      "name": "public-encrypt",
+      "version": "4.0.3",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/publicEncrypt.git",
+      "lockKeys": [
+        "public-encrypt"
+      ],
+      "archive": {
+        "name": "public-encrypt-4.0.3.tgz",
+        "url": "https://registry.npmjs.org/public-encrypt/-/public-encrypt-4.0.3.tgz",
+        "sha256": "7f0eeca034a7bf643451b10706af9e3ac5f1501a7ab022db4d25bcf011c2014b",
+        "bytes": 13647,
+        "integrity": "sha512-zVpa8oKZSz5bTMTFClc1fQOnyyEzpl5ozpi1B5YcvBrdohMjH2rfsBtyXcuNuwjsDIXmBYlF2N5FlJYhR29t8Q=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-public-encrypt-4.0.3-LICENSE"
+      ]
+    },
+    {
+      "name": "punycode",
+      "version": "2.3.1",
+      "license": "MIT",
+      "source": "https://github.com/mathiasbynens/punycode.js.git",
+      "lockKeys": [
+        "punycode"
+      ],
+      "archive": {
+        "name": "punycode-2.3.1.tgz",
+        "url": "https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz",
+        "sha256": "e4ce59f9fbac44349abab87279ab658f6b4614916bec5e088ae3be9323e193bb",
+        "bytes": 7603,
+        "integrity": "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-punycode-2.3.1-LICENSE-MIT.txt"
+      ]
+    },
+    {
+      "name": "querystring-es3",
+      "version": "1.0.0-0",
+      "license": "MIT",
+      "source": "git://github.com/SpainTrain/querystring-es3.git",
+      "lockKeys": [
+        "querystring-es3"
+      ],
+      "archive": {
+        "name": "querystring-es3-1.0.0-0.tgz",
+        "url": "https://registry.npmjs.org/querystring-es3/-/querystring-es3-1.0.0-0.tgz",
+        "sha256": "2f64c1d17723c8d1c6933fa9c5efcb31700072ba311de01a10254b5a1dbf0f12",
+        "bytes": 15199,
+        "integrity": "sha512-0etE6Uj4NYut0/y/6pFgVRDAaFtf6x/n4xnBRL82c8n6yigRBepcgPaBAn2o8EhA9QQR1l8b1Je5s+LsJ+zS+g=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-querystring-es3-1.0.0-0-License.md"
+      ]
+    },
+    {
+      "name": "randombytes",
+      "version": "2.1.0",
+      "license": "MIT",
+      "source": "git@github.com:crypto-browserify/randombytes.git",
+      "lockKeys": [
+        "randombytes"
+      ],
+      "archive": {
+        "name": "randombytes-2.1.0.tgz",
+        "url": "https://registry.npmjs.org/randombytes/-/randombytes-2.1.0.tgz",
+        "sha256": "b8a6d3e6532817912ad3dacbb0e64be75026941a5167549aa1d7fecbafd1bcaa",
+        "bytes": 2667,
+        "integrity": "sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-randombytes-2.1.0-LICENSE"
+      ]
+    },
+    {
+      "name": "randomfill",
+      "version": "1.0.4",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/randomfill.git",
+      "lockKeys": [
+        "randomfill"
+      ],
+      "archive": {
+        "name": "randomfill-1.0.4.tgz",
+        "url": "https://registry.npmjs.org/randomfill/-/randomfill-1.0.4.tgz",
+        "sha256": "3b0c2fec576a572e139563606102e0ffd9dc8a2853525eb7aa1a30e0de754fa6",
+        "bytes": 2814,
+        "integrity": "sha512-87lcbR8+MhcWcUiQ+9e+Rwx8MyR2P7qnt15ynUlbm3TU/fjbgz4GsvfSUDTemtCCtVCqb4ZcEFlyPNTh9bBTLw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-randomfill-1.0.4-LICENSE"
+      ]
+    },
+    {
+      "name": "react-refresh",
+      "version": "0.17.0",
+      "license": "MIT",
+      "source": "https://github.com/facebook/react.git",
+      "lockKeys": [
+        "react-refresh"
+      ],
+      "archive": {
+        "name": "react-refresh-0.17.0.tgz",
+        "url": "https://registry.npmjs.org/react-refresh/-/react-refresh-0.17.0.tgz",
+        "sha256": "40aa26f7cbb282b754ac0cdc7c5b6a1a1170c9cd74d61f863b8644397afec09f",
+        "bytes": 9998,
+        "integrity": "sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-react-refresh-0.17.0-LICENSE"
+      ]
+    },
+    {
+      "name": "readable-stream",
+      "version": "2.3.8",
+      "license": "MIT",
+      "source": "git://github.com/nodejs/readable-stream",
+      "lockKeys": [
+        "browserify-sign/readable-stream",
+        "ripemd160/hash-base/readable-stream"
+      ],
+      "archive": {
+        "name": "readable-stream-2.3.8.tgz",
+        "url": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.8.tgz",
+        "sha256": "1648613948f68ac9cbbe8f72a3f93a67ecdb862ffb57946a2c0bbb5a1479a532",
+        "bytes": 25747,
+        "integrity": "sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-readable-stream-2.3.8-LICENSE"
+      ]
+    },
+    {
+      "name": "readable-stream",
+      "version": "3.6.2",
+      "license": "MIT",
+      "source": "git://github.com/nodejs/readable-stream",
+      "lockKeys": [
+        "stream-http/readable-stream"
+      ],
+      "archive": {
+        "name": "readable-stream-3.6.2.tgz",
+        "url": "https://registry.npmjs.org/readable-stream/-/readable-stream-3.6.2.tgz",
+        "sha256": "edd866c05e318aa9c091763eebdd4207409b7a7648be19c5317a96047305ab5d",
+        "bytes": 33238,
+        "integrity": "sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-readable-stream-3.6.2-LICENSE"
+      ]
+    },
+    {
+      "name": "readable-stream",
+      "version": "4.7.0",
+      "license": "MIT",
+      "source": "git://github.com/nodejs/readable-stream",
+      "lockKeys": [
+        "readable-stream"
+      ],
+      "archive": {
+        "name": "readable-stream-4.7.0.tgz",
+        "url": "https://registry.npmjs.org/readable-stream/-/readable-stream-4.7.0.tgz",
+        "sha256": "0997e49cb71927b91714dad852147bacfe28bf8cd2f4e1b5a99959c3d0dde5fd",
+        "bytes": 54820,
+        "integrity": "sha512-oIGGmcpTLwPga8Bn6/Z75SVaH1z5dUut2ibSyAMVhmUggWpmDn2dapB0n7f8nwaSiRtepAsfJyfXIO5DCVAODg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-readable-stream-4.7.0-LICENSE"
+      ]
+    },
+    {
+      "name": "ripemd160",
+      "version": "2.0.3",
+      "license": "MIT",
+      "source": "https://github.com/crypto-browserify/ripemd160",
+      "lockKeys": [
+        "ripemd160"
+      ],
+      "archive": {
+        "name": "ripemd160-2.0.3.tgz",
+        "url": "https://registry.npmjs.org/ripemd160/-/ripemd160-2.0.3.tgz",
+        "sha256": "2f5abb3220b688d2614da886d6d9f65f956c1aa103f5e21f0d329e0c61601f24",
+        "bytes": 5356,
+        "integrity": "sha512-5Di9UC0+8h1L6ZD2d7awM7E/T4uA1fJRlx6zk/NvdCCVEoAnFqvHmCuNeIKoCeIixBX/q8uM+6ycDvF8woqosA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-ripemd160-2.0.3-LICENSE"
+      ]
+    },
+    {
+      "name": "safe-buffer",
+      "version": "5.1.2",
+      "license": "MIT",
+      "source": "git://github.com/feross/safe-buffer.git",
+      "lockKeys": [
+        "browserify-sign/readable-stream/safe-buffer",
+        "ripemd160/hash-base/readable-stream/safe-buffer"
+      ],
+      "archive": {
+        "name": "safe-buffer-5.1.2.tgz",
+        "url": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz",
+        "sha256": "e09206c60fccafb952c854af7629cbb031a98d6da2e143fb3aa3c8a48402aa22",
+        "bytes": 9822,
+        "integrity": "sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-safe-buffer-5.1.2-LICENSE"
+      ]
+    },
+    {
+      "name": "safe-buffer",
+      "version": "5.2.1",
+      "license": "MIT",
+      "source": "git://github.com/feross/safe-buffer.git",
+      "lockKeys": [
+        "safe-buffer"
+      ],
+      "archive": {
+        "name": "safe-buffer-5.2.1.tgz",
+        "url": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz",
+        "sha256": "5d181804516c4a693a384272a7bd0e42d17e0d4b301ccfbe408669ccafdcb3e8",
+        "bytes": 9972,
+        "integrity": "sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-safe-buffer-5.2.1-LICENSE"
+      ]
+    },
+    {
+      "name": "safe-regex-test",
+      "version": "1.1.0",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/safe-regex-test.git",
+      "lockKeys": [
+        "safe-regex-test"
+      ],
+      "archive": {
+        "name": "safe-regex-test-1.1.0.tgz",
+        "url": "https://registry.npmjs.org/safe-regex-test/-/safe-regex-test-1.1.0.tgz",
+        "sha256": "e92ad20e8549ef06adab664f8a6e9c0a349e38f34c9548ebb526f24f7d8cf12e",
+        "bytes": 5064,
+        "integrity": "sha512-x/+Cz4YrimQxQccJf5mKEbIa1NzeCRNI5Ecl/ekmlYaampdNLPalVyIcCZNNH3MvmqBugV5TMYZXv0ljslUlaw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-safe-regex-test-1.1.0-LICENSE"
+      ]
+    },
+    {
+      "name": "set-function-length",
+      "version": "1.2.2",
+      "license": "MIT",
+      "source": "git+https://github.com/ljharb/set-function-length.git",
+      "lockKeys": [
+        "set-function-length"
+      ],
+      "archive": {
+        "name": "set-function-length-1.2.2.tgz",
+        "url": "https://registry.npmjs.org/set-function-length/-/set-function-length-1.2.2.tgz",
+        "sha256": "a339df70dfa3507a3fe2137464915212d69a9585d201c253b90f0c13fd952b4a",
+        "bytes": 5784,
+        "integrity": "sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-set-function-length-1.2.2-LICENSE"
+      ]
+    },
+    {
+      "name": "sha.js",
+      "version": "2.4.12",
+      "license": "(MIT AND BSD-3-Clause)",
+      "source": "git://github.com/crypto-browserify/sha.js.git",
+      "lockKeys": [
+        "sha.js"
+      ],
+      "archive": {
+        "name": "sha.js-2.4.12.tgz",
+        "url": "https://registry.npmjs.org/sha.js/-/sha.js-2.4.12.tgz",
+        "sha256": "c8c1e04584e822b3514907388030e3bc451293f5ead31d0bd076e56661ee9dc0",
+        "bytes": 21478,
+        "integrity": "sha512-8LzC5+bvI45BjpfXU8V5fdU2mfeKiQe1D1gIMn7XUlF3OTUrpdJpPPH4EMAnF0DsHHdSZqCdSss5qCmJKuiO3w=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-sha.js-2.4.12-LICENSE"
+      ]
+    },
+    {
+      "name": "stream-http",
+      "version": "3.2.0",
+      "license": "MIT",
+      "source": "git://github.com/jhiesey/stream-http.git",
+      "lockKeys": [
+        "stream-http"
+      ],
+      "archive": {
+        "name": "stream-http-3.2.0.tgz",
+        "url": "https://registry.npmjs.org/stream-http/-/stream-http-3.2.0.tgz",
+        "sha256": "82bd244a642c4e7429531f314aef8c139f5f461464b4575882006d6a44cbb03c",
+        "bytes": 9669,
+        "integrity": "sha512-Oq1bLqisTyK3TSCXpPbT4sdeYNdmyZJv1LxpEm2vu1ZhK89kSE5YXwZc3cWk0MagGaKriBh9mCFbVGtO+vY29A=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-stream-http-3.2.0-LICENSE"
+      ]
+    },
+    {
+      "name": "string_decoder",
+      "version": "1.1.1",
+      "license": "MIT",
+      "source": "git://github.com/nodejs/string_decoder.git",
+      "lockKeys": [
+        "browserify-sign/readable-stream/string_decoder",
+        "ripemd160/hash-base/readable-stream/string_decoder"
+      ],
+      "archive": {
+        "name": "string_decoder-1.1.1.tgz",
+        "url": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz",
+        "sha256": "af8262434508fa8292407f7fef4690d19eabb73387ca230b41f2a1155216963a",
+        "bytes": 4831,
+        "integrity": "sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-string_decoder-1.1.1-LICENSE"
+      ]
+    },
+    {
+      "name": "string_decoder",
+      "version": "1.3.0",
+      "license": "MIT",
+      "source": "git://github.com/nodejs/string_decoder.git",
+      "lockKeys": [
+        "string_decoder"
+      ],
+      "archive": {
+        "name": "string_decoder-1.3.0.tgz",
+        "url": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz",
+        "sha256": "7d036900940345e423538371ae45b23bfaf4b454bc398c6ba604063b0597b3ad",
+        "bytes": 4622,
+        "integrity": "sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-string_decoder-1.3.0-LICENSE"
+      ]
+    },
+    {
+      "name": "to-buffer",
+      "version": "1.2.2",
+      "license": "MIT",
+      "source": "https://github.com/browserify/to-buffer.git",
+      "lockKeys": [
+        "to-buffer"
+      ],
+      "archive": {
+        "name": "to-buffer-1.2.2.tgz",
+        "url": "https://registry.npmjs.org/to-buffer/-/to-buffer-1.2.2.tgz",
+        "sha256": "fb7f547d563da95ad5f6ce742e28defe340ed78dfd6a0751cec3c9a441bbe73c",
+        "bytes": 5694,
+        "integrity": "sha512-db0E3UJjcFhpDhAF4tLo03oli3pwl3dbnzXOUIlRKrp+ldk/VUxzpWYZENsw2SZiuBjHAk7DfB0VU7NKdpb6sw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-to-buffer-1.2.2-LICENSE"
+      ]
+    },
+    {
+      "name": "typed-array-buffer",
+      "version": "1.0.3",
+      "license": "MIT",
+      "source": "git+https://github.com/inspect-js/typed-array-buffer.git",
+      "lockKeys": [
+        "typed-array-buffer"
+      ],
+      "archive": {
+        "name": "typed-array-buffer-1.0.3.tgz",
+        "url": "https://registry.npmjs.org/typed-array-buffer/-/typed-array-buffer-1.0.3.tgz",
+        "sha256": "0feb415846d1ae52a89710494bfbabdef311988d9a239a29fa917d6663e561ad",
+        "bytes": 5117,
+        "integrity": "sha512-nAYYwfY3qnzX30IkA6AQZjVbtK6duGontcQm1WSG1MD94YLqK0515GNApXkoxKOWMusVssAHWLh9SeaoefYFGw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-typed-array-buffer-1.0.3-LICENSE"
+      ]
+    },
+    {
+      "name": "util-deprecate",
+      "version": "1.0.2",
+      "license": "MIT",
+      "source": "git://github.com/TooTallNate/util-deprecate.git",
+      "lockKeys": [
+        "util-deprecate"
+      ],
+      "archive": {
+        "name": "util-deprecate-1.0.2.tgz",
+        "url": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz",
+        "sha256": "79a1de983c1b393180c47456d6b73caab278a00ea6e37d5c6675f2dcdec2a3e5",
+        "bytes": 2246,
+        "integrity": "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-util-deprecate-1.0.2-LICENSE"
+      ]
+    },
+    {
+      "name": "util",
+      "version": "0.12.5",
+      "license": "MIT",
+      "source": "git://github.com/browserify/node-util",
+      "lockKeys": [
+        "util"
+      ],
+      "archive": {
+        "name": "util-0.12.5.tgz",
+        "url": "https://registry.npmjs.org/util/-/util-0.12.5.tgz",
+        "sha256": "d3b9dac1449f7d6b6995355f5cc73179fec7b90bfa8967ff7d3c0654525ab282",
+        "bytes": 9981,
+        "integrity": "sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-util-0.12.5-LICENSE"
+      ]
+    },
+    {
+      "name": "which-typed-array",
+      "version": "1.1.19",
+      "license": "MIT",
+      "source": "git://github.com/inspect-js/which-typed-array.git",
+      "lockKeys": [
+        "which-typed-array"
+      ],
+      "archive": {
+        "name": "which-typed-array-1.1.19.tgz",
+        "url": "https://registry.npmjs.org/which-typed-array/-/which-typed-array-1.1.19.tgz",
+        "sha256": "aaccea91985a6e1731f84192d4682f474aea76f64a210982576e488732b0ad3f",
+        "bytes": 12962,
+        "integrity": "sha512-rEvr90Bck4WZt9HHFC4DJMsjvu7x+r6bImz0/BrbWb7A2djJ8hnZMrWnHo9F8ssv0OMErasDhftrfROTyqSDrw=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-which-typed-array-1.1.19-LICENSE"
+      ]
+    },
+    {
+      "name": "xtend",
+      "version": "4.0.2",
+      "license": "MIT",
+      "source": "git://github.com/Raynos/xtend.git",
+      "lockKeys": [
+        "xtend"
+      ],
+      "archive": {
+        "name": "xtend-4.0.2.tgz",
+        "url": "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz",
+        "sha256": "bd22a01d43c799be7bb53dfa9e775b132045e39525e51efb977528a00041ba48",
+        "bytes": 2529,
+        "integrity": "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ=="
+      },
+      "noticeFiles": [
+        "upstream/bun-polyfill-xtend-4.0.2-LICENSE"
+      ]
+    }
+  ],
+  "inTreeNoticeFiles": [
+    "upstream/bun-polyfill-in-tree-buffer.js-header.txt",
+    "upstream/bun-polyfill-in-tree-net.js-header.txt",
+    "upstream/bun-polyfill-in-tree-path.js-header.txt",
+    "upstream/bun-polyfill-in-tree-url.js-header.txt",
+    "upstream/bun-polyfill-in-tree-util.js-header.txt",
+    "upstream/bun-polyfill-in-tree-vendor--base64-js.js-header.txt",
+    "upstream/bun-polyfill-in-tree-vendor--ieee754.js-header.txt"
+  ]
+}

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0c1116" />
+    <title>InstantCAD · Local</title>
+    <style>
+      :root {
+        font:
+          13px system-ui,
+          sans-serif;
+        color-scheme: dark;
+        background: #0c1116;
+        color: #e7edf4;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      canvas {
+        width: 100vw;
+        height: 100dvh;
+        display: block;
+        touch-action: none;
+        outline: none;
+      }
+      header {
+        position: fixed;
+        top: 18px;
+        left: 20px;
+        right: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        pointer-events: none;
+      }
+      header strong {
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        font-size: 12px;
+      }
+      header span {
+        color: #91a4b7;
+        font-size: 11px;
+      }
+      nav {
+        margin-left: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        max-width: 100%;
+        gap: 8px;
+        pointer-events: auto;
+      }
+      button {
+        font: inherit;
+        border: 1px solid #ffffff26;
+        border-radius: 8px;
+        padding: 9px 12px;
+        color: #e7edf4;
+        background: #17212bdf;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #273746;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: wait;
+      }
+      dialog {
+        width: min(560px, 90vw);
+        max-height: 80vh;
+        border: 1px solid #ffffff26;
+        border-radius: 12px;
+        background: #17212b;
+        color: #e7edf4;
+      }
+      dialog::backdrop { background: #0009; }
+      dialog form { display: grid; gap: 12px; margin: 16px 0; }
+      dialog a { display: block; padding: 8px 0; color: #aacfff; overflow-wrap: anywhere; }
+      dialog input, dialog select { width: 100%; font: inherit; padding: 9px; }
+      #connect {
+        border-color: #d5825588;
+      }
+      #status {
+        position: fixed;
+        bottom: 22px;
+        left: 20px;
+        right: 20px;
+        color: #b5c5d3;
+        font-size: 12px;
+        pointer-events: none;
+        white-space: pre-wrap;
+        max-height: 30vh;
+        overflow: hidden;
+      }
+      #status[data-error="true"] {
+        color: #ffb9a5;
+      }
+      #hint {
+        position: fixed;
+        bottom: 48px;
+        left: 20px;
+        color: #667d91;
+        font-size: 11px;
+        pointer-events: none;
+      }
+      #name {
+        max-width: 28vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      @media (max-width: 640px) {
+        header {
+          left: 12px;
+          right: 12px;
+          gap: 5px;
+          flex-wrap: wrap;
+        }
+        header strong {
+          display: none;
+        }
+        header span {
+          display: none;
+        }
+        button {
+          padding: 8px;
+        }
+        #hint {
+          display: none;
+        }
+        #status {
+          left: 12px;
+          bottom: 16px;
+        }
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas
+      id="canvas"
+      tabindex="0"
+      aria-label="CAD model. Drag to orbit; right or Shift drag to pan; wheel to zoom; F to fit."
+    ></canvas>
+    <header>
+      <strong>INSTANTCAD</strong><span id="name">LOCAL WORKSPACE</span>
+      <nav>
+        <button id="connect">Connect folder</button
+        ><button id="build">Build example</button
+        ><button id="fit" title="Fit model (F)">Fit</button
+        ><button id="stop" hidden>Cancel</button>
+      </nav>
+    </header>
+    <div id="hint">
+      Drag orbit · right / Shift drag pan · wheel zoom · F fit · two fingers pan
+      / pinch
+    </div>
+    <div id="status" role="status">Opening local viewer…</div>
+    <script>
+      globalThis.ASSETS = __ASSETS__;
+    </script>
+    <script type="module" src="__MAIN__"></script>
+  </body>
+</html>

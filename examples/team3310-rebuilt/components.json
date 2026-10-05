@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "evidence": "Pinned assets/robot/catalog.json, config/devices.json, config/vision.json and actual team source; labels establish identity, not calibrated material properties",
+  "components": [
+    {"family":"swerve", "vendor":"WCP", "model":"Swerve X2", "evidence":"WCP-1705/1707/1708/1710/1712/1713/1721 component labels", "status":"CAD-derived", "verify":"Exact variant, physical gear train, active TunerConstants and offsets"},
+    {"family":"drive-wheel", "vendor":"WCP", "model":"X2 Molded Wheel", "prototype":"x2-molded-wheel-e2a6bdccb3d5", "status":"CAD-derived", "verify":"Finished rolling radius, material/traction and wear; do not substitute a Colson or treaded aluminum wheel implicitly"},
+    {"family":"mechanism-wheel", "model":"2 inch Stealth Wheel, 40A, 1/2 inch hex bore", "prototype":"2-stealth-wheel-40a-1-2-hex-bore-079e865fd782", "status":"CAD-label", "verify":"Actual installed part and contact model"},
+    {"family":"mechanism-wheel", "model":"4 inch Stealth Wheel, 40A, 1/2 inch hex bore", "prototype":"4-stealth-wheel-40a-1-2-hex-bore-997621bd055b", "status":"CAD-label", "verify":"Actual installed part and contact model"},
+    {"family":"motors-and-control", "vendor":"CTRE/WCP", "model":"Phoenix 6 TalonFX, Kraken X60/X44", "status":"code-and-CAD", "verify":"Per-motor model, FOC behavior, CAN bus/ID, ratios, limits and orientation from active code"},
+    {"family":"feedback", "vendor":"CTRE", "model":"CANcoder / Pigeon2", "status":"code-and-bindings", "verify":"Zeros, signs, mounting frame and reset behavior"},
+    {"family":"vision", "vendor":"Limelight", "model":"LL4 nominal; rear comment also mentions LL3G", "status":"unresolved-variant", "verify":"Physical camera models and mounts; current front mount missing, other optics/latency/noise provisional"}
+  ]
+}

@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'edu.wpi.first.GradleRIO' version '2026.2.1'
+}
+java { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+repositories { mavenCentral(); maven { url 'https://maven.ctr-electronics.com/release/' } }
+dependencies {
+    implementation wpi.java.deps.wpilib()
+    implementation wpi.java.vendor.java()
+    nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
+    nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
+    simulationRelease wpi.sim.enableRelease()
+}
+apply from: '.cadcove/bridge/instantcad.gradle'
+sourceSets.main.java.srcDir('vendor/limelight')
+processResources { from('vendor/limelight/LICENSE') { into 'META-INF/licenses/limelight-helpers' } }
+wpi.java.debugJni=false
+jar {
+    archiveFileName='robot.jar'
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest('frc.robot.Main')
+    duplicatesStrategy=DuplicatesStrategy.EXCLUDE
+}
+wpi.java.configureExecutableTasks(jar)
+// Desktop-only teaching project: intentionally has no roboRIO deploy target.

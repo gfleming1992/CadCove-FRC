@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "team3310-rebuilt",
+  "role": "primary-worked-example",
+  "name": "Amarillo on the 2026 REBUILT field",
+  "robot": {
+    "name": "BHR-2026-000 AMARILLO",
+    "cadDirectory": "assets/robot",
+    "sourceHash": "7f28584565cc1e725b559b18df88f2dcea0cdb3eda31995f867f1ae7efcc3674",
+    "codeUpstream": "https://github.com/Team3310/2026",
+    "localCodeRevision": "27505f3e45ea3eab76d3015794dbf60be2b7e440",
+    "codeDirectory": "vendor/team3310-2026",
+    "bindings": "config/robot-bindings.json",
+    "devices": "config/devices.json",
+    "vision": "config/vision.json"
+  },
+  "field": {
+    "cadDirectory": "assets/fields/2026",
+    "sourceHash": "2ad90e42f2c2db0fab5b22bb65aa0851089e414d568d4ebd127624fa230c7671",
+    "seasonDescriptor": "seasons/2026/season.json",
+    "observer": "rebuilt-2026",
+    "scope": "Implemented scoring subset; consult observer capabilities, not a full official match certification"
+  },
+  "replacement": {
+    "robot": [
+      "CAD source/prototypes/occurrences",
+      "physical body/joint/motor bindings",
+      "actual team robot source/JAR/vendor dependencies",
+      "device registry and calibration ledger"
+    ],
+    "field": [
+      "CAD and collision geometry",
+      "coordinate origin and AprilTags",
+      "season knowledge pack",
+      "SeasonPlugin and scenarios"
+    ],
+    "rebuild": "Rebuild world and scene bindings with the new source hashes, then audit and commission. Swapping a directory alone is insufficient."
+  },
+  "distribution": {
+    "mode": "optional-platform-content-pack",
+    "includedInCore": false,
+    "publicRedistributionReady": false,
+    "reason": "Team code/CAD and FIRST asset redistribution permission must be established independently. No large team assets or SDK binaries enter the generic extension/source export.",
+    "extensionCommand": "cadcove.example.play",
+    "exampleCommand": "cadcove example-create --workspace NEW_DIRECTORY"
+  },
+  "practiceInput": {
+    "driverPort": 1
+  },
+  "runtime": {
+    "controlSource": "driverstation",
+    "driverStation": "gui"
+  }
+}

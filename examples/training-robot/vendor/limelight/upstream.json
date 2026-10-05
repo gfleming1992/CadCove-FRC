@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/LimelightVision/limelightlib-wpijava",
+  "revision": "523dfe07e8ac6a0ae7de2f5b5054981b0ab25148",
+  "version": "1.14",
+  "modified": false,
+  "files": {
+    "LimelightHelpers.java": "12cc2979febd29660f14c4cd4026e10a4ecaeb676287cfd09e539b5bbb3464d4",
+    "LICENSE": "eb65dbb1270694d8dd927a0aafd5de15c4ada01268d5fd8dafb634dc8334d1e1"
+  }
+}

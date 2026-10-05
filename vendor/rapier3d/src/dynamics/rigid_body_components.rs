@@ -1,0 +1,1646 @@
+#[cfg(doc)]
+use super::IntegrationParameters;
+use crate::alloc_prelude::*;
+use crate::control::PdErrors;
+#[cfg(doc)]
+use crate::control::PidController;
+use crate::dynamics::MassProperties;
+use crate::geometry::{
+    ColliderChanges, ColliderHandle, ColliderMassProps, ColliderParent, ColliderPosition,
+    ColliderSet, ColliderShape, ModifiedColliders,
+};
+use crate::math::{AngVector, AngularInertia, Pose, Real, Rotation, Vector};
+use crate::utils::{
+    AngularInertiaOps, CrossProduct, DotProduct, PoseOps, ScalarType, SimdRealCopy,
+};
+use num::Zero;
+#[cfg(feature = "dim2")]
+use parry::math::Rot2;
+
+/// The type of a body, governing the way it is affected by external forces.
+#[deprecated(note = "renamed as RigidBodyType")]
+pub type BodyStatus = RigidBodyType;
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+/// The type of a rigid body, determining how it responds to forces and movement.
+pub enum RigidBodyType {
+    /// Fully simulated - responds to forces, gravity, and collisions.
+    ///
+    /// Use for: Falling objects, projectiles, physics-based characters, anything that should
+    /// behave realistically under physics simulation.
+    Dynamic = 0,
+
+    /// Never moves - has infinite mass and is unaffected by anything.
+    ///
+    /// Use for: Static level geometry, walls, floors, terrain, buildings.
+    Fixed = 1,
+
+    /// Controlled by setting next position - pushes but isn't pushed.
+    ///
+    /// You control this by setting where it should be next frame. Rapier computes the
+    /// velocity needed to get there. The body can push dynamic bodies but nothing can
+    /// push it back (one-way interaction).
+    ///
+    /// Use for: Animated platforms, objects controlled by external animation systems.
+    KinematicPositionBased = 2,
+
+    /// Controlled by setting velocity - pushes but isn't pushed.
+    ///
+    /// You control this by setting its velocity directly. It moves predictably regardless
+    /// of what it hits. Can push dynamic bodies but nothing can push it back (one-way interaction).
+    ///
+    /// Use for: Moving platforms, elevators, doors, player-controlled characters (when you want
+    /// direct control rather than physics-based movement).
+    KinematicVelocityBased = 3,
+
+    /// The proxy rigid body of a soft-body cluster, created internally, one per cluster, by
+    /// [`crate::dynamics::SoftBodySet::add_cluster`]; never built directly. Pose, velocity and mass
+    /// derive from the particles (setters, collider masses ignored); removal removes its cluster.
+    SoftFrame = 4,
+    // Semikinematic, // A kinematic that performs automatic CCD with the fixed environment to avoid traversing it?
+    // Disabled,
+}
+
+impl RigidBodyType {
+    /// Is this rigid-body fixed (i.e. cannot move)?
+    pub fn is_fixed(self) -> bool {
+        self == RigidBodyType::Fixed
+    }
+
+    /// Is this rigid-body dynamic (i.e. can move and be affected by forces)?
+    ///
+    /// Soft-frame proxies count as dynamic: they move, have (derived) mass, and take part in
+    /// every dynamic interaction.
+    pub fn is_dynamic(self) -> bool {
+        self == RigidBodyType::Dynamic || self == RigidBodyType::SoftFrame
+    }
+
+    /// Is this rigid-body the proxy of a soft-body cluster?
+    pub fn is_soft_frame(self) -> bool {
+        self == RigidBodyType::SoftFrame
+    }
+
+    /// Is this rigid-body kinematic (i.e. can move but is unaffected by forces)?
+    pub fn is_kinematic(self) -> bool {
+        self == RigidBodyType::KinematicPositionBased
+            || self == RigidBodyType::KinematicVelocityBased
+    }
+
+    /// Is this rigid-body a dynamic rigid-body or a kinematic rigid-body?
+    ///
+    /// This method is mostly convenient internally where kinematic and dynamic rigid-body
+    /// are subject to the same behavior.
+    pub fn is_dynamic_or_kinematic(self) -> bool {
+        self != RigidBodyType::Fixed
+    }
+}
+
+bitflags::bitflags! {
+    #[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+    #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+    /// Flags describing how the rigid-body has been modified by the user.
+    pub struct RigidBodyChanges: u32 {
+        /// Flag indicating that this rigid-body is in the modified rigid-body set.
+        const IN_MODIFIED_SET = 1 << 0;
+        /// Flag indicating that the `RigidBodyPosition` component of this rigid-body has been modified.
+        const POSITION    = 1 << 1;
+        /// Flag indicating that the `RigidBodyActivation` component of this rigid-body has been modified.
+        const SLEEP       = 1 << 2;
+        /// Flag indicating that the `RigidBodyColliders` component of this rigid-body has been modified.
+        const COLLIDERS   = 1 << 3;
+        /// Flag indicating that the `RigidBodyType` component of this rigid-body has been modified.
+        const TYPE        = 1 << 4;
+        /// Flag indicating that the `RigidBodyDominance` component of this rigid-body has been modified.
+        const DOMINANCE   = 1 << 5;
+        /// Flag indicating that the local mass-properties of this rigid-body must be recomputed.
+        const LOCAL_MASS_PROPERTIES = 1 << 6;
+        /// Flag indicating that the rigid-body was enabled or disabled.
+        const ENABLED_OR_DISABLED = 1 << 7;
+    }
+}
+
+impl Default for RigidBodyChanges {
+    fn default() -> Self {
+        RigidBodyChanges::empty()
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Clone, Debug, Copy, PartialEq)]
+/// The position of this rigid-body.
+pub struct RigidBodyPosition {
+    /// The world-space position of the rigid-body.
+    pub position: Pose,
+    /// The next position of the rigid-body.
+    ///
+    /// At the beginning of the timestep, and when the
+    /// timestep is complete we must have position == next_position
+    /// except for position-based kinematic bodies.
+    ///
+    /// The next_position is updated after the velocity and position
+    /// resolution. Then it is either validated (ie. we set position := set_position)
+    /// or clamped by CCD.
+    pub next_position: Pose,
+}
+
+impl Default for RigidBodyPosition {
+    fn default() -> Self {
+        Self {
+            position: Pose::IDENTITY,
+            next_position: Pose::IDENTITY,
+        }
+    }
+}
+
+impl RigidBodyPosition {
+    /// Computes the velocity need to travel from `self.position` to `self.next_position` in
+    /// a time equal to `1.0 / inv_dt`.
+    #[must_use]
+    pub fn interpolate_velocity(&self, inv_dt: Real, local_com: Vector) -> RigidBodyVelocity<Real> {
+        let pose_err = self.pose_errors(local_com);
+        RigidBodyVelocity {
+            linvel: pose_err.linear * inv_dt,
+            angvel: pose_err.angular * inv_dt,
+        }
+    }
+
+    /// Compute new positions after integrating the given forces and velocities.
+    ///
+    /// This uses a symplectic Euler integration scheme.
+    #[must_use]
+    pub fn integrate_forces_and_velocities(
+        &self,
+        dt: Real,
+        forces: &RigidBodyForces,
+        vels: &RigidBodyVelocity<Real>,
+        mprops: &RigidBodyMassProps,
+    ) -> Pose {
+        let new_vels = forces.integrate(dt, vels, mprops);
+        let local_com = mprops.local_mprops.local_com;
+        new_vels.integrate(dt, &self.position, &local_com)
+    }
+
+    /// Computes the difference between [`Self::next_position`] and [`Self::position`].
+    ///
+    /// This error measure can for example be used for interpolating the velocity between two poses,
+    /// or be given to the [`PidController`].
+    ///
+    /// Note that interpolating the velocity can be done more conveniently with
+    /// [`Self::interpolate_velocity`].
+    pub fn pose_errors(&self, local_com: Vector) -> PdErrors {
+        let com = self.position * local_com;
+        let shift = Pose::from_translation(com);
+        let dpos = shift.inverse() * self.next_position * self.position.inverse() * shift;
+
+        let angular;
+        #[cfg(feature = "dim2")]
+        {
+            angular = dpos.rotation.angle();
+        }
+        #[cfg(feature = "dim3")]
+        {
+            angular = dpos.rotation.to_scaled_axis();
+        }
+        let linear = dpos.translation;
+
+        PdErrors { linear, angular }
+    }
+}
+
+impl<T> From<T> for RigidBodyPosition
+where
+    Pose: From<T>,
+{
+    fn from(position: T) -> Self {
+        let position = position.into();
+        Self {
+            position,
+            next_position: position,
+        }
+    }
+}
+
+bitflags::bitflags! {
+    #[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+    #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+    /// Flags affecting the behavior of the constraints solver for a given contact manifold.
+    pub struct AxesMask: u8 {
+        /// The translational X axis.
+        const LIN_X = 1 << 0;
+        /// The translational Y axis.
+        const LIN_Y = 1 << 1;
+        /// The translational Z axis.
+        #[cfg(feature = "dim3")]
+        const LIN_Z = 1 << 2;
+        /// The rotational X axis.
+        #[cfg(feature = "dim3")]
+        const ANG_X = 1 << 3;
+        /// The rotational Y axis.
+        #[cfg(feature = "dim3")]
+        const ANG_Y = 1 << 4;
+        /// The rotational Z axis.
+        const ANG_Z = 1 << 5;
+    }
+}
+
+impl Default for AxesMask {
+    fn default() -> Self {
+        AxesMask::empty()
+    }
+}
+
+bitflags::bitflags! {
+    #[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+    #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+    /// Flags that lock specific movement axes to prevent translation or rotation.
+    ///
+    /// Use this to constrain body movement to specific directions/axes. Common uses:
+    /// - **2D games in 3D**: Lock Z translation and X/Y rotation to keep everything in the XY plane
+    /// - **Upright characters**: Lock rotations to prevent tipping over
+    /// - **Sliding objects**: Lock rotation while allowing translation
+    /// - **Spinning objects**: Lock translation while allowing rotation
+    ///
+    /// # Example
+    /// ```
+    /// # use rapier3d::prelude::*;
+    /// # let mut bodies = RigidBodySet::new();
+    /// # let body_handle = bodies.insert(RigidBodyBuilder::dynamic());
+    /// # let body = bodies.get_mut(body_handle).unwrap();
+    /// // Character that can't tip over (rotation locked, but can move)
+    /// body.set_locked_axes(LockedAxes::ROTATION_LOCKED, true);
+    ///
+    /// // Object that slides but doesn't rotate
+    /// body.set_locked_axes(LockedAxes::ROTATION_LOCKED, true);
+    ///
+    /// // 2D game in 3D engine (lock Z movement and X/Y rotation)
+    /// body.set_locked_axes(
+    ///     LockedAxes::TRANSLATION_LOCKED_Z |
+    ///     LockedAxes::ROTATION_LOCKED_X |
+    ///     LockedAxes::ROTATION_LOCKED_Y,
+    ///     true
+    /// );
+    /// ```
+    pub struct LockedAxes: u8 {
+        /// Prevents movement along the X axis.
+        const TRANSLATION_LOCKED_X = 1 << 0;
+        /// Prevents movement along the Y axis.
+        const TRANSLATION_LOCKED_Y = 1 << 1;
+        /// Prevents movement along the Z axis.
+        const TRANSLATION_LOCKED_Z = 1 << 2;
+        /// Prevents all translational movement.
+        const TRANSLATION_LOCKED = Self::TRANSLATION_LOCKED_X.bits() | Self::TRANSLATION_LOCKED_Y.bits() | Self::TRANSLATION_LOCKED_Z.bits();
+        /// Prevents rotation around the X axis.
+        const ROTATION_LOCKED_X = 1 << 3;
+        /// Prevents rotation around the Y axis.
+        const ROTATION_LOCKED_Y = 1 << 4;
+        /// Prevents rotation around the Z axis.
+        const ROTATION_LOCKED_Z = 1 << 5;
+        /// Prevents all rotational movement.
+        const ROTATION_LOCKED = Self::ROTATION_LOCKED_X.bits() | Self::ROTATION_LOCKED_Y.bits() | Self::ROTATION_LOCKED_Z.bits();
+    }
+}
+
+/// Mass and angular inertia added to a rigid-body on top of its attached colliders’ contributions.
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum RigidBodyAdditionalMassProps {
+    /// Mass properties to be added as-is.
+    MassProps(MassProperties),
+    /// Mass to be added to the rigid-body. This will also automatically scale
+    /// the attached colliders total angular inertia to account for the added mass.
+    Mass(Real),
+}
+
+impl Default for RigidBodyAdditionalMassProps {
+    fn default() -> Self {
+        RigidBodyAdditionalMassProps::MassProps(MassProperties::default())
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Clone, Debug, PartialEq)]
+// #[repr(C)]
+/// The mass properties of a rigid-body.
+pub struct RigidBodyMassProps {
+    /// The world-space center of mass of the rigid-body.
+    pub world_com: Vector,
+    /// The inverse mass taking into account translation locking.
+    pub effective_inv_mass: Vector,
+    /// The square-root of the world-space inverse angular inertia tensor of the rigid-body,
+    /// taking into account rotation locking.
+    pub effective_world_inv_inertia: AngularInertia,
+    /// The local mass properties of the rigid-body.
+    pub local_mprops: MassProperties,
+    /// Flags for locking rotation and translation.
+    pub flags: LockedAxes,
+    /// Mass-properties of this rigid-bodies, added to the contributions of its attached colliders.
+    pub additional_local_mprops: Option<Box<RigidBodyAdditionalMassProps>>,
+    /// Conservative bound on the distance of any shape point from the local center of mass;
+    /// the sleep metric and the CCD fast-body criterion use it to turn angular velocity into
+    /// a farthest-point speed. Updated with the mass properties; `0` for collider-less bodies.
+    #[cfg_attr(feature = "serde-serialize", serde(default))]
+    pub(crate) max_extent: Real,
+}
+
+impl Default for RigidBodyMassProps {
+    fn default() -> Self {
+        Self {
+            flags: LockedAxes::empty(),
+            local_mprops: MassProperties::zero(),
+            additional_local_mprops: None,
+            world_com: Vector::ZERO,
+            effective_inv_mass: Vector::ZERO,
+            effective_world_inv_inertia: AngularInertia::zero(),
+            max_extent: 0.0,
+        }
+    }
+}
+
+impl From<LockedAxes> for RigidBodyMassProps {
+    fn from(flags: LockedAxes) -> Self {
+        Self {
+            flags,
+            ..Self::default()
+        }
+    }
+}
+
+impl From<MassProperties> for RigidBodyMassProps {
+    fn from(local_mprops: MassProperties) -> Self {
+        Self {
+            local_mprops,
+            ..Default::default()
+        }
+    }
+}
+
+impl RigidBodyMassProps {
+    /// The mass of the rigid-body.
+    #[must_use]
+    pub fn mass(&self) -> Real {
+        crate::utils::inv(self.local_mprops.inv_mass)
+    }
+
+    /// The effective mass (that takes the potential translation locking into account) of
+    /// this rigid-body.
+    #[must_use]
+    pub fn effective_mass(&self) -> Vector {
+        self.effective_inv_mass.map(crate::utils::inv)
+    }
+
+    /// The square root of the effective world-space angular inertia (that takes the potential rotation locking into account) of
+    /// this rigid-body.
+    #[must_use]
+    pub fn effective_angular_inertia(&self) -> AngularInertia {
+        #[allow(unused_mut)] // mut needed in 3D.
+        let mut ang_inertia = self.effective_world_inv_inertia;
+
+        // Make the matrix invertible.
+        #[cfg(feature = "dim3")]
+        {
+            if self.flags.contains(LockedAxes::ROTATION_LOCKED_X) {
+                ang_inertia.m11 = 1.0;
+            }
+            if self.flags.contains(LockedAxes::ROTATION_LOCKED_Y) {
+                ang_inertia.m22 = 1.0;
+            }
+            if self.flags.contains(LockedAxes::ROTATION_LOCKED_Z) {
+                ang_inertia.m33 = 1.0;
+            }
+        }
+
+        #[allow(unused_mut)] // mut needed in 3D.
+        let mut result = ang_inertia.inverse();
+
+        // Remove the locked axes again.
+        #[cfg(feature = "dim3")]
+        {
+            if self.flags.contains(LockedAxes::ROTATION_LOCKED_X) {
+                result.m11 = 0.0;
+            }
+            if self.flags.contains(LockedAxes::ROTATION_LOCKED_Y) {
+                result.m22 = 0.0;
+            }
+            if self.flags.contains(LockedAxes::ROTATION_LOCKED_Z) {
+                result.m33 = 0.0;
+            }
+        }
+
+        result
+    }
+
+    /// Recompute the mass-properties of this rigid-bodies based on its currently attached colliders.
+    pub fn recompute_mass_properties_from_colliders(
+        &mut self,
+        colliders: &ColliderSet,
+        attached_colliders: &RigidBodyColliders,
+        body_type: RigidBodyType,
+        position: &Pose,
+    ) {
+        if body_type.is_soft_frame() {
+            // A soft-frame proxy's mass properties are the cluster's reduced mass matrix,
+            // maintained by the soft-body sync; its colliders contribute none.
+            self.recompute_max_extent(colliders, attached_colliders);
+            return;
+        }
+        let added_mprops = self
+            .additional_local_mprops
+            .as_ref()
+            .map(|mprops| **mprops)
+            .unwrap_or_else(|| RigidBodyAdditionalMassProps::MassProps(MassProperties::default()));
+
+        self.local_mprops = MassProperties::default();
+
+        for handle in &attached_colliders.0 {
+            if let Some(co) = colliders.get(*handle) {
+                if co.is_enabled() {
+                    if let Some(co_parent) = co.parent {
+                        let to_add = co
+                            .mprops
+                            .mass_properties(&*co.shape)
+                            .transform_by(&co_parent.pos_wrt_parent);
+                        self.local_mprops += to_add;
+                    }
+                }
+            }
+        }
+
+        match added_mprops {
+            RigidBodyAdditionalMassProps::MassProps(mprops) => {
+                self.local_mprops += mprops;
+            }
+            RigidBodyAdditionalMassProps::Mass(mass) => {
+                let prev_mass = self.local_mprops.mass();
+                if prev_mass > 0.0 {
+                    self.local_mprops.set_mass(prev_mass + mass, true);
+                } else {
+                    // The colliders contribute no mass, so `set_mass` has no angular
+                    // inertia to rescale and the body could never rotate. Derive it (and the
+                    // CoM) from the shapes at unit density, rescaled to the additional mass.
+                    let mut unit_mprops = MassProperties::default();
+                    for handle in &attached_colliders.0 {
+                        if let Some(co) = colliders.get(*handle) {
+                            if co.is_enabled() {
+                                if let Some(co_parent) = co.parent {
+                                    unit_mprops += co
+                                        .shape
+                                        .mass_properties(1.0)
+                                        .transform_by(&co_parent.pos_wrt_parent);
+                                }
+                            }
+                        }
+                    }
+
+                    if unit_mprops.mass() > 0.0 {
+                        unit_mprops.set_mass(mass, true);
+                        self.local_mprops += unit_mprops;
+                    } else {
+                        // No shape to derive an inertia from: just set the mass.
+                        self.local_mprops.set_mass(mass, true);
+                    }
+                }
+            }
+        }
+
+        self.recompute_max_extent(colliders, attached_colliders);
+        self.update_world_mass_properties(body_type, position);
+    }
+
+    /// Updates [`Self::max_extent`] from the attached colliders' bounding
+    /// spheres, measured about the local center of mass.
+    pub(crate) fn recompute_max_extent(
+        &mut self,
+        colliders: &ColliderSet,
+        attached_colliders: &RigidBodyColliders,
+    ) {
+        let local_com = self.local_mprops.local_com;
+        let mut max_extent: Real = 0.0;
+        for handle in &attached_colliders.0 {
+            if let Some(co) = colliders.get(*handle) {
+                if co.is_enabled() {
+                    if let Some(co_parent) = co.parent {
+                        let sphere = co
+                            .shape
+                            .compute_local_bounding_sphere()
+                            .transform_by(&co_parent.pos_wrt_parent);
+                        let extent = (sphere.center - local_com).length() + sphere.radius;
+                        max_extent = max_extent.max(extent);
+                    }
+                }
+            }
+        }
+        self.max_extent = max_extent;
+    }
+
+    /// Conservative bound on the distance of any point of the body's shapes
+    /// from its local center of mass. `0` for collider-less bodies.
+    ///
+    /// Used by the sleep metric and the CCD fast-body criterion to turn angular
+    /// velocity into a farthest-point speed.
+    #[inline]
+    pub fn max_extent(&self) -> Real {
+        self.max_extent
+    }
+
+    /// Update the world-space mass properties of `self`, taking into account the new position.
+    pub fn update_world_mass_properties(&mut self, body_type: RigidBodyType, position: &Pose) {
+        if body_type.is_soft_frame() {
+            // A soft-frame proxy's effective mass properties are the cluster's reduced mass
+            // matrix, written directly by the soft-body sync: nothing to derive here.
+            return;
+        }
+        self.world_com = self.local_mprops.world_com(position);
+        self.effective_inv_mass = Vector::splat(self.local_mprops.inv_mass);
+        self.effective_world_inv_inertia = self.local_mprops.world_inv_inertia(&position.rotation);
+
+        // Take into account translation/rotation locking.
+        if !body_type.is_dynamic() || self.flags.contains(LockedAxes::TRANSLATION_LOCKED_X) {
+            self.effective_inv_mass.x = 0.0;
+        }
+
+        if !body_type.is_dynamic() || self.flags.contains(LockedAxes::TRANSLATION_LOCKED_Y) {
+            self.effective_inv_mass.y = 0.0;
+        }
+
+        #[cfg(feature = "dim3")]
+        if !body_type.is_dynamic() || self.flags.contains(LockedAxes::TRANSLATION_LOCKED_Z) {
+            self.effective_inv_mass.z = 0.0;
+        }
+
+        #[cfg(feature = "dim2")]
+        {
+            if !body_type.is_dynamic() || self.flags.contains(LockedAxes::ROTATION_LOCKED_Z) {
+                self.effective_world_inv_inertia = 0.0;
+            }
+        }
+        #[cfg(feature = "dim3")]
+        {
+            if !body_type.is_dynamic() || self.flags.contains(LockedAxes::ROTATION_LOCKED_X) {
+                self.effective_world_inv_inertia.m11 = 0.0;
+                self.effective_world_inv_inertia.m12 = 0.0;
+                self.effective_world_inv_inertia.m13 = 0.0;
+            }
+
+            if !body_type.is_dynamic() || self.flags.contains(LockedAxes::ROTATION_LOCKED_Y) {
+                self.effective_world_inv_inertia.m22 = 0.0;
+                self.effective_world_inv_inertia.m12 = 0.0;
+                self.effective_world_inv_inertia.m23 = 0.0;
+            }
+            if !body_type.is_dynamic() || self.flags.contains(LockedAxes::ROTATION_LOCKED_Z) {
+                self.effective_world_inv_inertia.m33 = 0.0;
+                self.effective_world_inv_inertia.m13 = 0.0;
+                self.effective_world_inv_inertia.m23 = 0.0;
+            }
+        }
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Clone, Debug, Copy, PartialEq)]
+/// The velocities of this rigid-body.
+// repr(C): `as_vector` reinterprets this struct as a flat vector with the
+// linear part first, so the field order must be guaranteed.
+#[repr(C)]
+pub struct RigidBodyVelocity<T: ScalarType> {
+    /// The linear velocity of the rigid-body.
+    pub linvel: T::Vector,
+    /// The angular velocity of the rigid-body.
+    pub angvel: T::AngVector,
+}
+
+impl Default for RigidBodyVelocity<Real> {
+    fn default() -> Self {
+        Self::zero()
+    }
+}
+
+impl RigidBodyVelocity<Real> {
+    /// Create a new rigid-body velocity component.
+    #[must_use]
+    #[cfg(feature = "dim2")]
+    pub fn new(linvel: Vector, angvel: AngVector) -> Self {
+        Self { linvel, angvel }
+    }
+
+    /// Create a new rigid-body velocity component.
+    #[must_use]
+    #[cfg(feature = "dim3")]
+    pub fn new(linvel: Vector, angvel: AngVector) -> Self {
+        Self {
+            linvel: Vector::new(linvel.x, linvel.y, linvel.z),
+            angvel: AngVector::new(angvel.x, angvel.y, angvel.z),
+        }
+    }
+
+    /// Converts a slice to a rigid-body velocity.
+    ///
+    /// The slice must contain at least 3 elements: the `slice[0..2]` contains
+    /// the linear velocity and the `slice[2]` contains the angular velocity.
+    #[must_use]
+    #[cfg(feature = "dim2")]
+    pub fn from_slice(slice: &[Real]) -> Self {
+        Self {
+            linvel: Vector::new(slice[0], slice[1]),
+            angvel: slice[2],
+        }
+    }
+
+    /// Converts a slice to a rigid-body velocity.
+    ///
+    /// The slice must contain at least 6 elements: the `slice[0..3]` contains
+    /// the linear velocity and the `slice[3..6]` contains the angular velocity.
+    #[must_use]
+    #[cfg(feature = "dim3")]
+    pub fn from_slice(slice: &[Real]) -> Self {
+        Self {
+            linvel: Vector::new(slice[0], slice[1], slice[2]),
+            angvel: AngVector::new(slice[3], slice[4], slice[5]),
+        }
+    }
+
+    /// Velocities set to zero.
+    #[must_use]
+    pub fn zero() -> Self {
+        Self {
+            linvel: Default::default(),
+            angvel: Default::default(),
+        }
+    }
+
+    /// Are both the linear and angular velocities finite (neither NaN nor infinite)?
+    #[must_use]
+    pub fn is_finite(&self) -> bool {
+        self.linvel.is_finite() && self.angvel.is_finite()
+    }
+
+    /// This velocity seen as a slice.
+    ///
+    /// The linear part is stored first.
+    #[inline]
+    pub fn as_slice(&self) -> &[Real] {
+        self.as_vector().as_slice()
+    }
+
+    /// This velocity seen as a mutable slice.
+    ///
+    /// The linear part is stored first.
+    #[inline]
+    pub fn as_mut_slice(&mut self) -> &mut [Real] {
+        self.as_vector_mut().as_mut_slice()
+    }
+
+    /// This velocity seen as a vector.
+    ///
+    /// The linear part is stored first.
+    #[inline]
+    #[cfg(feature = "dim2")]
+    pub fn as_vector(&self) -> &na::Vector3<Real> {
+        unsafe { core::mem::transmute(self) }
+    }
+
+    /// This velocity seen as a mutable vector.
+    ///
+    /// The linear part is stored first.
+    #[inline]
+    #[cfg(feature = "dim2")]
+    pub fn as_vector_mut(&mut self) -> &mut na::Vector3<Real> {
+        unsafe { core::mem::transmute(self) }
+    }
+
+    /// This velocity seen as a vector.
+    ///
+    /// The linear part is stored first.
+    #[inline]
+    #[cfg(feature = "dim3")]
+    pub fn as_vector(&self) -> &na::Vector6<Real> {
+        unsafe { core::mem::transmute(self) }
+    }
+
+    /// This velocity seen as a mutable vector.
+    ///
+    /// The linear part is stored first.
+    #[inline]
+    #[cfg(feature = "dim3")]
+    pub fn as_vector_mut(&mut self) -> &mut na::Vector6<Real> {
+        unsafe { core::mem::transmute(self) }
+    }
+
+    /// Return `self` rotated by `rotation`.
+    #[must_use]
+    #[cfg(feature = "dim2")]
+    pub fn transformed(self, rotation: &Rotation) -> Self {
+        Self {
+            linvel: *rotation * self.linvel,
+            angvel: self.angvel,
+        }
+    }
+
+    /// Return `self` rotated by `rotation`.
+    #[must_use]
+    #[cfg(feature = "dim3")]
+    pub fn transformed(self, rotation: &Rotation) -> Self {
+        Self {
+            linvel: *rotation * self.linvel,
+            angvel: *rotation * self.angvel,
+        }
+    }
+
+    /// The approximate kinetic energy of this rigid-body.
+    ///
+    /// This approximation does not take the rigid-body's mass and angular inertia
+    /// into account. Some physics engines call this the "mass-normalized kinetic
+    /// energy".
+    #[must_use]
+    pub fn pseudo_kinetic_energy(&self) -> Real {
+        0.5 * (self.linvel.length_squared() + self.angvel.gdot(self.angvel))
+    }
+
+    /// The velocity of the given world-space point on this rigid-body.
+    #[must_use]
+    #[cfg(feature = "dim2")]
+    pub fn velocity_at_point(&self, point: Vector, world_com: Vector) -> Vector {
+        let dpt = point - world_com;
+        self.linvel + self.angvel.gcross(dpt)
+    }
+
+    /// The velocity of the given world-space point on this rigid-body.
+    #[must_use]
+    #[cfg(feature = "dim3")]
+    pub fn velocity_at_point(&self, point: Vector, world_com: Vector) -> Vector {
+        let dpt = point - world_com;
+        self.linvel + self.angvel.gcross(dpt)
+    }
+
+    /// Are these velocities exactly equal to zero?
+    #[must_use]
+    pub fn is_zero(&self) -> bool {
+        self.linvel == Vector::ZERO && self.angvel == AngVector::default()
+    }
+
+    /// The kinetic energy of this rigid-body.
+    #[must_use]
+    #[profiling::function]
+    pub fn kinetic_energy(&self, rb_mprops: &RigidBodyMassProps) -> Real {
+        let mut energy = (rb_mprops.mass() * self.linvel.length_squared()) / 2.0;
+
+        #[cfg(feature = "dim2")]
+        if !num::Zero::is_zero(&rb_mprops.effective_world_inv_inertia) {
+            let inertia = 1.0 / rb_mprops.effective_world_inv_inertia;
+            energy += inertia * self.angvel * self.angvel / 2.0;
+        }
+
+        #[cfg(feature = "dim3")]
+        if !rb_mprops.effective_world_inv_inertia.is_zero() {
+            let inertia = rb_mprops.effective_world_inv_inertia.inverse_unchecked();
+            energy += self.angvel.gdot(inertia * self.angvel) / 2.0;
+        }
+
+        energy
+    }
+
+    /// Applies an impulse at the center-of-mass of this rigid-body.
+    /// The impulse is applied right away, changing the linear velocity.
+    /// This does nothing on non-dynamic bodies.
+    pub fn apply_impulse(&mut self, rb_mprops: &RigidBodyMassProps, impulse: Vector) {
+        self.linvel += impulse * rb_mprops.effective_inv_mass;
+    }
+
+    /// Applies an angular impulse at the center-of-mass of this rigid-body.
+    /// The impulse is applied right away, changing the angular velocity.
+    /// This does nothing on non-dynamic bodies.
+    #[cfg(feature = "dim2")]
+    pub fn apply_torque_impulse(&mut self, rb_mprops: &RigidBodyMassProps, torque_impulse: Real) {
+        self.angvel += rb_mprops.effective_world_inv_inertia * torque_impulse;
+    }
+
+    /// Applies an angular impulse at the center-of-mass of this rigid-body.
+    /// The impulse is applied right away, changing the angular velocity.
+    /// This does nothing on non-dynamic bodies.
+    #[cfg(feature = "dim3")]
+    pub fn apply_torque_impulse(&mut self, rb_mprops: &RigidBodyMassProps, torque_impulse: Vector) {
+        self.angvel += rb_mprops.effective_world_inv_inertia * torque_impulse;
+    }
+
+    /// Applies an impulse at the given world-space point of this rigid-body.
+    /// The impulse is applied right away, changing the linear and/or angular velocities.
+    /// This does nothing on non-dynamic bodies.
+    #[cfg(feature = "dim2")]
+    pub fn apply_impulse_at_point(
+        &mut self,
+        rb_mprops: &RigidBodyMassProps,
+        impulse: Vector,
+        point: Vector,
+    ) {
+        let torque_impulse = (point - rb_mprops.world_com).perp_dot(impulse);
+        self.apply_impulse(rb_mprops, impulse);
+        self.apply_torque_impulse(rb_mprops, torque_impulse);
+    }
+
+    /// Applies an impulse at the given world-space point of this rigid-body.
+    /// The impulse is applied right away, changing the linear and/or angular velocities.
+    /// This does nothing on non-dynamic bodies.
+    #[cfg(feature = "dim3")]
+    pub fn apply_impulse_at_point(
+        &mut self,
+        rb_mprops: &RigidBodyMassProps,
+        impulse: Vector,
+        point: Vector,
+    ) {
+        let torque_impulse = (point - rb_mprops.world_com).cross(impulse);
+        self.apply_impulse(rb_mprops, impulse);
+        self.apply_torque_impulse(rb_mprops, torque_impulse);
+    }
+}
+
+impl<T: ScalarType> RigidBodyVelocity<T> {
+    /// Returns the update velocities after applying the given damping.
+    #[must_use]
+    pub fn apply_damping(&self, dt: T, damping: &RigidBodyDamping<T>) -> Self {
+        let one = T::one();
+        RigidBodyVelocity {
+            linvel: self.linvel * (one / (one + dt * damping.linear_damping)),
+            angvel: self.angvel * (one / (one + dt * damping.angular_damping)),
+        }
+    }
+
+    /// Integrate the velocities in `self` to compute obtain new positions when moving from the given
+    /// initial position `init_pos`.
+    #[must_use]
+    #[inline]
+    #[allow(clippy::let_and_return)] // Keeping `result` binding for potential renormalization
+    pub fn integrate(&self, dt: T, init_pos: &T::Pose, local_com: &T::Vector) -> T::Pose {
+        let com = *init_pos * *local_com;
+        let result = init_pos
+            .append_translation(-com)
+            .append_rotation(self.angvel * dt)
+            .append_translation(com + self.linvel * dt);
+        // TODO: is renormalization really useful?
+        // result.rotation.renormalize_fast();
+        result
+    }
+}
+
+impl RigidBodyVelocity<Real> {
+    /// Same as [`Self::integrate`] but with the angular part linearized and the local
+    /// center-of-mass assumed to be zero.
+    #[inline]
+    #[cfg(feature = "dim2")]
+    pub(crate) fn integrate_linearized(
+        &self,
+        dt: Real,
+        translation: &mut Vector,
+        rotation: &mut Rotation,
+    ) {
+        let dang = self.angvel * dt;
+        let new_cos = rotation.re - dang * rotation.im;
+        let new_sin = rotation.im + dang * rotation.re;
+        *rotation = Rot2::from_cos_sin_unchecked(new_cos, new_sin);
+        // NOTE: don't use renormalize_fast since the linearization might cause more drift.
+        rotation.normalize_mut();
+        *translation += self.linvel * dt;
+    }
+
+    /// Same as [`Self::integrate`] but with the angular part linearized and the local
+    /// center-of-mass assumed to be zero.
+    #[inline]
+    #[cfg(feature = "dim3")]
+    pub(crate) fn integrate_linearized(
+        &self,
+        dt: Real,
+        translation: &mut Vector,
+        rotation: &mut Rotation,
+    ) {
+        // Rotations linearization is inspired from
+        // https://ahrs.readthedocs.io/en/latest/filters/angular.html (not using the matrix form).
+        let hang = self.angvel * (dt * 0.5);
+        // Quaternion identity + `hang` seen as a quaternion.
+        let id_plus_hang = Rotation::from_xyzw(hang.x, hang.y, hang.z, 1.0);
+        *rotation = id_plus_hang * *rotation;
+        *rotation = rotation.normalize();
+        *translation += self.linvel * dt;
+    }
+}
+
+impl core::ops::Mul<Real> for RigidBodyVelocity<Real> {
+    type Output = Self;
+
+    fn mul(self, rhs: Real) -> Self {
+        RigidBodyVelocity {
+            linvel: self.linvel * rhs,
+            angvel: self.angvel * rhs,
+        }
+    }
+}
+
+impl core::ops::Add<RigidBodyVelocity<Real>> for RigidBodyVelocity<Real> {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self {
+        RigidBodyVelocity {
+            linvel: self.linvel + rhs.linvel,
+            angvel: self.angvel + rhs.angvel,
+        }
+    }
+}
+
+impl core::ops::AddAssign<RigidBodyVelocity<Real>> for RigidBodyVelocity<Real> {
+    fn add_assign(&mut self, rhs: Self) {
+        self.linvel += rhs.linvel;
+        self.angvel += rhs.angvel;
+    }
+}
+
+impl core::ops::Sub<RigidBodyVelocity<Real>> for RigidBodyVelocity<Real> {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self {
+        RigidBodyVelocity {
+            linvel: self.linvel - rhs.linvel,
+            angvel: self.angvel - rhs.angvel,
+        }
+    }
+}
+
+impl core::ops::SubAssign<RigidBodyVelocity<Real>> for RigidBodyVelocity<Real> {
+    fn sub_assign(&mut self, rhs: Self) {
+        self.linvel -= rhs.linvel;
+        self.angvel -= rhs.angvel;
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Clone, Debug, Copy, PartialEq)]
+/// Damping factors to progressively slow down a rigid-body.
+pub struct RigidBodyDamping<T> {
+    /// Damping factor for gradually slowing down the translational motion of the rigid-body.
+    pub linear_damping: T,
+    /// Damping factor for gradually slowing down the angular motion of the rigid-body.
+    pub angular_damping: T,
+}
+
+impl<T: SimdRealCopy> Default for RigidBodyDamping<T> {
+    fn default() -> Self {
+        Self {
+            linear_damping: T::zero(),
+            angular_damping: T::zero(),
+        }
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Clone, Debug, Copy, PartialEq)]
+/// The user-defined external forces applied to this rigid-body.
+pub struct RigidBodyForces {
+    /// Accumulation of external forces (only for dynamic bodies).
+    pub force: Vector,
+    /// Accumulation of external torques (only for dynamic bodies).
+    pub torque: AngVector,
+    /// Gravity is multiplied by this scaling factor before it's
+    /// applied to this rigid-body.
+    pub gravity_scale: Real,
+    /// Forces applied by the user.
+    pub user_force: Vector,
+    /// Torque applied by the user.
+    pub user_torque: AngVector,
+    /// Are gyroscopic forces enabled for this rigid-body?
+    #[cfg(feature = "dim3")]
+    pub gyroscopic_forces_enabled: bool,
+}
+
+impl Default for RigidBodyForces {
+    fn default() -> Self {
+        #[cfg(feature = "dim2")]
+        return Self {
+            force: Vector::ZERO,
+            torque: 0.0,
+            gravity_scale: 1.0,
+            user_force: Vector::ZERO,
+            user_torque: 0.0,
+        };
+
+        #[cfg(feature = "dim3")]
+        return Self {
+            force: Vector::ZERO,
+            torque: AngVector::ZERO,
+            gravity_scale: 1.0,
+            user_force: Vector::ZERO,
+            user_torque: AngVector::ZERO,
+            gyroscopic_forces_enabled: true,
+        };
+    }
+}
+
+impl RigidBodyForces {
+    /// Integrate these forces to compute new velocities.
+    #[must_use]
+    pub fn integrate(
+        &self,
+        dt: Real,
+        init_vels: &RigidBodyVelocity<Real>,
+        mprops: &RigidBodyMassProps,
+    ) -> RigidBodyVelocity<Real> {
+        let linear_acc = self.force * mprops.effective_inv_mass;
+        let angular_acc = mprops.effective_world_inv_inertia * self.torque;
+
+        RigidBodyVelocity {
+            linvel: init_vels.linvel + linear_acc * dt,
+            angvel: init_vels.angvel + angular_acc * dt,
+        }
+    }
+
+    /// Adds to `self` the gravitational force that would result in a gravitational acceleration
+    /// equal to `gravity`.
+    pub fn compute_effective_force_and_torque(&mut self, gravity: Vector, mass: Vector) {
+        self.force = self.user_force + gravity * mass * self.gravity_scale;
+        self.torque = self.user_torque;
+    }
+
+    /// Applies a force at the given world-space point of the rigid-body with the given mass properties.
+    pub fn apply_force_at_point(
+        &mut self,
+        rb_mprops: &RigidBodyMassProps,
+        force: Vector,
+        point: Vector,
+    ) {
+        self.user_force += force;
+        self.user_torque += (point - rb_mprops.world_com).gcross(force);
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Clone, Debug, Copy, PartialEq)]
+/// Information used for Continuous-Collision-Detection.
+pub struct RigidBodyCcd {
+    /// The distance used by the CCD solver to decide if a movement would
+    /// result in a tunnelling problem.
+    pub ccd_thickness: Real,
+    /// Is CCD active for this rigid-body?
+    ///
+    /// Set automatically for any **dynamic** body moving fast enough to tunnel (regardless of
+    /// `self.ccd_enabled`): it then sweeps fixed colliders, or all bodies if `ccd_enabled` is set too.
+    pub ccd_active: bool,
+    /// Is full ("bullet") CCD enabled for this rigid-body?
+    ///
+    /// Fast dynamic bodies always sweep *fixed* colliders; `true` upgrades this body to also
+    /// sweep kinematic and dynamic bodies.
+    pub ccd_enabled: bool,
+    /// The soft-CCD prediction distance for this rigid-body.
+    pub soft_ccd_prediction: Real,
+    /// Allow this body to exceed the angular speed cap.
+    ///
+    /// By default angular velocity is clamped each substep to ~45°/step to keep CCD reliable;
+    /// set `true` for bodies that must spin fast (e.g. wheels).
+    pub allow_fast_rotation: bool,
+}
+
+impl Default for RigidBodyCcd {
+    fn default() -> Self {
+        Self {
+            ccd_thickness: Real::MAX,
+            ccd_active: false,
+            ccd_enabled: false,
+            soft_ccd_prediction: 0.0,
+            allow_fast_rotation: false,
+        }
+    }
+}
+
+impl RigidBodyCcd {
+    /// The maximum velocity any point of any collider attached to this rigid-body
+    /// moving with the given velocity can have.
+    ///
+    /// `max_extent` is the body's farthest collider point distance from its center of
+    /// mass ([`RigidBodyMassProps::max_extent`]).
+    pub fn max_point_velocity(&self, vels: &RigidBodyVelocity<Real>, max_extent: Real) -> Real {
+        #[cfg(feature = "dim2")]
+        return vels.linvel.length() + vels.angvel.abs() * max_extent;
+        #[cfg(feature = "dim3")]
+        return vels.linvel.length() + vels.angvel.length() * max_extent;
+    }
+
+    /// Is this rigid-body moving fast enough so that it may cause a tunneling problem?
+    ///
+    /// The fast-body criterion: fast when the farthest point of its colliders can move more
+    /// than half the body’s thinnest extent (`ccd_thickness`) within one timestep.
+    pub fn is_moving_fast(
+        &self,
+        dt: Real,
+        vels: &RigidBodyVelocity<Real>,
+        forces: Option<(&RigidBodyForces, &RigidBodyMassProps)>,
+        max_extent: Real,
+    ) -> bool {
+        // Same velocity prediction as the CCD sweep: forces divided by the mass and inertia.
+        let max_point_velocity = if let Some((forces, mprops)) = forces {
+            self.max_point_velocity(&forces.integrate(dt, vels, mprops), max_extent)
+        } else {
+            self.max_point_velocity(vels, max_extent)
+        };
+
+        max_point_velocity * dt > Self::FAST_BODY_SAFETY_FACTOR * self.ccd_thickness
+    }
+
+    /// The fast-body safety factor: a body is fast when it can move more than half its
+    /// thinnest extent in one step.
+    pub const FAST_BODY_SAFETY_FACTOR: Real = 0.5;
+
+    /// The fast-body criterion evaluated on the actual solved motion of this step.
+    ///
+    /// `pos` must hold the solved `next_position`; the test uses the larger of the actual pose
+    /// delta and the velocity-based estimate.
+    pub fn is_moving_fast_with_next_position(
+        &self,
+        dt: Real,
+        vels: &RigidBodyVelocity<Real>,
+        pos: &RigidBodyPosition,
+        local_com: Vector,
+        max_extent: Real,
+    ) -> bool {
+        let com1 = pos.position * local_com;
+        let com2 = pos.next_position * local_com;
+
+        // Rotation contribution to the moved distance of the farthest point:
+        // 2D: |sin(Δθ)| · maxExtent; 3D: 2·|Δq.v| · maxExtent ≈ Δθ · maxExtent.
+        let delta_rot = pos.next_position.rotation * pos.position.rotation.inverse();
+        #[cfg(feature = "dim2")]
+        let angular_delta = delta_rot.sin().abs() * max_extent;
+        #[cfg(feature = "dim3")]
+        let angular_delta =
+            2.0 * Vector::new(delta_rot.x, delta_rot.y, delta_rot.z).length() * max_extent;
+
+        let max_delta_position = (com2 - com1).length() + angular_delta;
+        let max_velocity = self.max_point_velocity(vels, max_extent);
+        let max_motion = max_delta_position.max(max_velocity * dt);
+
+        max_motion > Self::FAST_BODY_SAFETY_FACTOR * self.ccd_thickness
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Clone, Debug, Copy, PartialEq, Eq, Hash)]
+/// Internal identifiers used by the physics engine.
+pub struct RigidBodyIds {
+    pub(crate) active_island_id: u32,
+    pub(crate) active_set_id: u32,
+    /// The persistent island this body belongs to ([`crate::dynamics::INVALID_ISLAND`] for fixed
+    /// or disabled bodies).
+    pub(crate) island_id: u32,
+    /// This body's index in its persistent island's `bodies` array (also its
+    /// union-find node id during an island split).
+    pub(crate) island_index: u32,
+}
+
+impl Default for RigidBodyIds {
+    fn default() -> Self {
+        Self {
+            active_island_id: u32::MAX,
+            active_set_id: u32::MAX,
+            island_id: crate::dynamics::INVALID_ISLAND,
+            island_index: u32::MAX,
+        }
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Default, Clone, Debug, PartialEq, Eq)]
+/// The set of colliders attached to this rigid-bodies.
+///
+/// This should not be modified manually unless you really know what
+/// you are doing (for example if you are trying to integrate Rapier
+/// to a game engine using its component-based interface).
+pub struct RigidBodyColliders(pub Vec<ColliderHandle>);
+
+impl RigidBodyColliders {
+    /// Detach a collider from this rigid-body.
+    pub fn detach_collider(
+        &mut self,
+        rb_changes: &mut RigidBodyChanges,
+        co_handle: ColliderHandle,
+    ) {
+        if let Some(i) = self.0.iter().position(|e| *e == co_handle) {
+            rb_changes.set(RigidBodyChanges::COLLIDERS, true);
+            self.0.swap_remove(i);
+        }
+    }
+
+    /// Attach a collider to this rigid-body.
+    pub fn attach_collider(
+        &mut self,
+        rb_type: RigidBodyType,
+        rb_changes: &mut RigidBodyChanges,
+        rb_ccd: &mut RigidBodyCcd,
+        rb_mprops: &mut RigidBodyMassProps,
+        rb_pos: &RigidBodyPosition,
+        co_handle: ColliderHandle,
+        co_pos: &mut ColliderPosition,
+        co_parent: &ColliderParent,
+        co_shape: &ColliderShape,
+        co_mprops: &ColliderMassProps,
+    ) {
+        rb_changes.set(RigidBodyChanges::COLLIDERS, true);
+
+        co_pos.0 = rb_pos.position * co_parent.pos_wrt_parent;
+        // Shapes the continuous phase never sweeps (meshes, heightfields, polylines, voxels)
+        // don't count toward CCD thickness: a trimesh's zero `ccd_thickness` would flag the body
+        // as fast every step for a sweep that never happens.
+        if !crate::dynamics::ccd::shape_never_ccd_swept(&**co_shape) {
+            rb_ccd.ccd_thickness = rb_ccd.ccd_thickness.min(co_shape.ccd_thickness());
+        }
+
+        self.0.push(co_handle);
+        // A soft-frame proxy's mass is derived from its cluster's particles: its colliders
+        // contribute none.
+        if !rb_type.is_soft_frame() {
+            let mass_properties = co_mprops
+                .mass_properties(&**co_shape)
+                .transform_by(&co_parent.pos_wrt_parent);
+            rb_mprops.local_mprops += mass_properties;
+            rb_mprops.update_world_mass_properties(rb_type, &rb_pos.position);
+        }
+    }
+
+    /// Update the positions of all the colliders attached to this rigid-body.
+    pub(crate) fn update_positions(
+        &self,
+        colliders: &mut ColliderSet,
+        modified_colliders: &mut ModifiedColliders,
+        parent_pos: &Pose,
+    ) {
+        for handle in &self.0 {
+            // NOTE: the ColliderParent component must exist if we enter this method.
+            // NOTE: currently, we are propagating the position even if the collider is disabled.
+            //       Is that the best behavior?
+            let co = colliders.index_mut_internal(*handle);
+            let new_pos = parent_pos * co.parent.as_ref().unwrap().pos_wrt_parent;
+
+            // Set the modification flag so we can benefit from the modification-tracking
+            // when updating the narrow-phase/broad-phase afterwards.
+            modified_colliders.push_once(*handle, co);
+
+            co.changes |= ColliderChanges::POSITION;
+            co.pos = ColliderPosition(new_pos);
+        }
+    }
+}
+
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+#[derive(Default, Clone, Debug, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+/// The dominance groups of a rigid-body.
+pub struct RigidBodyDominance(pub i8);
+
+impl RigidBodyDominance {
+    /// The actual dominance group of this rigid-body, after taking into account its type.
+    pub fn effective_group(&self, status: &RigidBodyType) -> i16 {
+        if status.is_dynamic_or_kinematic() {
+            self.0 as i16
+        } else {
+            i8::MAX as i16 + 1
+        }
+    }
+}
+
+/// Controls when a body goes to sleep (becomes inactive to save CPU).
+///
+/// ## Sleeping System
+///
+/// Bodies automatically sleep when they're at rest, dramatically improving performance
+/// in scenes with many inactive objects. Sleeping bodies are:
+/// - Excluded from simulation (no collision detection, no velocity integration)
+/// - Automatically woken when disturbed (hit by moving object, connected via joint)
+/// - Woken manually with `body.wake_up()` or `islands.wake_up()`
+///
+/// ## When to disable sleeping
+///
+/// Most bodies should sleep! Only disable if the body needs to stay active despite being still:
+/// - Bodies you frequently query for raycasts/contacts
+/// - Bodies with time-based behaviors while stationary
+///
+/// Use `RigidBodyBuilder::can_sleep(false)` or `RigidBodyActivation::cannot_sleep()`.
+#[derive(Copy, Clone, Debug, PartialEq)]
+#[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
+pub struct RigidBodyActivation {
+    /// Velocity threshold for sleeping (scaled by `length_unit`).
+    ///
+    /// Compared against the body's farthest-point speed (`|linvel| + |angvel| * max_extent`)
+    /// and against its farthest-point displacement rate (so solver position
+    /// corrections count as motion too). If negative, body never sleeps. Default: 0.05 units/second.
+    pub normalized_linear_threshold: Real,
+
+    /// Angular velocity threshold for sleeping (radians/second).
+    ///
+    /// For bodies with colliders, angular motion is folded into the point-velocity check of
+    /// `normalized_linear_threshold`; this raw threshold only applies to collider-less bodies.
+    /// If negative, body never sleeps. Default: 0.5 rad/s.
+    pub angular_threshold: Real,
+
+    /// How long the body must stay below the velocity threshold before sleeping (seconds).
+    ///
+    /// Default: 0.5 seconds.
+    pub time_until_sleep: Real,
+
+    /// Internal timer tracking how long body has been still.
+    pub time_since_can_sleep: Real,
+
+    /// Is this body currently sleeping?
+    pub sleeping: bool,
+
+    /// Pose at the previous step: the sleep check measures actual per-step displacement,
+    /// solver position corrections included (those never show up in the velocities).
+    pub(crate) sleep_prev_pose: Pose,
+}
+
+impl Default for RigidBodyActivation {
+    fn default() -> Self {
+        Self::active()
+    }
+}
+
+impl RigidBodyActivation {
+    /// The default linear velocity below which a body can be put to sleep.
+    ///
+    /// Default: `0.05` length units per second.
+    pub fn default_normalized_linear_threshold() -> Real {
+        0.05
+    }
+
+    /// The default angular velocity below which a body can be put to sleep.
+    pub fn default_angular_threshold() -> Real {
+        0.5
+    }
+
+    /// The amount of time the rigid-body must remain below it’s linear and angular velocity
+    /// threshold before falling to sleep.
+    ///
+    /// Default: half a second.
+    pub fn default_time_until_sleep() -> Real {
+        0.5
+    }
+
+    /// Create a new rb_activation status initialised with the default rb_activation threshold and is active.
+    pub fn active() -> Self {
+        RigidBodyActivation {
+            normalized_linear_threshold: Self::default_normalized_linear_threshold(),
+            angular_threshold: Self::default_angular_threshold(),
+            time_until_sleep: Self::default_time_until_sleep(),
+            time_since_can_sleep: 0.0,
+            sleeping: false,
+            sleep_prev_pose: Pose::IDENTITY,
+        }
+    }
+
+    /// Create a new rb_activation status initialised with the default rb_activation threshold and is inactive.
+    pub fn inactive() -> Self {
+        RigidBodyActivation {
+            normalized_linear_threshold: Self::default_normalized_linear_threshold(),
+            angular_threshold: Self::default_angular_threshold(),
+            time_until_sleep: Self::default_time_until_sleep(),
+            time_since_can_sleep: Self::default_time_until_sleep(),
+            sleeping: true,
+            sleep_prev_pose: Pose::IDENTITY,
+        }
+    }
+
+    /// Create a new activation status that prevents the rigid-body from sleeping.
+    pub fn cannot_sleep() -> Self {
+        RigidBodyActivation {
+            normalized_linear_threshold: -1.0,
+            angular_threshold: -1.0,
+            ..Self::active()
+        }
+    }
+
+    /// Returns `true` if the body is not asleep.
+    #[inline]
+    pub fn is_active(&self) -> bool {
+        !self.sleeping
+    }
+
+    /// Wakes up this rigid-body.
+    #[inline]
+    pub fn wake_up(&mut self, strong: bool) {
+        self.sleeping = false;
+
+        if strong {
+            self.time_since_can_sleep = 0.0;
+        }
+    }
+
+    /// Put this rigid-body to sleep.
+    #[inline]
+    pub fn sleep(&mut self) {
+        self.sleeping = true;
+        self.time_since_can_sleep = self.time_until_sleep;
+    }
+
+    /// Does this body have a sufficiently low kinetic energy for a long enough
+    /// duration to be eligible for sleeping?
+    pub fn is_eligible_for_sleep(&self) -> bool {
+        self.time_since_can_sleep >= self.time_until_sleep
+    }
+
+    pub(crate) fn update_energy(
+        &mut self,
+        body_type: RigidBodyType,
+        length_unit: Real,
+        sq_linvel: Real,
+        sq_angvel: Real,
+        max_extent: Real,
+        pose: &Pose,
+        dt: Real,
+    ) {
+        // A manual `RigidBody::sleep()` pins sleep eligibility until something wakes the
+        // body: the velocity/drift gates must not cancel it (a teleport right before
+        // sleeping trips the drift gate, keeping the body simulated while flagged asleep).
+        if self.sleeping {
+            self.time_since_can_sleep = self.time_until_sleep;
+            return;
+        }
+
+        let can_sleep = match body_type {
+            // A soft-frame proxy's pose is derived from its cluster's particles (fit noise
+            // included), so the drift rule applies to the fastest particle instead
+            // (`sq_linvel` is that speed squared, see `IslandManager::update_body_energy`).
+            RigidBodyType::SoftFrame => {
+                let linear_threshold = self.normalized_linear_threshold * length_unit;
+                self.normalized_linear_threshold >= 0.0
+                    && sq_linvel * 0.25 < linear_threshold * linear_threshold
+            }
+            RigidBodyType::Dynamic => {
+                let linear_threshold = self.normalized_linear_threshold * length_unit;
+                let prev_pose = core::mem::replace(&mut self.sleep_prev_pose, *pose);
+                let angular_ok = if max_extent > 0.0 {
+                    use crate::num::FloatConst;
+                    // Use a fixed angular threshold that unambiguously imply movement.
+                    // The position-based criteria will be more restrictive, but we keep
+                    // this for the rare case where the orientation’s periodicity would
+                    // make the pose drift estimate too approximate.
+                    self.angular_threshold >= 0.0
+                        && sq_angvel < Real::FRAC_PI_2() * Real::FRAC_PI_2()
+                } else {
+                    // Collider-less bodies have `max_extent == 0` so we need to take its
+                    // angular velocity into account since the pose delta cannot take its
+                    // rotation into account.
+                    sq_angvel < self.angular_threshold * self.angular_threshold.abs()
+                };
+
+                let drift = crate::geometry::relative_pose_drift(&prev_pose, pose, max_extent);
+                angular_ok && drift * 0.5 < linear_threshold * dt
+            }
+            RigidBodyType::KinematicPositionBased | RigidBodyType::KinematicVelocityBased => {
+                // Platforms only sleep if both velocities are exactly zero. If it’s not exactly
+                // zero, then the user really wants them to move.
+                sq_linvel == 0.0 && sq_angvel == 0.0
+            }
+            RigidBodyType::Fixed => true,
+        };
+
+        if can_sleep {
+            self.time_since_can_sleep += dt;
+        } else {
+            self.time_since_can_sleep = 0.0;
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::math::Real;
+
+    #[test]
+    fn heavy_body_under_gravity_is_not_moving_fast() {
+        let (dt, mass, extent) = (1.0 / 60.0, 1000.0, 0.5);
+        #[cfg(feature = "dim2")]
+        let local_mprops = MassProperties::new(Vector::ZERO, mass, 1.0);
+        #[cfg(feature = "dim3")]
+        let local_mprops = MassProperties::new(Vector::ZERO, mass, Vector::splat(1.0));
+        let mut mprops = RigidBodyMassProps::from(local_mprops);
+        mprops.update_world_mass_properties(RigidBodyType::Dynamic, &Pose::default());
+        let mut forces = RigidBodyForces::default();
+        forces.compute_effective_force_and_torque(Vector::Y * -9.81, Vector::splat(mass));
+        let ccd = RigidBodyCcd {
+            ccd_thickness: extent,
+            ..Default::default()
+        };
+
+        // Gravity alone moves a resting body by about 0.003 in one step, whatever its mass.
+        let resting = RigidBodyVelocity::default();
+        assert!(!ccd.is_moving_fast(dt, &resting, Some((&forces, &mprops)), extent));
+
+        let fast = RigidBodyVelocity {
+            linvel: Vector::X * 60.0,
+            ..Default::default()
+        };
+        assert!(ccd.is_moving_fast(dt, &fast, Some((&forces, &mprops)), extent));
+    }
+
+    #[test]
+    fn test_interpolate_velocity() {
+        // Interpolate and then integrate the velocity to see if
+        // the end positions match.
+        #[cfg(feature = "f32")]
+        let mut rng = oorandom::Rand32::new(0);
+        #[cfg(feature = "f64")]
+        let mut rng = oorandom::Rand64::new(0);
+
+        for i in -10..=10 {
+            let mult = i as Real;
+            let (local_com, curr_pos, next_pos);
+            #[cfg(feature = "dim2")]
+            {
+                local_com = Vector::new(rng.rand_float(), rng.rand_float());
+                curr_pos = Pose::new(
+                    Vector::new(rng.rand_float(), rng.rand_float()) * mult,
+                    rng.rand_float(),
+                );
+                next_pos = Pose::new(
+                    Vector::new(rng.rand_float(), rng.rand_float()) * mult,
+                    rng.rand_float(),
+                );
+            }
+            #[cfg(feature = "dim3")]
+            {
+                local_com = Vector::new(rng.rand_float(), rng.rand_float(), rng.rand_float());
+                curr_pos = Pose::new(
+                    Vector::new(rng.rand_float(), rng.rand_float(), rng.rand_float()) * mult,
+                    Vector::new(rng.rand_float(), rng.rand_float(), rng.rand_float()),
+                );
+                next_pos = Pose::new(
+                    Vector::new(rng.rand_float(), rng.rand_float(), rng.rand_float()) * mult,
+                    Vector::new(rng.rand_float(), rng.rand_float(), rng.rand_float()),
+                );
+            }
+
+            let dt = 0.016;
+            let rb_pos = RigidBodyPosition {
+                position: curr_pos,
+                next_position: next_pos,
+            };
+            let vel = rb_pos.interpolate_velocity(1.0 / dt, local_com);
+            let interp_pos = vel.integrate(dt, &curr_pos, &local_com);
+            approx::assert_relative_eq!(interp_pos, next_pos, epsilon = 1.0e-5);
+        }
+    }
+
+    /// Runs `steps` of `update_energy` on a body that only ever moves by `shift_per_step`
+    /// (zero velocity: the motion stands for solver position corrections).
+    fn creep(shift_per_step: Real, steps: usize, dt: Real) -> RigidBodyActivation {
+        let mut activation = RigidBodyActivation::active();
+        let mut shift = 0.0;
+
+        for _ in 0..steps {
+            shift += shift_per_step;
+            let pose = Pose::from_translation(Vector::X * shift);
+            activation.update_energy(RigidBodyType::Dynamic, 1.0, 0.0, 0.0, 1.0, &pose, dt);
+        }
+
+        activation
+    }
+
+    /// Runs `steps` of `update_energy` on a body pinned to one pose while reporting `linvel`,
+    /// like a body in a loaded stack whose contacts cancel its velocity again every step.
+    fn pinned_with_velocity(linvel: Real, steps: usize, dt: Real) -> RigidBodyActivation {
+        let mut activation = RigidBodyActivation::active();
+        let pose = Pose::from_translation(Vector::X * 3.0);
+
+        for _ in 0..steps {
+            activation.update_energy(
+                RigidBodyType::Dynamic,
+                1.0,
+                linvel * linvel,
+                0.0,
+                1.0,
+                &pose,
+                dt,
+            );
+        }
+
+        activation
+    }
+
+    #[test]
+    fn test_sleep_allows_pinned_body_with_residual_velocity() {
+        let dt = 1.0 / 60.0;
+        let threshold = RigidBodyActivation::default_normalized_linear_threshold();
+        let steps = (10.0 * RigidBodyActivation::default_time_until_sleep() / dt) as usize;
+
+        // A still body sleeps even while its velocity reads several times the threshold:
+        // that residual is the solver cancelling itself, not motion.
+        assert!(pinned_with_velocity(threshold * 5.0, steps, dt).is_eligible_for_sleep());
+    }
+
+    #[test]
+    fn test_sleep_gates_position_corrections() {
+        let dt = 1.0 / 60.0;
+        // The per-step displacement the sleep metric tolerates: the threshold, halved.
+        let budget = 2.0 * RigidBodyActivation::default_normalized_linear_threshold() * dt;
+        let steps = (10.0 * RigidBodyActivation::default_time_until_sleep() / dt) as usize;
+
+        // Creeping faster than the budget blocks sleep, however small the velocities are.
+        assert!(!creep(budget * 1.5, steps, dt).is_eligible_for_sleep());
+
+        // Creeping below it doesn't, no matter how long the body has been still.
+        assert!(creep(budget * 0.5, steps, dt).is_eligible_for_sleep());
+        assert!(creep(0.0, steps, dt).is_eligible_for_sleep());
+    }
+}

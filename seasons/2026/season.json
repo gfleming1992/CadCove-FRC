@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "id": "frc-2026-rebuilt",
+  "year": 2026,
+  "game": "REBUILT",
+  "language": "en",
+  "manualUrl": "https://firstfrc.blob.core.windows.net/frc2026/Manual/2026GameManual.pdf",
+  "updatesUrl": "https://firstfrc.blob.core.windows.net/frc2026/Manual/TeamUpdates/REBUILT_TeamUpdate-Combined.pdf",
+  "qaUrl": "https://frc-qa.firstinspires.org/",
+  "inspectionUrl": "https://firstfrc.blob.core.windows.net/frc2026/Manual/2026FRCInspectionChecklist.pdf",
+  "sourcePage": "https://www.firstinspires.org/resources/library/frc/season-materials",
+  "fieldSourcePage": "https://www.firstinspires.org/resources/library/frc/playing-field",
+  "checkedAt": "2026-10-01",
+  "distribution": "links-only; FIRST requests no re-hosting or redistribution of its posted content",
+  "notes": "URLs may change bytes. Imported documents must retain their own hash and revision. Field geometry, tag layout and SeasonPlugin selection remain explicit project configuration."
+}

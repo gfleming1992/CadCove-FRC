@@ -1,0 +1,9 @@
+[workspace]
+members = ["crates/sim-core"]
+resolver = "2"
+exclude = ["vendor/rapier3d", "vendor/glamx", "vendor/parry3d", "experiments/soft-fuel"]
+
+[patch.crates-io]
+rapier3d = { path = "vendor/rapier3d" }
+glamx = { path = "vendor/glamx" }
+parry3d = { path = "vendor/parry3d" }

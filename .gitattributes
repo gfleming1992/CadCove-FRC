@@ -1,0 +1,11 @@
+# Keep authored source consistent across Windows, macOS and Linux checkouts.
+# Source export and build records compare working files with their Git blobs.
+* text=auto eol=lf
+
+# These are exact upstream bytes with recorded hashes. Some notices use CRLF;
+# never normalize them or the hash-verified shared CAD/dependency exports.
+licenses/upstream/** -text
+vendor/** -text
+
+# Unified diff context lines intentionally contain a single space.
+*.patch whitespace=-blank-at-eol

@@ -1,7 +1,7 @@
 # Third-party release inventory
 
 Original CadCove code is MIT licensed under the repository's `LICENSE`, including
-the independently maintained browser CAD core (whose license is retained under
+the independently maintained CAD/viewer core (whose license is retained under
 `vendor/cad-core/LICENSE`). This does not relicense any third-party dependency,
 team robot assets, FIRST field/manual content, or the separate NativeCAD app.
 
@@ -15,9 +15,8 @@ permission to redistribute its binary.
 ## Scope and sources
 
 The inventory covers the locked Cargo dependency graph for the optimized native
-feature set (conservatively including build/platform dependencies), the browser
-CAD dependency closure, editor esbuild compiler/platform binary, compiled Bun
-runtime, and the separate OCCT WASM kernel. Robot programs, WPILib and vendor
+feature set (conservatively including build/platform dependencies), the bundled JavaScript CLI dependencies and compiled Bun runtime. Native
+CadQuery/OCCT are installed separately by the user. Robot programs, WPILib and vendor
 SDKs supplied by a team are not bundled or relicensed by this inventory.
 
 The installed training-example bundle contains the pinned official
@@ -44,42 +43,8 @@ its version/source and recording the new SHA-256; builds reject changed bytes.
 The Parry license restored into the vendored crate comes from its package VCS
 revision. Source-export policy includes this directory and the vendored license.
 
-The npm `occt-wasm` tooling declaration is MIT OR Apache-2.0. Its README declares
-compiled WASM output separately as LGPL-2.1-only. We therefore inventory two
-components, record the exact WASM digest, and preserve both the OCCT LGPL text
-and upstream exception document without substituting the wrapper's license.
-The source pin is OCCT commit `055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765`, the
-submodule recorded by `occt-wasm` tag `v5.3.2` at
-`648410061fd93f2c97c65b3401f9883faaa3699e`.
-
-`occt-source.json` pins the wrapper, kernel, RapidJSON, Emsdk and the exact
-Emscripten source archives. The Emscripten tree retains the driver, JavaScript
-runtime and C/C++ runtime sources separately from the SDK installer. The
-offline source-preparation tool preserves originals and records the exact
-RapidJSON compatibility patch and bounded build concurrency change. See
-[OCCT rebuild/replacement](../docs/OCCT-REBUILD.md). RapidJSON's full upstream
-license inventory is included separately from the OCCT and wrapper notices.
-Archive preparation is not proof of binary correspondence or completed review
-of Emscripten's embedded runtime libraries.
-The Emscripten 5.0.3 LICENSE, musl COPYRIGHT, and libc++, libc++abi, compiler-rt
-and libunwind notices are pinned to source commit
-`285c424dfa9e83b03cf8490c65ceadb7c45f28eb` and compared with the installed SDK.
-These preserve those runtime-library notices and exceptions; they do not close
-the remaining full-bundle source/notice review automatically.
-
-Five OCCT in-tree source components now preserve six additional embedded notice
-headers: DELABELLA (both implementation and header), FlexLexer, the DejaVu font,
-Halton sampler and Khronos platform header. `occt-source.json` lists their source
-paths and retained notices. Each notice has the verified kernel archive hash,
-entry and exact byte range in `upstream.json`; packaging validates that mapping
-and the retained text hash. These were extracted from the pinned archive, not
-copied from an unverified build checkout.
-
-This is a conservative source inventory. The qualified build disables the visualization
-module and FreeType; retaining those source notices does not claim their
-code/font data is linked into the WASM. DELABELLA is in the modeling mesh source.
-The six headers were found by a targeted permission-notice scan, not a complete
-file-level license audit. The remaining distribution-review gates stay open.
+The browser OCCT/WASM runtime and its build tooling have been removed. Native
+CadQuery/OCP dependencies are installed separately rather than bundled.
 
 Bun `1.4.2` corresponds to upstream commit
 `744846f844374847c902b5e7fd59b4342a51ef99`. Its upstream LICENSE.md lists additional
@@ -152,8 +117,6 @@ The inventory deliberately reports `releaseReady: false` while these remain:
 
 - Complete Bun's embedded-component notice inventory and provide/review the
   corresponding source and rebuild/relink materials for the compiled CLI.
-- Archive/review the matching OCCT WASM build sources, facade, submodule and
-  toolchain; document and verify the end-user replacement/rebuild workflow.
 - Review the complete resulting release bundle and publication identity.
 
 A final (non-prerelease) runtime version cannot be packaged while these gates

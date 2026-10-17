@@ -13,7 +13,13 @@ async function git(args) {
  if(code)throw Error(err);return Buffer.from(bytes);
 }
 const all=(await git(['ls-tree','-r','--name-only',revision])).toString().trim().split('\n');
-const selected=all.filter(f=>f.startsWith('src/')||f.startsWith('extensions/vscode/src/')||['LICENSE','index.html','package.json','docs/AGENT_WORKFLOW.md','docs/COMPANION-BOUNDARY.md','tests/vscode-host.test.js','tests/component-cache.test.js','tests/component-worker.test.js'].includes(f));
+const selected=all.filter(f=>f.startsWith('src/native/')||[
+ 'LICENSE','index.html','src/vscode-main.js','src/hosts/vscode.js',
+ 'src/core/viewer.js','src/core/assembly-viewer.js','src/core/assembly-capture.js',
+ 'src/core/scene-capture.js','src/core/mesh.js','src/core/revision.js','src/core/source-limits.js',
+ 'extensions/vscode/src/extension.js','extensions/vscode/src/project-files.js','extensions/vscode/src/step-source.js',
+ 'tests/vscode-host.test.js','tests/native-cad.test.js','tests/native-session.test.js','docs/NATIVE-CADQUERY.md'
+].includes(f));
 const files={};
 for(const file of selected){const bytes=await git(['show',`${revision}:${file}`]);const out=path.join(target,file);await mkdir(path.dirname(out),{recursive:true});await writeFile(out,bytes);files[file]=createHash('sha256').update(bytes).digest('hex');}
 await writeFile(path.join(target,'upstream.json'),JSON.stringify({schema:1,project:'instantcad-local',revision,policy:'Update upstream and regenerate; no downstream edits',files},null,2)+'\n');

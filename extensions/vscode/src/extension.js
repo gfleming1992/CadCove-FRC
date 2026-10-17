@@ -90,7 +90,7 @@ export function activate(context) {
     return selected.uri.fsPath;
   }
   const settings=cadProjectSettings;
-  const cad=activateCAD(context,{commandPrefix:'cadcove',viewType:'cadcove.model',outputName:'CadCove CAD',minimalUI:true,projectSettings:settings});
+  const cad=activateCAD(context,{commandPrefix:'cadcove',viewType:'cadcove.model',outputName:'CadCove CAD',minimalUI:true,nativeStep:true,projectSettings:settings});
   async function cli(args,root,timeout=30000){
     const executable=await ensureRuntime();trusted();
     try {const {stdout}=await execute(executable,args,{cwd:root,timeout,maxBuffer:2*1024*1024,windowsHide:true});return JSON.parse(stdout);}

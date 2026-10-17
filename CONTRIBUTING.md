@@ -7,7 +7,7 @@ do not assume the project license grants redistribution rights to them.
 
 ## Boundaries
 
-- `vendor/cad-core` is a hash-pinned export of the independent browser CAD core.
+- `vendor/cad-core` is a hash-pinned export of the independent native CAD / WebGPU core.
   Make generic changes upstream, repin with `scripts/vendor-cad-core.js`, and
   verify the manifest. Keep FRC dependencies outside that core.
 - `lib`, `bin` and `extensions/vscode` provide portable agent tools and the editor

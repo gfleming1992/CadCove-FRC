@@ -1,0 +1,662 @@
+{
+  "schema": 1,
+  "status": "native-default",
+  "expectedAuthoredParts": 109,
+  "converted": [
+    {
+      "id": "bhr-2026-704-005-8e25fe6858d9",
+      "module": "p_bhr_2026_704_005_8e25fe6858d9",
+      "kind": "pockets",
+      "sourceSha256": "d65f0179f94daef795d00d41844a106d00d328aec291f71e42ec42d3cc5b1b60"
+    },
+    {
+      "id": "bhr-2026-500-005-b5b879a8e88d",
+      "module": "p_bhr_2026_500_005_b5b879a8e88d",
+      "kind": "bearings",
+      "sourceSha256": "46375f123b853a855e99c2d84b3423a68b36d81900b487ec5b605c5810227d67"
+    },
+    {
+      "id": "can-wire-3-b5f8e7694f0f",
+      "module": "p_can_wire_3_b5f8e7694f0f",
+      "kind": "profile",
+      "sourceSha256": "08f433e50b47d9aec5dff0df5ca88d7289acb7b5bbb3258bd0c56b65419ca849"
+    },
+    {
+      "id": "bhr-2024-130-001a-4dde5764e7c3",
+      "module": "p_bhr_2024_130_001a_4dde5764e7c3",
+      "kind": "profile",
+      "sourceSha256": "a9c8c6333e64898e2e72998f57055e8ac7d71595b627d947afaa4f5c093744f0"
+    },
+    {
+      "id": "bhr-2026-300-009-06a532f8490e",
+      "module": "p_bhr_2026_300_009_06a532f8490e",
+      "kind": "profile",
+      "sourceSha256": "a7d4f117004d67c22441dfeecff2caddd773afa7cdbca37c0a077f521f169ff4"
+    },
+    {
+      "id": "origin-cube-c4333aff6108",
+      "module": "p_origin_cube_c4333aff6108",
+      "kind": "cube",
+      "sourceSha256": "3df26e5aa3b439b240316772a030e8b0e45b2330cb7a05481cb21fa001403224"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-993862eff2a0",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_993862eff2a0",
+      "kind": "pockets",
+      "sourceSha256": "de39ac8a6441110b9e92ad9001c80c21a1d8c7fe1c6e4c4773def3fd397e780b"
+    },
+    {
+      "id": "bhr-2026-704-001-2410118654f2",
+      "module": "p_bhr_2026_704_001_2410118654f2",
+      "kind": "profile",
+      "sourceSha256": "7916196f4a293d91c40c8937d3aabcdd6d8703c3ea7b866283ef82aee24ff69c"
+    },
+    {
+      "id": "red-wire-2-4f65121a1f57",
+      "module": "p_red_wire_2_4f65121a1f57",
+      "kind": "profile",
+      "sourceSha256": "9c6a13a04964b851af9353a79fe70d27375b3b5342ab9cfdb6ac83db1edd1616"
+    },
+    {
+      "id": "part-19-5ee4e5fec190",
+      "module": "p_part_19_5ee4e5fec190",
+      "kind": "profile",
+      "sourceSha256": "63c27a46acfd62510274ea196a273c4c3ed351d7b4682d0fb3562fef1e7053ae"
+    },
+    {
+      "id": "back-rail-15991ee5f759",
+      "module": "p_back_rail_15991ee5f759",
+      "kind": "walls",
+      "sourceSha256": "488f0fa2720aaa66391741bd800e86f634e7ca822bedef0694a6a67d1dc7b4fc"
+    },
+    {
+      "id": "bhr-2026-500-012-ba26c88f549f",
+      "module": "p_bhr_2026_500_012_ba26c88f549f",
+      "kind": "profile",
+      "sourceSha256": "6519f4602b5d9193f0a7bb16eb332d8f3bc45c6b1810e3c779d0adf32b76f9ba"
+    },
+    {
+      "id": "bhr-2024-130-001a-77cd209a4fb2",
+      "module": "p_bhr_2024_130_001a_77cd209a4fb2",
+      "kind": "profile",
+      "sourceSha256": "6893d6dd4a6064cf5faf696ad5668c4146d3ee4fdfc60fc6f16ae4b818dbcc64"
+    },
+    {
+      "id": "battery-plate-3564a64afaca",
+      "module": "p_battery_plate_3564a64afaca",
+      "kind": "profile",
+      "sourceSha256": "8b655b1fbdff1ddf79aec9c3ff764b3434d64f08abe55698efc51be195c9d899"
+    },
+    {
+      "id": "cross-tube-77658e64ee9c",
+      "module": "p_cross_tube_77658e64ee9c",
+      "kind": "pockets",
+      "sourceSha256": "7422689b10c26c0f1a514a6bf3f0b8d7ed3f0623f46dfffec6f67e5b5ebf942b"
+    },
+    {
+      "id": "part-2-688ce357daa8",
+      "module": "p_part_2_688ce357daa8",
+      "kind": "profile",
+      "sourceSha256": "a2ac927beed7dc7a7c71bdb6a819182f2d0d04f6cd9d12ee819a5e6860799123"
+    },
+    {
+      "id": "bhr-2026-500-002-244af0c35fdf",
+      "module": "p_bhr_2026_500_002_244af0c35fdf",
+      "kind": "profile",
+      "sourceSha256": "972e59a09eba9e747ca2cb478934b21f287feedfe6229578d36a5b134e732140"
+    },
+    {
+      "id": "bhr-2026-500-004-e75cfd713fd0",
+      "module": "p_bhr_2026_500_004_e75cfd713fd0",
+      "kind": "profile",
+      "sourceSha256": "6ca52c3e669a236723595eddc73ba2acdd7eb88016e0230f8f65546240ad6046"
+    },
+    {
+      "id": "black-wire-2-f69d9c79342a",
+      "module": "p_black_wire_2_f69d9c79342a",
+      "kind": "profile",
+      "sourceSha256": "0b2199603f332d71dedd9eb4bae6879066a2cac738b66dc05606543d358e4f61"
+    },
+    {
+      "id": "part-17-dda90457e304",
+      "module": "p_part_17_dda90457e304",
+      "kind": "profile",
+      "sourceSha256": "6a2a2a3279f1fd9778eb10606bacee6566b3c29dffacf435d1571da6e4c0fcb0"
+    },
+    {
+      "id": "bhr-2026-500-007-9ba359d7e17c",
+      "module": "p_bhr_2026_500_007_9ba359d7e17c",
+      "kind": "bearings",
+      "sourceSha256": "7cc5fb76ea2c8d07b941ba81a7a6d2394820310275218bdc4817092e3dd38a8d"
+    },
+    {
+      "id": "1-2-rounded-hex-8-19-in-9da79a5073f0",
+      "module": "p_1_2_rounded_hex_8_19_in_9da79a5073f0",
+      "kind": "profile",
+      "sourceSha256": "fef7c7e8ec2d9bb78ec930054ac8d1b8c2165a2dc3d60e76f8f2e0200cf3d7a8"
+    },
+    {
+      "id": "bhr-2026-500-011-15b0e1706e9e",
+      "module": "p_bhr_2026_500_011_15b0e1706e9e",
+      "kind": "profile",
+      "sourceSha256": "7cca914caae81de4fa0e012f617e2587b94d261fdbaab972940521606939e006"
+    },
+    {
+      "id": "right-rail-7c45201869e4",
+      "module": "p_right_rail_7c45201869e4",
+      "kind": "walls",
+      "sourceSha256": "46158fb6453dddb918103a2ebb94fc5f8c470974a0e3c02444aa914156b8e234"
+    },
+    {
+      "id": "can-wire-1-4fb295069a53",
+      "module": "p_can_wire_1_4fb295069a53",
+      "kind": "profile",
+      "sourceSha256": "1d829c2707971e24215b92d8fc22a2f75ef18006f9af5d0bca1afea0c6a619a8"
+    },
+    {
+      "id": "front-rail-3d6ef15b73d2",
+      "module": "p_front_rail_3d6ef15b73d2",
+      "kind": "walls",
+      "sourceSha256": "daae3c6e0eddf899d35b6d4c3751b40f4a88e0c6e65f50362d344061e0c44c93"
+    },
+    {
+      "id": "bhr-2026-500-006-3e1d72d87606",
+      "module": "p_bhr_2026_500_006_3e1d72d87606",
+      "kind": "profile",
+      "sourceSha256": "852a4eeb81ac80e450311eb43dd5b99b2b2b8805dd24417f80f91edbe1eba879"
+    },
+    {
+      "id": "bhr-2026-500-032-5dfd19723c27",
+      "module": "p_bhr_2026_500_032_5dfd19723c27",
+      "kind": "profile",
+      "sourceSha256": "8386f7c5134cad94bb6e96ed969b0b21a71dcb40d2a8bc2560bcb8dae58b52e8"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-db680514e5e4",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_db680514e5e4",
+      "kind": "pockets",
+      "sourceSha256": "e7d26ea60a48c93b5c364af039bf63955c8fec96ed8abad2f0e3351c04bede3f"
+    },
+    {
+      "id": "bhr-2026-704-002-1652ef623ba8",
+      "module": "p_bhr_2026_704_002_1652ef623ba8",
+      "kind": "profile",
+      "sourceSha256": "10578c77dceefd4027886a23fe38047956c17a4cf48339b4b86c95cb47c6af28"
+    },
+    {
+      "id": "bhr-2026-300-008-3e3227464e72",
+      "module": "p_bhr_2026_300_008_3e3227464e72",
+      "kind": "profile",
+      "sourceSha256": "1f7de105244c7e39caf9cb489867ca28f62169dd4e7bd93862e3566941096c8a"
+    },
+    {
+      "id": "can-wire-4-a9c3166df384",
+      "module": "p_can_wire_4_a9c3166df384",
+      "kind": "profile",
+      "sourceSha256": "15ac9d60af2c008767f761a994f6077a705dce3362ea920f8d9b7d80b78b8fd8"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-e33f357a272b",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_e33f357a272b",
+      "kind": "pockets",
+      "sourceSha256": "07feddba84cdd04a74fa63647453cb4cdeb311e8386f3752a447c06065541f03"
+    },
+    {
+      "id": "3-8-rounded-hex-2-565-l-10-25mm-od-130de71a8862",
+      "module": "p_3_8_rounded_hex_2_565_l_10_25mm_od_130de71a8862",
+      "kind": "profile",
+      "sourceSha256": "79ea85b69d4f797d3a28dddd6e0b603f9b6c8aaa3065874470f6df7158cc7646"
+    },
+    {
+      "id": "red-wire-1-982ad20a5fa4",
+      "module": "p_red_wire_1_982ad20a5fa4",
+      "kind": "profile",
+      "sourceSha256": "67d83cd60ded9acf5f4e8111b5f6bec6b6fc4d4dc2ebea276df013507db49f75"
+    },
+    {
+      "id": "can-wire-2-6d1dd4a6ed7d",
+      "module": "p_can_wire_2_6d1dd4a6ed7d",
+      "kind": "profile",
+      "sourceSha256": "e07c4340049e2975b84662f7b3b9695878d081f481a8658319b92ac475aefbdd"
+    },
+    {
+      "id": "bhr-2026-704-003b-fba19a426349",
+      "module": "p_bhr_2026_704_003b_fba19a426349",
+      "kind": "profile",
+      "sourceSha256": "84587f0f57276ad9ac6e3c725069334f616d45706cf8e1afd6481a8801fa676c"
+    },
+    {
+      "id": "bhr-2024-130-001b-432b77e608ad",
+      "module": "p_bhr_2024_130_001b_432b77e608ad",
+      "kind": "profile",
+      "sourceSha256": "6a39dc19796b79c5783beae2bc3ffbadbc9d9e266a9058ca3a1dd8944c6a1cd9"
+    },
+    {
+      "id": "part-29-4ed5484af5a2",
+      "module": "p_part_29_4ed5484af5a2",
+      "kind": "profile",
+      "sourceSha256": "3858161f69db9300d09112f25d6c74421ca9acc868b7e90823f44c3f1da53a54"
+    },
+    {
+      "id": "part-8m-cdb28235d4d6",
+      "module": "p_part_8m_cdb28235d4d6",
+      "kind": "profile",
+      "sourceSha256": "448110a7546e42c683b5186602e7e952778f774f03b69e1e57dcf8e469eaf51c"
+    },
+    {
+      "id": "bhr-2024-130-001a-704f10f175a7",
+      "module": "p_bhr_2024_130_001a_704f10f175a7",
+      "kind": "profile",
+      "sourceSha256": "a2b9c579df6c7d507ab88295fd89be4f3ac3ede5d98eed87f0a5501e08f96034"
+    },
+    {
+      "id": "part-9-a1188eb00db5",
+      "module": "p_part_9_a1188eb00db5",
+      "kind": "profile",
+      "sourceSha256": "e1ca2921fad16771d731eb0be8cddb8913413cfe2356cec74a4250dc2e1e4545"
+    },
+    {
+      "id": "left-rail-1ee532c27934",
+      "module": "p_left_rail_1ee532c27934",
+      "kind": "walls",
+      "sourceSha256": "f75017a9fe8d73e91ad04021aeb85fe1c373672e4e0ce31e7b5c19694b6ddfbf"
+    },
+    {
+      "id": "bhr-2026-500-024-20687e021f36",
+      "module": "p_bhr_2026_500_024_20687e021f36",
+      "kind": "profiles",
+      "sourceSha256": "e1a84b72c9015c44f58e1c4545547eadc8508334f463a2c005977badfe95c07c"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-bbc9e4f9f516",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_bbc9e4f9f516",
+      "kind": "pockets",
+      "sourceSha256": "e7d26ea60a48c93b5c364af039bf63955c8fec96ed8abad2f0e3351c04bede3f"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-1f8371dac9fe",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_1f8371dac9fe",
+      "kind": "pockets",
+      "sourceSha256": "4268144cfcd0cff82d9cd6d0e290e63229bab87943fbad3e96331def5d25bed4"
+    },
+    {
+      "id": "bhr-2026-704-003a-3a3fa010a23b",
+      "module": "p_bhr_2026_704_003a_3a3fa010a23b",
+      "kind": "profile",
+      "sourceSha256": "224e1d7c1771cc0101c185abe7811db81c8e3e21ba65b96730b3b90e09451cf4"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-43606f8e0a26",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_43606f8e0a26",
+      "kind": "pockets",
+      "sourceSha256": "4268144cfcd0cff82d9cd6d0e290e63229bab87943fbad3e96331def5d25bed4"
+    },
+    {
+      "id": "bhr-2026-500-003-d75b78a75baf",
+      "module": "p_bhr_2026_500_003_d75b78a75baf",
+      "kind": "profile",
+      "sourceSha256": "6a10222e71f34cac617c8bb25ce49a3ad6de7330915b22eec9dd5256e322efb7"
+    },
+    {
+      "id": "part-20-3b1bdb058696",
+      "module": "p_part_20_3b1bdb058696",
+      "kind": "profile",
+      "sourceSha256": "fc664831260776024ad3bc64c9f79659112262f76c0d7af79cb086433163172e"
+    },
+    {
+      "id": "part-1-fdc3301b3e8e",
+      "module": "p_part_1_fdc3301b3e8e",
+      "kind": "profile",
+      "sourceSha256": "539c6cdc435af24fadf0970494415733ae4962f85b9fef32a51ba94c2a71b048"
+    },
+    {
+      "id": "bhr-2026-300-003-02272cafbb8d",
+      "module": "p_bhr_2026_300_003_02272cafbb8d",
+      "kind": "profile",
+      "sourceSha256": "1fcb0d54059e5c2ade2944cd41861fdc7c24a2b87d881954d2c7296fb297534f"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-675257026dbd",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_675257026dbd",
+      "kind": "pockets",
+      "sourceSha256": "6c2a634429388cc2a934ec7510f11671501d288eaff134f216482c83a299f999"
+    },
+    {
+      "id": "1-2-rounded-hex-24-996-l-13-75mm-od-10c910583edd",
+      "module": "p_1_2_rounded_hex_24_996_l_13_75mm_od_10c910583edd",
+      "kind": "profile",
+      "sourceSha256": "5e895b562771c03d3404d75f17848572b58ca69e44bd1c990361a8570e4c280f"
+    },
+    {
+      "id": "tube-1-x1-x15-9cfd38f9d566",
+      "module": "p_tube_1_x1_x15_9cfd38f9d566",
+      "kind": "profile",
+      "sourceSha256": "479376978c6da6cdde9163298570bf8cc933176d15cdef6909e1a8f390bc591e"
+    },
+    {
+      "id": "bhr-2026-600-006-2aabf8888b9d",
+      "module": "p_bhr_2026_600_006_2aabf8888b9d",
+      "kind": "profile",
+      "sourceSha256": "15c20e8cf57312c8f501c6f0227c09bdf8035619a65782cb7fc561f89cb33e3f"
+    },
+    {
+      "id": "bhr-2026-501-002-154ce885e9c6",
+      "module": "p_bhr_2026_501_002_154ce885e9c6",
+      "kind": "profile",
+      "sourceSha256": "6e4505571bcb15e0039696f0477ee14a656db310f8c2fb86e95cc6ac299e3d75"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-8eda9bf1c576",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_8eda9bf1c576",
+      "kind": "pockets",
+      "sourceSha256": "856879481e582a47503ea81993c2ed7e76bdc0bebe542bdafc7d66fa559a7886"
+    },
+    {
+      "id": "bhr-2026-500-008-258aaf2b1a54",
+      "module": "p_bhr_2026_500_008_258aaf2b1a54",
+      "kind": "profile",
+      "sourceSha256": "0e29ad5bfa450e54130a2ec9800829973674fb9a919363604b2e50daee48ef54"
+    },
+    {
+      "id": "1-2-rounded-hex-7-843-in-0157e962a79c",
+      "module": "p_1_2_rounded_hex_7_843_in_0157e962a79c",
+      "kind": "bearings",
+      "sourceSha256": "62ae64ef3bc28400ddc34a1db7b30e1ae654e32a0f12f1870cf67bebf272f9b0"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-567d6aaea52f",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_567d6aaea52f",
+      "kind": "pockets",
+      "sourceSha256": "532651531ba42f8915a4f99e666900643178de0865a6fbebfad0639736764756"
+    },
+    {
+      "id": "black-wire-1-fa8cc576b6ab",
+      "module": "p_black_wire_1_fa8cc576b6ab",
+      "kind": "profile",
+      "sourceSha256": "425359b67e9f0adaa6de299857c59f87240f8aa34d3a216383a10da14bb2438b"
+    },
+    {
+      "id": "bhr-2026-501-001-21b0618b94d6",
+      "module": "p_bhr_2026_501_001_21b0618b94d6",
+      "kind": "profile",
+      "sourceSha256": "605b923ec39e22e32514d2e302e5107809b46b4080212e375776584b79aa233b"
+    },
+    {
+      "id": "bhr-2026-300-002-000a3a334dfd",
+      "module": "p_bhr_2026_300_002_000a3a334dfd",
+      "kind": "profile",
+      "sourceSha256": "843e9d0999be9740b8839841064365c7ac8ea0effe88b115afa7a8221d669889"
+    },
+    {
+      "id": "tube-1-x1-x15-fc5a76267339",
+      "module": "p_tube_1_x1_x15_fc5a76267339",
+      "kind": "profile",
+      "sourceSha256": "9b45646081b850afd050da5694199bff767d85031326a7d77aed54502b5cb8a7"
+    },
+    {
+      "id": "bhr-2026-500-001-105a60cebde5",
+      "module": "p_bhr_2026_500_001_105a60cebde5",
+      "kind": "profile",
+      "sourceSha256": "0434adfb22adb09bc9002271137fafbd150576a8b68c2daabb3cc3f52c4cf903"
+    },
+    {
+      "id": "3-8-rounded-hex-27-565-l-10-25mm-od-f36724821bc0",
+      "module": "p_3_8_rounded_hex_27_565_l_10_25mm_od_f36724821bc0",
+      "kind": "profile",
+      "sourceSha256": "a2a296a80cd9fb364f76000b34be4f0fe2e7f5d2d8d53b71c755fc639887629f"
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-2457503da660",
+      "module": "p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_2457503da660",
+      "kind": "pockets",
+      "sourceSha256": "2f9239c04a09f75973f52655b127a794af496c581cdc52895ea108f1797e5bab"
+    },
+    {
+      "id": "part-8-b54e6b3bd144",
+      "module": "p_part_8_b54e6b3bd144",
+      "kind": "native-features",
+      "sourceSha256": "515a1a271475ca0556231611d2226b68cce773419ee87c8d81288919df97f71e"
+    },
+    {
+      "id": "part-5-03517a6d0148",
+      "module": "p_part_5_03517a6d0148",
+      "kind": "native-features",
+      "sourceSha256": "ca3fc6ab920b1cffdaf17ca5a58905dc69492bd77ab433126e528b1e7078e2af"
+    },
+    {
+      "id": "bhr-2026-600-005-1a0fc844ce6e",
+      "module": "p_bhr_2026_600_005_1a0fc844ce6e",
+      "kind": "native-features",
+      "sourceSha256": "e6f0f245359da25c95b0c8470c25d2309f5a264a0df26fdb34179895939d8b5f"
+    },
+    {
+      "id": "bhr-2026-704-010-89a3449bb12a",
+      "module": "p_bhr_2026_704_010_89a3449bb12a",
+      "kind": "native-features",
+      "sourceSha256": "cdd2304030dbfae95809d7a3f3a0aa9532a3cc29e7414c59117adeb97cb696e0"
+    },
+    {
+      "id": "part-58-7efccbf29789",
+      "module": "p_part_58_7efccbf29789",
+      "kind": "native-features",
+      "sourceSha256": "3b77ed46c767353418b346fa460751147cfac1698e646d8d4839b76b70dc909a"
+    },
+    {
+      "id": "belly-pan-6b59cb2988d9",
+      "module": "p_belly_pan_6b59cb2988d9",
+      "kind": "native-features",
+      "sourceSha256": "17afdb575543a85c69b5e110680fc0ebce00cd20ad78a07a8b2d111e8f619c36"
+    },
+    {
+      "id": "part-57-7033dcf6a029",
+      "module": "p_part_57_7033dcf6a029",
+      "kind": "native-features",
+      "sourceSha256": "6d0ecd6d233a019609750fbb8246cc16b8722ffb0616d1fe3b8ba0cea95486b7"
+    },
+    {
+      "id": "bhr-2026-704-011-39792b4ea64a",
+      "module": "p_bhr_2026_704_011_39792b4ea64a",
+      "kind": "native-features",
+      "sourceSha256": "245a4eaadf53aee39c0d0d4fea6d9c4b6dec58475fb54f8eb41ca85490397fa2"
+    },
+    {
+      "id": "bhr-2026-500-021-fa82999a309d",
+      "module": "p_bhr_2026_500_021_fa82999a309d",
+      "kind": "native-selected-rounds",
+      "sourceSha256": "1aa63f5d85854cd1bc46dd6815bfcbe311cef59a7f0768dc691236a032e3b372"
+    },
+    {
+      "id": "bhr-2026-500-023-fca3921ce554",
+      "module": "p_bhr_2026_500_023_fca3921ce554",
+      "kind": "native-selected-rounds",
+      "sourceSha256": "92a6f0dfb7e4c52f79488b4b7ad6bf2e12ea80b3ed0e36414a12f0b51e27279b"
+    },
+    {
+      "id": "bhr-2026-600-009-55277c8c2a54",
+      "module": "p_bhr_2026_600_009_55277c8c2a54",
+      "kind": "native-selected-rounds",
+      "sourceSha256": "426784bb89d3e4891d9f53ad9b8aafb12622625bcb1cb6d75e95d51fa3520680"
+    },
+    {
+      "id": "bhr-2026-500-034m-663a52158a5a",
+      "module": "p_bhr_2026_500_034m_663a52158a5a",
+      "kind": "native-selected-rounds",
+      "sourceSha256": "16424932c0cb3dca053987f12c839317767a8c3c3bc40a6ae35f77b490aa90da"
+    },
+    {
+      "id": "bhr-2026-500-034-cdf7d621b44d",
+      "module": "p_bhr_2026_500_034_cdf7d621b44d",
+      "kind": "native-selected-rounds",
+      "sourceSha256": "4cdf8d3df22223adcda4ebe2e66ef4d379c911b7802cacc8693440cadf1b2c0e"
+    },
+    {
+      "id": "part-13-9970d95455ef",
+      "module": "p_part_13_9970d95455ef",
+      "kind": "native-tie-spacer",
+      "sourceSha256": "dd37385ee6a9d2827bac1ce5561d9ab4d6b834b43cc17fa2912797dce91fbddd"
+    },
+    {
+      "id": "part-14-8abf4254dadc",
+      "module": "p_part_14_8abf4254dadc",
+      "kind": "native-tie-spacer",
+      "sourceSha256": "0efc2340a31e160eadde28d7d5e355a05a00fc42b75c2dfac5eae1946d5294a7"
+    },
+    {
+      "id": "part-15-907c7ca283a6",
+      "module": "p_part_15_907c7ca283a6",
+      "kind": "native-tie-spacer",
+      "sourceSha256": "0e2e76862be19ed8acfe07a9a0339e77754fde7b08396655ff100a5de0453831"
+    },
+    {
+      "id": "part-16-3719e89e2b68",
+      "module": "p_part_16_3719e89e2b68",
+      "kind": "native-tie-spacer",
+      "sourceSha256": "40393276460fc5ed191a7465308e034b6c14567b8d7b5c474ecec8e5cf697935"
+    },
+    {
+      "id": "bhr-2026-500-033-178be009fceb",
+      "module": "p_bhr_2026_500_033_178be009fceb",
+      "kind": "native-machining",
+      "sourceSha256": "0ddcdd20bc5808447b0a695e1e9490ef81e9a51c353ed5f7ece8227ec192fb85"
+    },
+    {
+      "id": "bhr-2026-500-013a-d230e0921e95",
+      "module": "p_bhr_2026_500_013a_d230e0921e95",
+      "kind": "native-machining",
+      "sourceSha256": "77bd85b2062895f3cc3d01310f23ed1d7c50183f739afb2efe61a2869d4631cb"
+    },
+    {
+      "id": "bhr-2026-500-013b-10a3b616a4ed",
+      "module": "p_bhr_2026_500_013b_10a3b616a4ed",
+      "kind": "native-machining",
+      "sourceSha256": "6231c5f603254973ecd5323e69bdb05ba90f50d1217c36f641b0633c0d3865cc"
+    },
+    {
+      "id": "bhr-2026-600-003-ea37fa06fae4",
+      "module": "p_bhr_2026_600_003_ea37fa06fae4",
+      "kind": "native-machining",
+      "sourceSha256": "3f6969d30900440534d2188399f0946fb4349f58109d2314c74bf9c8eb762b57"
+    },
+    {
+      "id": "left-rear-corner-block-3112b49a80b2",
+      "module": "p_left_rear_corner_block_3112b49a80b2",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "3ccd79315d65e88c5c28efca292858bc6e96d63a8a583d32a18e4d3af808c878"
+    },
+    {
+      "id": "bhr-2026-500-022m-005027036523",
+      "module": "p_bhr_2026_500_022m_005027036523",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "141244a0fab03d2ab82ce9af66ea3986e7719ca81b7a7490cc01364ed0e608ea"
+    },
+    {
+      "id": "left-front-corner-block-a8312ccb6369",
+      "module": "p_left_front_corner_block_a8312ccb6369",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "012bf09cacf54cd1fe7a0cfa8e643e9ff0fb4bc5654eb3a4c5eaf95a2eac52bd"
+    },
+    {
+      "id": "bhr-2026-500-017-821e3e1f1842",
+      "module": "p_bhr_2026_500_017_821e3e1f1842",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "626d639eaaadf0e126dc79ace037452547de65b7d469e022bf052273d7729a90"
+    },
+    {
+      "id": "bhr-2026-500-019m-2e0b774f61c1",
+      "module": "p_bhr_2026_500_019m_2e0b774f61c1",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "b3c0f370956315a8227929ab8d3166c0991036fdf785615e8e9f05bb84784fa4"
+    },
+    {
+      "id": "bhr-2026-600-004b-5c0ed452f82d",
+      "module": "p_bhr_2026_600_004b_5c0ed452f82d",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "7ab0e1ee0d46e84ee643c4680b38a4551072294ea17874203c246c23b0441a0d"
+    },
+    {
+      "id": "bhr-2026-500-017m-fd4f5acaf62b",
+      "module": "p_bhr_2026_500_017m_fd4f5acaf62b",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "8a9f2e56a49ad514878d054d73df7f2675280e528367c1af75060ddb64d2f790"
+    },
+    {
+      "id": "bhr-2026-500-019-8e4b63bd1867",
+      "module": "p_bhr_2026_500_019_8e4b63bd1867",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "99f5fdd8210268a865dd6dea1b66d0b7ddb119f636513685ae88b269e8dbee6b"
+    },
+    {
+      "id": "bhr-2026-500-022-64c66d54eb11",
+      "module": "p_bhr_2026_500_022_64c66d54eb11",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "82c5e1ddd0671d99b813c8f809b219316bdcf3c30d95b50f06880ce16b2708e6"
+    },
+    {
+      "id": "backlash-remover-right-side-fe6bf528179b",
+      "module": "p_backlash_remover_right_side_fe6bf528179b",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "0197ae99c392865cd8631cf7627b2b288259009dfac8ce1037de7fa0f2aa8d93"
+    },
+    {
+      "id": "bhr-2026-600-004a-fdc0673fe431",
+      "module": "p_bhr_2026_600_004a_fdc0673fe431",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "c90120b2ca54574de7247f6bc99739e3660c1863d1e6f5b5fdee1b3f7504e1ad"
+    },
+    {
+      "id": "bhr-2026-500-027-34d684a8c9de",
+      "module": "p_bhr_2026_500_027_34d684a8c9de",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "a2dad66c02f01f0f314bdc09d81e0b53dd767eb362ae16b9d287c5506a2883e6"
+    },
+    {
+      "id": "bhr-2026-500-014m-top-22ebd4ced951",
+      "module": "p_bhr_2026_500_014m_top_22ebd4ced951",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "8ae88268e259036f2e1c99c01edaa42375f67de8a54ed91dfaafcfc6f5283cde"
+    },
+    {
+      "id": "shroud-5023935d6e1a",
+      "module": "p_shroud_5023935d6e1a",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "2220daaa87d99d2b9e379b22edd509907b43fa5dc4ab5619e81b432ac69c5ac8"
+    },
+    {
+      "id": "bhr-2026-500-014-top-d26859488e35",
+      "module": "p_bhr_2026_500_014_top_d26859488e35",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "ffaa7f818db6a5f58b78f42739bf8c45073711cccf1f2dfb17d0fd5ac77137f5"
+    },
+    {
+      "id": "right-front-corner-block-2f5e06f0b352",
+      "module": "p_right_front_corner_block_2f5e06f0b352",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "4c9c7c9bab8e8bac4cc82152f849c2f42b213f9a6f1355a3da0dee1bfb7894c0"
+    },
+    {
+      "id": "bhr-2025-100-022-e288be426a61",
+      "module": "p_bhr_2025_100_022_e288be426a61",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "7169ed63d703cd79fdc232af9bc15211f6de68877e48df490779ae68827b338b"
+    },
+    {
+      "id": "backlash-remover-left-side-c70badece837",
+      "module": "p_backlash_remover_left_side_c70badece837",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "010498b3284be9c5be526c0ddd85be9cb48ec581c54b3897268f4bb5a58f2089"
+    },
+    {
+      "id": "right-rear-corner-block-74b524db1283",
+      "module": "p_right_rear_corner_block_74b524db1283",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "b9d1b44738dd6db2bf6483fb72632a9356ba3b2eafc1b57f7cbf23039e76b02e"
+    },
+    {
+      "id": "bhr-2026-500-027m-538f738485fe",
+      "module": "p_bhr_2026_500_027m_538f738485fe",
+      "kind": "native-features-and-trimmed-surfaces",
+      "sourceSha256": "aa843c89fb727af081c9aebb25fabd6faa3ffa1d55c3c2adb5cac024755a0ed5"
+    }
+  ],
+  "pending": []
+}

@@ -1,7 +1,9 @@
+import {decodeScene} from '../core/mesh.js';
 // VS Code webview adapter. The privileged API stays private to this module.
 export function createVSCodeHost(config) {
-  const api=acquireVsCodeApi(), pending=new Map(), listeners=new Set();let serial=0,wasm;
+  const api=acquireVsCodeApi(), pending=new Map(), listeners=new Set();let agentHandler;let serial=0,nativeScene,nativeLoaded=false;
   window.addEventListener('message',({data})=>{
+    if(data?.agentRequest){Promise.resolve().then(()=>agentHandler?.(data.method,data.args)).then(result=>api.postMessage({agentReply:data.agentRequest,result}),error=>api.postMessage({agentReply:data.agentRequest,error:error.message}));return;}
     if(data?.event==='configuration-changed'){window.dispatchEvent(new Event('cad-configuration-changed'));return;}
     if(data?.event==='source-changed'){for(const fn of listeners)fn();return;}
     const task=pending.get(data?.id);if(!task)return;
@@ -11,26 +13,30 @@ export function createVSCodeHost(config) {
   function request(method,args={}) {
     const id=++serial;
     return new Promise((resolve,reject)=>{
-      const timer=setTimeout(()=>{pending.delete(id);reject(Error(`Editor request timed out: ${method}`));},60000);
+      const timer=setTimeout(()=>{pending.delete(id);reject(Error(`Editor request timed out: ${method}`));},method==='native-build'?360000:60000);
       pending.set(id,{resolve,reject,timer});api.postMessage({id,method,args});
     });
   }
   return {
     entry:config.entry,
+    onAgentRequest:handler=>{agentHandler=handler;},
+    get nativeLoaded(){return nativeLoaded;},
+    async nativeBuild(revision){
+      nativeLoaded=true;
+      const result=await request('native-build',{revision});
+      const response=await fetch(result.url);if(!response.ok)throw Error('Cannot load native mesh');
+      const scene=decodeScene(await response.arrayBuffer());
+      const previous=new Map((nativeScene?.parts??[]).map(p=>[p.geometryKey,p]));
+      scene.parts=scene.parts.map(part=>{
+        const old=previous.get(part.geometryKey);
+        return old?{...part,positions:old.positions,normals:old.normals,indices:old.indices}:part;
+      });
+      nativeScene=scene;
+      return {...scene,revision,timings:result.timings};
+    },
+    nativeInspect:code=>request('native-inspect',{code}),
+    nativeCancel:()=>{nativeLoaded=false;return request('native-cancel');},
     readSources:()=>request('sources'),
-    compile:(revision)=>request('compile',{revision}),
-    wasm:()=>wasm??=(async()=>{const response=await fetch(config.wasm);if(!response.ok)throw Error('Cannot load OCCT WASM');return response.arrayBuffer();})(),
-    async createWorker(){
-      const response=await fetch(config.worker);if(!response.ok)throw Error('Cannot load CAD worker');
-      const script=await response.text();
-      const url=URL.createObjectURL(new Blob([`self.__instantcadModuleURL=${JSON.stringify(config.worker)};\n`,script],{type:'text/javascript'}));
-      const worker=new Worker(url);const terminate=worker.terminate.bind(worker);worker.terminate=()=>{URL.revokeObjectURL(url);terminate();};return worker;
-    },
-    async readAsset(path){
-      const url=await request('asset-url',{path});
-      const response=await fetch(url);if(!response.ok)throw Error(`Cannot read ${path}`);
-      return response.arrayBuffer();
-    },
     async cache(){
       const result=await request('cache');
       if(!result)return null;

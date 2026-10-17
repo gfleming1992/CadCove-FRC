@@ -2,7 +2,7 @@
   "name": "cadcove-toolbox",
   "displayName": "CadCove FRC",
   "description": "Local, agent-driven CAD and FRC simulation workspace tools.",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "publisher": "cadcove-dev",
   "license": "MIT",
   "engines": {
@@ -19,7 +19,7 @@
   "capabilities": {
     "untrustedWorkspaces": {
       "supported": false,
-      "description": "CAD executes workspace JavaScript; simulation executes the team's robot program."
+      "description": "CAD executes workspace Python; simulation executes the team robot program."
     },
     "virtualWorkspaces": {
       "supported": false
@@ -91,7 +91,7 @@
       "explorer/context": [
         {
           "command": "cadcove.open",
-          "when": "resourceExtname =~ /\\.(js|step|stp)$/i",
+          "when": "resourceExtname =~ /\\.(py|step|stp)$/i",
           "group": "navigation"
         }
       ]
@@ -101,10 +101,18 @@
         "id": "cadcove.mcp",
         "label": "CadCove"
       }
-    ]
-  },
-  "dependencies": {
-    "esbuild": "0.28.2"
+    ],
+    "configuration": {
+      "title": "CadCove native CAD",
+      "properties": {
+        "instantcad.pythonPath": {
+          "type": "string",
+          "default": "python3",
+          "scope": "resource",
+          "description": "Absolute Python executable with CadQuery 2.6.1 and cadquery-ocp 7.8.1.1.post1 installed. Used for .py CAD models in trusted workspaces."
+        }
+      }
+    }
   },
   "repository": {
     "type": "git",

@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, windows-2022, macos-14]
+        os: [ubuntu-24.04, macos-14]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
     env:
@@ -23,6 +23,7 @@ jobs:
       # Hosted runners have no guaranteed hardware GPU. This validates editor
       # integration and rendering correctness, not hardware performance.
       CADCOVE_TEST_SOFTWARE_GPU: '1'
+      CADCOVE_TEST_PREPARE_SANDBOX: '1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -34,13 +35,21 @@ jobs:
       - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87
         with:
           toolchain: 1.91.1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned native CAD dependencies
+        run: python -m pip install -r vendor/cad-core/src/native/requirements.txt
+      - name: Select native CAD interpreter
+        shell: bash
+        run: echo "CADCOVE_PYTHON=$(python -c 'import sys; print(sys.executable)')" >> "$GITHUB_ENV"
       - name: Prepare Linux display and graphics libraries
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y xvfb libgtk-3-0 libnss3 libgbm1 libasound2t64
       - name: Build public source and test the installed editor (Linux)
         if: runner.os == 'Linux'
         run: xvfb-run -a bun scripts/verify-toolbox-source.js --output "${{ runner.temp }}/cadcove-source" --editor
-      - name: Build public source and test the installed editor (Windows/macOS)
+      - name: Build public source and test the installed editor (macOS)
         if: runner.os != 'Linux'
         run: bun scripts/verify-toolbox-source.js --output "${{ runner.temp }}/cadcove-source" --editor
       - name: Preserve source and build qualification reports

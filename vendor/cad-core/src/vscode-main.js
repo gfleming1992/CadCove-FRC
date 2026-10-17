@@ -1,29 +1,27 @@
+import {captureScene} from './core/scene-capture.js';
 import {Viewer} from './core/viewer.js';
-import {CadClient} from './core/cad-client.js';
-import {snapshot,hash,runtimeIdentity} from './core/revision.js';
+import {snapshot,hash} from './core/revision.js';
 import {decodeScene,encodeScene} from './core/mesh.js';
 import {createVSCodeHost} from './hosts/vscode.js';
-const config=globalThis.INSTANTCAD_HOST,host=createVSCodeHost(config);
+const config=globalThis.INSTANTCAD_HOST,host=createVSCodeHost(config),identity=config.runtime;
 // Embedding products can keep the canvas free of authoring controls. This
 // changes presentation only; disk-driven builds and feedback stay identical.
 if(config.minimalUI){document.querySelector('header').style.display='none';}
 const canvas=document.querySelector('#canvas'),status=document.querySelector('#status'),button=document.querySelector('#build'),stop=document.querySelector('#stop');
-const viewer=new Viewer(canvas),cad=new CadClient({createWorker:host.createWorker,readAsset:host.readAsset,onProgress:text=>{message(text);void report("building",{progress:text});}});
+const viewer=new Viewer(canvas);
 let head,workerRevision,building=false,dirty=false,disposed=false,initialized=false,feedbackDirty=false,timer;
 const message=(text,error=false)=>{status.textContent=text;status.dataset.error=String(error);};
-const report=(phase,extra={})=>host.report({phase,revision:head??null,workerLoaded:cad.loaded,parts:viewer.scene?.parts.length??0,gpuBytes:viewer.gpuBytes??0,camera:viewer.camera,upload:viewer.lastUpload,...extra}).catch(()=>{});
-const source=async()=>snapshot(await host.readSources(),config.entry);
+const report=(phase,extra={})=>host.report({phase,revision:head??null,workerLoaded:host.nativeLoaded,parts:viewer.scene?.parts.length??0,gpuBytes:viewer.gpuBytes??0,camera:viewer.camera,upload:viewer.lastUpload,...extra}).catch(()=>{});
+const source=async()=>snapshot(await host.readSources(),config.entry,identity);
 async function execute(revision, current) {
   current??=await source();
   if(current.revision!==revision)throw Error('Source changed before build');
-  const epoch=cad.generation,bundle=await host.compile(revision);
-  if(epoch!==cad.generation)throw Error('Build canceled');
-  return cad.request('build',{revision,bundle,sourceFiles:current.files,entry:config.entry,assetBridge:true,wasm:await host.wasm(),profile:true});
+  return host.nativeBuild(revision);
 }
 async function save(scene) {
   const binary=encodeScene(scene),meshHash=await hash(binary);
   await host.writeArtifact('scene.bin',binary);
-  await host.writeArtifact('scene.json',JSON.stringify({revision:head,meshHash,runtime:runtimeIdentity}));
+  await host.writeArtifact('scene.json',JSON.stringify({revision:head,meshHash,runtime:identity}));
   await saveFeedback(scene);
 }
 async function saveFeedback(scene) {
@@ -33,7 +31,7 @@ async function saveFeedback(scene) {
   if(png){const bytes=await png.arrayBuffer();await host.writeArtifact('preview.png',bytes);preview={revision:head,sha256:await hash(bytes)};}
   // Commit feedback last so an agent cannot pair a new revision with an old
   // preview during a rebuild. The digest also detects interrupted replacements.
-  await host.writeArtifact('status.json',JSON.stringify({ok:true,revision:head,runtime:runtimeIdentity,parts:scene.parts.map(({id,name,color,metrics})=>({id,name,color,metrics})),timings:scene.timings,preview},null,2));
+  await host.writeArtifact('status.json',JSON.stringify({ok:true,revision:head,runtime:identity,parts:scene.parts.map(({id,name,color,metrics})=>({id,name,color,metrics})),timings:scene.timings,preview},null,2));
 }
 async function build() {
   if(building){dirty=true;return;}
@@ -62,7 +60,7 @@ async function build() {
     await save(scene);feedbackDirty=false;await report('ready',{source:'build',buildMs:performance.now()-started});
   }catch(error){
     feedbackDirty=true;message(error.message,true);await report('error',{error:error.message});
-    await host.writeArtifact('status.json',JSON.stringify({ok:false,error:error.message,revision:head??null,runtime:runtimeIdentity})).catch(()=>{});
+    await host.writeArtifact('status.json',JSON.stringify({ok:false,error:error.message,revision:head??null,runtime:identity})).catch(()=>{});
   }finally{
     building=false;button.disabled=false;stop.hidden=true;
     if(dirty&&!disposed){dirty=false;void build();}
@@ -74,24 +72,33 @@ async function refresh() {
   try{if((await source()).revision!==head||feedbackDirty)await build();else{message(`${viewer.scene.parts.length} parts rendering locally`);await report('ready',{source:'unchanged'});}}catch(error){message(error.message,true);await report('error',{error:error.message});}
 }
 button.textContent='Rebuild';button.onclick=()=>build();
-stop.onclick=()=>{dirty=false;cad.cancel();workerRevision=undefined;};
+stop.onclick=()=>{dirty=false;void host.nativeCancel();workerRevision=undefined;};
 document.querySelector('#fit').onclick=()=>viewer.fit();
 const open=document.querySelector('#connect');open.textContent='Open source';open.onclick=()=>host.reveal();
 document.querySelector('#name').textContent=`${config.project} / ${config.entry}`;
 const inspect=document.createElement('button');inspect.textContent='Inspect';document.querySelector('nav').append(inspect);
 inspect.onclick=()=>{
   const dialog=document.createElement('dialog'),form=document.createElement('form'),input=document.createElement('textarea'),run=document.createElement('button'),close=document.createElement('button');
-  input.setAttribute('aria-label','CAD inspection JavaScript');input.rows=8;input.style.width='100%';input.value='return parts.map(p => ({ id:p.id, valid:adapter.isValid(p.shape.wrapped), volume:adapter.volume(p.shape.wrapped) }));';
+  input.setAttribute('aria-label','CAD inspection Python');input.rows=8;input.style.width='100%';input.value='result = [{"id": p.get("id"), "valid": p["shape"].isValid(), "volume": p["shape"].Volume()} for p in parts]';
   run.textContent='Run inspection';close.textContent='Close';close.type='button';close.onclick=()=>dialog.close();form.append(input,run,close);dialog.append(form);document.body.append(dialog);dialog.onclose=()=>dialog.remove();dialog.showModal();
   form.onsubmit=async(event)=>{
     event.preventDefault();if(building)return;
-    try{if(workerRevision!==head){await execute(head);workerRevision=head;}message(JSON.stringify(await cad.request('inspect',{code:input.value},15000)));dialog.close();}
+    try{if(workerRevision!==head){await execute(head);workerRevision=head;}message(JSON.stringify(await host.nativeInspect(input.value)));dialog.close();}
     catch(error){message(error.message,true);}
   };
 };
+host.onAgentRequest(async(method,args)=>{
+ if(method!=='capture')throw Error('Unknown source viewer request');
+ if(building||!initialized||!head)throw Error('CAD is still building');
+ if((await source()).revision!==head)await refresh();
+ if(building||feedbackDirty||(await source()).revision!==head)throw Error('CAD source has not built successfully');
+ const revision=head,frame=await captureScene(viewer,args);
+ if(head!==revision||(await source()).revision!==revision)throw Error('Scene changed during capture');
+ return {...frame,revision};
+});
 window.addEventListener('cad-configuration-changed',()=>message('CAD folder settings changed. Close and reopen this model to use the new folders.'));
 host.watch(()=>{clearTimeout(timer);timer=setTimeout(()=>refresh(),100);});
-window.addEventListener('beforeunload',()=>{disposed=true;clearTimeout(timer);cad.dispose();host.dispose();});
+window.addEventListener('beforeunload',()=>{disposed=true;clearTimeout(timer);void host.nativeCancel();host.dispose();});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){viewer.request();void refresh();}});
 (async()=>{
   try{
@@ -99,7 +106,6 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){viewer.re
     const current=await source();
     const cached=await host.cache();
     const cachedScene=cached && await hash(cached.bytes)===cached.meshHash ? decodeScene(cached.bytes) : null;
-    if(cachedScene)cad.scene={...cachedScene,revision:cached.revision};
     if(cachedScene&&cached.revision===current.revision){
       viewer.setScene(cachedScene,true);head=cached.revision;
       const state=host.state();if(state?.entry===config.entry&&state.camera)viewer.camera=state.camera;

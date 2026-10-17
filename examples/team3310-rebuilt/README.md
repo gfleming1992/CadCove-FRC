@@ -8,8 +8,11 @@ fast independent contract test, not a substitute for this full example.
 
 ## Fresh-clone setup
 
-Install Bun 1.4.2 and WPILib 2026 (including its JDK). Install a locally built
-CadCove extension as described in the root README. From the monorepo root:
+Install Bun 1.4.2, WPILib 2026 (including its JDK), and the pinned Python 3.12 /
+CadQuery environment from [native authoring](../../agent-skills/references/native-cadquery.md).
+Set `CADCOVE_PYTHON` for CLI work and `instantcad.pythonPath` in VS Code to that
+interpreter. Install a locally built CadCove extension as described in the root
+README. From the monorepo root:
 
 ```sh
 bun install --frozen-lockfile
@@ -53,12 +56,21 @@ validation does not establish hardware fidelity.
 
 ## Editable source and test scope
 
-`source/cad-assets/robot/model.js` assembles the 1,958 occurrences, preserving
-part IDs, transforms and colors. It contains 109 converted brepjs part designs
-(178 occurrences); retained vendor, unclassified and remaining custom designs
-use STEP. The registry is the active set; see its migration record. Only the
-source dependency closure and required view meshes are included, not conversion
-experiments, recordings or workstation caches.
+`source/cad-assets/robot/models.py` is the default assembly entry. It rebuilds
+all 109 authored designs in native Python/CadQuery (178 occurrences) and combines
+them with retained vendor, unclassified and intentionally unconverted custom
+STEP components. All 1,958 occurrence IDs, transforms and colors remain stable.
+Edit `native/parts/p_*.py` and their helpers; `native/migration.json` maps asset
+IDs to Python modules. See [the robot authoring guide](source/cad-assets/robot/native/README.md).
+Executable legacy CAD sources have been removed. Historical shape measurements
+are retained under `native/evidence`.
+
+Use `cadcove cad-session` for warm build/inspect/export iterations. Open Python
+or STEP files through VS Code's **Open in CAD Canvas** command and request
+focused captures with `cadcove cad-capture`. Exact geometry checks and captures
+provide the agent feedback; the viewer remains an interactive WebGPU canvas.
+Prototype caches reuse unchanged parts across edits. The browser does not start
+Python or rebuild authored CAD; native OCCT produces its view meshes.
 
 `source/robot-code` contains the actual team program with its simulation bridge.
 Vendor dependency descriptors and Gradle resolve upstream libraries. Source CAD

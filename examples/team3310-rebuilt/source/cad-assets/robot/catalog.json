@@ -244,9 +244,9 @@
     "file": "components/part-58-7efccbf29789.step",
     "sha256": "7efccbf297892824cbdbb4b367de8bb93e8a1df0aa126c539f23841af41ccc26",
     "bytes": 238812,
-    "mesh": "parametric/meshes/0ac29adc8b627ef9a359e5b3280253659042c749fca99d04b51e8044d51336c7.bin",
-    "meshSha256": "0ac29adc8b627ef9a359e5b3280253659042c749fca99d04b51e8044d51336c7",
-    "meshBytes": 124156,
+    "mesh": "native/meshes/ba82b828e276bfc29b13c943aca417f1a5c9e7fde0e96de4f476e40eec4f6375.bin",
+    "meshSha256": "ba82b828e276bfc29b13c943aca417f1a5c9e7fde0e96de4f476e40eec4f6375",
+    "meshBytes": 148492,
     "centerOfMass": {
       "x": -287.73365384754,
       "y": -173.0146617668227,
@@ -264,24 +264,24 @@
       1686167.3669914007
     ],
     "valid": true,
-    "volume": 8976.013075959701,
+    "volume": 8976.013539904357,
     "bounds": {
       "min": [
-        -304.81083845545584,
-        -192.55894205545584,
-        92.04707453300256
+        -304.8,
+        -192.54810360000002,
+        92.07499999999999
       ],
       "max": [
-        -273.0391615445442,
-        -154.43649878683613,
-        101.63301929602908
+        -273.05,
+        -154.44810359999997,
+        101.60000000000002
       ]
     },
-    "triangles": 4122,
+    "triangles": 5026,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-58-7efccbf29789.js",
-      "sha256": "3b77ed46c767353418b346fa460751147cfac1698e646d8d4839b76b70dc909a",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_58_7efccbf29789.py",
+      "sha256": "4c55a478b299402999f9faeb2d9fc15943b48964b2ce562f1df4f2b86f06deb4",
       "referenceStep": "components/part-58-7efccbf29789.step"
     }
   },
@@ -330,9 +330,9 @@
     "file": "components/part-57-7033dcf6a029.step",
     "sha256": "7033dcf6a029b9e600483eeb309f66c5392a5f000f4da0ea3d34e2140504b2ea",
     "bytes": 120288,
-    "mesh": "parametric/meshes/0a427ac0664ffe003dd32e154ea68639c36b4019f4d89f1deeb398063a4ffea8.bin",
-    "meshSha256": "0a427ac0664ffe003dd32e154ea68639c36b4019f4d89f1deeb398063a4ffea8",
-    "meshBytes": 61632,
+    "mesh": "native/meshes/3c2860ad81f417728a360d1ecd6aed49623ccdd604109846b19869b61a0e389a.bin",
+    "meshSha256": "3c2860ad81f417728a360d1ecd6aed49623ccdd604109846b19869b61a0e389a",
+    "meshBytes": 72464,
     "centerOfMass": {
       "x": -286.44064491876503,
       "y": -173.49810359999998,
@@ -350,24 +350,24 @@
       3080641.1663179398
     ],
     "valid": true,
-    "volume": 21065.528606591448,
+    "volume": 21065.528606591444,
     "bounds": {
       "min": [
-        -292.10831704009183,
-        -192.555311154159,
-        101.59168295990818
+        -292.1,
+        -192.54810360000002,
+        101.6
       ],
       "max": [
-        -279.392792445841,
-        -154.44089604584101,
-        152.40861317609216
+        -279.4,
+        -154.4481036,
+        152.40000009999997
       ]
     },
-    "triangles": 1958,
+    "triangles": 2342,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-57-7033dcf6a029.js",
-      "sha256": "6d0ecd6d233a019609750fbb8246cc16b8722ffb0616d1fe3b8ba0cea95486b7",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_57_7033dcf6a029.py",
+      "sha256": "389bf7b219fdd60d096f90af0219de72842db795165a7d13f51a7dd4c28fce78",
       "referenceStep": "components/part-57-7033dcf6a029.step"
     }
   },
@@ -376,9 +376,9 @@
     "file": "components/part-17-dda90457e304.step",
     "sha256": "dda90457e30442405a27ca662aa62f06298af4835d2f93e804280dd6d351f5c6",
     "bytes": 9827,
-    "mesh": "parametric/meshes/57d312b5446673ccfcf551c3192b4628c10c5a59c1074b120428bd94a9a54df8.bin",
-    "meshSha256": "57d312b5446673ccfcf551c3192b4628c10c5a59c1074b120428bd94a9a54df8",
-    "meshBytes": 9620,
+    "mesh": "native/meshes/1635045f51e54c9fb16f5b0cf7607f58137e164a27ec7f113bf4473d86af57ac.bin",
+    "meshSha256": "1635045f51e54c9fb16f5b0cf7607f58137e164a27ec7f113bf4473d86af57ac",
+    "meshBytes": 10856,
     "centerOfMass": {
       "x": 328.7725454,
       "y": -11.810999999999998,
@@ -399,21 +399,21 @@
     "volume": 617.5197075977909,
     "bounds": {
       "min": [
-        316.01139132873686,
-        -12.507154071263155,
-        499.9759459287369
+        316.0725454,
+        -12.446,
+        500.03710000000007
       ],
       "max": [
-        341.53369947126316,
-        -11.114845928736845,
-        525.4982540712632
+        341.4725454,
+        -11.176,
+        525.4371000000001
       ]
     },
-    "triangles": 256,
+    "triangles": 288,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-17-dda90457e304.js",
-      "sha256": "6a2a2a3279f1fd9778eb10606bacee6566b3c29dffacf435d1571da6e4c0fcb0",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_17_dda90457e304.py",
+      "sha256": "5c432468e7c9edd9062aaed49eed077429c0069e8768281a51fc979b22620cc5",
       "referenceStep": "components/part-17-dda90457e304.step"
     }
   },
@@ -422,9 +422,9 @@
     "file": "components/bhr-2024-130-001a-4dde5764e7c3.step",
     "sha256": "4dde5764e7c3865ae30769dede469c06dafac59c8d4e08318f3754b4b44c3052",
     "bytes": 111576,
-    "mesh": "parametric/meshes/5a47ddbf75cf243f53842b15f343727d04032db218538551da62f1ee079eee4d.bin",
-    "meshSha256": "5a47ddbf75cf243f53842b15f343727d04032db218538551da62f1ee079eee4d",
-    "meshBytes": 22940,
+    "mesh": "native/meshes/1bb2499c6bf2d6f55be8912328bdd1adde607333168c514ac29f9ff535953731.bin",
+    "meshSha256": "1bb2499c6bf2d6f55be8912328bdd1adde607333168c514ac29f9ff535953731",
+    "meshBytes": 25312,
     "centerOfMass": {
       "x": -1.219923523664462e-14,
       "y": -361.5054999999999,
@@ -445,21 +445,21 @@
     "volume": 1520170.6532812775,
     "bounds": {
       "min": [
-        -373.7610001000003,
-        -370.6089328392237,
-        60.32499989999974
+        -373.761,
+        -370.586,
+        60.324999999999996
       ],
       "max": [
-        373.7610001000003,
-        -352.4020671607763,
-        174.62500010000025
+        373.761,
+        -352.425,
+        174.625
       ]
     },
-    "triangles": 588,
+    "triangles": 652,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2024-130-001a-4dde5764e7c3.js",
-      "sha256": "a9c8c6333e64898e2e72998f57055e8ac7d71595b627d947afaa4f5c093744f0",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2024_130_001a_4dde5764e7c3.py",
+      "sha256": "2361dc1ee2e5b95c7aab9d4ce96de5cf521ae6c6420e83d4e642689069cbe2b7",
       "referenceStep": "components/bhr-2024-130-001a-4dde5764e7c3.step"
     }
   },
@@ -468,9 +468,9 @@
     "file": "components/bhr-2024-130-001b-432b77e608ad.step",
     "sha256": "432b77e608ad0e58d4eb8d6ded9cde83b5829253a13149ac81a3134be0252572",
     "bytes": 202765,
-    "mesh": "parametric/meshes/37c372b9b1f8d0df70ceddb4a72bc4f95c2120bcdb2fb380355c287a68388f54.bin",
-    "meshSha256": "37c372b9b1f8d0df70ceddb4a72bc4f95c2120bcdb2fb380355c287a68388f54",
-    "meshBytes": 37916,
+    "mesh": "native/meshes/8a95df1307aaa05f0d259d379dc2438cc08722e43651195aa8adf459b7fafdfc.bin",
+    "meshSha256": "8a95df1307aaa05f0d259d379dc2438cc08722e43651195aa8adf459b7fafdfc",
+    "meshBytes": 41440,
     "centerOfMass": {
       "x": -364.68050000000017,
       "y": 1.5009549851919183e-12,
@@ -491,21 +491,21 @@
     "volume": 1493833.9135589642,
     "bounds": {
       "min": [
-        -373.7839328392237,
-        -370.58966933827674,
-        60.31408946327542
+        -373.761,
+        -370.586,
+        60.32499999999999
       ],
       "max": [
-        -355.5770671607763,
-        370.58966933827674,
-        187.3359105367305
+        -355.6,
+        370.586,
+        187.325
       ]
     },
-    "triangles": 972,
+    "triangles": 1068,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2024-130-001b-432b77e608ad.js",
-      "sha256": "6a39dc19796b79c5783beae2bc3ffbadbc9d9e266a9058ca3a1dd8944c6a1cd9",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2024_130_001b_432b77e608ad.py",
+      "sha256": "0cb7a5a2e1aa921604bce8733a9dcc9c4671f7b87c3198548025816d9cb89d5c",
       "referenceStep": "components/bhr-2024-130-001b-432b77e608ad.step"
     }
   },
@@ -514,9 +514,9 @@
     "file": "components/bhr-2024-130-001a-77cd209a4fb2.step",
     "sha256": "77cd209a4fb257cd9a8482d302330d69e5d053412c929709047e9940c9079dea",
     "bytes": 65441,
-    "mesh": "parametric/meshes/4361be48d036c3bc2fc087bd6817a1952147397b94bbdf25b639fb3b1ad2222a.bin",
-    "meshSha256": "4361be48d036c3bc2fc087bd6817a1952147397b94bbdf25b639fb3b1ad2222a",
-    "meshBytes": 11992,
+    "mesh": "native/meshes/710d05285d6cf79f4fa11d5fb6318ff035b85a152554b92a17bd38e5556306d7.bin",
+    "meshSha256": "710d05285d6cf79f4fa11d5fb6318ff035b85a152554b92a17bd38e5556306d7",
+    "meshBytes": 13220,
     "centerOfMass": {
       "x": -246.76462739538772,
       "y": 361.5054999999999,
@@ -537,21 +537,21 @@
     "volume": 496458.4345406386,
     "bounds": {
       "min": [
-        -373.7610001000001,
-        352.4020671607763,
-        60.32499989999987
+        -373.76099999999997,
+        352.425,
+        60.324999999999996
       ],
       "max": [
-        -126.99999989999986,
-        370.6089328392237,
-        174.62500010000014
+        -127,
+        370.586,
+        174.625
       ]
     },
-    "triangles": 300,
+    "triangles": 332,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2024-130-001a-77cd209a4fb2.js",
-      "sha256": "6893d6dd4a6064cf5faf696ad5668c4146d3ee4fdfc60fc6f16ae4b818dbcc64",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2024_130_001a_77cd209a4fb2.py",
+      "sha256": "ea897a4ed2d40b00aac231bb980a0c1d1545b5d37b4a46888489e5e6cc102bf2",
       "referenceStep": "components/bhr-2024-130-001a-77cd209a4fb2.step"
     }
   },
@@ -560,9 +560,9 @@
     "file": "components/bhr-2024-130-001a-704f10f175a7.step",
     "sha256": "704f10f175a7b232f94944e5b200c43d11888ae4bfe0cd6352291055155eebbf",
     "bytes": 65244,
-    "mesh": "parametric/meshes/3c8576f467f2b6360c58b02cf093aec9bd665826a1bc4301a234348ca987615a.bin",
-    "meshSha256": "3c8576f467f2b6360c58b02cf093aec9bd665826a1bc4301a234348ca987615a",
-    "meshBytes": 11988,
+    "mesh": "native/meshes/7af81b4b785d34c097bab0487d884a6f8686b6ef292c0f1dbe97e05e0663b4ed.bin",
+    "meshSha256": "7af81b4b785d34c097bab0487d884a6f8686b6ef292c0f1dbe97e05e0663b4ed",
+    "meshBytes": 13220,
     "centerOfMass": {
       "x": 246.76462739538766,
       "y": 361.50549999999987,
@@ -583,21 +583,21 @@
     "volume": 496458.4345406386,
     "bounds": {
       "min": [
-        126.9999998999996,
-        352.4020671607763,
-        60.32499989999959
+        127,
+        352.425,
+        60.324999999999996
       ],
       "max": [
-        373.7610001000004,
-        370.6089328392237,
-        174.6250001000004
+        373.76099999999997,
+        370.586,
+        174.625
       ]
     },
-    "triangles": 300,
+    "triangles": 332,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2024-130-001a-704f10f175a7.js",
-      "sha256": "a2b9c579df6c7d507ab88295fd89be4f3ac3ede5d98eed87f0a5501e08f96034",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2024_130_001a_704f10f175a7.py",
+      "sha256": "cf9c51bc3f442c02fc9a7477fe7f00bde1a0ea7a44b2acb1d3a472276e757471",
       "referenceStep": "components/bhr-2024-130-001a-704f10f175a7.step"
     }
   },
@@ -846,9 +846,9 @@
     "file": "components/bhr-2026-300-008-3e3227464e72.step",
     "sha256": "3e3227464e72aa3e4faaa6dcb53b93c2d19f5737329508a9bcf7d70364c74315",
     "bytes": 115808,
-    "mesh": "parametric/meshes/87470974ab4642f162afecd3e04fad5973cd82da673cd790782981e7129c5007.bin",
-    "meshSha256": "87470974ab4642f162afecd3e04fad5973cd82da673cd790782981e7129c5007",
-    "meshBytes": 72576,
+    "mesh": "native/meshes/845bf5ff3cfe68dfe757fe8c3d2fa75bb5e702512ba62f8f82d8931723ffd7a5.bin",
+    "meshSha256": "845bf5ff3cfe68dfe757fe8c3d2fa75bb5e702512ba62f8f82d8931723ffd7a5",
+    "meshBytes": 81268,
     "centerOfMass": {
       "x": -75.30267699827348,
       "y": 7.0371533924769236e-15,
@@ -869,21 +869,21 @@
     "volume": 130462.68485867808,
     "bounds": {
       "min": [
-        -115.30534873161662,
-        -330.2152885928166,
-        -0.020180910516834315
+        -115.2900601388,
+        -330.2,
+        0
       ],
       "max": [
-        -54.949771546084634,
-        330.2152885928166,
-        5.608180910516834
+        -54.9650601389,
+        330.2,
+        5.588
       ]
     },
-    "triangles": 2000,
+    "triangles": 2240,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-300-008-3e3227464e72.js",
-      "sha256": "1f7de105244c7e39caf9cb489867ca28f62169dd4e7bd93862e3566941096c8a",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_300_008_3e3227464e72.py",
+      "sha256": "cfc257b42de782c14958a14cd89c8017cf3fab652d468c8f39b11523d7c29223",
       "referenceStep": "components/bhr-2026-300-008-3e3227464e72.step"
     }
   },
@@ -892,9 +892,9 @@
     "file": "components/bhr-2026-300-002-000a3a334dfd.step",
     "sha256": "000a3a334dfd1f3a3f198bf68bceb0f18a7d69e8758dac2b1bf0c1c108a9d995",
     "bytes": 305477,
-    "mesh": "parametric/meshes/bb579675a2509dadebfe01c17df83cacced06b7554480309169a4ffcbfd02528.bin",
-    "meshSha256": "bb579675a2509dadebfe01c17df83cacced06b7554480309169a4ffcbfd02528",
-    "meshBytes": 141696,
+    "mesh": "native/meshes/681e0771267d76fa23ed543d7bd0467d3cdb3e6200055a4d461f63caaf1711f4.bin",
+    "meshSha256": "681e0771267d76fa23ed543d7bd0467d3cdb3e6200055a4d461f63caaf1711f4",
+    "meshBytes": 162972,
     "centerOfMass": {
       "x": 156.98369726891738,
       "y": -276.606,
@@ -912,24 +912,24 @@
       655572272.257577
     ],
     "valid": true,
-    "volume": 57759.32629028572,
+    "volume": 57759.32629028574,
     "bounds": {
       "min": [
-        -29.134490442498176,
-        -279.54989613337216,
-        132.09610514663015
+        -29.068799237000018,
+        -279.40000000000003,
+        132.1022239980001
       ],
       "max": [
-        339.4122416559774,
-        -273.6621038666279,
-        230.00054578037646
+        339.3514378871259,
+        -273.812,
+        229.98381715061214
       ]
     },
-    "triangles": 3884,
+    "triangles": 4472,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-300-002-000a3a334dfd.js",
-      "sha256": "843e9d0999be9740b8839841064365c7ac8ea0effe88b115afa7a8221d669889",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_300_002_000a3a334dfd.py",
+      "sha256": "026c0e9b3ad67dcf87b3807ff7f8ea2824c4eaf67b6aaf816b730b19822784e0",
       "referenceStep": "components/bhr-2026-300-002-000a3a334dfd.step"
     }
   },
@@ -978,9 +978,9 @@
     "file": "components/bhr-2026-300-003-02272cafbb8d.step",
     "sha256": "02272cafbb8d924f30de5aa3f87e3f50c92084dbdb4412cf96101ae9bbffe838",
     "bytes": 10051,
-    "mesh": "parametric/meshes/538573842533a45a78f67b3d1bfbde865c31525687075346b4594e5af40f64ce.bin",
-    "meshSha256": "538573842533a45a78f67b3d1bfbde865c31525687075346b4594e5af40f64ce",
-    "meshBytes": 9640,
+    "mesh": "native/meshes/1592258aa3748e0b987525f3f5fbcb9f7a90e1ee38681e1405f3a427d53b5183.bin",
+    "meshSha256": "1592258aa3748e0b987525f3f5fbcb9f7a90e1ee38681e1405f3a427d53b5183",
+    "meshBytes": 10888,
     "centerOfMass": {
       "x": -17.4759660498,
       "y": -0.2701035999999812,
@@ -1001,21 +1001,21 @@
     "volume": 63744.00801248259,
     "bounds": {
       "min": [
-        -23.85654313543157,
-        -343.2006806856316,
-        130.15550374546845
+        -23.8259660498,
+        -343.1701036,
+        130.1860808311
       ],
       "max": [
-        -11.095388964168432,
-        342.66047348563154,
-        142.91665791673157
+        -11.1259660498,
+        342.62989639999995,
+        142.8860808311
       ]
     },
-    "triangles": 256,
+    "triangles": 288,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-300-003-02272cafbb8d.js",
-      "sha256": "1fcb0d54059e5c2ade2944cd41861fdc7c24a2b87d881954d2c7296fb297534f",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_300_003_02272cafbb8d.py",
+      "sha256": "f44e992dbf91cf6ee12ac86db22389cf94c12d8b8d5f7e48e288351105b7eada",
       "referenceStep": "components/bhr-2026-300-003-02272cafbb8d.step"
     }
   },
@@ -1064,9 +1064,9 @@
     "file": "components/bhr-2026-300-009-06a532f8490e.step",
     "sha256": "06a532f8490e689184c0988c53d7040cbd562493e6b575c8cdbf2a95af76c439",
     "bytes": 10031,
-    "mesh": "parametric/meshes/bd6e36b2eaf1fac24c496e29ef205c8bb2ca3b0d3cac15b08140d77865cae2ba.bin",
-    "meshSha256": "bd6e36b2eaf1fac24c496e29ef205c8bb2ca3b0d3cac15b08140d77865cae2ba",
-    "meshBytes": 9640,
+    "mesh": "native/meshes/fbfaacd29e6c1240b0e50700fc7d6970b29b372225c1d9020dc23b2537fcd8fc.bin",
+    "meshSha256": "fbfaacd29e6c1240b0e50700fc7d6970b29b372225c1d9020dc23b2537fcd8fc",
+    "meshBytes": 10852,
     "centerOfMass": {
       "x": -61.3150601389,
       "y": -3.35266318499769e-16,
@@ -1084,24 +1084,24 @@
       514679.17940190434
     ],
     "valid": true,
-    "volume": 20291.605478425492,
+    "volume": 20291.60547842549,
     "bounds": {
       "min": [
-        -67.69563722453155,
-        -6.380577085631554,
-        5.557422914368446
+        -67.6650601389,
+        -6.35,
+        5.588
       ],
       "max": [
-        -54.934483053268444,
-        6.380577085631554,
-        221.51857708563156
+        -54.9650601389,
+        6.35,
+        221.488
       ]
     },
-    "triangles": 256,
+    "triangles": 288,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-300-009-06a532f8490e.js",
-      "sha256": "a7d4f117004d67c22441dfeecff2caddd773afa7cdbca37c0a077f521f169ff4",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_300_009_06a532f8490e.py",
+      "sha256": "e3c31851c502c159e23f21035a003fcb47007fb0788051a74e29a120e4279050",
       "referenceStep": "components/bhr-2026-300-009-06a532f8490e.step"
     }
   },
@@ -1350,9 +1350,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-e33f357a272b.step",
     "sha256": "e33f357a272b27ac108abfd4cdedb0105605f1c00e4285916bdef2a5b1cc6d28",
     "bytes": 225818,
-    "mesh": "parametric/meshes/471b05e3f41157036594880968a754e5b36f9f5a24b4c31e07d3965500e5db6d.bin",
-    "meshSha256": "471b05e3f41157036594880968a754e5b36f9f5a24b4c31e07d3965500e5db6d",
-    "meshBytes": 60540,
+    "mesh": "native/meshes/447412c22fa0d274d4ffb50273e27ec3b136556369d14580b81e5e155caba578.bin",
+    "meshSha256": "447412c22fa0d274d4ffb50273e27ec3b136556369d14580b81e5e155caba578",
+    "meshBytes": 68700,
     "centerOfMass": {
       "x": -6.349999372585028,
       "y": 6.95108502093094e-8,
@@ -1370,24 +1370,24 @@
       961451395.8088874
     ],
     "valid": true,
-    "volume": 44735.975665515725,
+    "volume": 44736.00055952763,
     "bounds": {
       "min": [
-        -260.4200828655157,
-        -15.313384865515722,
-        -15.313384865515722
+        -260.3466981,
+        -15.240000100092006,
+        -15.2400001
       ],
       "max": [
-        247.72008286551568,
-        15.313384865515722,
-        15.313384865515722
+        247.64669809999995,
+        15.240000100092008,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-e33f357a272b.js",
-      "sha256": "07feddba84cdd04a74fa63647453cb4cdeb311e8386f3752a447c06065541f03",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_e33f357a272b.py",
+      "sha256": "1bcbae5427b574b81c95ac7b9b97e869531a71b574201800a6c69e906197b14f",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-e33f357a272b.step"
     }
   },
@@ -1756,9 +1756,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-567d6aaea52f.step",
     "sha256": "567d6aaea52fe7b7be21ff18707b5e6792581962244384749f83e4933111a0b7",
     "bytes": 225711,
-    "mesh": "parametric/meshes/b60d764b29ab316ab9d91d67ca5759c9302da8db6ff6d609e50e0fbf19fa3720.bin",
-    "meshSha256": "b60d764b29ab316ab9d91d67ca5759c9302da8db6ff6d609e50e0fbf19fa3720",
-    "meshBytes": 60536,
+    "mesh": "native/meshes/d1bbad9a064c970e6b323a7bb1b5da2996dc9c2b6194cd4a6bdc534282ef156f.bin",
+    "meshSha256": "d1bbad9a064c970e6b323a7bb1b5da2996dc9c2b6194cd4a6bdc534282ef156f",
+    "meshBytes": 68708,
     "centerOfMass": {
       "x": 6.044116695666471e-7,
       "y": 7.13085578676422e-8,
@@ -1776,24 +1776,24 @@
       891180125.1064467
     ],
     "valid": true,
-    "volume": 43613.840284062,
+    "volume": 43613.865177595144,
     "bounds": {
       "min": [
-        -247.7200828655157,
-        -15.313384865515722,
-        -15.313384865515722
+        -247.64669809999998,
+        -15.240000100092006,
+        -15.2400001
       ],
       "max": [
-        247.7200828655157,
-        15.313384865515722,
-        15.313384865515722
+        247.64669809999998,
+        15.240000100092004,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-567d6aaea52f.js",
-      "sha256": "532651531ba42f8915a4f99e666900643178de0865a6fbebfad0639736764756",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_567d6aaea52f.py",
+      "sha256": "8603fdcc746d049f71c5cd198aacffb0f094da34e3f83d45cde5dc5d145b134c",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-567d6aaea52f.step"
     }
   },
@@ -1922,9 +1922,9 @@
     "file": "components/3-8-rounded-hex-2-565-l-10-25mm-od-130de71a8862.step",
     "sha256": "130de71a886298a2dd58e98fc56915510670d7b9c2cfe03991eaad0ba85cf4df",
     "bytes": 50730,
-    "mesh": "parametric/meshes/35be47f9f5aab13d5ec3d62d94e5be97e3c417d64313e13eea075e853b5b95c9.bin",
-    "meshSha256": "35be47f9f5aab13d5ec3d62d94e5be97e3c417d64313e13eea075e853b5b95c9",
-    "meshBytes": 9040,
+    "mesh": "native/meshes/7feaf84dc7c3f3cf37499c0c35fd9fb22390836978b0bef01d740f09ba9641d0.bin",
+    "meshSha256": "7feaf84dc7c3f3cf37499c0c35fd9fb22390836978b0bef01d740f09ba9641d0",
+    "meshBytes": 9676,
     "centerOfMass": {
       "x": 8.428401459758421e-17,
       "y": 32.575500000000005,
@@ -1942,24 +1942,24 @@
       1508920.8693675846
     ],
     "valid": true,
-    "volume": 4181.09695803868,
+    "volume": 4181.096958038679,
     "bounds": {
       "min": [
-        -5.1250001,
-        -0.00972358143083306,
-        -4.768504181886423
+        -5.125,
+        0,
+        -4.7625
       ],
       "max": [
-        5.1250001,
-        65.16072358143083,
-        4.768504181886423
+        5.125,
+        65.151,
+        4.7625
       ]
     },
-    "triangles": 224,
+    "triangles": 240,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/3-8-rounded-hex-2-565-l-10-25mm-od-130de71a8862.js",
-      "sha256": "79ea85b69d4f797d3a28dddd6e0b603f9b6c8aaa3065874470f6df7158cc7646",
+      "kind": "cadquery",
+      "file": "native/parts/p_3_8_rounded_hex_2_565_l_10_25mm_od_130de71a8862.py",
+      "sha256": "bed090fad6a89e742ed23915f4e17369be6f80428d9df8f8e0991f73eb03111d",
       "referenceStep": "components/3-8-rounded-hex-2-565-l-10-25mm-od-130de71a8862.step"
     }
   },
@@ -2088,9 +2088,9 @@
     "file": "components/part-2-688ce357daa8.step",
     "sha256": "688ce357daa8e0559cd0b921880686c3bd83f5bc4660d440a471e899f5a5f184",
     "bytes": 110249,
-    "mesh": "parametric/meshes/ff9d0f9d144a28b7e65af8e8c309aa4fe61ab0a32f67b61efc1f8d19d86ea85e.bin",
-    "meshSha256": "ff9d0f9d144a28b7e65af8e8c309aa4fe61ab0a32f67b61efc1f8d19d86ea85e",
-    "meshBytes": 39140,
+    "mesh": "native/meshes/87443b9f2b1651725d7c811c75d26a7a6c41b79c792bd6d6c3b565f30f862cf6.bin",
+    "meshSha256": "87443b9f2b1651725d7c811c75d26a7a6c41b79c792bd6d6c3b565f30f862cf6",
+    "meshBytes": 43840,
     "centerOfMass": {
       "x": 505.9054858047135,
       "y": -2.794,
@@ -2108,24 +2108,24 @@
       141116715.94546318
     ],
     "valid": true,
-    "volume": 53764.35695340079,
+    "volume": 53764.3569534008,
     "bounds": {
       "min": [
-        412.3544014071989,
-        -5.664442564079025,
-        141.59071881027873
+        412.40786983590647,
+        -5.588,
+        141.60499999994485
       ],
       "max": [
-        591.1992811896213,
-        0.07644256407902454,
-        379.93727390200445
+        591.1849999999552,
+        0,
+        379.8867077225739
       ]
     },
-    "triangles": 1052,
+    "triangles": 1180,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-2-688ce357daa8.js",
-      "sha256": "a2ac927beed7dc7a7c71bdb6a819182f2d0d04f6cd9d12ee819a5e6860799123",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_2_688ce357daa8.py",
+      "sha256": "c6ccbf1b9a82ded65e45625ba17108ead334e4a72b5096ffaea930eb0ac46307",
       "referenceStep": "components/part-2-688ce357daa8.step"
     }
   },
@@ -2534,9 +2534,9 @@
     "file": "components/part-1-fdc3301b3e8e.step",
     "sha256": "fdc3301b3e8e4a251ce0561939ae32ac14558ecadf46050be781727ec3a61873",
     "bytes": 148732,
-    "mesh": "parametric/meshes/ac21dcb4ef7bb5cf9d35962d7de3b723bee61e9c6cd279bb7e10d37ed3c08f3d.bin",
-    "meshSha256": "ac21dcb4ef7bb5cf9d35962d7de3b723bee61e9c6cd279bb7e10d37ed3c08f3d",
-    "meshBytes": 57232,
+    "mesh": "native/meshes/2eff07cf4242892c6716d3323eb97c36068d02fa5bc337b623561c3d64488f11.bin",
+    "meshSha256": "2eff07cf4242892c6716d3323eb97c36068d02fa5bc337b623561c3d64488f11",
+    "meshBytes": 63376,
     "centerOfMass": {
       "x": 412.766436943485,
       "y": -2.7940000000000005,
@@ -2557,21 +2557,21 @@
     "volume": 95419.26823205971,
     "bounds": {
       "min": [
-        298.374973331124,
-        -5.664442564090944,
-        41.25904744058435
+        298.4499999999346,
+        -5.588,
+        41.27500000000086
       ],
       "max": [
-        495.7416082834197,
-        0.0764425640909442,
-        310.3274598437196
+        495.6656016309302,
+        0,
+        310.25145319123015
       ]
     },
-    "triangles": 1552,
+    "triangles": 1720,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-1-fdc3301b3e8e.js",
-      "sha256": "539c6cdc435af24fadf0970494415733ae4962f85b9fef32a51ba94c2a71b048",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_1_fdc3301b3e8e.py",
+      "sha256": "8113573311b419023a9c74cb077e60c746ee84283cddd066ecf9f5bf16fa9b47",
       "referenceStep": "components/part-1-fdc3301b3e8e.step"
     }
   },
@@ -2780,9 +2780,9 @@
     "file": "components/part-9-a1188eb00db5.step",
     "sha256": "a1188eb00db51d4a31af6408ad07c83ef35c105744c45951d45fddef0b0194f9",
     "bytes": 214532,
-    "mesh": "parametric/meshes/c42d43070391421095643415129af3fd6cc4e483fe42c0ca44b444d3e890fda4.bin",
-    "meshSha256": "c42d43070391421095643415129af3fd6cc4e483fe42c0ca44b444d3e890fda4",
-    "meshBytes": 92952,
+    "mesh": "native/meshes/d5cd68f27a3a71c7a647da2d9670999f53709a6a40297c824bd246f6202b03f4.bin",
+    "meshSha256": "d5cd68f27a3a71c7a647da2d9670999f53709a6a40297c824bd246f6202b03f4",
+    "meshBytes": 103828,
     "centerOfMass": {
       "x": 95.79602058467222,
       "y": -13.970000000000002,
@@ -2800,24 +2800,24 @@
       46758878.908665836
     ],
     "valid": true,
-    "volume": 49965.74164675497,
+    "volume": 49965.74164675498,
     "bounds": {
       "min": [
-        32.976722914368054,
-        -16.835810436679537,
-        105.36672291436805
+        33.007299999999994,
+        -16.764,
+        105.3973
       ],
       "max": [
-        155.57758859281662,
-        -11.104189563320462,
-        229.46865604418878
+        155.5623,
+        -11.176,
+        229.4626899843099
       ]
     },
-    "triangles": 2548,
+    "triangles": 2848,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-9-a1188eb00db5.js",
-      "sha256": "e1ca2921fad16771d731eb0be8cddb8913413cfe2356cec74a4250dc2e1e4545",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_9_a1188eb00db5.py",
+      "sha256": "b967074dae778f36b4028f0b2ba8884e420b37f779dfb70c32fde01660cb24a4",
       "referenceStep": "components/part-9-a1188eb00db5.step"
     }
   },
@@ -3226,9 +3226,9 @@
     "file": "components/backlash-remover-left-side-c70badece837.step",
     "sha256": "c70badece83768b8c83c17abc7a317ad6a3c1559751d93820a9a309bef7719f1",
     "bytes": 330498,
-    "mesh": "parametric/meshes/20407caff235754c592b7052ba5b643be34f10044bb944394cb2164b11e42b3a.bin",
-    "meshSha256": "20407caff235754c592b7052ba5b643be34f10044bb944394cb2164b11e42b3a",
-    "meshBytes": 110344,
+    "mesh": "native/meshes/156fa1fa0fee178728b971d7b5d06931ebcb243ac2e42db60aa4601586c782f3.bin",
+    "meshSha256": "156fa1fa0fee178728b971d7b5d06931ebcb243ac2e42db60aa4601586c782f3",
+    "meshBytes": 149724,
     "centerOfMass": {
       "x": 324.6863547843643,
       "y": 11.520949792359197,
@@ -3246,24 +3246,24 @@
       5887020.112454891
     ],
     "valid": true,
-    "volume": 21932.053507216817,
+    "volume": 21932.05348408956,
     "bounds": {
       "min": [
-        295.08415042107805,
-        5.145416687861733,
-        160.30566819829843
+        295.27499989997096,
+        5.58799989999964,
+        160.3375
       ],
       "max": [
-        359.20470239626366,
-        25.52077133203946,
-        220.90113663026685
+        358.775000100018,
+        25.48255,
+        220.3530341703
       ]
     },
-    "triangles": 3440,
+    "triangles": 4936,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/backlash-remover-left-side-c70badece837.js",
-      "sha256": "010498b3284be9c5be526c0ddd85be9cb48ec581c54b3897268f4bb5a58f2089",
+      "kind": "cadquery",
+      "file": "native/parts/p_backlash_remover_left_side_c70badece837.py",
+      "sha256": "782bc4201d48d587c6dd8d81c15fc091232164c817c91154bdb4ced744dfb980",
       "referenceStep": "components/backlash-remover-left-side-c70badece837.step"
     }
   },
@@ -3312,9 +3312,9 @@
     "file": "components/part-5-03517a6d0148.step",
     "sha256": "03517a6d0148aabc07756e2a51d0d5c6af9f076301454013830f5d527f8aa3c3",
     "bytes": 490349,
-    "mesh": "parametric/meshes/00ecf471986858c50e0155c954523710b16d1a1b9b4f520245833a3737e1381c.bin",
-    "meshSha256": "00ecf471986858c50e0155c954523710b16d1a1b9b4f520245833a3737e1381c",
-    "meshBytes": 401352,
+    "mesh": "native/meshes/5aa37fa9881e9cb174c61e46fb9842bd30ecd07d887bd143ee403803ce952435.bin",
+    "meshSha256": "5aa37fa9881e9cb174c61e46fb9842bd30ecd07d887bd143ee403803ce952435",
+    "meshBytes": 453256,
     "centerOfMass": {
       "x": 102.79889332326398,
       "y": -2.833940622055944,
@@ -3332,24 +3332,24 @@
       17881586154.64534
     ],
     "valid": true,
-    "volume": 924301.050710672,
+    "volume": 924301.0507106719,
     "bounds": {
       "min": [
-        -171.48057708563067,
-        -5.649154071263929,
-        102.65311750949999
+        -171.45,
+        -5.588,
+        102.6531176095
       ],
       "max": [
-        343.04886281736333,
-        0.1488628173633687,
-        546.1611540712639
+        342.90000000000015,
+        0,
+        546.1
       ]
     },
-    "triangles": 11188,
+    "triangles": 12628,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-5-03517a6d0148.js",
-      "sha256": "ca3fc6ab920b1cffdaf17ca5a58905dc69492bd77ab433126e528b1e7078e2af",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_5_03517a6d0148.py",
+      "sha256": "3339bc76fa02ef2f83f93bc4cc456b837b62a0e936a8ffe17d91c685277c2091",
       "referenceStep": "components/part-5-03517a6d0148.step"
     }
   },
@@ -3558,9 +3558,9 @@
     "file": "components/part-8-b54e6b3bd144.step",
     "sha256": "b54e6b3bd144035579ef236461c8cdf0ce871364372d85ec712171b54437919d",
     "bytes": 704619,
-    "mesh": "parametric/meshes/404adf5e0748e6cdf04d2b6347bc2d974ff25c8b54eec66d2c3769a2bbb77eec.bin",
-    "meshSha256": "404adf5e0748e6cdf04d2b6347bc2d974ff25c8b54eec66d2c3769a2bbb77eec",
-    "meshBytes": 423480,
+    "mesh": "native/meshes/908fba9bc1733429a54707851b6e9e6036cb21a7afba9c5d0a992b4d05dc222e.bin",
+    "meshSha256": "908fba9bc1733429a54707851b6e9e6036cb21a7afba9c5d0a992b4d05dc222e",
+    "meshBytes": 477676,
     "centerOfMass": {
       "x": 110.1207429692687,
       "y": -8.340633479611745,
@@ -3578,24 +3578,24 @@
       16371463139.965809
     ],
     "valid": true,
-    "volume": 892440.519189031,
+    "volume": 892440.5191890307,
     "bounds": {
       "min": [
-        -171.48057708563067,
-        -11.324862817363366,
-        105.3667229143693
+        -171.45,
+        -11.176,
+        105.3973
       ],
       "max": [
-        343.04886281736333,
-        -5.526845928736071,
-        546.1611540712639
+        342.9,
+        -5.588,
+        546.1
       ]
     },
-    "triangles": 11772,
+    "triangles": 13276,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-8-b54e6b3bd144.js",
-      "sha256": "515a1a271475ca0556231611d2226b68cce773419ee87c8d81288919df97f71e",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_8_b54e6b3bd144.py",
+      "sha256": "9ec7bdbd028c1d063c445ba63b957c24239b89f34d6643133d5ce5dd52f66c34",
       "referenceStep": "components/part-8-b54e6b3bd144.step"
     }
   },
@@ -3604,9 +3604,9 @@
     "file": "components/part-8m-cdb28235d4d6.step",
     "sha256": "cdb28235d4d68697b01c37b2fe20fc6ccd00b965d9dd2fcd80a71cfa08d66262",
     "bytes": 188744,
-    "mesh": "parametric/meshes/1de2765a47ec01bef5270772257ea70d1a30427b4d35f43507d73b6099a728f9.bin",
-    "meshSha256": "1de2765a47ec01bef5270772257ea70d1a30427b4d35f43507d73b6099a728f9",
-    "meshBytes": 97320,
+    "mesh": "native/meshes/c60c880b2c7dd5a3e6aa1fc7d0bea3a8c2c4981cf022adfc463c1f855684c315.bin",
+    "meshSha256": "c60c880b2c7dd5a3e6aa1fc7d0bea3a8c2c4981cf022adfc463c1f855684c315",
+    "meshBytes": 109064,
     "centerOfMass": {
       "x": 95.19066715138611,
       "y": 2.7940000000000023,
@@ -3624,24 +3624,24 @@
       88826121.24890935
     ],
     "valid": true,
-    "volume": 62885.37910684514,
+    "volume": 62885.37910684513,
     "bounds": {
       "min": [
-        10.754719458960398,
-        -0.07181043667916975,
-        102.621161168299
+        10.782300000000003,
+        0,
+        102.65311760949999
       ],
       "max": [
-        174.49015818131048,
-        5.6598104366791695,
-        229.4686560441888
+        174.46625,
+        5.588,
+        229.46268998430992
       ]
     },
-    "triangles": 2680,
+    "triangles": 3004,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-8m-cdb28235d4d6.js",
-      "sha256": "448110a7546e42c683b5186602e7e952778f774f03b69e1e57dcf8e469eaf51c",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_8m_cdb28235d4d6.py",
+      "sha256": "017c8dbe72ecf6903be54c3a50fba0dec5479f6634d0b5c5a85359712e3fef25",
       "referenceStep": "components/part-8m-cdb28235d4d6.step"
     }
   },
@@ -3730,9 +3730,9 @@
     "file": "components/backlash-remover-right-side-fe6bf528179b.step",
     "sha256": "fe6bf528179b3f23f699aef64d7f20ff6461373e7fec69c46d62d2bdbfb99e1c",
     "bytes": 540490,
-    "mesh": "parametric/meshes/63c521d653fac6ae7f55ea35cf6e04cde4e443ce36e2b8e596e275a9d90ff07c.bin",
-    "meshSha256": "63c521d653fac6ae7f55ea35cf6e04cde4e443ce36e2b8e596e275a9d90ff07c",
-    "meshBytes": 190528,
+    "mesh": "native/meshes/5868c4c653a3130c4c11f8104715c5f93bdda4eea8332868ba05ca47ba650a9c.bin",
+    "meshSha256": "5868c4c653a3130c4c11f8104715c5f93bdda4eea8332868ba05ca47ba650a9c",
+    "meshBytes": 259440,
     "centerOfMass": {
       "x": 323.3848928181972,
       "y": 1.8518078036446954,
@@ -3750,24 +3750,24 @@
       13939071.29295826
     ],
     "valid": true,
-    "volume": 37655.183241227256,
+    "volume": 37655.38814006646,
     "bounds": {
       "min": [
-        295.1081345416099,
-        -12.38955204570421,
-        160.30566819829824
+        295.27499989997096,
+        -11.938000100000359,
+        160.3375
       ],
       "max": [
-        359.2328804334221,
-        28.65135062775094,
-        220.35308701127215
+        358.77500009999306,
+        28.5750001,
+        220.05594011825
       ]
     },
-    "triangles": 5996,
+    "triangles": 8596,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/backlash-remover-right-side-fe6bf528179b.js",
-      "sha256": "0197ae99c392865cd8631cf7627b2b288259009dfac8ce1037de7fa0f2aa8d93",
+      "kind": "cadquery",
+      "file": "native/parts/p_backlash_remover_right_side_fe6bf528179b.py",
+      "sha256": "eca035e509a8c8d8ed7ebc2ebcfaf49d7b82a8bd283730ec245034be311b0443",
       "referenceStep": "components/backlash-remover-right-side-fe6bf528179b.step"
     }
   },
@@ -3856,9 +3856,9 @@
     "file": "components/1-2-rounded-hex-24-996-l-13-75mm-od-10c910583edd.step",
     "sha256": "10c910583edd692c4406738088c4c07cb4e97520f99bd1f8f16d99f1909a6d84",
     "bytes": 50102,
-    "mesh": "parametric/meshes/33a19c6a8df65c2ff38529388a6c139cb5fcea0e20f18575163e1874328ea593.bin",
-    "meshSha256": "33a19c6a8df65c2ff38529388a6c139cb5fcea0e20f18575163e1874328ea593",
-    "meshBytes": 9060,
+    "mesh": "native/meshes/3a0db66e56da2457f25da19fe40f5220abdcb5c46ab725367afa407f033909dd.bin",
+    "meshSha256": "3a0db66e56da2457f25da19fe40f5220abdcb5c46ab725367afa407f033909dd",
+    "meshBytes": 9728,
     "centerOfMass": {
       "x": -1.8409569713067572e-16,
       "y": 317.4492000000001,
@@ -3876,24 +3876,24 @@
       2656702681.604841
     ],
     "valid": true,
-    "volume": 79060.70681203046,
+    "volume": 79060.70681203045,
     "bounds": {
       "min": [
-        -6.875000100000001,
-        -0.00972358143083311,
-        -6.356480260733326
+        -6.874999999999999,
+        0,
+        -6.3500000000000005
       ],
       "max": [
-        6.875000100000001,
-        634.9081235814309,
-        6.356480260733326
+        6.874999999999999,
+        634.8984,
+        6.3500000000000005
       ]
     },
-    "triangles": 224,
+    "triangles": 240,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-2-rounded-hex-24-996-l-13-75mm-od-10c910583edd.js",
-      "sha256": "5e895b562771c03d3404d75f17848572b58ca69e44bd1c990361a8570e4c280f",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_2_rounded_hex_24_996_l_13_75mm_od_10c910583edd.py",
+      "sha256": "4fd5d1bca40409c915c2d9298aa613ca85bc4ec66227f226ac390875c85bb2ef",
       "referenceStep": "components/1-2-rounded-hex-24-996-l-13-75mm-od-10c910583edd.step"
     }
   },
@@ -6822,9 +6822,9 @@
     "file": "components/3-8-rounded-hex-27-565-l-10-25mm-od-f36724821bc0.step",
     "sha256": "f36724821bc0b504415857aa4690962a622a548ff826f3ee83023978187224f2",
     "bytes": 50774,
-    "mesh": "parametric/meshes/bee68cdec7078facdcbaca1a592adf1dab6bbdf429769177548dc21eb53b065e.bin",
-    "meshSha256": "bee68cdec7078facdcbaca1a592adf1dab6bbdf429769177548dc21eb53b065e",
-    "meshBytes": 9040,
+    "mesh": "native/meshes/6d4e6adeb8a8283733109b9d25502b9ad96f30dbb5f3b6554ef4b5573468d3e0.bin",
+    "meshSha256": "6d4e6adeb8a8283733109b9d25502b9ad96f30dbb5f3b6554ef4b5573468d3e0",
+    "meshBytes": 9676,
     "centerOfMass": {
       "x": -1.9586927296430935e-16,
       "y": 350.0755000000001,
@@ -6842,24 +6842,24 @@
       1807683370.20152
     ],
     "valid": true,
-    "volume": 44242.85301910085,
+    "volume": 44242.85301910084,
     "bounds": {
       "min": [
-        -5.1250001,
-        -0.010090505258411772,
-        -4.768504181886423
+        -5.125,
+        0,
+        -4.7625
       ],
       "max": [
-        5.1250001,
-        700.1610905052584,
-        4.768504181886423
+        5.125,
+        700.151,
+        4.7625
       ]
     },
-    "triangles": 224,
+    "triangles": 240,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/3-8-rounded-hex-27-565-l-10-25mm-od-f36724821bc0.js",
-      "sha256": "a2a296a80cd9fb364f76000b34be4f0fe2e7f5d2d8d53b71c755fc639887629f",
+      "kind": "cadquery",
+      "file": "native/parts/p_3_8_rounded_hex_27_565_l_10_25mm_od_f36724821bc0.py",
+      "sha256": "a7fc7d98fd9d7f58b587a57fedd51d60d70cf08c6c74aa591ff79ccff3f66259",
       "referenceStep": "components/3-8-rounded-hex-27-565-l-10-25mm-od-f36724821bc0.step"
     }
   },
@@ -7028,9 +7028,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-8eda9bf1c576.step",
     "sha256": "8eda9bf1c5767ee1d787fd3eb8984f5108b82daa989e353929d807c0a5991721",
     "bytes": 225749,
-    "mesh": "parametric/meshes/7668289c325270324c781f8ab3977274fa5521b968188fb9029419f319ee4d8f.bin",
-    "meshSha256": "7668289c325270324c781f8ab3977274fa5521b968188fb9029419f319ee4d8f",
-    "meshBytes": 60536,
+    "mesh": "native/meshes/3ccda79a3dbc44c15659b35db5b53f1e4e45bf4e0e13534591a0a5702a291ab4.bin",
+    "meshSha256": "3ccda79a3dbc44c15659b35db5b53f1e4e45bf4e0e13534591a0a5702a291ab4",
+    "meshBytes": 68700,
     "centerOfMass": {
       "x": 6.350000808470264,
       "y": 5.8077211547942486e-8,
@@ -7048,24 +7048,24 @@
       1645783847.0956097
     ],
     "valid": true,
-    "volume": 53546.9826823232,
+    "volume": 53547.00757538271,
     "bounds": {
       "min": [
-        -297.5802828655157,
-        -15.313384865515722,
-        -15.313384865515722
+        -297.5068981,
+        -15.240000100092006,
+        -15.2400001
       ],
       "max": [
-        310.28028286551574,
-        15.313384865515722,
-        15.313384865515722
+        310.20689810000005,
+        15.240000100095138,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-8eda9bf1c576.js",
-      "sha256": "856879481e582a47503ea81993c2ed7e76bdc0bebe542bdafc7d66fa559a7886",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_8eda9bf1c576.py",
+      "sha256": "47c282a8f6883d9e42d72736227eab7c202b60971478e895d7962958b6d9b73c",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-8eda9bf1c576.step"
     }
   },
@@ -7074,9 +7074,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-993862eff2a0.step",
     "sha256": "993862eff2a0c4c93acc4c2a15774d1ed6da17c0cac43f8667857205d2c945ef",
     "bytes": 225681,
-    "mesh": "parametric/meshes/39964a82c38c7a60520849b58be6591ea35d1a04224e513e46262f118ea7868c.bin",
-    "meshSha256": "39964a82c38c7a60520849b58be6591ea35d1a04224e513e46262f118ea7868c",
-    "meshBytes": 60540,
+    "mesh": "native/meshes/95ecd59f59c1a4fb22562c9d785779da6074131fe893bae34835a37404342b95.bin",
+    "meshSha256": "95ecd59f59c1a4fb22562c9d785779da6074131fe893bae34835a37404342b95",
+    "meshBytes": 68708,
     "centerOfMass": {
       "x": 6.350000799721995,
       "y": 5.8716294680028876e-8,
@@ -7094,24 +7094,24 @@
       1594732926.967408
     ],
     "valid": true,
-    "volume": 52985.914991136786,
+    "volume": 52985.93988517244,
     "bounds": {
       "min": [
-        -294.40528286551574,
-        -15.313384865515722,
-        -15.313384865515722
+        -294.33189810000005,
+        -15.240000100092004,
+        -15.2400001
       ],
       "max": [
-        307.1052828655158,
-        15.313384865515722,
-        15.313384865515722
+        307.0318981000001,
+        15.240000100092006,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-993862eff2a0.js",
-      "sha256": "de39ac8a6441110b9e92ad9001c80c21a1d8c7fe1c6e4c4773def3fd397e780b",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_993862eff2a0.py",
+      "sha256": "225e6545420f8108a237f8a2b228d02654ee5048dde7df21266bc0b982b2a19e",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-993862eff2a0.step"
     }
   },
@@ -7160,9 +7160,9 @@
     "file": "components/part-29-4ed5484af5a2.step",
     "sha256": "4ed5484af5a271da2e90f330f507982465a120aac60c7f48fbc5334f0055be44",
     "bytes": 58614,
-    "mesh": "parametric/meshes/5d8d74a8d01b66cd968e0b81dba5670d5a895ac57d1f47e66c50fd5ee4588038.bin",
-    "meshSha256": "5d8d74a8d01b66cd968e0b81dba5670d5a895ac57d1f47e66c50fd5ee4588038",
-    "meshBytes": 8988,
+    "mesh": "native/meshes/bb4ba0a79033e39883d2b6422da54c598340b68492f0217a16eed9b177f0543c.bin",
+    "meshSha256": "bb4ba0a79033e39883d2b6422da54c598340b68492f0217a16eed9b177f0543c",
+    "meshBytes": 9660,
     "centerOfMass": {
       "x": 161.92614835859249,
       "y": 2.3764666806826332e-14,
@@ -7183,21 +7183,21 @@
     "volume": 78378.76139277146,
     "bounds": {
       "min": [
-        155.0490982586,
-        -335.2922920482239,
-        398.9019802667136
+        155.0490983586,
+        -335.28,
+        398.90839123589996
       ],
       "max": [
-        168.8031984586167,
-        335.2922920482239,
-        411.61480220508633
+        168.80319835859999,
+        335.28,
+        411.6083912359
       ]
     },
-    "triangles": 224,
+    "triangles": 240,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-29-4ed5484af5a2.js",
-      "sha256": "3858161f69db9300d09112f25d6c74421ca9acc868b7e90823f44c3f1da53a54",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_29_4ed5484af5a2.py",
+      "sha256": "cb1aa45ca5b93796e512f4977868e7688cc34e43cc0ad4234c30faa8094a55a7",
       "referenceStep": "components/part-29-4ed5484af5a2.step"
     }
   },
@@ -7246,9 +7246,9 @@
     "file": "components/part-20-3b1bdb058696.step",
     "sha256": "3b1bdb058696f2dfb3add398d2261298618e34faa79b12cb80eebf44b66adee0",
     "bytes": 264148,
-    "mesh": "parametric/meshes/25b436d44a54121d4825457b7e5a3cada759e3abcfc86faf2a9f4f8eb5094884.bin",
-    "meshSha256": "25b436d44a54121d4825457b7e5a3cada759e3abcfc86faf2a9f4f8eb5094884",
-    "meshBytes": 116564,
+    "mesh": "native/meshes/9f3132a0de62136cd35e65369d931c8032dfb3182065b75ad7639bf92534d4f7.bin",
+    "meshSha256": "9f3132a0de62136cd35e65369d931c8032dfb3182065b75ad7639bf92534d4f7",
+    "meshBytes": 131052,
     "centerOfMass": {
       "x": 77.90881102149157,
       "y": 336.8674999999999,
@@ -7266,24 +7266,24 @@
       4594096817.713577
     ],
     "valid": true,
-    "volume": 265863.9301345319,
+    "volume": 265863.930134532,
     "bounds": {
       "min": [
-        -225.1660443167639,
-        335.16815008014964,
-        219.38929386893628
+        -225.10489024549997,
+        335.28,
+        219.4441996517
       ],
       "max": [
-        342.9152885928167,
-        338.5668499198503,
-        546.1611540712639
+        342.9000000000001,
+        338.455,
+        546.1
       ]
     },
-    "triangles": 3200,
+    "triangles": 3600,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-20-3b1bdb058696.js",
-      "sha256": "fc664831260776024ad3bc64c9f79659112262f76c0d7af79cb086433163172e",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_20_3b1bdb058696.py",
+      "sha256": "8dad0d03245dc345839fad24ebf5be3ce3787b914347beff3bcf982c43176ae9",
       "referenceStep": "components/part-20-3b1bdb058696.step"
     }
   },
@@ -7372,9 +7372,9 @@
     "file": "components/part-19-5ee4e5fec190.step",
     "sha256": "5ee4e5fec190177703569e5bc04f75f944c3430bc9848e454416f6501c2ff19d",
     "bytes": 236551,
-    "mesh": "parametric/meshes/c194d00649476108c3aa8a338db9721982e2ce2ca7afd7ee502600b8a99c1fbc.bin",
-    "meshSha256": "c194d00649476108c3aa8a338db9721982e2ce2ca7afd7ee502600b8a99c1fbc",
-    "meshBytes": 116568,
+    "mesh": "native/meshes/11805da3d7cbddc4cb44c933da71ecebfb4294869cfe1557d07d1166a8e27e0b.bin",
+    "meshSha256": "11805da3d7cbddc4cb44c933da71ecebfb4294869cfe1557d07d1166a8e27e0b",
+    "meshBytes": 131052,
     "centerOfMass": {
       "x": 77.90881102148427,
       "y": -336.8674999999999,
@@ -7395,21 +7395,21 @@
     "volume": 265863.9301344976,
     "bounds": {
       "min": [
-        -225.1660443167639,
-        -338.5668499198503,
-        219.38929386893628
+        -225.10489024549997,
+        -338.455,
+        219.4441996517
       ],
       "max": [
-        342.9152885928167,
-        -335.16815008014964,
-        546.1611540712639
+        342.9000000000001,
+        -335.28,
+        546.1
       ]
     },
-    "triangles": 3200,
+    "triangles": 3600,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-19-5ee4e5fec190.js",
-      "sha256": "63c27a46acfd62510274ea196a273c4c3ed351d7b4682d0fb3562fef1e7053ae",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_19_5ee4e5fec190.py",
+      "sha256": "5375191458ff8c1a928932d5f405dedbc9ddada7cf6f362a3490aa2d0d5f3467",
       "referenceStep": "components/part-19-5ee4e5fec190.step"
     }
   },
@@ -7458,9 +7458,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-2457503da660.step",
     "sha256": "2457503da6603934d3a27a4d9219e7fce9a43a5e9210979a81d6fa8730f59e43",
     "bytes": 225733,
-    "mesh": "parametric/meshes/af02e2efdbd24a611ba6004ba9084a0f1df27be8b5fb12940714e308c2a8c5cb.bin",
-    "meshSha256": "af02e2efdbd24a611ba6004ba9084a0f1df27be8b5fb12940714e308c2a8c5cb",
-    "meshBytes": 60540,
+    "mesh": "native/meshes/1caf2d976b15321b2bd047b7337aeb6655cb6bcd0af74352a932abce8d85cc52.bin",
+    "meshSha256": "1caf2d976b15321b2bd047b7337aeb6655cb6bcd0af74352a932abce8d85cc52",
+    "meshBytes": 68708,
     "centerOfMass": {
       "x": 7.652093463780913e-7,
       "y": 6.046734374606916e-8,
@@ -7478,24 +7478,24 @@
       1459340952.268311
     ],
     "valid": true,
-    "volume": 51437.368164765794,
+    "volume": 51437.39305847662,
     "bounds": {
       "min": [
-        -291.99228286551573,
-        -15.313384865515722,
-        -15.313384865515722
+        -291.91889810000004,
+        -15.240000100092006,
+        -15.2400001
       ],
       "max": [
-        291.99228286551573,
-        15.313384865515722,
-        15.313384865515722
+        291.91889810000004,
+        15.240000100095138,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-2457503da660.js",
-      "sha256": "2f9239c04a09f75973f52655b127a794af496c581cdc52895ea108f1797e5bab",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_2457503da660.py",
+      "sha256": "323f07eeb57da9cdebb428dcd7216a3ac36f3641c91486d5e581d6d735b56c0e",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-2457503da660.step"
     }
   },
@@ -7624,9 +7624,9 @@
     "file": "components/bhr-2026-500-013b-10a3b616a4ed.step",
     "sha256": "10a3b616a4edcd5825e5354504c2672e2249039dd3b8e5b7d637efd072fadb19",
     "bytes": 1326579,
-    "mesh": "parametric/meshes/d1fb26b1961d70fa01ff8c3d763f1f673fc430ac3d63adf08f91d67b14b17748.bin",
-    "meshSha256": "d1fb26b1961d70fa01ff8c3d763f1f673fc430ac3d63adf08f91d67b14b17748",
-    "meshBytes": 311692,
+    "mesh": "native/meshes/cc49c4fffe83950080b16b2c8fd7979b6e32e06fccdbe9bc258ab212887d5abe.bin",
+    "meshSha256": "cc49c4fffe83950080b16b2c8fd7979b6e32e06fccdbe9bc258ab212887d5abe",
+    "meshBytes": 368504,
     "centerOfMass": {
       "x": -91.06297688976697,
       "y": -175.29107681392549,
@@ -7644,24 +7644,24 @@
       105035417.6314671
     ],
     "valid": true,
-    "volume": 39888.101534354086,
+    "volume": 39888.10086966175,
     "bounds": {
       "min": [
-        -111.14843621680707,
-        -252.90207749500917,
-        -165.14250344722845
+        -111.12499999997931,
+        -252.87310369999994,
+        -165.1000001
       ],
       "max": [
-        -71.11583974266618,
-        -97.26912970499086,
-        -152.37102610499085
+        -71.13927595948405,
+        -97.29810349999997,
+        -152.4
       ]
     },
-    "triangles": 9700,
+    "triangles": 11750,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-013b-10a3b616a4ed.js",
-      "sha256": "6231c5f603254973ecd5323e69bdb05ba90f50d1217c36f641b0633c0d3865cc",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_013b_10a3b616a4ed.py",
+      "sha256": "5a727604d06edcdc3c45652f851a1aa38a136e3d738b6f5cbfd83bf49c000f4c",
       "referenceStep": "components/bhr-2026-500-013b-10a3b616a4ed.step"
     }
   },
@@ -7950,9 +7950,9 @@
     "file": "components/bhr-2026-500-019-8e4b63bd1867.step",
     "sha256": "8e4b63bd18675cea8b2f1b2173835aea337ea238ae3719317f762ffe30a418b9",
     "bytes": 556804,
-    "mesh": "parametric/meshes/36b184a040129a38d54ebbbcd360fe882fdfa1f2dcd384d0a933cb2dac351b0d.bin",
-    "meshSha256": "36b184a040129a38d54ebbbcd360fe882fdfa1f2dcd384d0a933cb2dac351b0d",
-    "meshBytes": 262596,
+    "mesh": "native/meshes/86764a1fba1907a1b1a94596def2c5be57fefc0cb3627b798da68968cc9969b9.bin",
+    "meshSha256": "86764a1fba1907a1b1a94596def2c5be57fefc0cb3627b798da68968cc9969b9",
+    "meshBytes": 358712,
     "centerOfMass": {
       "x": -252.8593165552368,
       "y": -176.05156226546364,
@@ -7970,24 +7970,24 @@
       158163891.8984394
     ],
     "valid": true,
-    "volume": 62760.15031493515,
+    "volume": 62760.18173479163,
     "bounds": {
       "min": [
-        -291.7029527162564,
-        -253.01751124347427,
-        160.23392125780717
+        -291.5768284422,
+        -252.87310370000017,
+        160.33749989995408
       ],
       "max": [
-        -207.37751564820715,
-        -97.15369595652366,
-        336.2225271437482
+        -207.48109429034415,
+        -97.29810349999983,
+        336.1182001000002
       ]
     },
-    "triangles": 9103,
+    "triangles": 12865,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-019-8e4b63bd1867.js",
-      "sha256": "99f5fdd8210268a865dd6dea1b66d0b7ddb119f636513685ae88b269e8dbee6b",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_019_8e4b63bd1867.py",
+      "sha256": "96b6f63a1a499a1bf3f1c2d64912bff126076bd414a42cdd8c966a2e902e2235",
       "referenceStep": "components/bhr-2026-500-019-8e4b63bd1867.step"
     }
   },
@@ -7996,9 +7996,9 @@
     "file": "components/bhr-2026-500-011-15b0e1706e9e.step",
     "sha256": "15b0e1706e9ecab9601c73327299893ee963a5ad188e4aae98b1c1256aa1cef8",
     "bytes": 375351,
-    "mesh": "parametric/meshes/ebc1a1c88491ce9a6c4470ab7573526ec919bf6417a3530ca9e216a2a04c9dbd.bin",
-    "meshSha256": "ebc1a1c88491ce9a6c4470ab7573526ec919bf6417a3530ca9e216a2a04c9dbd",
-    "meshBytes": 103484,
+    "mesh": "native/meshes/de9ea70b117a6a24e9fb6393472a33b64f2a7ce50a6346b3b92473a1f44e337b.bin",
+    "meshSha256": "de9ea70b117a6a24e9fb6393472a33b64f2a7ce50a6346b3b92473a1f44e337b",
+    "meshBytes": 113392,
     "centerOfMass": {
       "x": -319.0784945368779,
       "y": -2.1206000504219818e-12,
@@ -8016,24 +8016,24 @@
       14281375.322541237
     ],
     "valid": true,
-    "volume": 23379.522864917155,
+    "volume": 23379.52286491718,
     "bounds": {
       "min": [
-        -333.54901175731965,
-        -41.297993993193835,
-        485.60828671414856
+        -333.5260177641258,
+        -41.275000000000006,
+        485.6312807073424
       ],
       "max": [
-        -304.6079773164364,
-        41.297993993193835,
-        539.1207490402719
+        -304.6309713096302,
+        41.275000000000006,
+        539.0977550470781
       ]
     },
-    "triangles": 2772,
+    "triangles": 3044,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-011-15b0e1706e9e.js",
-      "sha256": "7cca914caae81de4fa0e012f617e2587b94d261fdbaab972940521606939e006",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_011_15b0e1706e9e.py",
+      "sha256": "60ac6e581b48fbc71da816105003f7c8a246286c8a52bdcd86e9e857d09404f3",
       "referenceStep": "components/bhr-2026-500-011-15b0e1706e9e.step"
     }
   },
@@ -8242,9 +8242,9 @@
     "file": "components/bhr-2026-500-012-ba26c88f549f.step",
     "sha256": "ba26c88f549f838549923922434d770fb323436df14b94b07010d8827a1c2fc5",
     "bytes": 214221,
-    "mesh": "parametric/meshes/fc35903d5825f33abba5ef622fd7e33f9660f99d4c5bc5761c20eec6f07f44a3.bin",
-    "meshSha256": "fc35903d5825f33abba5ef622fd7e33f9660f99d4c5bc5761c20eec6f07f44a3",
-    "meshBytes": 63596,
+    "mesh": "native/meshes/f3753a0e5143db6e9e223297b01bd26284fdba2d26371822022516de48189435.bin",
+    "meshSha256": "f3753a0e5143db6e9e223297b01bd26284fdba2d26371822022516de48189435",
+    "meshBytes": 70312,
     "centerOfMass": {
       "x": -66.30045716481054,
       "y": -299.3551036000001,
@@ -8262,24 +8262,24 @@
       19493246.12468791
     ],
     "valid": true,
-    "volume": 21628.312749184952,
+    "volume": 21628.312749184955,
     "bounds": {
       "min": [
-        -120.36370849160852,
-        -302.1829218461085,
-        298.88608175389146
+        -120.3298902455,
+        -302.1491036,
+        298.9199
       ],
       "max": [
-        -25.060645677428628,
-        -296.52728535389144,
-        393.2682001000001
+        -25.079890245599987,
+        -296.56110359999997,
+        393.2682
       ]
     },
-    "triangles": 1708,
+    "triangles": 1892,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-012-ba26c88f549f.js",
-      "sha256": "6519f4602b5d9193f0a7bb16eb332d8f3bc45c6b1810e3c779d0adf32b76f9ba",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_012_ba26c88f549f.py",
+      "sha256": "c23dcdfa4c0c7cbb7abb02f46e77b75b003dd2e74f8ae302992f181adc1b4c0d",
       "referenceStep": "components/bhr-2026-500-012-ba26c88f549f.step"
     }
   },
@@ -8328,9 +8328,9 @@
     "file": "components/bhr-2026-500-021-fa82999a309d.step",
     "sha256": "fa82999a309dfcb4c0200d3ef8cda56a300f55a50c0ae572732066cf165fc491",
     "bytes": 362406,
-    "mesh": "parametric/meshes/c13f1de0abf0afa2a9648421d631e85dc907f2145d3dadbbbc088665229d5aae.bin",
-    "meshSha256": "c13f1de0abf0afa2a9648421d631e85dc907f2145d3dadbbbc088665229d5aae",
-    "meshBytes": 495384,
+    "mesh": "native/meshes/755f1aae2242456a1c0a9593bf8af4f2b7f9fbee9a0bdfe22701da47d70ed405.bin",
+    "meshSha256": "755f1aae2242456a1c0a9593bf8af4f2b7f9fbee9a0bdfe22701da47d70ed405",
+    "meshBytes": 324964,
     "centerOfMass": {
       "x": -336.5788877534084,
       "y": -173.49810356146537,
@@ -8348,24 +8348,24 @@
       31153567.197949886
     ],
     "valid": true,
-    "volume": 16532.257287225086,
+    "volume": 16532.257248590402,
     "bounds": {
       "min": [
-        -348.52241187857186,
-        -246.55751547857187,
-        420.23417199769574
+        -348.4880001,
+        -246.5231036,
+        420.25570000000005
       ],
       "max": [
-        -314.03665274949697,
-        -100.43869172142814,
-        433.315972451825
+        -314.2198872945107,
+        -100.4731036,
+        432.9557001000003
       ]
     },
-    "triangles": 18152,
+    "triangles": 11020,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-021-fa82999a309d.js",
-      "sha256": "1aa63f5d85854cd1bc46dd6815bfcbe311cef59a7f0768dc691236a032e3b372",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_021_fa82999a309d.py",
+      "sha256": "ab70c8aca1715b6d2ef945f3633377d785b6ebfa5771bd240bb138093ab4c6b5",
       "referenceStep": "components/bhr-2026-500-021-fa82999a309d.step"
     }
   },
@@ -8454,9 +8454,9 @@
     "file": "components/bhr-2026-500-002-244af0c35fdf.step",
     "sha256": "244af0c35fdf53c754cb0c8821973dc9f20b315d5400c562bf6fe0a96ab5fe12",
     "bytes": 519799,
-    "mesh": "parametric/meshes/a612c3b56e4b4b1cfa1856f4884780d4bbb4428dd942ded19698bc253633b3c2.bin",
-    "meshSha256": "a612c3b56e4b4b1cfa1856f4884780d4bbb4428dd942ded19698bc253633b3c2",
-    "meshBytes": 285692,
+    "mesh": "native/meshes/195907743a4e379689a36440fac02fac3f6b25ea3ec6e8fa8201a26bde3b652c.bin",
+    "meshSha256": "195907743a4e379689a36440fac02fac3f6b25ea3ec6e8fa8201a26bde3b652c",
+    "meshBytes": 320772,
     "centerOfMass": {
       "x": -201.30153735705463,
       "y": -255.66710359999985,
@@ -8474,24 +8474,24 @@
       2113562618.9752426
     ],
     "valid": true,
-    "volume": 267972.3880721133,
+    "volume": 267972.3880721136,
     "bounds": {
       "min": [
-        -348.48800010002503,
-        -258.6108935325999,
-        134.17590125228338
+        -348.488,
+        -258.4611036,
+        134.19118984509998
       ],
       "max": [
-        3.4951098544250163,
-        -252.72331366740013,
-        393.268200100025
+        3.495109754400005,
+        -252.8731036,
+        393.2682
       ]
     },
-    "triangles": 7872,
+    "triangles": 8844,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-002-244af0c35fdf.js",
-      "sha256": "972e59a09eba9e747ca2cb478934b21f287feedfe6229578d36a5b134e732140",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_002_244af0c35fdf.py",
+      "sha256": "53a216e96219e00912584c3f8fac843c32c4b2598c94c0ebd2a373cfadbeae2a",
       "referenceStep": "components/bhr-2026-500-002-244af0c35fdf.step"
     }
   },
@@ -8500,9 +8500,9 @@
     "file": "components/bhr-2026-500-004-e75cfd713fd0.step",
     "sha256": "e75cfd713fd056e87d3f39de13e8034aabf07ac96b15a715d8a06ccfd71d2a22",
     "bytes": 277809,
-    "mesh": "parametric/meshes/99cd3e27b5a1a3a355e3a6940bdad98a02823f921e994a207389e7540a045c7c.bin",
-    "meshSha256": "99cd3e27b5a1a3a355e3a6940bdad98a02823f921e994a207389e7540a045c7c",
-    "meshBytes": 79004,
+    "mesh": "native/meshes/fbfd7d360033cdcf4a77b64e135ed11a79419c3c16994a8288b8a25a1d2eb24e.bin",
+    "meshSha256": "fbfd7d360033cdcf4a77b64e135ed11a79419c3c16994a8288b8a25a1d2eb24e",
+    "meshBytes": 89772,
     "centerOfMass": {
       "x": -279.9129008047843,
       "y": -285.5863012758993,
@@ -8523,21 +8523,21 @@
     "volume": 11053.478348907247,
     "bounds": {
       "min": [
-        -309.4274589670389,
-        -320.36686744418614,
-        343.1268859797403
+        -309.384255205614,
+        -320.3236636827663,
+        343.2302
       ],
       "max": [
-        -243.3946274028651,
-        -252.85781500718335,
-        348.9215140202598
+        -243.49769173929855,
+        -252.87310359999998,
+        348.81820000000005
       ]
     },
-    "triangles": 2128,
+    "triangles": 2424,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-004-e75cfd713fd0.js",
-      "sha256": "6ca52c3e669a236723595eddc73ba2acdd7eb88016e0230f8f65546240ad6046",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_004_e75cfd713fd0.py",
+      "sha256": "26616596582c804313758e2f3f8ed42da1236b327e2c8959e04f426d90cd43b0",
       "referenceStep": "components/bhr-2026-500-004-e75cfd713fd0.step"
     }
   },
@@ -8666,9 +8666,9 @@
     "file": "components/bhr-2026-500-034m-663a52158a5a.step",
     "sha256": "663a52158a5a2c946582046deaa3c3e9598c6281c43fb1803def4fa5b3efbd6a",
     "bytes": 250278,
-    "mesh": "parametric/meshes/e8fcab8f1ef237d1efed571f32706e9e95244d9eaa7b7798bc1d555ba4c82c49.bin",
-    "meshSha256": "e8fcab8f1ef237d1efed571f32706e9e95244d9eaa7b7798bc1d555ba4c82c49",
-    "meshBytes": 236904,
+    "mesh": "native/meshes/720b56031e7d66dc2debd69c7c5a97474db2a68de99a7aaae8a5bef88f03b4eb.bin",
+    "meshSha256": "720b56031e7d66dc2debd69c7c5a97474db2a68de99a7aaae8a5bef88f03b4eb",
+    "meshBytes": 255548,
     "centerOfMass": {
       "x": -300.8595486895753,
       "y": -105.33426707210283,
@@ -8686,24 +8686,24 @@
       1073306.4343233109
     ],
     "valid": true,
-    "volume": 10948.73524833936,
+    "volume": 10948.73524833802,
     "bounds": {
       "min": [
-        -317.6584710821248,
-        -116.3952790312432,
-        298.0334416626738
+        -317.6151284421646,
+        -116.34810370000008,
+        298.0689998999529
       ],
       "max": [
-        -288.2407657534964,
-        -97.25092816875693,
-        340.15301538438956
+        -288.2781284422,
+        -97.29810350000005,
+        340.10600000002466
       ]
     },
-    "triangles": 8044,
+    "triangles": 9082,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-034m-663a52158a5a.js",
-      "sha256": "16424932c0cb3dca053987f12c839317767a8c3c3bc40a6ae35f77b490aa90da",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_034m_663a52158a5a.py",
+      "sha256": "bd66934bf4601170a1f97a4081d19b7f6f856d870f8e3f7e66a051f5e8e17a28",
       "referenceStep": "components/bhr-2026-500-034m-663a52158a5a.step"
     }
   },
@@ -8792,9 +8792,9 @@
     "file": "components/bhr-2026-500-008-258aaf2b1a54.step",
     "sha256": "258aaf2b1a54fda9816657724fc011af57f33a20b6964654f2898aa562d8da5e",
     "bytes": 814336,
-    "mesh": "parametric/meshes/700d2075bd8f7d6d6b768f0e05bc90911eda86a2bc49c5dea5cbaccef9c711c7.bin",
-    "meshSha256": "700d2075bd8f7d6d6b768f0e05bc90911eda86a2bc49c5dea5cbaccef9c711c7",
-    "meshBytes": 213504,
+    "mesh": "native/meshes/558328b673a6f41c8451bce2d905e54e9bdf6be1932e189aa69a58b59b476583.bin",
+    "meshSha256": "558328b673a6f41c8451bce2d905e54e9bdf6be1932e189aa69a58b59b476583",
+    "meshBytes": 236188,
     "centerOfMass": {
       "x": -345.69400000000013,
       "y": -290.0959960948248,
@@ -8812,24 +8812,24 @@
       107246948.89056969
     ],
     "valid": true,
-    "volume": 78872.09324346794,
+    "volume": 78872.09324346797,
     "bounds": {
       "min": [
-        -348.51575911332304,
-        -342.9152885928167,
-        101.58471140718336
+        -348.488,
+        -342.90000000000003,
+        101.6
       ],
       "max": [
-        -342.87224088667693,
-        -202.0578150071834,
-        393.28348859281664
+        -342.9,
+        -202.07310360000002,
+        393.2682
       ]
     },
-    "triangles": 5732,
+    "triangles": 6360,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-008-258aaf2b1a54.js",
-      "sha256": "0e29ad5bfa450e54130a2ec9800829973674fb9a919363604b2e50daee48ef54",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_008_258aaf2b1a54.py",
+      "sha256": "2fd64dddaada733220a6f4683a551b4c8a62517c2e2101bc52fcffc6353a2075",
       "referenceStep": "components/bhr-2026-500-008-258aaf2b1a54.step"
     }
   },
@@ -8918,9 +8918,9 @@
     "file": "components/bhr-2026-500-034-cdf7d621b44d.step",
     "sha256": "cdf7d621b44d62ef11a8dfec37712bf9a396a90a4228e598147751c3f131df78",
     "bytes": 227049,
-    "mesh": "parametric/meshes/8d5242df75cd20f7d4e5afcbfd575304a334d44a4590196e15a10b833496850f.bin",
-    "meshSha256": "8d5242df75cd20f7d4e5afcbfd575304a334d44a4590196e15a10b833496850f",
-    "meshBytes": 236904,
+    "mesh": "native/meshes/697fbc49a4a8258b09214db7a91745c96b88d6b75777ad0a92ea749d107c280a.bin",
+    "meshSha256": "697fbc49a4a8258b09214db7a91745c96b88d6b75777ad0a92ea749d107c280a",
+    "meshBytes": 255548,
     "centerOfMass": {
       "x": -300.8595486895753,
       "y": -244.8369401278968,
@@ -8938,24 +8938,24 @@
       1073306.4343237877
     ],
     "valid": true,
-    "volume": 10948.735248339368,
+    "volume": 10948.735248338027,
     "bounds": {
       "min": [
-        -317.6584710821248,
-        -252.9202790312431,
-        298.0334416626738
+        -317.6151284421646,
+        -252.87310369999997,
+        298.0689998999529
       ],
       "max": [
-        -288.2407657534964,
-        -233.77592816875682,
-        340.15301538438956
+        -288.2781284422,
+        -233.82310349999995,
+        340.10600000002466
       ]
     },
-    "triangles": 8044,
+    "triangles": 9082,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-034-cdf7d621b44d.js",
-      "sha256": "4cdf8d3df22223adcda4ebe2e66ef4d379c911b7802cacc8693440cadf1b2c0e",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_034_cdf7d621b44d.py",
+      "sha256": "09cd0bf3f3cea7ce422184a24fa42fb00a325dc30a13982ba2261bb28526e12e",
       "referenceStep": "components/bhr-2026-500-034-cdf7d621b44d.step"
     }
   },
@@ -8964,9 +8964,9 @@
     "file": "components/bhr-2026-500-023-fca3921ce554.step",
     "sha256": "fca3921ce5545d6053eaee2966660b3a71c3761d5a1fd75491a4b1bf66327f32",
     "bytes": 178483,
-    "mesh": "parametric/meshes/8d669cb96c1aae64319dd5b553d02ca70972ca9c55cf814f7a49d626bc0ab566.bin",
-    "meshSha256": "8d669cb96c1aae64319dd5b553d02ca70972ca9c55cf814f7a49d626bc0ab566",
-    "meshBytes": 114332,
+    "mesh": "native/meshes/efaa0b6550e19aeea5e175ef58556e8631bc940d785b7ec05897f98dda7a5f9a.bin",
+    "meshSha256": "efaa0b6550e19aeea5e175ef58556e8631bc940d785b7ec05897f98dda7a5f9a",
+    "meshBytes": 138716,
     "centerOfMass": {
       "x": -314.38932844220454,
       "y": -245.24893533622443,
@@ -8984,24 +8984,24 @@
       1015381.3373492956
     ],
     "valid": true,
-    "volume": 5142.510631815892,
+    "volume": 5142.510631815895,
     "bounds": {
       "min": [
-        -339.80939053122074,
-        -252.8931656890216,
-        324.1147358563215
+        -339.7893285422,
+        -252.8731036,
+        324.1801999
       ],
       "max": [
-        -288.96926635317925,
-        -233.75763945632144,
-        336.94566414367864
+        -288.9893283422,
+        -233.82310360000002,
+        336.8802001
       ]
     },
-    "triangles": 3860,
+    "triangles": 4772,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-023-fca3921ce554.js",
-      "sha256": "92a6f0dfb7e4c52f79488b4b7ad6bf2e12ea80b3ed0e36414a12f0b51e27279b",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_023_fca3921ce554.py",
+      "sha256": "974a916ce6131fddc4b2095ba14ce9b6665268b559b75bbd667c3f849353f55a",
       "referenceStep": "components/bhr-2026-500-023-fca3921ce554.step"
     }
   },
@@ -9010,9 +9010,9 @@
     "file": "components/bhr-2026-500-006-3e1d72d87606.step",
     "sha256": "3e1d72d87606867482da16a42ca800a0693707402d2bd8eacc79dae916c8a9fe",
     "bytes": 74623,
-    "mesh": "parametric/meshes/89c7a6d0e4f15185a61036be8f703539b527d8078bb6d31d30c0a133b829278e.bin",
-    "meshSha256": "89c7a6d0e4f15185a61036be8f703539b527d8078bb6d31d30c0a133b829278e",
-    "meshBytes": 32012,
+    "mesh": "native/meshes/41dbeb7eace5dddae46d30f33e78537c54b1683ba6b88d1d09a11c92456a3174.bin",
+    "meshSha256": "41dbeb7eace5dddae46d30f33e78537c54b1683ba6b88d1d09a11c92456a3174",
+    "meshBytes": 36300,
     "centerOfMass": {
       "x": -232.17603141119844,
       "y": -289.7285036,
@@ -9033,21 +9033,21 @@
     "volume": 11085.091009513548,
     "bounds": {
       "min": [
-        -263.13102864408904,
-        -292.60976335270533,
-        272.69877952187335
+        -263.115097756253,
+        -292.52250360000005,
+        272.7708844260947
       ],
       "max": [
-        -197.4253465325416,
-        -286.84724384729475,
-        334.091939375326
+        -197.45383994421297,
+        -286.9345036,
+        334.0047091127731
       ]
     },
-    "triangles": 864,
+    "triangles": 980,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-006-3e1d72d87606.js",
-      "sha256": "852a4eeb81ac80e450311eb43dd5b99b2b2b8805dd24417f80f91edbe1eba879",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_006_3e1d72d87606.py",
+      "sha256": "d44b5ec41dbf593652d2c4ea7056e2b2d6fc076eae5ca28807a805f5eab34d87",
       "referenceStep": "components/bhr-2026-500-006-3e1d72d87606.step"
     }
   },
@@ -9176,9 +9176,9 @@
     "file": "components/bhr-2026-500-022-64c66d54eb11.step",
     "sha256": "64c66d54eb1105b098da28986368326857c6f829d9102a5141b6b72a0f26226a",
     "bytes": 365190,
-    "mesh": "parametric/meshes/43dcba7d8b6ca792998d8fbd51c12ba63413aa4c8938f604f75422497ac3e9d7.bin",
-    "meshSha256": "43dcba7d8b6ca792998d8fbd51c12ba63413aa4c8938f604f75422497ac3e9d7",
-    "meshBytes": 1094100,
+    "mesh": "native/meshes/f39ac302a9bd4c9b5f60e57cdc7a6e5303d0b60030c9632d8f5182e153b4f247.bin",
+    "meshSha256": "f39ac302a9bd4c9b5f60e57cdc7a6e5303d0b60030c9632d8f5182e153b4f247",
+    "meshBytes": 145836,
     "centerOfMass": {
       "x": -335.10074587465647,
       "y": -223.57919840074467,
@@ -9196,24 +9196,24 @@
       3663779.3852205276
     ],
     "valid": true,
-    "volume": 9344.64434292043,
+    "volume": 9344.666135692194,
     "bounds": {
       "min": [
-        -348.52738099367247,
-        -246.5701819215623,
-        372.5379219946122
+        -348.488,
+        -246.5231037,
+        372.6306998999999
       ],
       "max": [
-        -314.1737908141571,
-        -195.66815879217728,
-        387.0104198121512
+        -314.2198872945594,
+        -195.7231035,
+        386.91820010000004
       ]
     },
-    "triangles": 43821,
+    "triangles": 4637,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-022-64c66d54eb11.js",
-      "sha256": "82c5e1ddd0671d99b813c8f809b219316bdcf3c30d95b50f06880ce16b2708e6",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_022_64c66d54eb11.py",
+      "sha256": "195e38dcfa7a1b109d67e0bd09a554ed51d3808a2bac39dc70721b3129791cb2",
       "referenceStep": "components/bhr-2026-500-022-64c66d54eb11.step"
     }
   },
@@ -9302,9 +9302,9 @@
     "file": "components/bhr-2026-500-001-105a60cebde5.step",
     "sha256": "105a60cebde546393c00ba0227622978f17aab99dbe1492f16cdea1ded269482",
     "bytes": 2467063,
-    "mesh": "parametric/meshes/0ae15e9f1b0c1f225c9d11943a501eac30f97f06956562b0b378393b14324ef0.bin",
-    "meshSha256": "0ae15e9f1b0c1f225c9d11943a501eac30f97f06956562b0b378393b14324ef0",
-    "meshBytes": 831212,
+    "mesh": "native/meshes/7e15cda74f9bdefc53ab976592cdaf62ee08606a89acb0f13e0b5bff0d421bd1.bin",
+    "meshSha256": "7e15cda74f9bdefc53ab976592cdaf62ee08606a89acb0f13e0b5bff0d421bd1",
+    "meshBytes": 925900,
     "centerOfMass": {
       "x": -160.4389839005563,
       "y": 0.0032058747878488596,
@@ -9325,21 +9325,21 @@
     "volume": 492578.1414993704,
     "bounds": {
       "min": [
-        -348.51857708563324,
-        -348.4880001000501,
-        386.7682530802743
+        -348.488,
+        -348.488,
+        386.9182
       ],
       "max": [
-        16.225686840031976,
-        348.4880001000501,
-        393.41814691972576
+        16.195109754400008,
+        348.488,
+        393.26820000000004
       ]
     },
-    "triangles": 22580,
+    "triangles": 25208,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-001-105a60cebde5.js",
-      "sha256": "0434adfb22adb09bc9002271137fafbd150576a8b68c2daabb3cc3f52c4cf903",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_001_105a60cebde5.py",
+      "sha256": "220fe7c4403af6b4b43abb873f303f4cfc54d0cad8a95cf2262cff1887ca95a7",
       "referenceStep": "components/bhr-2026-500-001-105a60cebde5.step"
     }
   },
@@ -9388,9 +9388,9 @@
     "file": "components/bhr-2026-500-022m-005027036523.step",
     "sha256": "0050270365236fbb3b09354f0c4d8b25283c4b34add48bfecf7d274e8422147f",
     "bytes": 442567,
-    "mesh": "parametric/meshes/e3da0cd2a7df2a619bbc75cce23e61b662a8feaeb97e90414ac6acf5f4bb1909.bin",
-    "meshSha256": "e3da0cd2a7df2a619bbc75cce23e61b662a8feaeb97e90414ac6acf5f4bb1909",
-    "meshBytes": 1099516,
+    "mesh": "native/meshes/b6b6630868b102c033dbf62d1ad60c330f5ef667c24ed1be2f70480db935052d.bin",
+    "meshSha256": "b6b6630868b102c033dbf62d1ad60c330f5ef667c24ed1be2f70480db935052d",
+    "meshBytes": 151020,
     "centerOfMass": {
       "x": -334.25063314104864,
       "y": -124.03249439486316,
@@ -9408,24 +9408,24 @@
       3423421.653994322
     ],
     "valid": true,
-    "volume": 8479.418733868177,
+    "volume": 8479.427193284902,
     "bounds": {
       "min": [
-        -348.52738099367247,
-        -151.32804840782262,
-        372.4361459291257
+        -348.4880001,
+        -151.2731037,
+        372.6306998999999
       ],
       "max": [
-        -314.17379081415703,
-        -100.42602527843763,
-        387.0104198121512
+        -314.2198872945594,
+        -100.47310350000001,
+        386.91820010000004
       ]
     },
-    "triangles": 43968,
+    "triangles": 4776,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-022m-005027036523.js",
-      "sha256": "141244a0fab03d2ab82ce9af66ea3986e7719ca81b7a7490cc01364ed0e608ea",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_022m_005027036523.py",
+      "sha256": "e2a2e13b9582c595413a243c7ecdf9dc05c4785ef07a566f71d2bd5077d4c1bb",
       "referenceStep": "components/bhr-2026-500-022m-005027036523.step"
     }
   },
@@ -9594,9 +9594,9 @@
     "file": "components/bhr-2026-500-005-b5b879a8e88d.step",
     "sha256": "b5b879a8e88d7e97c7d2b5b67fc8d840b33713447b5a095d09b52bc213e5464f",
     "bytes": 32339,
-    "mesh": "parametric/meshes/49379d74e3e0b8d28107751efb3cba7fb18e755c6aad5a1ee990fb539bdacc57.bin",
-    "meshSha256": "49379d74e3e0b8d28107751efb3cba7fb18e755c6aad5a1ee990fb539bdacc57",
-    "meshBytes": 10744,
+    "mesh": "native/meshes/ba0d896f3655b062bb05a69bd5443d90d9d24e3cbf8ded7887471dbdadc748d8.bin",
+    "meshSha256": "ba0d896f3655b062bb05a69bd5443d90d9d24e3cbf8ded7887471dbdadc748d8",
+    "meshBytes": 11984,
     "centerOfMass": {
       "x": -267.6276917393,
       "y": -278.56710021646524,
@@ -9617,21 +9617,21 @@
     "volume": 3900.6480407898116,
     "bounds": {
       "min": [
-        -273.1274268393001,
-        -283.33977190175244,
-        343.2073283147476
+        -273.1274267393,
+        -283.3300104405,
+        343.2302
       ],
       "max": [
-        -262.1279566392999,
-        -273.7944285312476,
-        394.0530716852524
+        -262.1279567393,
+        -273.8041899924,
+        394.0302
       ]
     },
-    "triangles": 276,
+    "triangles": 308,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-005-b5b879a8e88d.js",
-      "sha256": "46375f123b853a855e99c2d84b3423a68b36d81900b487ec5b605c5810227d67",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_005_b5b879a8e88d.py",
+      "sha256": "227185c179034cf2662908d1a91b83127dfbdbe69ed11228feb59371310141fd",
       "referenceStep": "components/bhr-2026-500-005-b5b879a8e88d.step"
     }
   },
@@ -9640,9 +9640,9 @@
     "file": "components/bhr-2026-500-027m-538f738485fe.step",
     "sha256": "538f738485fe213b8743a21a77cda90d9fea62ad7bada0eb74db2fc6297b067c",
     "bytes": 424158,
-    "mesh": "parametric/meshes/173bc298138a3d85ca1f5980253fb73ef1965b090c7fc9140d907d6691206303.bin",
-    "meshSha256": "173bc298138a3d85ca1f5980253fb73ef1965b090c7fc9140d907d6691206303",
-    "meshBytes": 1131564,
+    "mesh": "native/meshes/9e7a51fb99f9b23e48a1485e342b792cf4fcd1a2d21d68dbbef7227028296af6.bin",
+    "meshSha256": "9e7a51fb99f9b23e48a1485e342b792cf4fcd1a2d21d68dbbef7227028296af6",
+    "meshBytes": 140732,
     "centerOfMass": {
       "x": -22.86689314033405,
       "y": 90.14852835503598,
@@ -9660,24 +9660,24 @@
       72773217.71894825
     ],
     "valid": true,
-    "volume": 28272.187215423215,
+    "volume": 28272.187215444013,
     "bounds": {
       "min": [
-        -80.02884189571961,
-        17.387682896712807,
-        393.1357803210518
+        -79.89873441959209,
+        17.52010247564194,
+        393.26819989999996
       ],
       "max": [
-        16.33448350139447,
-        171.2912034501382,
-        425.1495175272818
+        16.195109854405004,
+        171.161095974,
+        425.01820010108304
       ]
     },
-    "triangles": 44627,
+    "triangles": 4630,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-027m-538f738485fe.js",
-      "sha256": "aa843c89fb727af081c9aebb25fabd6faa3ffa1d55c3c2adb5cac024755a0ed5",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_027m_538f738485fe.py",
+      "sha256": "3088f12ba557dbc4d42c970f2a37030ff3b91f170797fc5c3caedb5a4e86e0b3",
       "referenceStep": "components/bhr-2026-500-027m-538f738485fe.step"
     }
   },
@@ -9686,9 +9686,9 @@
     "file": "components/bhr-2026-500-014-top-d26859488e35.step",
     "sha256": "d26859488e35eb31d64dd9a3ee90c6479a0daf225134c8b4be762ba99a50c5af",
     "bytes": 282187,
-    "mesh": "parametric/meshes/7e81eb958e9879fbbb93b15383808120493aff3c3a078a351e0b994e3fe24527.bin",
-    "meshSha256": "7e81eb958e9879fbbb93b15383808120493aff3c3a078a351e0b994e3fe24527",
-    "meshBytes": 84996,
+    "mesh": "native/meshes/a1cc1baccb7f7f30956cf6f5465bd70c383ea46088e4b75bddea5e5dc1d41491.bin",
+    "meshSha256": "a1cc1baccb7f7f30956cf6f5465bd70c383ea46088e4b75bddea5e5dc1d41491",
+    "meshBytes": 98564,
     "centerOfMass": {
       "x": -2.5099809581323473,
       "y": -307.7248543957353,
@@ -9706,24 +9706,24 @@
       10189004.582597256
     ],
     "valid": true,
-    "volume": 22138.71200677288,
+    "volume": 22138.703348122875,
     "bounds": {
       "min": [
-        -40.26179776749403,
-        -328.0769469564237,
-        531.7754547458799
+        -40.216598291138716,
+        -328.0687941894427,
+        531.8124999
       ],
       "max": [
-        33.03250798876255,
-        -292.06295474587984,
-        546.1229751199088
+        33.00990975440501,
+        -292.09999989999784,
+        546.1
       ]
     },
-    "triangles": 2551,
+    "triangles": 3005,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-014-top-d26859488e35.js",
-      "sha256": "ffaa7f818db6a5f58b78f42739bf8c45073711cccf1f2dfb17d0fd5ac77137f5",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_014_top_d26859488e35.py",
+      "sha256": "f740ae3b993c8cda443eb16e6b14af43de470fc663678dd70d4ba48293ed9f73",
       "referenceStep": "components/bhr-2026-500-014-top-d26859488e35.step"
     }
   },
@@ -9772,9 +9772,9 @@
     "file": "components/bhr-2026-500-003-d75b78a75baf.step",
     "sha256": "d75b78a75baf2ec167ead1071a112d99a480e77407fe9d302bbdfb3fa1d119c5",
     "bytes": 386162,
-    "mesh": "parametric/meshes/1f3b8f6456ecb116b38bc23e5c3277d37a9c55b9ed8e02fb0103bbd2350f4633.bin",
-    "meshSha256": "1f3b8f6456ecb116b38bc23e5c3277d37a9c55b9ed8e02fb0103bbd2350f4633",
-    "meshBytes": 218348,
+    "mesh": "native/meshes/c93e93bf7d6c31629f38472402a646c40b0ff06e0d9940b7c98fb2f886499049.bin",
+    "meshSha256": "c93e93bf7d6c31629f38472402a646c40b0ff06e0d9940b7c98fb2f886499049",
+    "meshBytes": 245800,
     "centerOfMass": {
       "x": -201.26728488341848,
       "y": -94.50410360000014,
@@ -9792,24 +9792,24 @@
       2236487733.496683
     ],
     "valid": true,
-    "volume": 268225.8053979019,
+    "volume": 268225.805397902,
     "bounds": {
       "min": [
-        -348.50328859281535,
-        -97.44789353259983,
-        134.17590125228335
+        -348.488,
+        -97.2981036,
+        134.19118984509998
       ],
       "max": [
-        3.495109854435356,
-        -91.56031366740018,
-        393.26820010003536
+        3.495109754400005,
+        -91.71010360000001,
+        393.2682
       ]
     },
-    "triangles": 6032,
+    "triangles": 6792,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-003-d75b78a75baf.js",
-      "sha256": "6a10222e71f34cac617c8bb25ce49a3ad6de7330915b22eec9dd5256e322efb7",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_003_d75b78a75baf.py",
+      "sha256": "ed5fb9911615449722aedca79c552fa03e6f69e6ac3df70c5111452bae7d41d3",
       "referenceStep": "components/bhr-2026-500-003-d75b78a75baf.step"
     }
   },
@@ -9818,9 +9818,9 @@
     "file": "components/bhr-2026-500-013a-d230e0921e95.step",
     "sha256": "d230e0921e951b4ce208e232bc2d8b6a53fa2313e612b9cd10f2e3be56bb786b",
     "bytes": 655637,
-    "mesh": "parametric/meshes/f1bef4eb7eaf9a1a4b4b44783296e0e74cc066d38902bb55f9dc0697db93af35.bin",
-    "meshSha256": "f1bef4eb7eaf9a1a4b4b44783296e0e74cc066d38902bb55f9dc0697db93af35",
-    "meshBytes": 248016,
+    "mesh": "native/meshes/c1d8b50fb091879b5c524a20e3c625b512e0f20f86a57dc99d03cc4fe9473034.bin",
+    "meshSha256": "c1d8b50fb091879b5c524a20e3c625b512e0f20f86a57dc99d03cc4fe9473034",
+    "meshBytes": 299668,
     "centerOfMass": {
       "x": -91.05179275556071,
       "y": -175.3093690565174,
@@ -9838,24 +9838,24 @@
       105097281.87606215
     ],
     "valid": true,
-    "volume": 40103.88958161917,
+    "volume": 40103.88890492469,
     "bounds": {
       "min": [
-        -111.14843621680707,
-        -252.90207749500917,
-        152.37102610499085
+        -111.12499999997931,
+        -252.87310369999994,
+        152.4
       ],
       "max": [
-        -71.11583974266618,
-        -97.26912970499086,
-        165.14250344722845
+        -71.13927595948405,
+        -97.29810349999997,
+        165.1000001
       ]
     },
-    "triangles": 8088,
+    "triangles": 9996,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-013a-d230e0921e95.js",
-      "sha256": "77bd85b2062895f3cc3d01310f23ed1d7c50183f739afb2efe61a2869d4631cb",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_013a_d230e0921e95.py",
+      "sha256": "3ebe1e8577441d1e93dfae2b3c85d0645e426ac376a50ada57db05e417d74cdc",
       "referenceStep": "components/bhr-2026-500-013a-d230e0921e95.step"
     }
   },
@@ -9864,9 +9864,9 @@
     "file": "components/bhr-2026-500-032-5dfd19723c27.step",
     "sha256": "5dfd19723c271ade68b865e1317f3d1cc5bdeacf5b61d6e4340f0ce36df92a54",
     "bytes": 12233,
-    "mesh": "parametric/meshes/efba4966ebda0552a6b29ecafbb644fe1b999c214b00e539393117874346fb2b.bin",
-    "meshSha256": "efba4966ebda0552a6b29ecafbb644fe1b999c214b00e539393117874346fb2b",
-    "meshBytes": 9640,
+    "mesh": "native/meshes/8a5933595fda22c28b63750e1fa883a13a472753c10995949a8a084fc181eaa6.bin",
+    "meshSha256": "8a5933595fda22c28b63750e1fa883a13a472753c10995949a8a084fc181eaa6",
+    "meshBytes": 10892,
     "centerOfMass": {
       "x": -308.0393284422001,
       "y": -175.07290360000005,
@@ -9884,24 +9884,24 @@
       11589958.440595627
     ],
     "valid": true,
-    "volume": 7094.559778793928,
+    "volume": 7094.55977879393,
     "bounds": {
       "min": [
-        -312.82476128142366,
-        -244.9458364392237,
-        325.7447671607763
+        -312.80182844219996,
+        -244.9229036,
+        325.7677
       ],
       "max": [
-        -303.2538956029763,
-        -105.19997076077634,
-        335.31563283922367
+        -303.2768284422,
+        -105.22290360000002,
+        335.29269999999997
       ]
     },
-    "triangles": 256,
+    "triangles": 288,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-032-5dfd19723c27.js",
-      "sha256": "8386f7c5134cad94bb6e96ed969b0b21a71dcb40d2a8bc2560bcb8dae58b52e8",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_032_5dfd19723c27.py",
+      "sha256": "aaf21ee72a82ec9b4a2050159a2dd0e12d0748aa9b96a409c7bad083d089e4db",
       "referenceStep": "components/bhr-2026-500-032-5dfd19723c27.step"
     }
   },
@@ -9950,9 +9950,9 @@
     "file": "components/bhr-2026-501-002-154ce885e9c6.step",
     "sha256": "154ce885e9c60a41fb915788e808ff5629f65089528e0d7ea70efe2043311fb9",
     "bytes": 290190,
-    "mesh": "parametric/meshes/976c94d7c1d3cbe6718e7ac89b445115aa2a02e9cf735a2928b61a2458c9b1e5.bin",
-    "meshSha256": "976c94d7c1d3cbe6718e7ac89b445115aa2a02e9cf735a2928b61a2458c9b1e5",
-    "meshBytes": 107988,
+    "mesh": "native/meshes/11f89f9efb157b852caf7fb3ae07ca12fdeb73ac4a93b38618fbd6f85204eb8a.bin",
+    "meshSha256": "11f89f9efb157b852caf7fb3ae07ca12fdeb73ac4a93b38618fbd6f85204eb8a",
+    "meshBytes": 119892,
     "centerOfMass": {
       "x": 24.134558126334458,
       "y": -0.00003427626409699433,
@@ -9970,24 +9970,24 @@
       1728797949.4898348
     ],
     "valid": true,
-    "volume": 46041.13043586665,
+    "volume": 46041.13043586664,
     "bounds": {
       "min": [
-        6.62914090801203,
-        -320.8212835783153,
-        546.0844311536121
+        6.644709754399987,
+        -320.8060413296886,
+        546.1
       ],
       "max": [
-        31.437341752445096,
-        320.8212835783152,
-        551.703568846388
+        31.4224097544,
+        320.8060413296885,
+        551.688
       ]
     },
-    "triangles": 2932,
+    "triangles": 3260,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-501-002-154ce885e9c6.js",
-      "sha256": "6e4505571bcb15e0039696f0477ee14a656db310f8c2fb86e95cc6ac299e3d75",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_501_002_154ce885e9c6.py",
+      "sha256": "dae8fb3399d76ee95883adecb98739affbe05a66be885cf90e92f5837eb647b6",
       "referenceStep": "components/bhr-2026-501-002-154ce885e9c6.step"
     }
   },
@@ -9996,9 +9996,9 @@
     "file": "components/bhr-2026-500-017m-fd4f5acaf62b.step",
     "sha256": "fd4f5acaf62becc84fe299166c0bda582d82ca77ab2d52e1de8aa74d054f9671",
     "bytes": 422010,
-    "mesh": "parametric/meshes/18739b77d7734770f87d043abf1712da396825540a12f4f2a7d6211c55ded826.bin",
-    "meshSha256": "18739b77d7734770f87d043abf1712da396825540a12f4f2a7d6211c55ded826",
-    "meshBytes": 519612,
+    "mesh": "native/meshes/1834106dbb211f01d792f165e4a9b806225b0b5f979991341ec4d14d0828b9a0.bin",
+    "meshSha256": "1834106dbb211f01d792f165e4a9b806225b0b5f979991341ec4d14d0828b9a0",
+    "meshBytes": 119608,
     "centerOfMass": {
       "x": -334.0920554401337,
       "y": -121.11351092499272,
@@ -10016,24 +10016,24 @@
       9159112.286975384
     ],
     "valid": true,
-    "volume": 27339.13998216727,
+    "volume": 27339.26508195961,
     "bounds": {
       "min": [
-        -348.50328859281666,
-        -151.28839219281664,
-        393.2119286671219
+        -348.4880001,
+        -151.2731037,
+        393.26819989999996
       ],
       "max": [
-        -310.1744403117229,
-        -100.39932293142726,
-        426.661971332878
+        -310.2645199220043,
+        -100.4731035,
+        426.6057001000001
       ]
     },
-    "triangles": 19329,
+    "triangles": 3407,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-017m-fd4f5acaf62b.js",
-      "sha256": "8a9f2e56a49ad514878d054d73df7f2675280e528367c1af75060ddb64d2f790",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_017m_fd4f5acaf62b.py",
+      "sha256": "ae5f4a45358e13754495793af696c85f3860e43e3cc06433c332f91ce149be9a",
       "referenceStep": "components/bhr-2026-500-017m-fd4f5acaf62b.step"
     }
   },
@@ -10082,9 +10082,9 @@
     "file": "components/bhr-2026-500-017-821e3e1f1842.step",
     "sha256": "821e3e1f1842bab8b50f2bf6da46a8207d7f0e95675585c284a6a9659f623f4b",
     "bytes": 290129,
-    "mesh": "parametric/meshes/96ab1e865806bd82fdbe20652f4e0286052029929d177696dfc3afeab7163728.bin",
-    "meshSha256": "96ab1e865806bd82fdbe20652f4e0286052029929d177696dfc3afeab7163728",
-    "meshBytes": 506844,
+    "mesh": "native/meshes/21be8f98f6ec6ff14573283071ef8c29b754632ba91760801791168bdfb661e8.bin",
+    "meshSha256": "21be8f98f6ec6ff14573283071ef8c29b754632ba91760801791168bdfb661e8",
+    "meshBytes": 105132,
     "centerOfMass": {
       "x": -333.6650494490586,
       "y": -226.1077893409248,
@@ -10102,24 +10102,24 @@
       9469636.659026146
     ],
     "valid": true,
-    "volume": 28212.443838481395,
+    "volume": 28212.494590583003,
     "bounds": {
       "min": [
-        -348.50328859281666,
-        -246.53887973712136,
-        393.14219602080516
+        -348.4880001,
+        -246.5231037,
+        393.26819989999996
       ],
       "max": [
-        -310.1744403117229,
-        -195.70781500718337,
-        426.7317039791948
+        -310.2645199220043,
+        -195.7231035,
+        426.6057001000001
       ]
     },
-    "triangles": 18975,
+    "triangles": 3013,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-017-821e3e1f1842.js",
-      "sha256": "626d639eaaadf0e126dc79ace037452547de65b7d469e022bf052273d7729a90",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_017_821e3e1f1842.py",
+      "sha256": "c546e06d7b6dc90bf24a4727f7a9ffa3209efe95067f79da79c9df68be36f3ce",
       "referenceStep": "components/bhr-2026-500-017-821e3e1f1842.step"
     }
   },
@@ -10128,9 +10128,9 @@
     "file": "components/bhr-2026-500-007-9ba359d7e17c.step",
     "sha256": "9ba359d7e17cd60fec0e01ae738651ec254b8ee74437827b00fe2f3df9a49c0d",
     "bytes": 32638,
-    "mesh": "parametric/meshes/ca8945ed5e1bb70488d3b885ed2e0b5788995c580a6a069b5083b04b96a4f51b.bin",
-    "meshSha256": "ca8945ed5e1bb70488d3b885ed2e0b5788995c580a6a069b5083b04b96a4f51b",
-    "meshBytes": 10744,
+    "mesh": "native/meshes/3b7049bc2a479570291b653c04522e34e566a5bf8b6763f0a5d2f20da31e0ee5.bin",
+    "meshSha256": "3b7049bc2a479570291b653c04522e34e566a5bf8b6763f0a5d2f20da31e0ee5",
+    "meshBytes": 11988,
     "centerOfMass": {
       "x": -229.58839222463328,
       "y": -266.29700360000004,
@@ -10148,24 +10148,24 @@
       912626.526360631
     ],
     "valid": true,
-    "volume": 4011.7911634966904,
+    "volume": 4011.79116349669,
     "bounds": {
       "min": [
-        -234.36106390985245,
-        -292.5453752852524,
-        284.7717493260999
+        -234.3513024487,
+        -292.5225036,
+        284.7717494261
       ],
       "max": [
-        -224.81572053934755,
-        -240.04863191474755,
-        295.7712195261001
+        -224.8254820006,
+        -240.0715036,
+        295.7712194261
       ]
     },
-    "triangles": 276,
+    "triangles": 308,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-007-9ba359d7e17c.js",
-      "sha256": "7cc5fb76ea2c8d07b941ba81a7a6d2394820310275218bdc4817092e3dd38a8d",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_007_9ba359d7e17c.py",
+      "sha256": "286fa1d5b01be6a6b0bb37c7f0f8d8e33bfd9c486f0e22cf4aed7ba32051226f",
       "referenceStep": "components/bhr-2026-500-007-9ba359d7e17c.step"
     }
   },
@@ -10214,9 +10214,9 @@
     "file": "components/bhr-2026-500-024-20687e021f36.step",
     "sha256": "20687e021f36587e5199d930487e10e1f6ca1d70649d80f1f4a40f10f432e9ad",
     "bytes": 484679,
-    "mesh": "parametric/meshes/c288782a5a1561ccaef035fd9ff42c79d32364644d78d63bacf8a7ece438a316.bin",
-    "meshSha256": "c288782a5a1561ccaef035fd9ff42c79d32364644d78d63bacf8a7ece438a316",
-    "meshBytes": 129120,
+    "mesh": "native/meshes/65b51b12a48be50c2832956e3782c8c2cf995435cc1253f7ac2e1e59018cd386.bin",
+    "meshSha256": "65b51b12a48be50c2832956e3782c8c2cf995435cc1253f7ac2e1e59018cd386",
+    "meshBytes": 142476,
     "centerOfMass": {
       "x": -345.14232245000295,
       "y": -174.1738057289231,
@@ -10234,24 +10234,24 @@
       157738898.21317482
     ],
     "valid": true,
-    "volume": 60536.179279730146,
+    "volume": 60536.17927973016,
     "bounds": {
       "min": [
-        -348.5032885928158,
-        -252.88839219281581,
-        160.3222114071843
+        -348.488,
+        -252.87310360000004,
+        160.3375000000001
       ],
       "max": [
-        -319.8977114071839,
-        -97.28281500718415,
-        372.64598859281585
+        -319.9129999999997,
+        -97.29810359999998,
+        372.63070000000005
       ]
     },
-    "triangles": 3420,
+    "triangles": 3820,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-024-20687e021f36.js",
-      "sha256": "e1a84b72c9015c44f58e1c4545547eadc8508334f463a2c005977badfe95c07c",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_024_20687e021f36.py",
+      "sha256": "2c6441bb61a847bae0f3ac3f50e59f0348e61abf7aee2aa5f3f4c2c74dbb0a8c",
       "referenceStep": "components/bhr-2026-500-024-20687e021f36.step"
     }
   },
@@ -10300,9 +10300,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-43606f8e0a26.step",
     "sha256": "43606f8e0a2623bec2ce1c3528f4be34fe3b31b556c4fe9bcd048391b2c342e9",
     "bytes": 225744,
-    "mesh": "parametric/meshes/71ee2f14e0c98c2933b1d1787f7a2fba39c160bcee70f91da7973ef1c764b289.bin",
-    "meshSha256": "71ee2f14e0c98c2933b1d1787f7a2fba39c160bcee70f91da7973ef1c764b289",
-    "meshBytes": 60540,
+    "mesh": "native/meshes/1c9ad4e2645e0a6d54a75f9734bf82219f47b799c56db7babf72697caa17f39c.bin",
+    "meshSha256": "1c9ad4e2645e0a6d54a75f9734bf82219f47b799c56db7babf72697caa17f39c",
+    "meshBytes": 68708,
     "centerOfMass": {
       "x": -6.350000369287333,
       "y": 2.8110069234295656e-7,
@@ -10320,24 +10320,24 @@
       15867305.587957071
     ],
     "valid": true,
-    "volume": 11062.937132127867,
+    "volume": 11062.962025510555,
     "bounds": {
       "min": [
-        -69.89612084527087,
-        -15.340222845270876,
-        -15.340222845270876
+        -69.79589809999999,
+        -15.240000100092006,
+        -15.2400001
       ],
       "max": [
-        57.19612084527088,
-        15.340222845270876,
-        15.340222845270876
+        57.09589810000001,
+        15.240000100092006,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-43606f8e0a26.js",
-      "sha256": "4268144cfcd0cff82d9cd6d0e290e63229bab87943fbad3e96331def5d25bed4",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_43606f8e0a26.py",
+      "sha256": "8f7d4d29b62b325b16b3641821282fe85665b0777197e95a5dc6ed46d188a6c7",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-43606f8e0a26.step"
     }
   },
@@ -10346,9 +10346,9 @@
     "file": "components/bhr-2026-501-001-21b0618b94d6.step",
     "sha256": "21b0618b94d6c037b9dafbb06b9617de3ddcd56d6b036f83c6fd1c6a8e28ce5d",
     "bytes": 258655,
-    "mesh": "parametric/meshes/7ad9ded0f4792cf3b6a6085d1c220d7bfa721fc1e39a19ba5ac044e75fb68ef3.bin",
-    "meshSha256": "7ad9ded0f4792cf3b6a6085d1c220d7bfa721fc1e39a19ba5ac044e75fb68ef3",
-    "meshBytes": 119128,
+    "mesh": "native/meshes/13a04a657f0e2383bf14465142f4eca9d22b9a03ce4450557a16bfc3bbb142b4.bin",
+    "meshSha256": "13a04a657f0e2383bf14465142f4eca9d22b9a03ce4450557a16bfc3bbb142b4",
+    "meshBytes": 132456,
     "centerOfMass": {
       "x": 18.98910975439999,
       "y": -1.6494216591802713e-13,
@@ -10369,21 +10369,21 @@
     "volume": 471475.6194358893,
     "bounds": {
       "min": [
-        16.187645980741845,
-        -260.35000010000016,
-        386.9181998999998
+        16.1951097544,
+        -260.35,
+        386.91819999999996
       ],
       "max": [
-        21.790573528058157,
-        260.35000010000016,
-        551.6880001000001
+        21.7831097544,
+        260.35,
+        551.688
       ]
     },
-    "triangles": 3252,
+    "triangles": 3620,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-501-001-21b0618b94d6.js",
-      "sha256": "605b923ec39e22e32514d2e302e5107809b46b4080212e375776584b79aa233b",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_501_001_21b0618b94d6.py",
+      "sha256": "0165c198fcbfa8c69f6c9fa11a1912b7ddbba941112c0c6f552e5a9cb660b2bd",
       "referenceStep": "components/bhr-2026-501-001-21b0618b94d6.step"
     }
   },
@@ -10432,9 +10432,9 @@
     "file": "components/bhr-2026-500-027-34d684a8c9de.step",
     "sha256": "34d684a8c9de2ba5fd96567c0ab5510df976f9e8c6fad6f6d4e872b09fd13a49",
     "bytes": 408157,
-    "mesh": "parametric/meshes/a7c96486ee71265463074651e9f723ea3b3904823b900a6fc7979d171c1601e5.bin",
-    "meshSha256": "a7c96486ee71265463074651e9f723ea3b3904823b900a6fc7979d171c1601e5",
-    "meshBytes": 1131564,
+    "mesh": "native/meshes/124c8608d91c93c7a7f1af650d0d8df0fa2260f25a5590790f225b3ec3d7d1a6.bin",
+    "meshSha256": "124c8608d91c93c7a7f1af650d0d8df0fa2260f25a5590790f225b3ec3d7d1a6",
+    "meshBytes": 140732,
     "centerOfMass": {
       "x": -22.86689314033405,
       "y": -90.14852835503598,
@@ -10452,24 +10452,24 @@
       72773217.71894825
     ],
     "valid": true,
-    "volume": 28272.187215423215,
+    "volume": 28272.187215444013,
     "bounds": {
       "min": [
-        -80.02884189571961,
-        -171.2912034501382,
-        393.1357803210518
+        -79.89873441959209,
+        -171.161095974,
+        393.26819989999996
       ],
       "max": [
-        16.33448350139447,
-        -17.387682896712807,
-        425.1495175272818
+        16.195109854405004,
+        -17.52010247564194,
+        425.01820010108304
       ]
     },
-    "triangles": 44627,
+    "triangles": 4630,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-027-34d684a8c9de.js",
-      "sha256": "a2dad66c02f01f0f314bdc09d81e0b53dd767eb362ae16b9d287c5506a2883e6",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_027_34d684a8c9de.py",
+      "sha256": "b4377f1c2ad59a38e3f7848e96541fc47f2f4bc3b8bb2cf7a2d349ce9fa27b35",
       "referenceStep": "components/bhr-2026-500-027-34d684a8c9de.step"
     }
   },
@@ -10518,9 +10518,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-1f8371dac9fe.step",
     "sha256": "1f8371dac9fe33753c8fa5842c0de7e42463c80dca1e9bda0ff2fd9fe53257e0",
     "bytes": 225746,
-    "mesh": "parametric/meshes/26e562a60eb0fe947f66bdbda9a40b83a6da4b42adf42b605afb43a7cac8bc92.bin",
-    "meshSha256": "26e562a60eb0fe947f66bdbda9a40b83a6da4b42adf42b605afb43a7cac8bc92",
-    "meshBytes": 60540,
+    "mesh": "native/meshes/fc163ca00af5c7891fb4f4f18b257c9ecbd2c103eb426e803af3eb3c964343cb.bin",
+    "meshSha256": "fc163ca00af5c7891fb4f4f18b257c9ecbd2c103eb426e803af3eb3c964343cb",
+    "meshBytes": 68708,
     "centerOfMass": {
       "x": -6.350000369287333,
       "y": 2.8110069234295656e-7,
@@ -10538,24 +10538,24 @@
       15867305.587957071
     ],
     "valid": true,
-    "volume": 11062.937132127867,
+    "volume": 11062.962025510555,
     "bounds": {
       "min": [
-        -69.89612084527087,
-        -15.340222845270876,
-        -15.340222845270876
+        -69.79589809999999,
+        -15.240000100092006,
+        -15.2400001
       ],
       "max": [
-        57.19612084527088,
-        15.340222845270876,
-        15.340222845270876
+        57.09589810000001,
+        15.240000100092006,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-1f8371dac9fe.js",
-      "sha256": "4268144cfcd0cff82d9cd6d0e290e63229bab87943fbad3e96331def5d25bed4",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_1f8371dac9fe.py",
+      "sha256": "4c923700eb990a7468d823294273be0205579b5198f7b0abacbc7b6240747c79",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-1f8371dac9fe.step"
     }
   },
@@ -10644,9 +10644,9 @@
     "file": "components/bhr-2026-500-033-178be009fceb.step",
     "sha256": "178be009fcebe05a6fdeac89cafa3e718b1e12a0bba9285dbb354d639d780750",
     "bytes": 264145,
-    "mesh": "parametric/meshes/4eaeace51db6ba4126c96c6dd526af4d5447bf7b3f75b96456f9628e33514f0b.bin",
-    "meshSha256": "4eaeace51db6ba4126c96c6dd526af4d5447bf7b3f75b96456f9628e33514f0b",
-    "meshBytes": 838128,
+    "mesh": "native/meshes/8f735c9a6fc8aeb70eec9d30debe721d2ec30cd9ebcb96f5ba606089c5d94095.bin",
+    "meshSha256": "8f735c9a6fc8aeb70eec9d30debe721d2ec30cd9ebcb96f5ba606089c5d94095",
+    "meshBytes": 325236,
     "centerOfMass": {
       "x": -348.48799999995646,
       "y": -173.42156706311226,
@@ -10664,24 +10664,24 @@
       5793860.298066616
     ],
     "valid": true,
-    "volume": 19070.905947615272,
+    "volume": 19070.905947873456,
     "bounds": {
       "min": [
-        -358.0982609516106,
-        -195.77652935024284,
-        158.69657424975713
+        -358.01300010000017,
+        -195.7231036,
+        158.75
       ],
       "max": [
-        -338.8777390483897,
-        -151.21967784975715,
-        228.65342575024286
+        -338.9629999,
+        -151.2731036,
+        228.6000001
       ]
     },
-    "triangles": 26846,
+    "triangles": 9616,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-033-178be009fceb.js",
-      "sha256": "0ddcdd20bc5808447b0a695e1e9490ef81e9a51c353ed5f7ece8227ec192fb85",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_033_178be009fceb.py",
+      "sha256": "b122451c442da6cf7d4b4fbed56161db112ee5f094c2eeed9a99dff754f0a613",
       "referenceStep": "components/bhr-2026-500-033-178be009fceb.step"
     }
   },
@@ -10690,9 +10690,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-675257026dbd.step",
     "sha256": "675257026dbd14b8777fa13381bd0f79beb9a9b5ba7cb3292ef43cb46df2f264",
     "bytes": 225771,
-    "mesh": "parametric/meshes/20a310bb350f3144bd1b6b70c352193222a8301cb79ec9b0e5ac730a2e74a55c.bin",
-    "meshSha256": "20a310bb350f3144bd1b6b70c352193222a8301cb79ec9b0e5ac730a2e74a55c",
-    "meshBytes": 60540,
+    "mesh": "native/meshes/ca7a907e9f92c94f11fae467060f444df91704586f101c3854c42fb9f4de988d.bin",
+    "meshSha256": "ca7a907e9f92c94f11fae467060f444df91704586f101c3854c42fb9f4de988d",
+    "meshBytes": 68708,
     "centerOfMass": {
       "x": -5.126488980605752e-7,
       "y": 3.422314957319949e-7,
@@ -10710,24 +10710,24 @@
       9164068.941413917
     ],
     "valid": true,
-    "volume": 9085.734589920212,
+    "volume": 9085.759483338428,
     "bounds": {
       "min": [
-        -52.357594179869984,
-        -15.340396179869982,
-        -15.340396179869982
+        -52.257198100000004,
+        -15.240000100092004,
+        -15.2400001
       ],
       "max": [
-        52.357594179869984,
-        15.340396179869982,
-        15.340396179869982
+        52.257198100000004,
+        15.240000100092004,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-675257026dbd.js",
-      "sha256": "6c2a634429388cc2a934ec7510f11671501d288eaff134f216482c83a299f999",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_675257026dbd.py",
+      "sha256": "ec22222e3fb14ce0df5d6b7e485810133564b3e4012a5593e399d04ec25a6b75",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-675257026dbd.step"
     }
   },
@@ -10776,9 +10776,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-bbc9e4f9f516.step",
     "sha256": "bbc9e4f9f516c98f762556e7c55a2b398712c182f57feef56aeb17b8cfca525a",
     "bytes": 225769,
-    "mesh": "parametric/meshes/b8a97d2f58424a2560920ee8d07edfc2a7526c474af16fca69bda5766d534592.bin",
-    "meshSha256": "b8a97d2f58424a2560920ee8d07edfc2a7526c474af16fca69bda5766d534592",
-    "meshBytes": 60536,
+    "mesh": "native/meshes/093a00b9083695603c9e4159a7bd5ed62dcf6b2428436ce28359be2eff3f7380.bin",
+    "meshSha256": "093a00b9083695603c9e4159a7bd5ed62dcf6b2428436ce28359be2eff3f7380",
+    "meshBytes": 68700,
     "centerOfMass": {
       "x": -6.350000426600543,
       "y": 3.046598999108499e-7,
@@ -10796,24 +10796,24 @@
       12657493.969794473
     ],
     "valid": true,
-    "volume": 10207.869971268214,
+    "volume": 10207.894864782276,
     "bounds": {
       "min": [
-        -65.05759417987,
-        -15.340396179869982,
-        -15.340396179869982
+        -64.9571981,
+        -15.240000100092004,
+        -15.2400001
       ],
       "max": [
-        52.357594179869984,
-        15.340396179869982,
-        15.340396179869982
+        52.257198100000004,
+        15.240000100092004,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-bbc9e4f9f516.js",
-      "sha256": "e7d26ea60a48c93b5c364af039bf63955c8fec96ed8abad2f0e3351c04bede3f",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_bbc9e4f9f516.py",
+      "sha256": "fef569851f0e635c895a23163d863fd6b427ed0e5a52a17bbdfe671bf17cf0e9",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-bbc9e4f9f516.step"
     }
   },
@@ -10942,9 +10942,9 @@
     "file": "components/bhr-2026-500-019m-2e0b774f61c1.step",
     "sha256": "2e0b774f61c1ab6b8af0d8760c765c2701de9eeb8869c931fa705c93034bec4f",
     "bytes": 595491,
-    "mesh": "parametric/meshes/e34b75dab23908e7f62ef4d3dc40c4c86182fe3b3c542205dc242ed56c0a9711.bin",
-    "meshSha256": "e34b75dab23908e7f62ef4d3dc40c4c86182fe3b3c542205dc242ed56c0a9711",
-    "meshBytes": 262596,
+    "mesh": "native/meshes/6eba549d8128b1731bc677717320d701bd57662f2560c04a615aa97d17548e0d.bin",
+    "meshSha256": "6eba549d8128b1731bc677717320d701bd57662f2560c04a615aa97d17548e0d",
+    "meshBytes": 358712,
     "centerOfMass": {
       "x": -252.85931655236232,
       "y": 176.0515622574968,
@@ -10962,24 +10962,24 @@
       158163891.8647375
     ],
     "valid": true,
-    "volume": 62760.14973534047,
+    "volume": 62760.18126120517,
     "bounds": {
       "min": [
-        -291.7029527162564,
-        97.15369595652366,
-        160.23392125780717
+        -291.5768284422,
+        97.29810349999983,
+        160.33749989995408
       ],
       "max": [
-        -207.37751564820715,
-        253.01751124347427,
-        336.2225271437482
+        -207.48109429034415,
+        252.87310370000017,
+        336.1182001000002
       ]
     },
-    "triangles": 9103,
+    "triangles": 12865,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-019m-2e0b774f61c1.js",
-      "sha256": "b3c0f370956315a8227929ab8d3166c0991036fdf785615e8e9f05bb84784fa4",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_019m_2e0b774f61c1.py",
+      "sha256": "d80ea2f4e97a1ab3bec3e74fa3d4c52a99f7744eab7688f12e415b239268c189",
       "referenceStep": "components/bhr-2026-500-019m-2e0b774f61c1.step"
     }
   },
@@ -11388,9 +11388,9 @@
     "file": "components/bhr-2026-500-014m-top-22ebd4ced951.step",
     "sha256": "22ebd4ced951305e5ed9d0933ef6da1119248422d301b20d072f5ce56cdd69ef",
     "bytes": 286933,
-    "mesh": "parametric/meshes/f65f221d0525bd7741ca64aa6aff4aec7d75890e96eac3891bb84efff655c706.bin",
-    "meshSha256": "f65f221d0525bd7741ca64aa6aff4aec7d75890e96eac3891bb84efff655c706",
-    "meshBytes": 84996,
+    "mesh": "native/meshes/7dfd479f3d568c54a12a976646b3601e7484835f98f45fcddf9bff84ff521b97.bin",
+    "meshSha256": "7dfd479f3d568c54a12a976646b3601e7484835f98f45fcddf9bff84ff521b97",
+    "meshBytes": 98564,
     "centerOfMass": {
       "x": -2.5099809581323465,
       "y": 307.7248543957353,
@@ -11408,24 +11408,24 @@
       10189004.582597256
     ],
     "valid": true,
-    "volume": 22138.711974059,
+    "volume": 22138.703348122875,
     "bounds": {
       "min": [
-        -40.26179776749403,
-        292.06295474587984,
-        531.7754547458799
+        -40.216598291138716,
+        292.09999989999784,
+        531.8124999
       ],
       "max": [
-        33.03250798876255,
-        328.0769469564237,
-        546.1229751199088
+        33.00990975440501,
+        328.0687941894427,
+        546.1
       ]
     },
-    "triangles": 2551,
+    "triangles": 3005,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-500-014m-top-22ebd4ced951.js",
-      "sha256": "8ae88268e259036f2e1c99c01edaa42375f67de8a54ed91dfaafcfc6f5283cde",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_500_014m_top_22ebd4ced951.py",
+      "sha256": "e0f706d09507ed3e528dbf872323e950b7ca0c045fedce5d03a0d2df1c271391",
       "referenceStep": "components/bhr-2026-500-014m-top-22ebd4ced951.step"
     }
   },
@@ -11434,9 +11434,9 @@
     "file": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-db680514e5e4.step",
     "sha256": "db680514e5e490c30cbb131ee4e8f8d6ff8136d8e2261bd36e09373e97c96cd9",
     "bytes": 225769,
-    "mesh": "parametric/meshes/77a7536d8daa5affe699d2d11a88c79990f83af053dc122517ab9af45b673cf4.bin",
-    "meshSha256": "77a7536d8daa5affe699d2d11a88c79990f83af053dc122517ab9af45b673cf4",
-    "meshBytes": 60536,
+    "mesh": "native/meshes/f0b4ef7cbd987ea98fa2532652b91c16d8dcdfa62eccb75f83a0caeb3fd8d5e3.bin",
+    "meshSha256": "f0b4ef7cbd987ea98fa2532652b91c16d8dcdfa62eccb75f83a0caeb3fd8d5e3",
+    "meshBytes": 68700,
     "centerOfMass": {
       "x": -6.350000426600543,
       "y": 3.046598999108499e-7,
@@ -11454,24 +11454,24 @@
       12657493.969794473
     ],
     "valid": true,
-    "volume": 10207.869971268214,
+    "volume": 10207.894864782276,
     "bounds": {
       "min": [
-        -65.05759417987,
-        -15.340396179869982,
-        -15.340396179869982
+        -64.9571981,
+        -15.240000100092004,
+        -15.2400001
       ],
       "max": [
-        52.357594179869984,
-        15.340396179869982,
-        15.340396179869982
+        52.257198100000004,
+        15.240000100092004,
+        15.2400001
       ]
     },
-    "triangles": 1672,
+    "triangles": 1896,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-db680514e5e4.js",
-      "sha256": "e7d26ea60a48c93b5c364af039bf63955c8fec96ed8abad2f0e3351c04bede3f",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_db680514e5e4.py",
+      "sha256": "a75581be60d9830ddcf897b0ef83e2a6ea28104f759d547c022fc571d076ba0c",
       "referenceStep": "components/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-db680514e5e4.step"
     }
   },
@@ -11520,9 +11520,9 @@
     "file": "components/bhr-2026-600-006-2aabf8888b9d.step",
     "sha256": "2aabf8888b9dfa1691406682576e04a8dd80d9fb13a3bdf12910873898f18d1b",
     "bytes": 62088,
-    "mesh": "parametric/meshes/9599c2e5a92b3c0f26e592796fcc8380db8dfee5e2e11f4b31780a8b1f25ee09.bin",
-    "meshSha256": "9599c2e5a92b3c0f26e592796fcc8380db8dfee5e2e11f4b31780a8b1f25ee09",
-    "meshBytes": 22892,
+    "mesh": "native/meshes/f3fb229ac95611cd70d85a5b168e15ab0151b4df04822eb9587cac2b856b6ac3.bin",
+    "meshSha256": "f3fb229ac95611cd70d85a5b168e15ab0151b4df04822eb9587cac2b856b6ac3",
+    "meshBytes": 26016,
     "centerOfMass": {
       "x": -64.31577426412152,
       "y": -131.01660360000005,
@@ -11540,24 +11540,24 @@
       907334.061048001
     ],
     "valid": true,
-    "volume": 5869.836173739337,
+    "volume": 5869.836173739336,
     "bounds": {
       "min": [
-        -87.99417669534725,
-        -133.90495251052945,
-        346.5937562977304
+        -87.94619512283333,
+        -133.8106036,
+        346.666609112837
       ],
       "max": [
-        -44.202959171493674,
-        -128.12825468947057,
-        392.09441697545634
+        -44.28867512279997,
+        -128.2226036,
+        392.0847863288
       ]
     },
-    "triangles": 612,
+    "triangles": 696,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-600-006-2aabf8888b9d.js",
-      "sha256": "15c20e8cf57312c8f501c6f0227c09bdf8035619a65782cb7fc561f89cb33e3f",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_600_006_2aabf8888b9d.py",
+      "sha256": "4f985e191f778b6f368cab586777501976390eac44fb7f91bee3430a8d07adca",
       "referenceStep": "components/bhr-2026-600-006-2aabf8888b9d.step"
     }
   },
@@ -11646,9 +11646,9 @@
     "file": "components/bhr-2026-600-003-ea37fa06fae4.step",
     "sha256": "ea37fa06fae4abbc9ca06e86a04e5916d03d719ee0cf024d15ea9e9ee7556206",
     "bytes": 187800,
-    "mesh": "parametric/meshes/1d669539f55c90e407b8c49cbe99eb4ecdc8eb0161344d1699d70710843f4672.bin",
-    "meshSha256": "1d669539f55c90e407b8c49cbe99eb4ecdc8eb0161344d1699d70710843f4672",
-    "meshBytes": 139820,
+    "mesh": "native/meshes/3138bebbd7f241f65436fca64b0fd09a5b8f413c8744822709b9fe47ed7ee16d.bin",
+    "meshSha256": "3138bebbd7f241f65436fca64b0fd09a5b8f413c8744822709b9fe47ed7ee16d",
+    "meshBytes": 168676,
     "centerOfMass": {
       "x": -160.30746562327968,
       "y": -173.49828623197828,
@@ -11666,24 +11666,24 @@
       1484373480.178069
     ],
     "valid": true,
-    "volume": 77248.13513276042,
+    "volume": 77248.12006572902,
     "bounds": {
       "min": [
-        -308.7523587966472,
-        -319.6881803847859,
-        393.11983515143595
+        -308.6086952227,
+        -319.5481037,
+        393.2682
       ],
       "max": [
-        -16.36491748719381,
-        -27.308026815214177,
-        399.7677443116238
+        -16.508695022699975,
+        -27.448103499999995,
+        399.61820010000025
       ]
     },
-    "triangles": 4046,
+    "triangles": 4876,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-600-003-ea37fa06fae4.js",
-      "sha256": "3f6969d30900440534d2188399f0946fb4349f58109d2314c74bf9c8eb762b57",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_600_003_ea37fa06fae4.py",
+      "sha256": "43b2d3f4a143b9c4c57ba894c8441473b3bb5882e826707074f19813134a5f6d",
       "referenceStep": "components/bhr-2026-600-003-ea37fa06fae4.step"
     }
   },
@@ -11692,9 +11692,9 @@
     "file": "components/red-wire-2-4f65121a1f57.step",
     "sha256": "4f65121a1f57387b89be9ef29c13f08ae745089c5f4a8dba8e3e8a7f5b343c49",
     "bytes": 17188,
-    "mesh": "parametric/meshes/3259f6703cbb69901fb7befa66e6d5d420df357e7f737add9c2cff013414cb25.bin",
-    "meshSha256": "3259f6703cbb69901fb7befa66e6d5d420df357e7f737add9c2cff013414cb25",
-    "meshBytes": 5500,
+    "mesh": "native/meshes/1fc7676cf52535b0fcd92727cc7aadce98613aa61982ecd87e250961e8b2c872.bin",
+    "meshSha256": "1fc7676cf52535b0fcd92727cc7aadce98613aa61982ecd87e250961e8b2c872",
+    "meshBytes": 6040,
     "centerOfMass": {
       "x": -288.5104392034,
       "y": -176.67310360001883,
@@ -11715,21 +11715,21 @@
     "volume": 804.3981230776067,
     "bounds": {
       "min": [
-        -301.22572779621595,
-        -179.8633921928543,
-        420.24041140718407
+        -301.21043920339997,
+        -179.8481036000383,
+        420.2557
       ],
       "max": [
-        -275.795150610584,
-        -173.482815007184,
-        426.62098859285436
+        -275.8104392034,
+        -173.49810359999998,
+        426.6057000000384
       ]
     },
-    "triangles": 136,
+    "triangles": 148,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/red-wire-2-4f65121a1f57.js",
-      "sha256": "9c6a13a04964b851af9353a79fe70d27375b3b5342ab9cfdb6ac83db1edd1616",
+      "kind": "cadquery",
+      "file": "native/parts/p_red_wire_2_4f65121a1f57.py",
+      "sha256": "15b4e5a2919493155d303a16208bf62c46b3eeb5d1e8968968c4efc30684a1d9",
       "referenceStep": "components/red-wire-2-4f65121a1f57.step"
     }
   },
@@ -11738,9 +11738,9 @@
     "file": "components/bhr-2026-600-009-55277c8c2a54.step",
     "sha256": "55277c8c2a5448871cb742d230fbb228e9173026ba2074037974537b6bdf7926",
     "bytes": 184068,
-    "mesh": "parametric/meshes/dc1078b3d5736900105feb2bf5c0b8bdb65c62cf3e5d81f448eccc1a71fda5c6.bin",
-    "meshSha256": "dc1078b3d5736900105feb2bf5c0b8bdb65c62cf3e5d81f448eccc1a71fda5c6",
-    "meshBytes": 1847884,
+    "mesh": "native/meshes/60ecea50585dcfde658c72049a58388c462c83da8d8480cb02bf1a32bab29e20.bin",
+    "meshSha256": "60ecea50585dcfde658c72049a58388c462c83da8d8480cb02bf1a32bab29e20",
+    "meshBytes": 102556,
     "centerOfMass": {
       "x": -282.73199324328743,
       "y": -173.49811357005933,
@@ -11758,24 +11758,24 @@
       1254008.7712796926
     ],
     "valid": true,
-    "volume": 5783.1184293016995,
+    "volume": 5783.118429350514,
     "bounds": {
       "min": [
-        -290.36756936909427,
-        -202.1348248758427,
-        413.8842045415498
+        -290.34609624775266,
+        -202.1157509512,
+        413.9056999
       ],
       "max": [
-        -275.7444816048701,
-        -144.8613823240573,
-        431.72722196598306
+        -275.8104392034,
+        -144.8804562487,
+        431.6857097552345
       ]
     },
-    "triangles": 75440,
+    "triangles": 3472,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-600-009-55277c8c2a54.js",
-      "sha256": "426784bb89d3e4891d9f53ad9b8aafb12622625bcb1cb6d75e95d51fa3520680",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_600_009_55277c8c2a54.py",
+      "sha256": "ac7e99a2fc2c925af8844ef6911dc70d5ad6babe6e1a2878cf438ea40090f389",
       "referenceStep": "components/bhr-2026-600-009-55277c8c2a54.step"
     }
   },
@@ -11864,9 +11864,9 @@
     "file": "components/bhr-2026-600-004b-5c0ed452f82d.step",
     "sha256": "5c0ed452f82d1113c6d212a60e96b36b34e809a1bd974730b580aa895a956aa4",
     "bytes": 1375412,
-    "mesh": "parametric/meshes/0a11ad57c7c73459b4d83dea159cefc709e42c05db6c66601cf740c62104cb36.bin",
-    "meshSha256": "0a11ad57c7c73459b4d83dea159cefc709e42c05db6c66601cf740c62104cb36",
-    "meshBytes": 372480,
+    "mesh": "native/meshes/e2e1fd1a9a6ddcc12bb59f86cbacde8cc83c166fa4fdb35d4200a88c4ba74eb7.bin",
+    "meshSha256": "e2e1fd1a9a6ddcc12bb59f86cbacde8cc83c166fa4fdb35d4200a88c4ba74eb7",
+    "meshBytes": 459652,
     "centerOfMass": {
       "x": -155.0891387921616,
       "y": -75.55437768443558,
@@ -11884,24 +11884,24 @@
       1499298207.185903
     ],
     "valid": true,
-    "volume": 123553.58997840098,
+    "volume": 123553.56464920563,
     "bounds": {
       "min": [
-        -317.252049515072,
-        -175.35059219140913,
-        380.41900991473545
+        -317.06757328429813,
+        -174.84885920523837,
+        380.56819989999997
       ],
       "max": [
-        -7.592968791001759,
-        -8.258976175242694,
-        399.9157617687957
+        -7.771551302660015,
+        -8.398103500000014,
+        399.6182001000004
       ]
     },
-    "triangles": 10404,
+    "triangles": 13262,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-600-004b-5c0ed452f82d.js",
-      "sha256": "7ab0e1ee0d46e84ee643c4680b38a4551072294ea17874203c246c23b0441a0d",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_600_004b_5c0ed452f82d.py",
+      "sha256": "e8268de6fa75984b91c3dbf81894e311180dbd84e9e2b91dece590ef495d2dc0",
       "referenceStep": "components/bhr-2026-600-004b-5c0ed452f82d.step"
     }
   },
@@ -12030,9 +12030,9 @@
     "file": "components/black-wire-2-f69d9c79342a.step",
     "sha256": "f69d9c79342adf4d7c907ed244192a8d3df8043da5a5df78c96cad229cc857f9",
     "bytes": 20821,
-    "mesh": "parametric/meshes/d7313bc189a576ca06c4352775108ae983989c8e0cfb9b70f07cdef257f504cd.bin",
-    "meshSha256": "d7313bc189a576ca06c4352775108ae983989c8e0cfb9b70f07cdef257f504cd",
-    "meshBytes": 5552,
+    "mesh": "native/meshes/d7d2ceac6dc5232ade4172d8b84fa1cb69267c186dcbf62ca85a0a455389e60f.bin",
+    "meshSha256": "d7d2ceac6dc5232ade4172d8b84fa1cb69267c186dcbf62ca85a0a455389e60f",
+    "meshBytes": 6092,
     "centerOfMass": {
       "x": -288.51043920340004,
       "y": -176.67310359997023,
@@ -12053,21 +12053,21 @@
     "volume": 804.3981230785012,
     "bounds": {
       "min": [
-        -301.2257277962167,
-        -179.86339219281587,
-        413.8904114071833
+        -301.2104392034,
+        -179.84810360000003,
+        413.90569999999997
       ],
       "max": [
-        -275.7951506105834,
-        -173.48281500718335,
-        420.2709885928158
+        -275.81043920340005,
+        -173.49810359999998,
+        420.2557
       ]
     },
-    "triangles": 136,
+    "triangles": 148,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/black-wire-2-f69d9c79342a.js",
-      "sha256": "0b2199603f332d71dedd9eb4bae6879066a2cac738b66dc05606543d358e4f61",
+      "kind": "cadquery",
+      "file": "native/parts/p_black_wire_2_f69d9c79342a.py",
+      "sha256": "56a6fc60e7ffbdfa1257e7b53d91d94146f567f32d8669fdee3494c47a9f25c8",
       "referenceStep": "components/black-wire-2-f69d9c79342a.step"
     }
   },
@@ -12116,9 +12116,9 @@
     "file": "components/can-wire-4-a9c3166df384.step",
     "sha256": "a9c3166df384956095f13f0393733bbb9a17636e991975e6e529bd5877d125ac",
     "bytes": 17511,
-    "mesh": "parametric/meshes/452c44f28da106ef76ae68e46332028e70d0adf34e65cd8797e6d40a431a7284.bin",
-    "meshSha256": "452c44f28da106ef76ae68e46332028e70d0adf34e65cd8797e6d40a431a7284",
-    "meshBytes": 5068,
+    "mesh": "native/meshes/4a276da6afbcd1397a1e82159a994f9dc32954d7e2c095d5ea3e85bfd18afc3b.bin",
+    "meshSha256": "4a276da6afbcd1397a1e82159a994f9dc32954d7e2c095d5ea3e85bfd18afc3b",
+    "meshBytes": 5900,
     "centerOfMass": {
       "x": -288.51043920340004,
       "y": -172.5244402745027,
@@ -12136,24 +12136,24 @@
       2038.0442169113085
     ],
     "valid": true,
-    "volume": 37.82432769985074,
+    "volume": 37.824327699850734,
     "bounds": {
       "min": [
-        -301.2138379167777,
-        -173.21623955285312,
-        419.563850560782
+        -301.2104392034,
+        -173.2129242145,
+        419.56721605998473
       ],
       "max": [
-        -275.80704049002236,
-        -171.83275598579135,
-        420.947549439218
+        -275.81043920340005,
+        -171.8359563345,
+        420.94418394001525
       ]
     },
-    "triangles": 124,
+    "triangles": 144,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/can-wire-4-a9c3166df384.js",
-      "sha256": "15ac9d60af2c008767f761a994f6077a705dce3362ea920f8d9b7d80b78b8fd8",
+      "kind": "cadquery",
+      "file": "native/parts/p_can_wire_4_a9c3166df384.py",
+      "sha256": "f9b03d0e16be0c1804c58cabf7242e5ded1cf02e43485561c197272aaf159437",
       "referenceStep": "components/can-wire-4-a9c3166df384.step"
     }
   },
@@ -12162,9 +12162,9 @@
     "file": "components/can-wire-2-6d1dd4a6ed7d.step",
     "sha256": "6d1dd4a6ed7db4a2c3594b53bcadaf7db41edfeb5d51011943e2f5f36aa5e18c",
     "bytes": 17548,
-    "mesh": "parametric/meshes/fd24cfc88037bc04dc32844842452f11160b2affe333bf77044e1c009b44ff6a.bin",
-    "meshSha256": "fd24cfc88037bc04dc32844842452f11160b2affe333bf77044e1c009b44ff6a",
-    "meshBytes": 5068,
+    "mesh": "native/meshes/8f54c2d168674ff8eb70dccdb5887f0a0e95b1661ebd0dc210fa872a41faa0f9.bin",
+    "meshSha256": "8f54c2d168674ff8eb70dccdb5887f0a0e95b1661ebd0dc210fa872a41faa0f9",
+    "meshBytes": 5904,
     "centerOfMass": {
       "x": -288.51043920340004,
       "y": -174.47176692539728,
@@ -12182,24 +12182,24 @@
       2038.0442169113085
     ],
     "valid": true,
-    "volume": 37.82432769985069,
+    "volume": 37.824327699850684,
     "bounds": {
       "min": [
-        -301.2138379167777,
-        -175.16345121410865,
-        419.563850560782
+        -301.2104392034,
+        -175.1602508654,
+        419.56721605998473
       ],
       "max": [
-        -275.80704049002236,
-        -173.77996764704685,
-        420.947549439218
+        -275.81043920340005,
+        -173.78328298539998,
+        420.94418394001525
       ]
     },
-    "triangles": 124,
+    "triangles": 144,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/can-wire-2-6d1dd4a6ed7d.js",
-      "sha256": "e07c4340049e2975b84662f7b3b9695878d081f481a8658319b92ac475aefbdd",
+      "kind": "cadquery",
+      "file": "native/parts/p_can_wire_2_6d1dd4a6ed7d.py",
+      "sha256": "94ee522b1e24ce4ad7b4a811e065b7e21c96572f789b775b89bb5e55118052b2",
       "referenceStep": "components/can-wire-2-6d1dd4a6ed7d.step"
     }
   },
@@ -12208,9 +12208,9 @@
     "file": "components/black-wire-1-fa8cc576b6ab.step",
     "sha256": "fa8cc576b6ab3031d7947955c0c78ac762f92c9cc39c55bb86f3113bd4a18b77",
     "bytes": 20802,
-    "mesh": "parametric/meshes/fbd71e085391680ce83cbad5d945d77f5f8d055007cbca0e98eb5205cd271b8b.bin",
-    "meshSha256": "fbd71e085391680ce83cbad5d945d77f5f8d055007cbca0e98eb5205cd271b8b",
-    "meshBytes": 5552,
+    "mesh": "native/meshes/bc656831a715998a3c67902b2fa92b38c39735d3e317a451a494ba630f68c2fe.bin",
+    "meshSha256": "bc656831a715998a3c67902b2fa92b38c39735d3e317a451a494ba630f68c2fe",
+    "meshBytes": 6092,
     "centerOfMass": {
       "x": -288.5104392034001,
       "y": -170.32310360001574,
@@ -12228,24 +12228,24 @@
       45274.33338083327
     ],
     "valid": true,
-    "volume": 804.3981230727877,
+    "volume": 804.398123072788,
     "bounds": {
       "min": [
-        -301.2257277962167,
-        -173.51339219281667,
-        413.8904114071833
+        -301.2104392034,
+        -173.49810360000004,
+        413.90569999999997
       ],
       "max": [
-        -275.7951506105834,
-        -167.13281500718412,
-        420.2709885928158
+        -275.81043920340005,
+        -167.14810359999996,
+        420.2557
       ]
     },
-    "triangles": 136,
+    "triangles": 148,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/black-wire-1-fa8cc576b6ab.js",
-      "sha256": "425359b67e9f0adaa6de299857c59f87240f8aa34d3a216383a10da14bb2438b",
+      "kind": "cadquery",
+      "file": "native/parts/p_black_wire_1_fa8cc576b6ab.py",
+      "sha256": "f3ad12facfd258a25dd3796aa00212467ca5305dcbb118c8e99bbe6c0bfe0471",
       "referenceStep": "components/black-wire-1-fa8cc576b6ab.step"
     }
   },
@@ -12294,9 +12294,9 @@
     "file": "components/red-wire-1-982ad20a5fa4.step",
     "sha256": "982ad20a5fa4c1164a3463760225b7b2195828f824672ccb96f354c75d4748cb",
     "bytes": 17164,
-    "mesh": "parametric/meshes/3ad7c3c09aa12cdecdd337c98d9f4fa9adceed1ca7d82cd184ac5f22f95b9b60.bin",
-    "meshSha256": "3ad7c3c09aa12cdecdd337c98d9f4fa9adceed1ca7d82cd184ac5f22f95b9b60",
-    "meshBytes": 5496,
+    "mesh": "native/meshes/f6e359a2524199d41b3d8730d62bd20b740a6fca6df0ca2bccc554951bb0420d.bin",
+    "meshSha256": "f6e359a2524199d41b3d8730d62bd20b740a6fca6df0ca2bccc554951bb0420d",
+    "meshBytes": 6032,
     "centerOfMass": {
       "x": -288.5104392034001,
       "y": -170.32310359999127,
@@ -12314,24 +12314,24 @@
       45274.333381310105
     ],
     "valid": true,
-    "volume": 804.3981230811173,
+    "volume": 804.3981230811172,
     "bounds": {
       "min": [
-        -301.225727796216,
-        -173.51339219281599,
-        420.240411407184
+        -301.2104392034,
+        -173.4981036,
+        420.2557
       ],
       "max": [
-        -275.7951506105841,
-        -167.1328150071457,
-        426.62098859285436
+        -275.81043920340005,
+        -167.14810359996167,
+        426.6057000000384
       ]
     },
-    "triangles": 136,
+    "triangles": 148,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/red-wire-1-982ad20a5fa4.js",
-      "sha256": "67d83cd60ded9acf5f4e8111b5f6bec6b6fc4d4dc2ebea276df013507db49f75",
+      "kind": "cadquery",
+      "file": "native/parts/p_red_wire_1_982ad20a5fa4.py",
+      "sha256": "c7921890846d36f92683f04e6cbc5694da9300f7a4d81cd3df5702a81206e664",
       "referenceStep": "components/red-wire-1-982ad20a5fa4.step"
     }
   },
@@ -12380,9 +12380,9 @@
     "file": "components/bhr-2026-600-004a-fdc0673fe431.step",
     "sha256": "fdc0673fe4310c2149b7cb1bcb44a0475b0cb90cc0707cf0237855214675768c",
     "bytes": 1357976,
-    "mesh": "parametric/meshes/0971649c2fff03db9c9230ff24e2f292d4c637b5d48b5cbf89dbf4d6af3659fb.bin",
-    "meshSha256": "0971649c2fff03db9c9230ff24e2f292d4c637b5d48b5cbf89dbf4d6af3659fb",
-    "meshBytes": 365568,
+    "mesh": "native/meshes/3e1bbea62a25658ee30d95f7df76ba576f6380659f2de7cf1966b658dde5cef9.bin",
+    "meshSha256": "3e1bbea62a25658ee30d95f7df76ba576f6380659f2de7cf1966b658dde5cef9",
+    "meshBytes": 450140,
     "centerOfMass": {
       "x": -155.74743551401298,
       "y": -271.8986660233931,
@@ -12400,24 +12400,24 @@
       1483156640.9088821
     ],
     "valid": true,
-    "volume": 123001.76659801629,
+    "volume": 123001.77836668896,
     "bounds": {
       "min": [
-        -317.2520495161356,
-        -338.73723102475736,
-        380.4206581006698
+        -317.06757328429813,
+        -338.5981037,
+        380.56819989999997
       ],
       "max": [
-        -7.592968791001753,
-        -173.3505617006698,
-        399.9157617687957
+        -7.777445022799999,
+        -173.49810349999998,
+        399.6182001000004
       ]
     },
-    "triangles": 10170,
+    "triangles": 12936,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-600-004a-fdc0673fe431.js",
-      "sha256": "c90120b2ca54574de7247f6bc99739e3660c1863d1e6f5b5fdee1b3f7504e1ad",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_600_004a_fdc0673fe431.py",
+      "sha256": "205ec4b2072d1f4d56fac8240fa8eee1f9f230701cbe4461617b499bcde793f6",
       "referenceStep": "components/bhr-2026-600-004a-fdc0673fe431.step"
     }
   },
@@ -12426,9 +12426,9 @@
     "file": "components/can-wire-1-4fb295069a53.step",
     "sha256": "4fb295069a536ed92184e85923743567c925be8a355fc57e77b3016865bcda9e",
     "bytes": 17590,
-    "mesh": "parametric/meshes/d92a33e2a77099b081abda0532e65d3330721188df108b6850bc00a0aec2bc08.bin",
-    "meshSha256": "d92a33e2a77099b081abda0532e65d3330721188df108b6850bc00a0aec2bc08",
-    "meshBytes": 5068,
+    "mesh": "native/meshes/56312455b46d5e0243c31e006534526c74c24f34f1814d35ea5c141ffd5f386c.bin",
+    "meshSha256": "56312455b46d5e0243c31e006534526c74c24f34f1814d35ea5c141ffd5f386c",
+    "meshBytes": 5900,
     "centerOfMass": {
       "x": -288.5104392034,
       "y": -173.49810360000066,
@@ -12449,21 +12449,21 @@
     "volume": 37.82432770103884,
     "bounds": {
       "min": [
-        -301.21383791677783,
-        -174.18995303922253,
-        420.5375640470469
+        -301.2104392034,
+        -174.1865875400197,
+        420.5408793854
       ],
       "max": [
-        -275.80704049002225,
-        -172.80625416078806,
-        421.9210476141081
+        -275.81043920340005,
+        -172.8096196599891,
+        421.91784726540004
       ]
     },
-    "triangles": 124,
+    "triangles": 144,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/can-wire-1-4fb295069a53.js",
-      "sha256": "1d829c2707971e24215b92d8fc22a2f75ef18006f9af5d0bca1afea0c6a619a8",
+      "kind": "cadquery",
+      "file": "native/parts/p_can_wire_1_4fb295069a53.py",
+      "sha256": "479a705d1abcfd7e931d61f95697da7da4dce87120137ec8198fb85dcc46043e",
       "referenceStep": "components/can-wire-1-4fb295069a53.step"
     }
   },
@@ -12512,9 +12512,9 @@
     "file": "components/bhr-2026-600-005-1a0fc844ce6e.step",
     "sha256": "1a0fc844ce6e8e7d676d34d1d7ca28aefacf986e74c43c222d2e82be2cd7fabc",
     "bytes": 66117,
-    "mesh": "parametric/meshes/0623ab72e8fa31bb75378b376cd7587440e5d21ed5721bf2e86a71f8f1cdd475.bin",
-    "meshSha256": "0623ab72e8fa31bb75378b376cd7587440e5d21ed5721bf2e86a71f8f1cdd475",
-    "meshBytes": 29316,
+    "mesh": "native/meshes/d13a826d969bf4095c7ed49aa656f62afc6a13c8db7cf2e77a842f7b760a8340.bin",
+    "meshSha256": "d13a826d969bf4095c7ed49aa656f62afc6a13c8db7cf2e77a842f7b760a8340",
+    "meshBytes": 27212,
     "centerOfMass": {
       "x": -68.89619512278263,
       "y": -173.4981036,
@@ -12532,24 +12532,24 @@
       4561403.378035009
     ],
     "valid": true,
-    "volume": 9093.949646772695,
+    "volume": 9093.94964677268,
     "bounds": {
       "min": [
-        -75.2532430197413,
-        -213.20132027061473,
-        358.84160901279995
+        -75.2467420882,
+        -213.1856036,
+        358.8416091128
       ],
       "max": [
-        -62.53914722579086,
-        -133.7948869293854,
-        372.5916092128
+        -62.5456481573,
+        -133.81060359999998,
+        372.5916091128
       ]
     },
-    "triangles": 800,
+    "triangles": 744,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-600-005-1a0fc844ce6e.js",
-      "sha256": "e6f0f245359da25c95b0c8470c25d2309f5a264a0df26fdb34179895939d8b5f",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_600_005_1a0fc844ce6e.py",
+      "sha256": "17b99379499fb87d5b111145796ccdb7553c1afd67ef76551b169623058d6393",
       "referenceStep": "components/bhr-2026-600-005-1a0fc844ce6e.step"
     }
   },
@@ -12678,9 +12678,9 @@
     "file": "components/can-wire-3-b5f8e7694f0f.step",
     "sha256": "b5f8e7694f0f872e9e507c3bef6fdf803088d06a63b46e8ff7f23a1deab21abf",
     "bytes": 17560,
-    "mesh": "parametric/meshes/90dd8e6994d46a1274417dff45c853ff28e312a0478315c6b9a4565355a25b68.bin",
-    "meshSha256": "90dd8e6994d46a1274417dff45c853ff28e312a0478315c6b9a4565355a25b68",
-    "meshBytes": 5068,
+    "mesh": "native/meshes/29d9175b39c0c71c2ecfa2f3bcfb794f425174660dcacfefe2404c37bfd6d265.bin",
+    "meshSha256": "29d9175b39c0c71c2ecfa2f3bcfb794f425174660dcacfefe2404c37bfd6d265",
+    "meshBytes": 5904,
     "centerOfMass": {
       "x": -288.51043920340004,
       "y": -173.4981036000006,
@@ -12701,21 +12701,21 @@
     "volume": 37.82432770103877,
     "bounds": {
       "min": [
-        -301.2138379167778,
-        -174.1899530392225,
-        418.59035238589195
+        -301.2104392034,
+        -174.18658754001967,
+        418.5935527346
       ],
       "max": [
-        -275.8070404900223,
-        -172.8062541607881,
-        419.97383595295315
+        -275.81043920340005,
+        -172.80961965998912,
+        419.97052061460005
       ]
     },
-    "triangles": 124,
+    "triangles": 144,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/can-wire-3-b5f8e7694f0f.js",
-      "sha256": "08f433e50b47d9aec5dff0df5ca88d7289acb7b5bbb3258bd0c56b65419ca849",
+      "kind": "cadquery",
+      "file": "native/parts/p_can_wire_3_b5f8e7694f0f.py",
+      "sha256": "0b939e99c9ae0ef93cb614560ded0439fe849e5f3c1ef70ee996d0399df4765b",
       "referenceStep": "components/can-wire-3-b5f8e7694f0f.step"
     }
   },
@@ -12804,9 +12804,9 @@
     "file": "components/bhr-2026-704-010-89a3449bb12a.step",
     "sha256": "89a3449bb12ae93525a66fe54725e00faceb31597e9903842caba72355f56a8f",
     "bytes": 1065525,
-    "mesh": "parametric/meshes/a00c879e5b877cc587537ed0ae207433c46aacfb6e175a48bc5a384049deed08.bin",
-    "meshSha256": "a00c879e5b877cc587537ed0ae207433c46aacfb6e175a48bc5a384049deed08",
-    "meshBytes": 229628,
+    "mesh": "native/meshes/8a0278ae17252fbea0401561223220780dab2e8f9044e7a29484f0582d4d46e3.bin",
+    "meshSha256": "8a0278ae17252fbea0401561223220780dab2e8f9044e7a29484f0582d4d46e3",
+    "meshBytes": 265884,
     "centerOfMass": {
       "x": 1.2131639792334004e-11,
       "y": 4.801900455547531e-12,
@@ -12824,24 +12824,24 @@
       3405695.28101554
     ],
     "valid": true,
-    "volume": 16573.14000040362,
+    "volume": 16573.140000403615,
     "bounds": {
       "min": [
-        -22.376185221894957,
-        -22.376185221889017,
-        -7.301285221889927
+        -22.225000000005934,
+        -22.224999999999994,
+        -7.150100100000904
       ],
       "max": [
-        22.37618522188309,
-        22.37618522188903,
-        7.301285221888971
+        22.22499999999407,
+        22.22500000000001,
+        7.1501001
       ]
     },
-    "triangles": 6256,
+    "triangles": 7260,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-704-010-89a3449bb12a.js",
-      "sha256": "cdd2304030dbfae95809d7a3f3a0aa9532a3cc29e7414c59117adeb97cb696e0",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_704_010_89a3449bb12a.py",
+      "sha256": "30240e4c09f934338737813e01a1aa4e6107653e00916e4cc1919a81c475a56a",
       "referenceStep": "components/bhr-2026-704-010-89a3449bb12a.step"
     }
   },
@@ -12890,9 +12890,9 @@
     "file": "components/bhr-2026-704-001-2410118654f2.step",
     "sha256": "2410118654f25d4d5ea0572c37e736787c975bb70e8ed69d64485bb8232c68ff",
     "bytes": 299301,
-    "mesh": "parametric/meshes/64cf461992cbc17d4c454e1097231853821a3bbfcb43828d1b71ada53af95da7.bin",
-    "meshSha256": "64cf461992cbc17d4c454e1097231853821a3bbfcb43828d1b71ada53af95da7",
-    "meshBytes": 113948,
+    "mesh": "native/meshes/a1c66c6ad5262eab48bec095cbb5f3152ac1b96fe066535dbd89002940874c87.bin",
+    "meshSha256": "a1c66c6ad5262eab48bec095cbb5f3152ac1b96fe066535dbd89002940874c87",
+    "meshBytes": 130036,
     "centerOfMass": {
       "x": -185.43652300621795,
       "y": -265.1921036000001,
@@ -12910,24 +12910,24 @@
       335686146.3346214
     ],
     "valid": true,
-    "volume": 66723.38999840403,
+    "volume": 66723.38999840405,
     "bounds": {
       "min": [
-        -298.523278512913,
-        -268.12875952408774,
-        401.10915565356686
+        -298.3967934447521,
+        -267.98610360000004,
+        401.1168
       ],
       "max": [
-        -27.559599964653938,
-        -262.2554476759123,
-        523.4408813478427
+        -27.621195122853038,
+        -262.3981036,
+        523.35317695931
       ]
     },
-    "triangles": 3112,
+    "triangles": 3556,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-704-001-2410118654f2.js",
-      "sha256": "7916196f4a293d91c40c8937d3aabcdd6d8703c3ea7b866283ef82aee24ff69c",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_704_001_2410118654f2.py",
+      "sha256": "7eb3e65787753c3406de53d6126aefd0d0882395ba4ae6b6763ce2cfbd9fd9f2",
       "referenceStep": "components/bhr-2026-704-001-2410118654f2.step"
     }
   },
@@ -13056,9 +13056,9 @@
     "file": "components/bhr-2026-704-002-1652ef623ba8.step",
     "sha256": "1652ef623ba83977f0b6136c422db597ea6251a5b18152722a5b7bde6a8d36bf",
     "bytes": 338754,
-    "mesh": "parametric/meshes/f613b4de3d42d6c14c028dedcd94d7000c8d38d464db074709d9cbdcb729ab15.bin",
-    "meshSha256": "f613b4de3d42d6c14c028dedcd94d7000c8d38d464db074709d9cbdcb729ab15",
-    "meshBytes": 119084,
+    "mesh": "native/meshes/ff64ac84846df062e0a39d90dd7806e9c4ee02c3e91a9510e0712afd82d61545.bin",
+    "meshSha256": "ff64ac84846df062e0a39d90dd7806e9c4ee02c3e91a9510e0712afd82d61545",
+    "meshBytes": 134464,
     "centerOfMass": {
       "x": -181.57290061216784,
       "y": -81.80410360000002,
@@ -13076,24 +13076,24 @@
       322477747.2584295
     ],
     "valid": true,
-    "volume": 62524.616670160955,
+    "volume": 62524.61667016094,
     "bounds": {
       "min": [
-        -299.3362558750835,
-        -84.70523324635735,
-        401.10915565359034
+        -299.3322099114584,
+        -84.59810359999999,
+        401.11679999999996
       ],
       "max": [
-        -27.559599964579828,
-        -78.90297395364263,
-        527.1220226765856
+        -27.621195122784883,
+        -79.0101036,
+        527.1074858613094
       ]
     },
-    "triangles": 3240,
+    "triangles": 3664,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-704-002-1652ef623ba8.js",
-      "sha256": "10578c77dceefd4027886a23fe38047956c17a4cf48339b4b86c95cb47c6af28",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_704_002_1652ef623ba8.py",
+      "sha256": "ac5bba6c6fca43a8abce72cfbeb1a1a9e6248177a77cae09ff21a6100e28bcd2",
       "referenceStep": "components/bhr-2026-704-002-1652ef623ba8.step"
     }
   },
@@ -13102,9 +13102,9 @@
     "file": "components/1-2-rounded-hex-7-843-in-0157e962a79c.step",
     "sha256": "0157e962a79c37e28b1758bdd75c9f23fdb947d96170173d4f0b24331abad19f",
     "bytes": 56574,
-    "mesh": "parametric/meshes/b11e4fb42339f8fec42a2151d4c82e19fd6a1bbe18498b6c36187129e688d1f8.bin",
-    "meshSha256": "b11e4fb42339f8fec42a2151d4c82e19fd6a1bbe18498b6c36187129e688d1f8",
-    "meshBytes": 16044,
+    "mesh": "native/meshes/81dfc8c1606443c74811efb96325a9bb68908d8a47e93b4719f27369a25d0bf5.bin",
+    "meshSha256": "81dfc8c1606443c74811efb96325a9bb68908d8a47e93b4719f27369a25d0bf5",
+    "meshBytes": 14944,
     "centerOfMass": {
       "x": -241.78130714954108,
       "y": -164.50992978556442,
@@ -13122,24 +13122,24 @@
       86919856.76386309
     ],
     "valid": true,
-    "volume": 25279.8218182588,
+    "volume": 25279.821818258613,
     "bounds": {
       "min": [
-        -248.1383550465393,
-        -269.59647528525244,
-        497.4281768593978
+        -248.131854115,
+        -269.5736036,
+        497.4281769594
       ],
       "max": [
-        -235.4242592525382,
-        -63.176272953344366,
-        511.1781770594249
+        -235.4307601841,
+        -63.18590360000002,
+        511.1781769594
       ]
     },
-    "triangles": 416,
+    "triangles": 384,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-2-rounded-hex-7-843-in-0157e962a79c.js",
-      "sha256": "62ae64ef3bc28400ddc34a1db7b30e1ae654e32a0f12f1870cf67bebf272f9b0",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_2_rounded_hex_7_843_in_0157e962a79c.py",
+      "sha256": "5a968803db06aad9877f3a725e2f3be997e17c1d6187b793e695fa41bae6f7db",
       "referenceStep": "components/1-2-rounded-hex-7-843-in-0157e962a79c.step"
     }
   },
@@ -13348,9 +13348,9 @@
     "file": "components/bhr-2026-704-003b-fba19a426349.step",
     "sha256": "fba19a4263492741ac8e6fdbf17980dbc50329496d960db3ec8cc3e9cb802533",
     "bytes": 223647,
-    "mesh": "parametric/meshes/2f1b1056c57073dbc5eb4811808ef94c00806d18f0ccefbde3ce3e37a5e0924c.bin",
-    "meshSha256": "2f1b1056c57073dbc5eb4811808ef94c00806d18f0ccefbde3ce3e37a5e0924c",
-    "meshBytes": 59852,
+    "mesh": "native/meshes/99812339a3678ac6b946c29f1d0b7735ade9ca545d48f85ad639da234a6e2452.bin",
+    "meshSha256": "99812339a3678ac6b946c29f1d0b7735ade9ca545d48f85ad639da234a6e2452",
+    "meshBytes": 68308,
     "centerOfMass": {
       "x": -149.17317044932162,
       "y": -91.32910359999998,
@@ -13368,24 +13368,24 @@
       118202807.05430317
     ],
     "valid": true,
-    "volume": 39781.911158081726,
+    "volume": 39781.91115808167,
     "bounds": {
       "min": [
-        -227.05283563349147,
-        -94.26467778153193,
-        399.0528096143642
+        -227.01119512276722,
+        -94.1231036,
+        399.1779435573
       ],
       "max": [
-        -27.56668156210728,
-        -88.39352941846806,
-        504.63237079028573
+        -27.62119512275334,
+        -88.5351036,
+        504.50723684729996
       ]
     },
-    "triangles": 1608,
+    "triangles": 1840,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-704-003b-fba19a426349.js",
-      "sha256": "84587f0f57276ad9ac6e3c725069334f616d45706cf8e1afd6481a8801fa676c",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_704_003b_fba19a426349.py",
+      "sha256": "7126cb77eb7cc8a4e0fa350092bf5b9858a802859a13daff36223201e18b8b42",
       "referenceStep": "components/bhr-2026-704-003b-fba19a426349.step"
     }
   },
@@ -13394,9 +13394,9 @@
     "file": "components/1-2-rounded-hex-8-19-in-9da79a5073f0.step",
     "sha256": "9da79a5073f0494483d00d51bd9cb01ee7933274c4c18d439f9ff0538ff1dd38",
     "bytes": 51523,
-    "mesh": "parametric/meshes/7224a7be0d8c7cb8845d331a33252c8fa6b0bf064939c43820d03ede70495583.bin",
-    "meshSha256": "7224a7be0d8c7cb8845d331a33252c8fa6b0bf064939c43820d03ede70495583",
-    "meshBytes": 9072,
+    "mesh": "native/meshes/7b7b71578f966e43fc866ad9eeb292fa3f9abbb66a2595d3c277c5d9f3528e75.bin",
+    "meshSha256": "7b7b71578f966e43fc866ad9eeb292fa3f9abbb66a2595d3c277c5d9f3528e75",
+    "meshBytes": 9740,
     "centerOfMass": {
       "x": -46.6711951228,
       "y": -181.43560360005003,
@@ -13414,24 +13414,24 @@
       93924138.13816929
     ],
     "valid": true,
-    "volume": 25958.72533290075,
+    "volume": 25958.725332900754,
     "bounds": {
       "min": [
-        -53.02824301974132,
-        -285.45823424665565,
-        463.02499989999995
+        -53.0217420882,
+        -285.4486036,
+        463.025
       ],
       "max": [
-        -40.31414722585868,
-        -77.4129729534444,
-        476.7750001
+        -40.3206481574,
+        -77.42260360010002,
+        476.775
       ]
     },
-    "triangles": 224,
+    "triangles": 240,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/1-2-rounded-hex-8-19-in-9da79a5073f0.js",
-      "sha256": "fef7c7e8ec2d9bb78ec930054ac8d1b8c2165a2dc3d60e76f8f2e0200cf3d7a8",
+      "kind": "cadquery",
+      "file": "native/parts/p_1_2_rounded_hex_8_19_in_9da79a5073f0.py",
+      "sha256": "c1688b03359f2b98c546b3fe5c17e31de1273d27e91aba8da075769c1e5b7e61",
       "referenceStep": "components/1-2-rounded-hex-8-19-in-9da79a5073f0.step"
     }
   },
@@ -13440,9 +13440,9 @@
     "file": "components/bhr-2026-704-011-39792b4ea64a.step",
     "sha256": "39792b4ea64a2a5bcc833d201292610d364dd15e101c948d74eb911e2d3578b9",
     "bytes": 661851,
-    "mesh": "parametric/meshes/101e049c267d57a7b679c1b3d715108c3642fb2385bfa5dc52edef1e7f2b8d31.bin",
-    "meshSha256": "101e049c267d57a7b679c1b3d715108c3642fb2385bfa5dc52edef1e7f2b8d31",
-    "meshBytes": 165256,
+    "mesh": "native/meshes/f2b74be69ea2091cad0f1f20f71f02d8c5eada5938e48fe595f4c7c87601c788.bin",
+    "meshSha256": "f2b74be69ea2091cad0f1f20f71f02d8c5eada5938e48fe595f4c7c87601c788",
+    "meshBytes": 188552,
     "centerOfMass": {
       "x": 222.50399999999541,
       "y": -6.06144758750466e-12,
@@ -13460,24 +13460,24 @@
       3389619.536940098
     ],
     "valid": true,
-    "volume": 15359.76456241285,
+    "volume": 15359.764562412838,
     "bounds": {
       "min": [
-        200.12060669938904,
-        -22.38339330062389,
-        -7.397393300610369
+        200.279,
+        -22.225000000012926,
+        -7.239000000000004
       ],
       "max": [
-        244.887393300612,
-        22.38339330059804,
-        7.397393300610961
+        244.729000000002,
+        22.224999999987077,
+        7.238999999999998
       ]
     },
-    "triangles": 4360,
+    "triangles": 5004,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-704-011-39792b4ea64a.js",
-      "sha256": "245a4eaadf53aee39c0d0d4fea6d9c4b6dec58475fb54f8eb41ca85490397fa2",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_704_011_39792b4ea64a.py",
+      "sha256": "925a3b9cfa3a6e9cf1aeac2e1156aa32374a1920e675138aa1747b96fcb5b453",
       "referenceStep": "components/bhr-2026-704-011-39792b4ea64a.step"
     }
   },
@@ -13646,9 +13646,9 @@
     "file": "components/bhr-2026-704-003a-3a3fa010a23b.step",
     "sha256": "3a3fa010a23b65c724e08dfe4aa114239ef6e12180fe985b07cafe487b534151",
     "bytes": 235841,
-    "mesh": "parametric/meshes/70232f84939956536fb933bc291bfa03b027a295b9b7ace9e7397d73438a2098.bin",
-    "meshSha256": "70232f84939956536fb933bc291bfa03b027a295b9b7ace9e7397d73438a2098",
-    "meshBytes": 59856,
+    "mesh": "native/meshes/7a4f4172d19ca81cd3453e0243e6149c4d8c6f3396714f8f51a9bf8d8302cd2f.bin",
+    "meshSha256": "7a4f4172d19ca81cd3453e0243e6149c4d8c6f3396714f8f51a9bf8d8302cd2f",
+    "meshBytes": 68312,
     "centerOfMass": {
       "x": -149.17317044934757,
       "y": -255.6671036,
@@ -13666,24 +13666,24 @@
       118202807.05414629
     ],
     "valid": true,
-    "volume": 39781.911158097384,
+    "volume": 39781.91115809737,
     "bounds": {
       "min": [
-        -227.05283563348658,
-        -258.60267778153195,
-        399.0528096143143
+        -227.01119512276273,
+        -258.4611036,
+        399.1779435573
       ],
       "max": [
-        -27.566681562109085,
-        -252.73152941846806,
-        504.6323707902857
+        -27.621195122755193,
+        -252.8731036,
+        504.50723684729996
       ]
     },
-    "triangles": 1608,
+    "triangles": 1840,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-704-003a-3a3fa010a23b.js",
-      "sha256": "224e1d7c1771cc0101c185abe7811db81c8e3e21ba65b96730b3b90e09451cf4",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_704_003a_3a3fa010a23b.py",
+      "sha256": "16f0ae945650beae7be0adb9e235a6e0ef2a445fed3c3bbb6558af40551444d3",
       "referenceStep": "components/bhr-2026-704-003a-3a3fa010a23b.step"
     }
   },
@@ -13692,9 +13692,9 @@
     "file": "components/bhr-2026-704-005-8e25fe6858d9.step",
     "sha256": "8e25fe6858d90c0b1d481989603074162cd74dc6b8a3f9dc27a1b8fc990d654b",
     "bytes": 342895,
-    "mesh": "parametric/meshes/75790857fa8894fc895777c063469db04811403dd597762e424291689c9406de.bin",
-    "meshSha256": "75790857fa8894fc895777c063469db04811403dd597762e424291689c9406de",
-    "meshBytes": 61916,
+    "mesh": "native/meshes/7e4c1dec427c1d56afa10faa925c18b84c92b3931ce1772ca6fc31dd9a1c6d04.bin",
+    "meshSha256": "7e4c1dec427c1d56afa10faa925c18b84c92b3931ce1772ca6fc31dd9a1c6d04",
+    "meshBytes": 73544,
     "centerOfMass": {
       "x": -225.3966749683902,
       "y": -173.49810360087892,
@@ -13712,24 +13712,24 @@
       84457424.38549232
     ],
     "valid": true,
-    "volume": 53722.345883478716,
+    "volume": 53720.60626799568,
     "bounds": {
       "min": [
-        -230.89663176052514,
-        -242.71771036914313,
-        397.5842855209569
+        -230.82119522274826,
+        -242.5861037,
+        397.71589219009996
       ],
       "max": [
-        -213.03368992155933,
-        -104.2784968308569,
-        520.5279538901931
+        -213.1630275102,
+        -104.41010350000002,
+        520.3963472211
       ]
     },
-    "triangles": 1716,
+    "triangles": 2036,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2026-704-005-8e25fe6858d9.js",
-      "sha256": "d65f0179f94daef795d00d41844a106d00d328aec291f71e42ec42d3cc5b1b60",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2026_704_005_8e25fe6858d9.py",
+      "sha256": "18a1920f6d69972a636b392d4def76543405a74fa19a3adfb868a16cab21bf73",
       "referenceStep": "components/bhr-2026-704-005-8e25fe6858d9.step"
     }
   },
@@ -14178,9 +14178,9 @@
     "file": "components/belly-pan-6b59cb2988d9.step",
     "sha256": "6b59cb2988d9f34e8d4f06c23be30fd822d72714696f83032d1da1bc90317a52",
     "bytes": 7561306,
-    "mesh": "parametric/meshes/5736e74b82c8ce156eafe1031ac898f3e4d5b47d2de23a18f0d59ff17d1e75ad.bin",
-    "meshSha256": "5736e74b82c8ce156eafe1031ac898f3e4d5b47d2de23a18f0d59ff17d1e75ad",
-    "meshBytes": 2216480,
+    "mesh": "native/meshes/395bba47ca52268ce9b348b6bbe8e918e2373918ede61ef20f20975f57352a41.bin",
+    "meshSha256": "395bba47ca52268ce9b348b6bbe8e918e2373918ede61ef20f20975f57352a41",
+    "meshBytes": 2458188,
     "centerOfMass": {
       "x": 14.06409917947376,
       "y": 7.3857241884368054,
@@ -14198,24 +14198,24 @@
       23204574497.88674
     ],
     "valid": true,
-    "volume": 378387.7069550276,
+    "volume": 378387.7069550278,
     "bounds": {
       "min": [
-        -311.1805770856332,
-        -311.1805770856332,
-        98.28001789729562
+        -311.15,
+        -311.15,
+        98.425
       ],
       "max": [
-        311.180577085632,
-        311.180577085632,
-        101.74498210270437
+        311.15000000000003,
+        311.15000000000003,
+        101.6
       ]
     },
-    "triangles": 60160,
+    "triangles": 66872,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/belly-pan-6b59cb2988d9.js",
-      "sha256": "17afdb575543a85c69b5e110680fc0ebce00cd20ad78a07a8b2d111e8f619c36",
+      "kind": "cadquery",
+      "file": "native/parts/p_belly_pan_6b59cb2988d9.py",
+      "sha256": "4ae95cf2cc8c45acd97852cfddf4ec9c4ffb93f532c6686b88b0325ee3093f10",
       "referenceStep": "components/belly-pan-6b59cb2988d9.step"
     }
   },
@@ -14264,9 +14264,9 @@
     "file": "components/right-rail-7c45201869e4.step",
     "sha256": "7c45201869e4ff0aab6d4ea2d55143bfd2aa86ade3d7b4030244832d4408a434",
     "bytes": 589659,
-    "mesh": "parametric/meshes/1edaa6f3060b9f888dbbb9253cd5af0a5929be4776c0249d6b15ca71ff1dc397.bin",
-    "meshSha256": "1edaa6f3060b9f888dbbb9253cd5af0a5929be4776c0249d6b15ca71ff1dc397",
-    "meshBytes": 457476,
+    "mesh": "native/meshes/72b5a03ed4cfa666263f0552c63c896735055784bc91614548aa60629961bb07.bin",
+    "meshSha256": "72b5a03ed4cfa666263f0552c63c896735055784bc91614548aa60629961bb07",
+    "meshBytes": 510120,
     "centerOfMass": {
       "x": -8.92844594539404,
       "y": -321.69852825857384,
@@ -14284,24 +14284,24 @@
       1572937705.218855
     ],
     "valid": true,
-    "volume": 104157.86058556991,
+    "volume": 104157.86063698474,
     "bounds": {
       "min": [
-        -232.41000010000087,
-        -342.9535098248552,
-        101.5694229143684
+        -232.41000000000045,
+        -342.9000000000003,
+        101.5999999999998
       ],
       "max": [
-        232.41000010000042,
-        -292.0464901751448,
-        152.4305770856316
+        232.40999999999994,
+        -292.1,
+        152.40000000000015
       ]
     },
-    "triangles": 12736,
+    "triangles": 14232,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/right-rail-7c45201869e4.js",
-      "sha256": "46158fb6453dddb918103a2ebb94fc5f8c470974a0e3c02444aa914156b8e234",
+      "kind": "cadquery",
+      "file": "native/parts/p_right_rail_7c45201869e4.py",
+      "sha256": "332d685540deb3d093fe48fd5792d5dd03cd79ae4207a226d4d97ceeb2e70e45",
       "referenceStep": "components/right-rail-7c45201869e4.step"
     }
   },
@@ -14310,9 +14310,9 @@
     "file": "components/left-front-corner-block-a8312ccb6369.step",
     "sha256": "a8312ccb63697f217c60b7b30869c8fdf7b3fc6d1e51e58aff41c9d03b7f7859",
     "bytes": 399576,
-    "mesh": "parametric/meshes/d2e5994277238061fdaf67779bcc09b6f12a150abf9eb7943d828131531e8d20.bin",
-    "meshSha256": "d2e5994277238061fdaf67779bcc09b6f12a150abf9eb7943d828131531e8d20",
-    "meshBytes": 535800,
+    "mesh": "native/meshes/e175efa415567db604f2f89545cc996a74e38d91498ec25690cb7f4cfa95ef2c.bin",
+    "meshSha256": "e175efa415567db604f2f89545cc996a74e38d91498ec25690cb7f4cfa95ef2c",
+    "meshBytes": 133144,
     "centerOfMass": {
       "x": 325.3906225942117,
       "y": 312.3090881453404,
@@ -14330,24 +14330,24 @@
       313789693.57286835
     ],
     "valid": true,
-    "volume": 153743.69855393143,
+    "volume": 153743.6938264745,
     "bounds": {
       "min": [
-        234.68105381681573,
-        235.62202204252517,
-        101.52790083085009
+        234.69599989999998,
+        235.63579999999996,
+        101.5999999
       ],
       "max": [
-        352.49709916914986,
-        350.1602991691499,
-        152.47209916914994
+        352.425,
+        350.08820010000005,
+        152.40000010000006
       ]
     },
-    "triangles": 19839,
+    "triangles": 4110,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/left-front-corner-block-a8312ccb6369.js",
-      "sha256": "012bf09cacf54cd1fe7a0cfa8e643e9ff0fb4bc5654eb3a4c5eaf95a2eac52bd",
+      "kind": "cadquery",
+      "file": "native/parts/p_left_front_corner_block_a8312ccb6369.py",
+      "sha256": "ba709431dc77788cea771f10154e6d67be5b083f62c311327645ac7999a5b6b3",
       "referenceStep": "components/left-front-corner-block-a8312ccb6369.step"
     }
   },
@@ -14396,9 +14396,9 @@
     "file": "components/part-16-3719e89e2b68.step",
     "sha256": "3719e89e2b6819a14130dda5fcd27d2a7d4f9962498138630097b112e8500b4e",
     "bytes": 347965,
-    "mesh": "parametric/meshes/1793df7122176c0bebd45f549f7fe390c2d0f96b9783d2433efd0472220a9a43.bin",
-    "meshSha256": "1793df7122176c0bebd45f549f7fe390c2d0f96b9783d2433efd0472220a9a43",
-    "meshBytes": 115900,
+    "mesh": "native/meshes/ca9e9d5a96ddd520ab10a6d3eba4f94d3bd1b53f0b053e5a42c8a9cbb9307e7c.bin",
+    "meshSha256": "ca9e9d5a96ddd520ab10a6d3eba4f94d3bd1b53f0b053e5a42c8a9cbb9307e7c",
+    "meshBytes": 141548,
     "centerOfMass": {
       "x": -193.67500000001277,
       "y": -101.59999999999079,
@@ -14416,24 +14416,24 @@
       17098224.286285162
     ],
     "valid": true,
-    "volume": 26007.430034993442,
+    "volume": 26007.43003499348,
     "bounds": {
       "min": [
-        -238.17803028310485,
-        -111.17780985906919,
-        72.97196971689516
+        -238.12500000000003,
+        -111.12499999999824,
+        73.02499999999996
       ],
       "max": [
-        -149.17196971689543,
-        -92.02219014093039,
-        98.47803028310486
+        -149.2249999,
+        -92.07499990000032,
+        98.42500000000001
       ]
     },
-    "triangles": 3856,
+    "triangles": 4816,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-16-3719e89e2b68.js",
-      "sha256": "40393276460fc5ed191a7465308e034b6c14567b8d7b5c474ecec8e5cf697935",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_16_3719e89e2b68.py",
+      "sha256": "2abdc897760917a94c9439fe36de774d24dbd78c9d5839fb2fde2c2a8737bd23",
       "referenceStep": "components/part-16-3719e89e2b68.step"
     }
   },
@@ -14602,9 +14602,9 @@
     "file": "components/left-rail-1ee532c27934.step",
     "sha256": "1ee532c27934c234ac63875824ce52580201a4c53937ef3467fbbed78f64e6f3",
     "bytes": 611516,
-    "mesh": "parametric/meshes/fe62a572c52a0460956b0ff2bd85cc07cb68239b3ddf2388b6923f1f06402f5c.bin",
-    "meshSha256": "fe62a572c52a0460956b0ff2bd85cc07cb68239b3ddf2388b6923f1f06402f5c",
-    "meshBytes": 478732,
+    "mesh": "native/meshes/6733bdfc00a10f1ed0fe8ffe67782cf27b5a01183c1a7f8127e019aafbe2e53c.bin",
+    "meshSha256": "6733bdfc00a10f1ed0fe8ffe67782cf27b5a01183c1a7f8127e019aafbe2e53c",
+    "meshBytes": 533828,
     "centerOfMass": {
       "x": -9.85402326852566,
       "y": 321.6962543231372,
@@ -14622,24 +14622,24 @@
       1540665962.76264
     ],
     "valid": true,
-    "volume": 105751.3286656055,
+    "volume": 105751.32865757769,
     "bounds": {
       "min": [
-        -232.41000010000175,
-        292.0464901751448,
-        101.5694229143684
+        -232.41000000000028,
+        292.1,
+        101.59999999999985
       ],
       "max": [
-        232.4100001000016,
-        342.95350982485525,
-        152.4305770856316
+        232.41000000000014,
+        342.9000000000003,
+        152.4000000000002
       ]
     },
-    "triangles": 13324,
+    "triangles": 14888,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/left-rail-1ee532c27934.js",
-      "sha256": "f75017a9fe8d73e91ad04021aeb85fe1c373672e4e0ce31e7b5c19694b6ddfbf",
+      "kind": "cadquery",
+      "file": "native/parts/p_left_rail_1ee532c27934.py",
+      "sha256": "b487a221d34021b0b89cbfccbddbf894c5c80b4384a860514da2fa87a77e3caa",
       "referenceStep": "components/left-rail-1ee532c27934.step"
     }
   },
@@ -14648,9 +14648,9 @@
     "file": "components/back-rail-15991ee5f759.step",
     "sha256": "15991ee5f759594c35e91b317508b4bfcd3496ab431f3dfd8aebc150dda9ef01",
     "bytes": 286048,
-    "mesh": "parametric/meshes/823219814069f0f9b9398168680aa9cd20219ef1673cb9b0f4d371f678af5137.bin",
-    "meshSha256": "823219814069f0f9b9398168680aa9cd20219ef1673cb9b0f4d371f678af5137",
-    "meshBytes": 217472,
+    "mesh": "native/meshes/2a2dd933ab60eb2ce8fac45c8bfea84486278f8bd4715ed32f1194cf48bd1af9.bin",
+    "meshSha256": "2a2dd933ab60eb2ce8fac45c8bfea84486278f8bd4715ed32f1194cf48bd1af9",
+    "meshBytes": 241172,
     "centerOfMass": {
       "x": -318.53140438556045,
       "y": 0.08854440233601753,
@@ -14668,24 +14668,24 @@
       2298419728.532816
     ],
     "valid": true,
-    "volume": 136594.33217657436,
+    "volume": 136594.33217657512,
     "bounds": {
       "min": [
-        -342.9000001000001,
-        -233.34980010000027,
-        101.5694229143684
+        -342.9,
+        -233.34980000000004,
+        101.6
       ],
       "max": [
-        -292.09999989999926,
-        233.34980010000052,
-        152.43057708563163
+        -292.09999999999985,
+        233.3498000000003,
+        152.4
       ]
     },
-    "triangles": 6032,
+    "triangles": 6720,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/back-rail-15991ee5f759.js",
-      "sha256": "488f0fa2720aaa66391741bd800e86f634e7ca822bedef0694a6a67d1dc7b4fc",
+      "kind": "cadquery",
+      "file": "native/parts/p_back_rail_15991ee5f759.py",
+      "sha256": "5ca0684266f82344c072ab640daf95c90f843e3200dda413518273c4d38b33b9",
       "referenceStep": "components/back-rail-15991ee5f759.step"
     }
   },
@@ -14734,9 +14734,9 @@
     "file": "components/part-14-8abf4254dadc.step",
     "sha256": "8abf4254dadcb0f428dadddc400b5619adcb5336669a1250adbf5f71b0a8a2cf",
     "bytes": 348578,
-    "mesh": "parametric/meshes/6b85a58c0ef197016ec14b8639823ccb4cd438be14fb9fd580187149bd2cfabd.bin",
-    "meshSha256": "6b85a58c0ef197016ec14b8639823ccb4cd438be14fb9fd580187149bd2cfabd",
-    "meshBytes": 115896,
+    "mesh": "native/meshes/cf45c27d2c16912ba3f5c0806ef412ed1cf6217740ecf1d3b59978d236ecef68.bin",
+    "meshSha256": "cf45c27d2c16912ba3f5c0806ef412ed1cf6217740ecf1d3b59978d236ecef68",
+    "meshBytes": 141296,
     "centerOfMass": {
       "x": -301.6250000000109,
       "y": -12.68729999998113,
@@ -14754,24 +14754,24 @@
       73909053.40921164
     ],
     "valid": true,
-    "volume": 41246.668760314686,
+    "volume": 41246.66876031467,
     "bounds": {
       "min": [
-        -311.20280985906953,
-        -85.76533028310487,
-        72.97196971689513
+        -311.1499999999997,
+        -85.7123001,
+        73.025
       ],
       "max": [
-        -292.0471901409308,
-        60.39073028310457,
-        98.47803028310489
+        -292.1000000000017,
+        60.33770000000001,
+        98.42500000000001
       ]
     },
-    "triangles": 3856,
+    "triangles": 4806,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-14-8abf4254dadc.js",
-      "sha256": "0efc2340a31e160eadde28d7d5e355a05a00fc42b75c2dfac5eae1946d5294a7",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_14_8abf4254dadc.py",
+      "sha256": "32dc1ee359d6c89f77b97c547932408e272f0dd74c61999576860157f4f8c0b4",
       "referenceStep": "components/part-14-8abf4254dadc.step"
     }
   },
@@ -14780,9 +14780,9 @@
     "file": "components/origin-cube-c4333aff6108.step",
     "sha256": "c4333aff6108816f12a7a287ecaf4d7ff40d25b4cff38463d4730939271d2b0a",
     "bytes": 16266,
-    "mesh": "parametric/meshes/a125b8566335ca29980408d62f1e9b62e3d0e7e5dec0115e3a16bdbfad4ec387.bin",
-    "meshSha256": "a125b8566335ca29980408d62f1e9b62e3d0e7e5dec0115e3a16bdbfad4ec387",
-    "meshBytes": 1032,
+    "mesh": "native/meshes/a067e36e1135464fb2b9825adde2cb7c2fe142e0bc0b565b640f4924e15a82cd.bin",
+    "meshSha256": "a067e36e1135464fb2b9825adde2cb7c2fe142e0bc0b565b640f4924e15a82cd",
+    "meshBytes": 1060,
     "centerOfMass": {
       "x": 6.843606663477301e-17,
       "y": 2.4671622769447925e-17,
@@ -14803,21 +14803,21 @@
     "volume": 16387.064,
     "bounds": {
       "min": [
-        -12.700000100000004,
-        -12.700000100000004,
-        -25.400000100000003
+        -12.7,
+        -12.7,
+        -25.4
       ],
       "max": [
-        12.700000100000004,
-        12.700000100000004,
-        1.0000000407014483e-7
+        12.7,
+        12.7,
+        0
       ]
     },
     "triangles": 12,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/origin-cube-c4333aff6108.js",
-      "sha256": "3df26e5aa3b439b240316772a030e8b0e45b2330cb7a05481cb21fa001403224",
+      "kind": "cadquery",
+      "file": "native/parts/p_origin_cube_c4333aff6108.py",
+      "sha256": "318a6d801bd8a4b25501664ec4ba7cf3334da4625ac9e37ef26ff24d1ad3935a",
       "referenceStep": "components/origin-cube-c4333aff6108.step"
     }
   },
@@ -14866,9 +14866,9 @@
     "file": "components/part-15-907c7ca283a6.step",
     "sha256": "907c7ca283a63e956f558b5eb1266bcf0f6fbe0b7cfa13c48a0a282eb57a85af",
     "bytes": 348456,
-    "mesh": "parametric/meshes/63b53457a21a10ff80f0c457737120d12c7445e579be64f5a34f653f74b0aba6.bin",
-    "meshSha256": "63b53457a21a10ff80f0c457737120d12c7445e579be64f5a34f653f74b0aba6",
-    "meshBytes": 115896,
+    "mesh": "native/meshes/ba0729601b3a4722e8a2ddc30fdce8b04207aa73d3facce0f717c86771eebb5c.bin",
+    "meshSha256": "ba0729601b3a4722e8a2ddc30fdce8b04207aa73d3facce0f717c86771eebb5c",
+    "meshBytes": 141264,
     "centerOfMass": {
       "x": -88.90000000000927,
       "y": -4.956264277012934e-12,
@@ -14886,24 +14886,24 @@
       20673107.490415543
     ],
     "valid": true,
-    "volume": 27017.884448927107,
+    "volume": 27017.88444892711,
     "bounds": {
       "min": [
-        -98.47780985906952,
-        -47.678030283104846,
-        72.97196971689513
+        -98.42500009999968,
+        -47.62500000000001,
+        73.02499999999996
       ],
       "max": [
-        -79.32219014093083,
-        47.678030283104555,
-        98.47803028310479
+        -79.37500000000176,
+        47.62500010000001,
+        98.42500000000001
       ]
     },
-    "triangles": 3856,
+    "triangles": 4804,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-15-907c7ca283a6.js",
-      "sha256": "0e2e76862be19ed8acfe07a9a0339e77754fde7b08396655ff100a5de0453831",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_15_907c7ca283a6.py",
+      "sha256": "f0290a0c7a9b7e0f70ffc99415d6a545a2d5fd7eeede6ead5bfe70d3131550d0",
       "referenceStep": "components/part-15-907c7ca283a6.step"
     }
   },
@@ -14912,9 +14912,9 @@
     "file": "components/right-rear-corner-block-74b524db1283.step",
     "sha256": "74b524db12836206594e4b9d2fe7e0e1c600ce0916bbab6b8a544d18d4f50314",
     "bytes": 478767,
-    "mesh": "parametric/meshes/27cc684da8e4f30808c325a61576ee7f0629ad8a2061ad8170d03abc4a9b24a9.bin",
-    "meshSha256": "27cc684da8e4f30808c325a61576ee7f0629ad8a2061ad8170d03abc4a9b24a9",
-    "meshBytes": 457540,
+    "mesh": "native/meshes/4f3480d94f76eeb811157cb35b15d17436726d9ad767c00d8fac1b1914ba34a5.bin",
+    "meshSha256": "4f3480d94f76eeb811157cb35b15d17436726d9ad767c00d8fac1b1914ba34a5",
+    "meshBytes": 150544,
     "centerOfMass": {
       "x": -309.7233413107853,
       "y": -326.999295500965,
@@ -14932,24 +14932,24 @@
       242451651.7373352
     ],
     "valid": true,
-    "volume": 125125.09756036846,
+    "volume": 125124.57791909196,
     "bounds": {
       "min": [
-        -349.3068128139054,
-        -350.1450128139054,
-        101.54318718609454
+        -349.2500001,
+        -350.08820010000005,
+        101.59999989993237
       ],
       "max": [
-        -234.6822220425252,
-        -235.62202204252517,
-        152.45065796037738
+        -234.696,
+        -235.6358,
+        152.4000001
       ]
     },
-    "triangles": 16533,
+    "triangles": 4619,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/right-rear-corner-block-74b524db1283.js",
-      "sha256": "b9d1b44738dd6db2bf6483fb72632a9356ba3b2eafc1b57f7cbf23039e76b02e",
+      "kind": "cadquery",
+      "file": "native/parts/p_right_rear_corner_block_74b524db1283.py",
+      "sha256": "7cdf8151dcb59250388a3db9502c31527fa9b42433d6a916768f155118c30dd1",
       "referenceStep": "components/right-rear-corner-block-74b524db1283.step"
     }
   },
@@ -14958,9 +14958,9 @@
     "file": "components/cross-tube-77658e64ee9c.step",
     "sha256": "77658e64ee9c7e71bee9b8f4a106cdf4639e0890918214307dc3a45074b054cc",
     "bytes": 249649,
-    "mesh": "parametric/meshes/063a1dc3624a0bdeaecce2cde7ddfc5ab0034e2108bc121e4f72b0aec5a36ef7.bin",
-    "meshSha256": "063a1dc3624a0bdeaecce2cde7ddfc5ab0034e2108bc121e4f72b0aec5a36ef7",
-    "meshBytes": 218244,
+    "mesh": "native/meshes/6e7e422b1f82ee2a0b5dcb4d2bb72c46424c92349c5ef920c3966f04e31ef097.bin",
+    "meshSha256": "6e7e422b1f82ee2a0b5dcb4d2bb72c46424c92349c5ef920c3966f04e31ef097",
+    "meshBytes": 244780,
     "centerOfMass": {
       "x": -88.9,
       "y": 9.383861788875502e-15,
@@ -14978,24 +14978,24 @@
       3802396385.0200005
     ],
     "valid": true,
-    "volume": 133654.26963467267,
+    "volume": 133654.2696346726,
     "bounds": {
       "min": [
-        -101.61229204822395,
-        -292.1000001000002,
-        101.58770795177605
+        -101.6,
+        -292.1,
+        101.6
       ],
       "max": [
-        -76.18770795177605,
-        292.1000001000002,
-        152.42293283922368
+        -76.2,
+        292.1,
+        152.4
       ]
     },
-    "triangles": 6104,
+    "triangles": 6840,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/cross-tube-77658e64ee9c.js",
-      "sha256": "7422689b10c26c0f1a514a6bf3f0b8d7ed3f0623f46dfffec6f67e5b5ebf942b",
+      "kind": "cadquery",
+      "file": "native/parts/p_cross_tube_77658e64ee9c.py",
+      "sha256": "43f9950a20cb2527415a0a8a2b118728ea9b2e0b89fe03f526dd59da8fad5c2d",
       "referenceStep": "components/cross-tube-77658e64ee9c.step"
     }
   },
@@ -15004,9 +15004,9 @@
     "file": "components/front-rail-3d6ef15b73d2.step",
     "sha256": "3d6ef15b73d2db3af3a3f5318f8f58e9e49d9c19109b7b6e1e8932783511058b",
     "bytes": 274605,
-    "mesh": "parametric/meshes/db2071acde161bb8f43bfd6c571bf479ba5f5f8a4a48075c2db7909aa5f6402e.bin",
-    "meshSha256": "db2071acde161bb8f43bfd6c571bf479ba5f5f8a4a48075c2db7909aa5f6402e",
-    "meshBytes": 189240,
+    "mesh": "native/meshes/5c430541bea6744bf0171b9d9c91cc0ebcc3ce2c91bbf799f59ebe73d245921e.bin",
+    "meshSha256": "5c430541bea6744bf0171b9d9c91cc0ebcc3ce2c91bbf799f59ebe73d245921e",
+    "meshBytes": 209496,
     "centerOfMass": {
       "x": 318.4906153447566,
       "y": 0.0457216651343233,
@@ -15024,24 +15024,24 @@
       2307318559.0501385
     ],
     "valid": true,
-    "volume": 137198.8100165236,
+    "volume": 137198.8100165237,
     "bounds": {
       "min": [
-        292.0999999,
-        -233.3498001000005,
-        101.5694229143684
+        292.1,
+        -233.34980000000004,
+        101.59999999999998
       ],
       "max": [
-        342.90000010000085,
-        233.34980010000044,
-        152.4305770856316
+        342.90000000000015,
+        233.3498,
+        152.4
       ]
     },
-    "triangles": 5240,
+    "triangles": 5832,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/front-rail-3d6ef15b73d2.js",
-      "sha256": "daae3c6e0eddf899d35b6d4c3751b40f4a88e0c6e65f50362d344061e0c44c93",
+      "kind": "cadquery",
+      "file": "native/parts/p_front_rail_3d6ef15b73d2.py",
+      "sha256": "f984a1a4a680cd2837fe4b031d37ac942dcc076ef33801cf6ef27d288d581b52",
       "referenceStep": "components/front-rail-3d6ef15b73d2.step"
     }
   },
@@ -15090,9 +15090,9 @@
     "file": "components/battery-plate-3564a64afaca.step",
     "sha256": "3564a64afaca0e05c83e6c8b5ec372c0084f0d3cc5454f39e42407d831f0d5ca",
     "bytes": 642037,
-    "mesh": "parametric/meshes/c72eb5d0681e6952c921881df4efa2abf3fde3b51629e2074a64c87e5d42182e.bin",
-    "meshSha256": "c72eb5d0681e6952c921881df4efa2abf3fde3b51629e2074a64c87e5d42182e",
-    "meshBytes": 237112,
+    "mesh": "native/meshes/fe0f358b6138d144eb07365526fca08b0e7be998a42848fc37258d4d1d395d31.bin",
+    "meshSha256": "fe0f358b6138d144eb07365526fca08b0e7be998a42848fc37258d4d1d395d31",
+    "meshBytes": 266560,
     "centerOfMass": {
       "x": -191.54665539487968,
       "y": 0.06188813154330097,
@@ -15110,24 +15110,24 @@
       1138558601.2072144
     ],
     "valid": true,
-    "volume": 101359.6289037735,
+    "volume": 101359.62890377344,
     "bounds": {
       "min": [
-        -311.1805770856319,
-        -114.33057708563071,
-        69.81942291436803
+        -311.15,
+        -114.3,
+        69.85
       ],
       "max": [
-        -76.16942291436807,
-        114.33057708563194,
-        73.05557708563195
+        -76.20000000000002,
+        114.3,
+        73.02499999999999
       ]
     },
-    "triangles": 6492,
+    "triangles": 7308,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/battery-plate-3564a64afaca.js",
-      "sha256": "8b655b1fbdff1ddf79aec9c3ff764b3434d64f08abe55698efc51be195c9d899",
+      "kind": "cadquery",
+      "file": "native/parts/p_battery_plate_3564a64afaca.py",
+      "sha256": "23eb23086c750443aa4937b25e63eddcda1f1b4ff7ddcaef74dd3ceef63d9c54",
       "referenceStep": "components/battery-plate-3564a64afaca.step"
     }
   },
@@ -15136,9 +15136,9 @@
     "file": "components/part-13-9970d95455ef.step",
     "sha256": "9970d95455efd050ac35bd19e61ef6428afd7563f12c960e2f15d511595e2d70",
     "bytes": 348432,
-    "mesh": "parametric/meshes/966d7b3f252619ec128626bb2795ca9a0f654ce31478ce0e7980b611601e50f1.bin",
-    "meshSha256": "966d7b3f252619ec128626bb2795ca9a0f654ce31478ce0e7980b611601e50f1",
-    "meshBytes": 115896,
+    "mesh": "native/meshes/b212f63b8dce018c424655d2d6554392ec750f68be22db1047092fb60758c734.bin",
+    "meshSha256": "b212f63b8dce018c424655d2d6554392ec750f68be22db1047092fb60758c734",
+    "meshBytes": 141256,
     "centerOfMass": {
       "x": -193.67499999998697,
       "y": 101.6000000000112,
@@ -15156,24 +15156,24 @@
       97492642.98222256
     ],
     "valid": true,
-    "volume": 45828.05633814809,
+    "volume": 45828.0563381481,
     "bounds": {
       "min": [
-        -273.10303028310494,
-        92.02219014093077,
-        72.97196971689513
+        -273.05000000000007,
+        92.07499990000234,
+        73.025
       ],
       "max": [
-        -114.24696971689546,
-        111.17780985906951,
-        98.47803028310489
+        -114.29999990000002,
+        111.12500009999967,
+        98.42500000000001
       ]
     },
-    "triangles": 3856,
+    "triangles": 4804,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/part-13-9970d95455ef.js",
-      "sha256": "dd37385ee6a9d2827bac1ce5561d9ab4d6b834b43cc17fa2912797dce91fbddd",
+      "kind": "cadquery",
+      "file": "native/parts/p_part_13_9970d95455ef.py",
+      "sha256": "6f10f1e7b7f5424a3606260299a221711922e050b2c10100f1a22838c368ac90",
       "referenceStep": "components/part-13-9970d95455ef.step"
     }
   },
@@ -15302,9 +15302,9 @@
     "file": "components/bhr-2025-100-022-e288be426a61.step",
     "sha256": "e288be426a613771be0828b63d1fc33685f94eb35a337ac5755e3e991fb16126",
     "bytes": 267887,
-    "mesh": "parametric/meshes/50cdeee6c7993a3073c16bc4c9801b0a44c4c1ec7fd4b307931922f23acc22e6.bin",
-    "meshSha256": "50cdeee6c7993a3073c16bc4c9801b0a44c4c1ec7fd4b307931922f23acc22e6",
-    "meshBytes": 253368,
+    "mesh": "native/meshes/5769fc8b67901afe022d051047dc3711005e43403c6ca14d4772771f59b73766.bin",
+    "meshSha256": "5769fc8b67901afe022d051047dc3711005e43403c6ca14d4772771f59b73766",
+    "meshBytes": 230524,
     "centerOfMass": {
       "x": -253.99550109199382,
       "y": 284.58158760856423,
@@ -15322,24 +15322,24 @@
       24257871.785861015
     ],
     "valid": true,
-    "volume": 37621.762025800905,
+    "volume": 37621.76157034961,
     "bounds": {
       "min": [
-        -285.78203935170643,
-        245.68019874766372,
-        152.36796064829366
+        -285.750000100044,
+        245.71186021735937,
+        152.4
       ],
       "max": [
-        -222.21796064829377,
-        311.1820393517063,
-        201.86472955662165
+        -222.24999989995592,
+        311.1500001000944,
+        201.833068086926
       ]
     },
-    "triangles": 8808,
+    "triangles": 7996,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/bhr-2025-100-022-e288be426a61.js",
-      "sha256": "7169ed63d703cd79fdc232af9bc15211f6de68877e48df490779ae68827b338b",
+      "kind": "cadquery",
+      "file": "native/parts/p_bhr_2025_100_022_e288be426a61.py",
+      "sha256": "6600c42a3065caf4094af63ce931a98dee283a83efdb9b807721c57a560b8e96",
       "referenceStep": "components/bhr-2025-100-022-e288be426a61.step"
     }
   },
@@ -15348,9 +15348,9 @@
     "file": "components/shroud-5023935d6e1a.step",
     "sha256": "5023935d6e1a7b032c0d1af2ce4ec2e6d07c7248901dfd15f3e29eec4e2e2483",
     "bytes": 431119,
-    "mesh": "parametric/meshes/5d73a8159dff7a21f3b3b57b9534720ba2eac6728350202a2afa5350b5fd46b7.bin",
-    "meshSha256": "5d73a8159dff7a21f3b3b57b9534720ba2eac6728350202a2afa5350b5fd46b7",
-    "meshBytes": 259836,
+    "mesh": "native/meshes/71bcce22affd8601737a11400de5846be3b8bdc0a41e99e8f6cb8ef1b1cf34b1.bin",
+    "meshSha256": "71bcce22affd8601737a11400de5846be3b8bdc0a41e99e8f6cb8ef1b1cf34b1",
+    "meshBytes": 88824,
     "centerOfMass": {
       "x": 2.2573654837190467,
       "y": -2.5086938120755327,
@@ -15368,24 +15368,24 @@
       23936229.785951957
     ],
     "valid": true,
-    "volume": 35378.47418047385,
+    "volume": 35378.50061746985,
     "bounds": {
       "min": [
-        -37.01371458310635,
-        -29.82061690522357,
-        5.055416003972174
+        -36.944712072547986,
+        -29.713923705922,
+        5.0799999
       ],
       "max": [
-        36.89888938737376,
-        24.198889387373757,
-        46.29220779066651
+        36.83,
+        24.130000100000004,
+        46.21303192463118
       ]
     },
-    "triangles": 8907,
+    "triangles": 2372,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/shroud-5023935d6e1a.js",
-      "sha256": "2220daaa87d99d2b9e379b22edd509907b43fa5dc4ab5619e81b432ac69c5ac8",
+      "kind": "cadquery",
+      "file": "native/parts/p_shroud_5023935d6e1a.py",
+      "sha256": "679684f1704454364854bb8542f7ab068b6d8d390a9e30fbc6b3554e97be9026",
       "referenceStep": "components/shroud-5023935d6e1a.step"
     }
   },
@@ -15434,9 +15434,9 @@
     "file": "components/right-front-corner-block-2f5e06f0b352.step",
     "sha256": "2f5e06f0b3522996a788915645ed2deaf436174ea1c475cba43495dc7d5f8f08",
     "bytes": 435454,
-    "mesh": "parametric/meshes/7e019dfc0ce3d987f8e9f26bd99b4547e0e90ccc674f618ebd59eee57a2b4f06.bin",
-    "meshSha256": "7e019dfc0ce3d987f8e9f26bd99b4547e0e90ccc674f618ebd59eee57a2b4f06",
-    "meshBytes": 551980,
+    "mesh": "native/meshes/a0c23dbf97d865136c7a648562cca764797daab2e4fb838425fe487bec336500.bin",
+    "meshSha256": "a0c23dbf97d865136c7a648562cca764797daab2e4fb838425fe487bec336500",
+    "meshBytes": 141384,
     "centerOfMass": {
       "x": 325.3891768946545,
       "y": -312.3071976858237,
@@ -15454,24 +15454,24 @@
       313779047.9219055
     ],
     "valid": true,
-    "volume": 153734.1782207872,
+    "volume": 153734.17375882305,
     "bounds": {
       "min": [
-        234.68105381681573,
-        -350.1602991691499,
-        101.52790083085009
+        234.69599989999998,
+        -350.08820000000003,
+        101.5999999
       ],
       "max": [
-        352.49709916914986,
-        -235.62202204252517,
-        152.47209916914994
+        352.425,
+        -235.63579999999996,
+        152.40000010000006
       ]
     },
-    "triangles": 20395,
+    "triangles": 4328,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/right-front-corner-block-2f5e06f0b352.js",
-      "sha256": "4c9c7c9bab8e8bac4cc82152f849c2f42b213f9a6f1355a3da0dee1bfb7894c0",
+      "kind": "cadquery",
+      "file": "native/parts/p_right_front_corner_block_2f5e06f0b352.py",
+      "sha256": "3950b9c1a3468db64db9629e1d4917e5f0e4b4e597d4b9eb6f8addd05367b797",
       "referenceStep": "components/right-front-corner-block-2f5e06f0b352.step"
     }
   },
@@ -15480,9 +15480,9 @@
     "file": "components/left-rear-corner-block-3112b49a80b2.step",
     "sha256": "3112b49a80b2e7e749933c4da6fd71c7d2e7762ea750ec9c3d26860430ca6b03",
     "bytes": 433888,
-    "mesh": "parametric/meshes/7366393acb981b50d1d983b9a3b445222f2454bc005b13ebbfa151d24b03ade3.bin",
-    "meshSha256": "7366393acb981b50d1d983b9a3b445222f2454bc005b13ebbfa151d24b03ade3",
-    "meshBytes": 450356,
+    "mesh": "native/meshes/b7937e51823d132fc88668dd83ede76e688800dfb2ccbf03a5db51d6cfe8adad.bin",
+    "meshSha256": "b7937e51823d132fc88668dd83ede76e688800dfb2ccbf03a5db51d6cfe8adad",
+    "meshBytes": 142572,
     "centerOfMass": {
       "x": -309.72434018138944,
       "y": 327.0005585218574,
@@ -15500,24 +15500,24 @@
       242456088.37163544
     ],
     "valid": true,
-    "volume": 125134.5614738172,
+    "volume": 125134.05061028352,
     "bounds": {
       "min": [
-        -349.3068128139054,
-        235.62202204252517,
-        101.54318718609454
+        -349.2500001,
+        235.6358,
+        101.59999989993237
       ],
       "max": [
-        -234.6822220425252,
-        350.1450128139054,
-        152.4508491221153
+        -234.696,
+        350.08820010000005,
+        152.4000001
       ]
     },
-    "triangles": 16345,
+    "triangles": 4409,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/left-rear-corner-block-3112b49a80b2.js",
-      "sha256": "3ccd79315d65e88c5c28efca292858bc6e96d63a8a583d32a18e4d3af808c878",
+      "kind": "cadquery",
+      "file": "native/parts/p_left_rear_corner_block_3112b49a80b2.py",
+      "sha256": "c76e58dc9b8196d23a13b2f698002aa406ead73d2580a4238c33b9668748692d",
       "referenceStep": "components/left-rear-corner-block-3112b49a80b2.step"
     }
   },
@@ -17646,9 +17646,9 @@
     "file": "components/tube-1-x1-x15-fc5a76267339.step",
     "sha256": "fc5a762673398868138d3a0fcd6a500faeb314b21bd9cc2b865dda412543552f",
     "bytes": 73728,
-    "mesh": "parametric/meshes/a92769e4e8acdc5a60560621dda99ec18a945b7ca9341893ae556b2beef4aad0.bin",
-    "meshSha256": "a92769e4e8acdc5a60560621dda99ec18a945b7ca9341893ae556b2beef4aad0",
-    "meshBytes": 39492,
+    "mesh": "native/meshes/33503b7e86675de924f9e877779282d8f15d01496081ed742f6aab67b4b86bc0.bin",
+    "meshSha256": "33503b7e86675de924f9e877779282d8f15d01496081ed742f6aab67b4b86bc0",
+    "meshBytes": 44172,
     "centerOfMass": {
       "x": 20.319999999999972,
       "y": 304.7999999999995,
@@ -17669,21 +17669,21 @@
     "volume": 55216.49907228856,
     "bounds": {
       "min": [
-        7.608013721632373,
-        292.0880137216324,
-        152.39999989999978
+        7.620000000000001,
+        292.1,
+        152.4
       ],
       "max": [
-        33.031986278367626,
-        317.5119862783676,
-        533.4000001000002
+        33.019999999999996,
+        317.5,
+        533.4
       ]
     },
-    "triangles": 1088,
+    "triangles": 1216,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/tube-1-x1-x15-fc5a76267339.js",
-      "sha256": "9b45646081b850afd050da5694199bff767d85031326a7d77aed54502b5cb8a7",
+      "kind": "cadquery",
+      "file": "native/parts/p_tube_1_x1_x15_fc5a76267339.py",
+      "sha256": "00574c111b3ab0edc0941a19e7bcbcc0d7206f7a232b06e39e04cdfc27ff4ead",
       "referenceStep": "components/tube-1-x1-x15-fc5a76267339.step"
     }
   },
@@ -17772,9 +17772,9 @@
     "file": "components/tube-1-x1-x15-9cfd38f9d566.step",
     "sha256": "9cfd38f9d566d5557f0382937c61b014732949220bdc34ce33e223a325ea21a6",
     "bytes": 65528,
-    "mesh": "parametric/meshes/a66ca2aec9246905113e4cce7d6c1c080752ba2a3b51289de0d6ea9aa9ec53d5.bin",
-    "meshSha256": "a66ca2aec9246905113e4cce7d6c1c080752ba2a3b51289de0d6ea9aa9ec53d5",
-    "meshBytes": 39496,
+    "mesh": "native/meshes/fc48a91833f5256cde7abf1b781787c52464855881daf426db53ac39d0b4bbeb.bin",
+    "meshSha256": "fc48a91833f5256cde7abf1b781787c52464855881daf426db53ac39d0b4bbeb",
+    "meshBytes": 44172,
     "centerOfMass": {
       "x": 20.319999999999983,
       "y": -304.79999999999967,
@@ -17792,24 +17792,24 @@
       10546093.854866982
     ],
     "valid": true,
-    "volume": 55216.499072288556,
+    "volume": 55216.49907228859,
     "bounds": {
       "min": [
-        7.608013721632373,
-        -317.5119862783676,
-        152.39999989999978
+        7.620000000000001,
+        -317.5,
+        152.4
       ],
       "max": [
-        33.031986278367626,
-        -292.0880137216324,
-        533.4000001000002
+        33.019999999999996,
+        -292.1,
+        533.4
       ]
     },
-    "triangles": 1088,
+    "triangles": 1216,
     "source": {
-      "kind": "brepjs",
-      "file": "parametric/parts/tube-1-x1-x15-9cfd38f9d566.js",
-      "sha256": "479376978c6da6cdde9163298570bf8cc933176d15cdef6909e1a8f390bc591e",
+      "kind": "cadquery",
+      "file": "native/parts/p_tube_1_x1_x15_9cfd38f9d566.py",
+      "sha256": "2dd4f6cadb95d02c8e70367e749daf77f617639365a2c52bd52154f13c215e82",
       "referenceStep": "components/tube-1-x1-x15-9cfd38f9d566.step"
     }
   }

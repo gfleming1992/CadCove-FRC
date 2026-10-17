@@ -2,9 +2,9 @@ import * as vscode from 'vscode';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomBytes} from 'node:crypto';
+import {NativeCadClient,nativeIdentityFor} from '../../../src/native/client.js';
 import {snapshot} from '../../../src/core/revision.js';
 import {readSources,inside,relativePath,projectLayout,cacheFile} from './project-files.js';
-import {compileModel} from './compile-model.js';
 import {isStepFile,stepEntry,readStepSource} from './step-source.js';
 const panels=new Map();
 let output;
@@ -12,7 +12,7 @@ export function activate(context,options={}) {
   const commandPrefix=options.commandPrefix??'instantcad';
   output=vscode.window.createOutputChannel(options.outputName??'InstantCAD');context.subscriptions.push(output);
   const open=async(resource)=>{
-    if(!vscode.workspace.isTrusted)throw Error('Trust this workspace before executing CAD JavaScript.');
+    if(!vscode.workspace.isTrusted)throw Error('Trust this workspace before executing CAD source code.');
     const active=vscode.window.activeTextEditor?.document.uri;
     let workspace=vscode.workspace.getWorkspaceFolder(resource??active??vscode.Uri.file('/'));
     if(!workspace&&vscode.workspace.workspaceFolders?.length===1)workspace=vscode.workspace.workspaceFolders[0];
@@ -27,15 +27,15 @@ export function activate(context,options={}) {
         sourceDirectory:configuration.get('sourceDirectory'),buildDirectory:configuration.get('buildDirectory'),entryPoint:configuration.get('entryPoint'),
       }:{});
     }
-    if(!resource&&active?.scheme==='file'&&(active.fsPath.endsWith('.js')||isStepFile(active.fsPath))&&(!layout||active.fsPath.startsWith(layout.sourceRoot+path.sep)))resource=active;
+    if(!resource&&active?.scheme==='file'&&(/\.py$/.test(active.fsPath)||isStepFile(active.fsPath))&&(!layout||active.fsPath.startsWith(layout.sourceRoot+path.sep)))resource=active;
     if(!resource&&layout)resource=vscode.Uri.file(path.join(layout.sourceRoot,layout.entryPoint));
-    if(!resource){const selected=await vscode.window.showOpenDialog({canSelectMany:false,filters:{'CAD models':['js','step','stp']}});resource=selected?.[0];}
+    if(!resource){const selected=await vscode.window.showOpenDialog({canSelectMany:false,filters:{'CAD models':['py','step','stp']}});resource=selected?.[0];}
     if(!resource)return;
     const step=isStepFile(resource.fsPath);
-    if(resource.scheme!=='file'||(!resource.fsPath.endsWith('.js')&&!step))throw Error('Choose a local JavaScript, STEP or STP model.');
+    if(resource.scheme!=='file'||(!resource.fsPath.endsWith('.py')&&!step))throw Error('Choose a local Python, STEP or STP model.');
     const existing=panels.get(resource.toString());if(existing){existing.panel.reveal(vscode.ViewColumn.Active);return existing;}
     layout??=await projectLayout(path.dirname(resource.fsPath));
-    // Imported assets may also live outside the configured JavaScript folder.
+    // Imported assets may also live outside the configured CAD folder.
     if(step&&!resource.fsPath.startsWith(layout.sourceRoot+path.sep)){
       if(resource.fsPath.startsWith(layout.workspaceRoot+path.sep))layout={...layout,sourceRoot:layout.workspaceRoot};
       else layout=await projectLayout(path.dirname(resource.fsPath));
@@ -46,30 +46,34 @@ export function activate(context,options={}) {
     const entry=step?stepEntry(relative):relative;
     const sources=()=>step?readStepSource(root,relative):readSources(root,layout.buildRoot);
     const panel=vscode.window.createWebviewPanel(options.viewType??'instantcad.model',`CAD · ${path.basename(resource.fsPath)}`,vscode.ViewColumn.Active,{enableScripts:true,retainContextWhenHidden:true,localResourceRoots:[vscode.Uri.joinPath(context.extensionUri,'media'),vscode.Uri.file(root),...(layout.buildRoot?[vscode.Uri.file(layout.buildRoot)]:[])]});
-    const state={panel,resource,root,entry,layout,diagnostics:{phase:'opening'},writes:new Map(),disposed:false};
+    const state={panel,resource,root,entry,layout,diagnostics:{phase:'opening'},pending:new Map(),writes:new Map(),disposed:false};
     panels.set(resource.toString(),state);
     const assetUri=file=>panel.webview.asWebviewUri(vscode.Uri.file(file)).toString();
     const media=path.join(context.extensionPath,'media');
     const manifest=JSON.parse(await fs.readFile(path.join(media,'manifest.json'),'utf8'));
-    const config={entry,project:path.basename(root),minimalUI:!!options.minimalUI,worker:assetUri(path.join(media,manifest.worker)),wasm:assetUri(path.join(media,manifest.wasm))};
+    const nativeRuntimeIdentity=nativeIdentityFor(path.join(media,'native','worker.py'));
+    const config={runtime:nativeRuntimeIdentity,entry,project:path.basename(root),minimalUI:!!options.minimalUI};
+    const nativeClient=new NativeCadClient({python:options.pythonPath??configuration?.get('pythonPath')??'python3',worker:path.join(media,'native','worker.py'),onLog:text=>output.appendLine(text)});
+    let nativeArtifact;
     const cleanup=async(token)=>{const write=state.writes.get(token);if(write){state.writes.delete(token);await write.handle.close().catch(()=>{});await fs.unlink(write.tmp).catch(()=>{});}};
     async function handle(method,args) {
       if(!vscode.workspace.isTrusted||state.disposed)throw Error('CAD project access is unavailable');
       switch(method){
         case 'sources':return sources();
-        case 'compile':{
-          const source=await snapshot(await sources(),entry);
-          if(source.revision!==args.revision)throw Error('Source changed before compilation');
-          return compileModel(source.files,entry);
+        case 'native-build':{
+          if(!nativeClient)throw Error('This is not a native CAD model');
+          const source=await snapshot(await sources(),entry,nativeRuntimeIdentity);
+          if(source.revision!==args.revision)throw Error('Source changed before native build');
+          const file=await cacheFile(layout,entry,'profile.json',{create:true});
+          const binary=path.join(path.dirname(file),'native-scene.bin');
+          nativeArtifact=binary;
+          await fs.mkdir(path.dirname(binary),{recursive:true});
+          const result=await nativeClient.request({kind:'build',root,entry,stepAsset:step?relative:undefined,files:source.files,revision:source.revision,output:binary});
+          if((await snapshot(await sources(),entry,nativeRuntimeIdentity)).revision!==source.revision)throw Error('Source changed during native build');
+          return {...result,url:assetUri(binary)};
         }
-        case 'asset-url':{
-          relativePath(args.path);
-          if(step&&args.path!==relative)throw Error('STEP preview can only read its selected asset');
-          const asset=step?relative:path.posix.join(path.posix.dirname(entry),args.path);
-          const target=await inside(root,asset);
-          if(!(await fs.stat(target)).isFile())throw Error('Asset is not a file');
-          return assetUri(target);
-        }
+        case 'native-inspect':if(!nativeClient)throw Error('Not a native model');return nativeClient.request({kind:'inspect',code:args.code});
+        case 'native-cancel':nativeClient?.dispose();return true;
         case 'cache':{
           try{
             const meta=await cacheFile(layout,entry,'scene.json');
@@ -99,7 +103,9 @@ export function activate(context,options={}) {
         }
         case 'write-end':{
           const write=state.writes.get(args.token);if(!write||write.offset!==write.size)throw Error('Incomplete cache artifact');
-          await write.handle.close();await fs.rename(write.tmp,write.target);state.writes.delete(args.token);return true;
+          await write.handle.close();await fs.rename(write.tmp,write.target);state.writes.delete(args.token);
+          if(nativeArtifact&&path.basename(write.target)==='scene.bin'){await fs.unlink(nativeArtifact).catch(()=>{});nativeArtifact=undefined;}
+          return true;
         }
         case 'write-abort':await cleanup(args.token);return true;
         case 'reveal':await vscode.window.showTextDocument(resource,{viewColumn:panel.viewColumn??vscode.ViewColumn.Active});return true;
@@ -113,27 +119,30 @@ export function activate(context,options={}) {
     // Serial host requests also make chunk writes ordered and cancellation safe.
     let queue=Promise.resolve();
     const messages=panel.webview.onDidReceiveMessage(message=>{
+      if(message?.agentReply){const task=state.pending.get(message.agentReply);if(task){clearTimeout(task.timer);state.pending.delete(message.agentReply);message.error?task.reject(Error(message.error)):task.resolve(message.result);}return;}
+      if(message?.method==='native-cancel'){nativeClient?.dispose();void panel.webview.postMessage({id:message.id,result:true});return;}
       queue=queue.then(async()=>{
         if(!Number.isSafeInteger(message?.id)||typeof message.method!=='string')return;
         try{const result=await handle(message.method,message.args??{});await panel.webview.postMessage({id:message.id,result});}
         catch(error){await panel.webview.postMessage({id:message.id,error:error.message});}
       }).catch(error=>output.appendLine(String(error)));
     });
-    const watcher=vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(root),step?'**/*':'**/*.js'));
+    const watcher=vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(root),'**/*'));
     let debounce;
     const changed=uri=>{
       if(step){if(uri.fsPath!==resource.fsPath)return;clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);return;}
       if(layout.buildRoot&&(uri.fsPath===layout.buildRoot||uri.fsPath.startsWith(layout.buildRoot+path.sep)))return;
       const relative=path.relative(root,uri.fsPath).split(path.sep);
-      if(relative.some(segment=>segment.startsWith('.')||['node_modules','dist'].includes(segment)))return;
+      if(relative.some(segment=>segment.startsWith('.')||['node_modules','dist','__pycache__'].includes(segment)))return;
+      if(!/\.(py|json|step|stp|brep)$/i.test(uri.fsPath))return;
       clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);
     };
     watcher.onDidChange(changed);watcher.onDidCreate(changed);watcher.onDidDelete(changed);
     const configurationListener=vscode.workspace.onDidChangeConfiguration(event=>{if(event.affectsConfiguration('instantcad',workspace?.uri)){void panel.webview.postMessage({event:'configuration-changed'});}});
-    panel.onDidDispose(()=>{configurationListener.dispose();state.disposed=true;clearTimeout(debounce);watcher.dispose();messages.dispose();for(const token of state.writes.keys())void cleanup(token);panels.delete(resource.toString());});
+    panel.onDidDispose(()=>{for(const task of state.pending.values()){clearTimeout(task.timer);task.reject(Error('CAD panel closed'));}state.pending.clear();nativeClient?.dispose();if(nativeArtifact)void fs.unlink(nativeArtifact).catch(()=>{});configurationListener.dispose();state.disposed=true;clearTimeout(debounce);watcher.dispose();messages.dispose();for(const token of state.writes.keys())void cleanup(token);panels.delete(resource.toString());});
     panel.onDidChangeViewState(()=>{if(panel.visible)void panel.webview.postMessage({event:'source-changed'});});
     const nonce=randomBytes(16).toString('base64');
-    const csp=`default-src 'none'; img-src ${panel.webview.cspSource} data: blob:; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}' ${panel.webview.cspSource} 'unsafe-eval' 'wasm-unsafe-eval'; worker-src blob:; connect-src ${panel.webview.cspSource};`;
+    const csp=`default-src 'none'; img-src ${panel.webview.cspSource} data: blob:; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}' ${panel.webview.cspSource}; connect-src ${panel.webview.cspSource};`;
     let html=await fs.readFile(path.join(media,'index.html'),'utf8');
     html=html.replace('<head>',`<head><meta http-equiv="Content-Security-Policy" content="${csp}">`).replace('<style>',`<style nonce="${nonce}">`);
     html=html.replace(/<script>[\s\S]*?<\/script>/,`<script nonce="${nonce}">globalThis.INSTANTCAD_HOST=${JSON.stringify(config).replace(/</g,'\\u003c')};</script>`);
@@ -143,6 +152,10 @@ export function activate(context,options={}) {
   };
   context.subscriptions.push(vscode.commands.registerCommand(commandPrefix+'.open',resource=>open(resource).catch(error=>vscode.window.showErrorMessage(error.message))));
   context.subscriptions.push(vscode.commands.registerCommand(commandPrefix+'.diagnostics',()=>output.show()));
-  return {openModel:open,getDiagnostics:()=>[...panels.values()].map(p=>({entry:p.entry,...p.diagnostics})),closeAll:()=>{for(const p of panels.values())p.panel.dispose();}};
+  return {openModel:open,async request(workspace,entry,method,args={}){
+    const state=[...panels.values()].find(p=>p.layout.workspaceRoot===workspace&&p.entry===entry);
+    if(!state)throw Error('Open this model with VS Code: right-click → Open in CAD Canvas');
+    return new Promise((resolve,reject)=>{const id=randomBytes(16).toString('hex'),timer=setTimeout(()=>{state.pending.delete(id);reject(Error('CAD capture timed out'));},60000);state.pending.set(id,{resolve,reject,timer});void state.panel.webview.postMessage({agentRequest:id,method,args});});
+  },getDiagnostics:()=>[...panels.values()].map(p=>({entry:p.entry,...p.diagnostics})),closeAll:()=>{for(const p of panels.values())p.panel.dispose();}};
 }
 export function deactivate(){for(const p of panels.values())p.panel.dispose();}

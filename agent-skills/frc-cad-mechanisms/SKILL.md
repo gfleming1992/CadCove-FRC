@@ -9,14 +9,14 @@ Read the active robot's BOM, CAD inventory, constants and calibration ledger.
 For component selection read `../references/frc-components.md`. For rule-sensitive
 dimensions use the season-rules skill before committing the layout.
 For the installed viewer contract and first build read `../references/cad-authoring.md`;
-search `../references/brepjs-api.md` for the pinned API signatures rather than
-guessing methods. CAD-only work does not require simulation integration.
+use `../references/native-cadquery.md` for Python execution and exact checks.
+Search the installed CadQuery API/docstrings rather than guessing methods. CAD-only work does not require simulation integration.
 For physical bodies, units, joints, motors and CAD bindings, read
 `../references/physics-authoring.md`. The adjacent mechanism example contains
 synthetic test values, not this robot's vendor data or calibration.
 
 Reuse exact vendor STEP components when available. Parameterize team-made plates,
-tubes and spacers in plain JavaScript with the full brepjs API. Keep each reusable
+tubes and spacers in plain Python with the full CadQuery/OCP API. Keep each reusable
 part separate from its assembly placements. Do not replace curved or detailed
 parts with boxes merely to fit the command interface. Simplified collision
 geometry is a separate artifact with declared approximation.
@@ -50,7 +50,7 @@ Lessons from the team model:
 - Rubber compression and game-piece compliance affect nip geometry; don't shrink
   balls, teleport them, or delete guide plates to pass pickup tests.
 
-Rebuild CAD, check `cad-status` for the current source, and inspect `cad-preview`.
+Run `cad-build`, exact assertions with `cad-inspect`, and focused `cad-capture` images.
 Recompile world/bindings if geometry or mechanics changed; run `audit`. Captures
 should fit the edited mechanism plus necessary surrounding clearance. Retained
 old geometry or a beautiful render is not proof the edit built successfully.

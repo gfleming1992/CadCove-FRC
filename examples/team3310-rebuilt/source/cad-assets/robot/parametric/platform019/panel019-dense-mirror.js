@@ -1,1 +1,0 @@
-import {mirror} from 'brepjs';import build from './panel019-dense.js';export {parameters} from './panel019-dense.js';export default function model(options={}){return mirror(build(options),{normal:[0,1,0],at:[0,0,0]});}

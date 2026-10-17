@@ -47,7 +47,7 @@ render or from a plausible-looking AI answer.
 Builders can record the source dependency closure in `scene-bindings.json`:
 
 ```json
-{"sourceInputs":{"schema":1,"files":[{"file":"cad/model.js","sha256":"SHA256_OF_EXACT_SOURCE_BYTES"}]}}
+{"sourceInputs":{"schema":1,"files":[{"file":"cad/models.py","sha256":"SHA256_OF_EXACT_SOURCE_BYTES"}]}}
 ```
 
 Use actual 64-character SHA-256 digests. Paths are relative to `runtime.assetRoot`

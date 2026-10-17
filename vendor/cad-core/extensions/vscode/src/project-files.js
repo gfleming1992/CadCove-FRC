@@ -1,5 +1,7 @@
 import {SOURCE_LIMITS, checkSourceBudget} from '../../../src/core/source-limits.js';
 import fs from 'node:fs/promises';
+import {createReadStream} from 'node:fs';
+import {createHash} from 'node:crypto';
 import path from 'node:path';
 const skipped=new Set(['node_modules','dist','.git','.instantcad']);
 export function relativePath(value) {
@@ -27,12 +29,17 @@ export async function readSources(root, excludedDirectory) {
       if(item.name.startsWith('.')||skipped.has(item.name)||item.isSymbolicLink())continue;
       const relative=prefix+item.name, file=path.join(dir,item.name);
       if(item.isDirectory()){if(excludedDirectory&&path.resolve(file)===path.resolve(excludedDirectory))continue;await visit(file,relative+'/',depth+1);}
-      else if(item.isFile()&&item.name.endsWith('.js')){
+      else if(item.isFile()&&/\.(py|json)$/i.test(item.name)){
         await inside(root,relative);
         if((await fs.stat(file)).size>SOURCE_LIMITS.fileBytes)throw Error(`${relative} exceeds 1 MB`);
         const code=await fs.readFile(file,'utf8');total+=Buffer.byteLength(code);
         files[relative]=code;
         checkSourceBudget(Object.keys(files).length,total);
+      }else if(item.isFile()&&/\.(step|stp|brep)$/i.test(item.name)){
+        await inside(root,relative);const hash=createHash('sha256');
+        for await(const chunk of createReadStream(file))hash.update(chunk);
+        files[relative]='sha256:'+hash.digest('hex');
+        total+=Buffer.byteLength(files[relative]);checkSourceBudget(Object.keys(files).length,total);
       }
     }
   }
@@ -48,8 +55,8 @@ export function artifactPath(entry,name) {
 export async function projectLayout(workspaceRoot,settings={}) {
   const sourceDirectory=settings.sourceDirectory??'.';
   const buildDirectory=settings.buildDirectory??'';
-  const entryPoint=relativePath(settings.entryPoint??'model.js');
-  if(!entryPoint.endsWith('.js'))throw Error('InstantCAD entryPoint must be a JavaScript file');
+  const entryPoint=relativePath(settings.entryPoint??'models.py');
+  if(!/\.py$/.test(entryPoint))throw Error('CAD entryPoint must be a Python file. Convert legacy JavaScript CAD to CadQuery.');
   const sourceRoot=sourceDirectory==='.'?await fs.realpath(workspaceRoot):await inside(workspaceRoot,sourceDirectory);
   if(!(await fs.stat(sourceRoot)).isDirectory())throw Error('InstantCAD sourceDirectory must be a folder');
   let buildRoot;

@@ -9,7 +9,7 @@ function fixture(){
 }
 test('decodes byte-identical source and rejects corrupted, incomplete or escaping bundles',()=>{
  const original=fixture(),decoded=decodeExampleBundle(original);expect(decoded.size).toBe(exampleRequiredFiles.length);
- expect(decoded.get('cad/model.js').toString()).toBe('fixture cad/model.js');
+ expect(decoded.get('cad/models.py').toString()).toBe('fixture cad/models.py');
  for(const change of [
   b=>b.files.push({...b.files[0],path:'../outside.txt'}),
   b=>b.files.push({...b.files[0],path:'build/libs/robot.jar'}),

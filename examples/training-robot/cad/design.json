@@ -1,0 +1,300 @@
+{
+  "robotParts": [
+    {
+      "id": "frame",
+      "body": "chassis",
+      "color": "#52687a",
+      "position": [
+        0,
+        0,
+        0.19
+      ],
+      "size": [
+        0.7,
+        0.54,
+        0.1
+      ]
+    },
+    {
+      "id": "bumper-front",
+      "body": "chassis",
+      "color": "#cf303d",
+      "position": [
+        0.38,
+        0,
+        0.21
+      ],
+      "size": [
+        0.06,
+        0.68,
+        0.12
+      ]
+    },
+    {
+      "id": "bumper-back",
+      "body": "chassis",
+      "color": "#cf303d",
+      "position": [
+        -0.38,
+        0,
+        0.21
+      ],
+      "size": [
+        0.06,
+        0.68,
+        0.12
+      ]
+    },
+    {
+      "id": "mast-left",
+      "body": "chassis",
+      "color": "#bbc7d1",
+      "position": [
+        -0.18,
+        0.18,
+        0.61
+      ],
+      "size": [
+        0.05,
+        0.05,
+        0.74
+      ]
+    },
+    {
+      "id": "mast-right",
+      "body": "chassis",
+      "color": "#bbc7d1",
+      "position": [
+        -0.18,
+        -0.18,
+        0.61
+      ],
+      "size": [
+        0.05,
+        0.05,
+        0.74
+      ]
+    },
+    {
+      "id": "lift-tray",
+      "body": "lift",
+      "color": "#ffc857",
+      "position": [
+        0.04,
+        0,
+        0.36
+      ],
+      "size": [
+        0.3,
+        0.3,
+        0.06
+      ]
+    },
+    {
+      "id": "limelight-front-mount",
+      "body": "chassis",
+      "color": "#b6e032",
+      "position": [
+        0.29,
+        0,
+        0.54
+      ],
+      "size": [
+        0.06,
+        0.08,
+        0.05
+      ]
+    },
+    {
+      "id": "front-left",
+      "position": [
+        0.23,
+        0.3,
+        0.09
+      ],
+      "radius": 0.09,
+      "width": 0.05,
+      "mass": 1,
+      "body": "front-left",
+      "color": "#252832",
+      "kind": "wheel"
+    },
+    {
+      "id": "rear-left",
+      "position": [
+        -0.23,
+        0.3,
+        0.09
+      ],
+      "radius": 0.09,
+      "width": 0.05,
+      "mass": 1,
+      "body": "rear-left",
+      "color": "#252832",
+      "kind": "wheel"
+    },
+    {
+      "id": "front-right",
+      "position": [
+        0.23,
+        -0.3,
+        0.09
+      ],
+      "radius": 0.09,
+      "width": 0.05,
+      "mass": 1,
+      "body": "front-right",
+      "color": "#252832",
+      "kind": "wheel"
+    },
+    {
+      "id": "rear-right",
+      "position": [
+        -0.23,
+        -0.3,
+        0.09
+      ],
+      "radius": 0.09,
+      "width": 0.05,
+      "mass": 1,
+      "body": "rear-right",
+      "color": "#252832",
+      "kind": "wheel"
+    }
+  ],
+  "fieldParts": [
+    {
+      "id": "floor",
+      "body": "floor",
+      "color": "#587365",
+      "position": [
+        2,
+        0,
+        -0.05
+      ],
+      "size": [
+        8,
+        4,
+        0.1
+      ]
+    },
+    {
+      "id": "left-wall",
+      "body": "left-wall",
+      "color": "#627b9a",
+      "position": [
+        2,
+        2,
+        0.15
+      ],
+      "size": [
+        8,
+        0.08,
+        0.3
+      ]
+    },
+    {
+      "id": "right-wall",
+      "body": "right-wall",
+      "color": "#627b9a",
+      "position": [
+        2,
+        -2,
+        0.15
+      ],
+      "size": [
+        8,
+        0.08,
+        0.3
+      ]
+    },
+    {
+      "id": "goal-line",
+      "color": "#f5d659",
+      "position": [
+        2,
+        0,
+        0.002
+      ],
+      "size": [
+        0.03,
+        3.9,
+        0.004
+      ]
+    },
+    {
+      "id": "tag-1-plane",
+      "color": "#f4f4ef",
+      "position": [
+        5,
+        -0.4,
+        0.7
+      ],
+      "size": [
+        0.002,
+        0.1651,
+        0.1651
+      ]
+    },
+    {
+      "id": "tag-2-plane",
+      "color": "#f4f4ef",
+      "position": [
+        5,
+        0.4,
+        0.7
+      ],
+      "size": [
+        0.002,
+        0.1651,
+        0.1651
+      ]
+    }
+  ],
+  "wheels": [
+    {
+      "id": "front-left",
+      "position": [
+        0.23,
+        0.3,
+        0.09
+      ],
+      "radius": 0.09,
+      "width": 0.05,
+      "mass": 1
+    },
+    {
+      "id": "rear-left",
+      "position": [
+        -0.23,
+        0.3,
+        0.09
+      ],
+      "radius": 0.09,
+      "width": 0.05,
+      "mass": 1
+    },
+    {
+      "id": "front-right",
+      "position": [
+        0.23,
+        -0.3,
+        0.09
+      ],
+      "radius": 0.09,
+      "width": 0.05,
+      "mass": 1
+    },
+    {
+      "id": "rear-right",
+      "position": [
+        -0.23,
+        -0.3,
+        0.09
+      ],
+      "radius": 0.09,
+      "width": 0.05,
+      "mass": 1
+    }
+  ]
+}

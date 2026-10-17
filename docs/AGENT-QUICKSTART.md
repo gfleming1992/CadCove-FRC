@@ -1,27 +1,13 @@
 # Start with your existing editor agent
 
-## Agent tools start with the editor
+## Files and command-line feedback
 
-In a trusted CadCove workspace, the extension starts an authenticated local MCP
-server and advertises **CadCove** to VS Code's agent tool picker. Enable it there
-and approve the editor's normal tool-access prompt if asked. “Open robot CAD”
-uses `open_robot_cad` directly; it does not need a repository scan or simulation
-startup. `workspace_context`, `cad_status`, `capture_scene`, `set_camera`, and
-simulation tools provide structured feedback. Edit source with normal editor tools.
-
-For other local MCP-capable agents, configure a stdio server with command
-`cadcove`, arguments `["mcp", "--workspace", "/absolute/path/to/robot-project"]`.
-Use the CLI path from a new **CadCove: Open Toolbox Terminal** if it is not on
-PATH. Keep that workspace open in VS Code. The bridge reads a private generated
-endpoint descriptor under the configured build folder; never commit it or copy
-its token into agent prompts. A workspace reload requires reconnecting the agent
-MCP server. No remote service or AI API key is needed.
-
-Use **CadCove: Update Agent Guidance** once in existing projects, then start a
-new agent conversation so its discovery instructions are current. Team edits are
-preserved. Server availability alone cannot force an agent to use a tool; the
-workspace guidance directs simple open requests to the tool immediately.
-
+Agents use the CLI and filesystem. Start with `.cadcove/AGENT.md`, then the
+native CadQuery authoring reference. Run `cadcove cad-build`, inspect with
+`cad-inspect --script checks.py`, and keep `cad-session` warm for iterations.
+Right-click a Python/STEP file to open the model in VS Code. Use `cad-capture`
+for focused images from that WebGPU canvas. Neither CAD build nor exact
+inspection requires an editor window or an MCP tool registration.
 
 ## Install once per robot workspace
 
@@ -30,7 +16,7 @@ workspace guidance directs simple open requests to the tool immediately.
 2. Open the **robot repository root** as a trusted local workspace. CAD may be a
    subfolder; the source/build folders are configured in `.cadcove/project.json`.
 3. Run **CadCove: Initialize Team Workspace**. It creates shared local guidance,
-   six focused FRC workflows, pinned brepjs API references, a season descriptor
+   six focused FRC workflows, native CadQuery API guidance, a season descriptor
    and an unintegrated simulation manifest. It preserves existing robot source.
 4. Open **CadCove: Open Toolbox Terminal**; run `cadcove capabilities`.
 5. Start a new Codex, Claude Code or Copilot agent conversation in this workspace.
@@ -71,11 +57,14 @@ select a file in the desired robot folder before invoking extension commands.
 > Create an editable swerve chassis concept in the configured CAD entry. Reuse
 > our available modules; ask for dimensions or exact variants that are missing.
 > Use stable part IDs, separate reusable components, colors and comments about
-> design intent. Check cad-status and inspect cad-preview after building.
+> design intent. Build with cad-build, check exact geometry with cad-inspect,
+> and inspect a focused cad-capture before accepting the change.
 
-Open **CadCove: Open in CAD Canvas** before asking for build feedback. CAD runs without
-Java/vendor integration. The viewer executes plain JavaScript through brepjs and
-OCCT-WASM; there is no modeling DSL or TypeScript compilation in a robot project.
+Build and inspect from the CLI without opening the editor. Right-click the Python
+or STEP file and choose **CadCove: Open in CAD Canvas** for interactive viewing
+and `cad-capture`. New projects execute ordinary Python with native CadQuery/OCCT;
+the WebGPU canvas is a VS Code webview. Legacy JavaScript CAD entries must be
+migrated explicitly. CAD runs without Java/vendor integration.
 
 ## Connect code and run
 

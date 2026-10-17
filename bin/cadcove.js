@@ -16,6 +16,11 @@ import {validateSimulation} from '../lib/simulation-validation.js';
 import {createPhysicsMode} from '../lib/physics-modes.js';
 
 const optionsByCommand = {
+  'cad-build': ['workspace','entry','python'],
+  'cad-session': ['workspace','entry','python'],
+  'cad-inspect': ['workspace','entry','python','script'],
+  'cad-export': ['workspace','entry','python','output'],
+  'cad-capture': ['workspace','entry','view','ids','output'],
   mcp: ['workspace'],
   init: ['workspace', 'name', 'id', 'cad-dir', 'build-dir', 'dry-run'],
   'guidance-update': ['workspace','dry-run'],
@@ -24,7 +29,7 @@ const optionsByCommand = {
   'season-import': ['workspace','pack','pdf','pages','revision','kind'],
   'season-search': ['directory','query','offset','limit'],
   doctor: ['project'], audit: ['project'], 'sim-validate': ['project'], capabilities: [], help: [],
-  'cad-status': ['workspace'], 'cad-preview': ['workspace'],
+  'cad-status': ['workspace','entry'], 'cad-preview': ['workspace','entry'],
   'sim-run': ['project'], 'sim-state': ['project'], 'sim-objects': ['project','query-file'], 'sim-controls': ['project','input'], 'sim-stop': ['project'],
   'sim-recover': ['project'], 'bridge-export': ['workspace','review'],
   'sim-scene': ['project'],
@@ -56,8 +61,15 @@ async function regularFile(file, executable = false) {
 
 async function run() {
   const {command, options} = parse(process.argv.slice(2));
+  if(['cad-build','cad-session','cad-inspect','cad-export'].includes(command)){const {cadCommand}=await import('../lib/cad-command.js');return cadCommand(command,options);}
+  if(command==='cad-capture'){const {captureCad}=await import('../lib/cad-capture.js');return captureCad(options);}
   if (command === 'mcp') {const {runMcpProxy}=await import('../lib/mcp-proxy.js');await runMcpProxy(options.workspace??process.cwd());return;}
   if (command === 'help') return {schema: 1, ok: true, commands: {
+    'cad-build': 'cadcove cad-build --workspace PATH [--entry models.py] [--python PYTHON]',
+    'cad-session': 'cadcove cad-session --workspace PATH [--entry models.py] [--python PYTHON] (warm JSONL build/inspect/export; stdin EOF stops worker)',
+    'cad-inspect': 'cadcove cad-inspect --workspace PATH --script CHECKS.py (build then exact BREP inspection; assign result)',
+    'cad-export': 'cadcove cad-export --workspace PATH --output model.step',
+    'cad-capture': 'cadcove cad-capture --workspace PATH [--entry models.py] [--view iso|front|right|top] [--ids ID,ID] --output frame.png (open VS Code canvas required)',
     mcp: 'cadcove mcp --workspace PATH (stdio bridge to the automatic VS Code MCP server)',
     init: 'cadcove init --workspace PATH [--name NAME] [--id ID] [--cad-dir cad] [--build-dir build/cadcove] [--dry-run]',
     'guidance-update': 'cadcove guidance-update --workspace PATH [--dry-run] (preserves edited guidance and writes reviewable proposals)',
@@ -90,7 +102,7 @@ async function run() {
   }, output: 'JSON on stdout; exit 0 success, 1 failed checks, 2 invalid command/configuration'};
   if (command === 'capabilities') return {schema: 1, ok: true, version: runtimeVersion, commands: Object.keys(optionsByCommand),
     distribution: bundledRuntime ? 'standalone-runtime' : 'source-checkout', bundledRuntimeInstaller: false,
-    agent: {providerRequired: false, interface: 'mcp-and-filesystem', instructions: '.cadcove/AGENT.md'},
+    agent: {providerRequired: false, interface: 'cli-and-filesystem', instructions: '.cadcove/AGENT.md'},
     adapters: [{id: 'wpilib-java-phoenix6', status: 'integration-required', devices: ['TalonFX', 'CANcoder', 'Pigeon2']},
       {id: 'limelight-networktables', status: 'simulation-subset', features: ['AprilTag pose observations', 'configured optics and latency']}],
     unsupported: ['automatic CAD mechanism inference', 'arbitrary CTRE devices', 'C++ robot adapter', 'official future-season rules'],
@@ -103,7 +115,7 @@ async function run() {
   if(command==='season-search')return searchSeasonKnowledge({directory:options.directory,query:options.query,offset:options.offset,limit:options.limit});
   if(command==='bridge-export')return exportBridge(options.workspace,{review:!!options.review});
   if (command === 'cad-status' || command === 'cad-preview') {
-    const result=await cadFeedback(options.workspace,{preview:command==='cad-preview'});process.exitCode=result.ok?0:1;return result;
+    const result=await cadFeedback(options.workspace,{preview:command==='cad-preview',entry:options.entry});process.exitCode=result.ok?0:1;return result;
   }
   if (!options.project) throw Error('--project is required; the toolbox never selects another team’s example implicitly');
   const project = await readRobotProject(options.project);

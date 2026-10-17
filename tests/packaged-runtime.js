@@ -34,8 +34,6 @@ try {
   assert.equal(capabilities.distribution, 'standalone-runtime'); assert.equal(capabilities.version, manifest.version);
   const inventory=JSON.parse(await readFile(path.join(installed.directory,'dependency-inventory.json'),'utf8'));
   assert.equal(inventory.schema,1);assert.equal(typeof inventory.releaseReady,'boolean');
-  assert.ok(inventory.components.some(c=>c.id==='wasm:occt-wasm@5.3.2'&&c.license.includes('LGPL')));
-  assert.ok(inventory.components.some(c=>c.id==='npm:occt-wasm@5.3.2'&&c.license==='MIT OR Apache-2.0'));
   const nativeBuild=JSON.parse(await readFile(path.join(installed.directory,'native-build.json'),'utf8'));
   const cliBuild=JSON.parse(await readFile(path.join(installed.directory,'cli-build.json'),'utf8'));
   assert.equal(cliBuild.target,manifest.target);assert.equal(cliBuild.version,manifest.version);
@@ -53,7 +51,7 @@ try {
   const reference=JSON.parse(await readFile(path.join(installed.directory,'cad-reference.json'),'utf8'));
   assert.ok(manifest.files.some(f=>f.name==='cad-reference.json'&&!f.executable));
   for(const entry of reference.files)assert.equal(await readFile(path.join(workspace,entry.file),'utf8'),entry.text);
-  assert.match(await readFile(path.join(workspace,'.cadcove/skills/references/brepjs-api.md'),'utf8'),/export declare function box\(/);
+  assert.match(await readFile(path.join(workspace,'.cadcove/skills/references/cadquery-api.md'),'utf8'),/CadQuery 2.6.1/);
   assert.match(await readFile(path.join(workspace,'.cadcove/skills/references/cad-authoring.md'),'utf8'),/cadcove cad-status/);
   // A damaged packaged reference must fail before initializing any workspace.
   const referenceFile=path.join(installed.directory,'cad-reference.json'),referenceBytes=await readFile(referenceFile);
@@ -149,18 +147,18 @@ try {
     const rejected=await command(['sim-validate','--project',example.project],1);
     assert.equal(rejected.phase,'audit');assert.match(rejected.errors.join(' '),/different builds/);
   }finally{await writeFile(worldFile,originalWorld);await writeFile(bindingsFile,originalBindings);await rm(path.join(sample,'validation-fixture.ctm'));}
-  for(const file of ['cad/model.js','src/main/java/frc/robot/Robot.java','.cadcove/bridge/java/org/instantcad/frc/SeasonPlugin.java','AGENTS.md','.github/copilot-instructions.md'])assert.ok((await readFile(path.join(sample,file))).length>0);
+  for(const file of ['cad/models.py','src/main/java/frc/robot/Robot.java','.cadcove/bridge/java/org/instantcad/frc/SeasonPlugin.java','AGENTS.md','.github/copilot-instructions.md'])assert.ok((await readFile(path.join(sample,file))).length>0);
   await assert.rejects(access(path.join(sample,'build/libs/robot.jar')));
   await assert.rejects(access(path.join(sample,'training-profile.json')));
-  const sourceBefore=await readFile(path.join(sample,'cad/model.js'),'utf8');
-  await writeFile(path.join(sample,'cad/model.js'),sourceBefore+'\n// changed after compilation\n');
+  const sourceBefore=await readFile(path.join(sample,'cad/models.py'),'utf8');
+  await writeFile(path.join(sample,'cad/models.py'),sourceBefore+'\n# changed after compilation\n');
   assert.equal((await command(['audit','--project',example.project],1)).sourceFreshness.status,'stale');
   const rejectedSource=await command(['sim-run','--project',example.project],2);
   assert.match(rejectedSource.error.message,/Source input changed/);
   await assert.rejects(access(path.join(sample,'build/cadcove/cadcove-session.json')));
-  await writeFile(path.join(sample,'cad/model.js'),sourceBefore);
+  await writeFile(path.join(sample,'cad/models.py'),sourceBefore);
   await command(['example-create','--workspace',sample,'--example','training-robot'],2);
-  assert.equal(await readFile(path.join(sample,'cad/model.js'),'utf8'),sourceBefore);
+  assert.equal(await readFile(path.join(sample,'cad/models.py'),'utf8'),sourceBefore);
   // Corruption must fail before even reserving a workspace, not export a partial
   // source tree that an agent might mistake for the verified example.
   const bundleFile=path.join(installed.directory,'training-example.json'),bundleBytes=await readFile(bundleFile);

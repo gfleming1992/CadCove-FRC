@@ -1,5 +1,16 @@
 # CadCove-FRC
 
+Native Python/CadQuery is the default for new CAD projects. Agents edit source
+and use `cadcove cad-build`, `cad-session`, `cad-inspect`, `cad-export` and
+`cad-capture`. Right-click Python/STEP files to open the interactive WebGPU
+canvas in VS Code. See [the authoring workflow](agent-skills/references/cad-authoring.md)
+and [measured native performance](docs/NATIVE-CADQUERY-PROFILE.md).
+
+The bundled Team 3310 robot now uses `models.py`: all **109 authored designs**
+are native CadQuery, with **320 retained STEP assets** and **1,958 occurrences**.
+The viewer remains WebGPU. See the [migration evidence](examples/team3310-rebuilt/source/native-migration-validation.json)
+and [rail STEP exchange limitation](examples/team3310-rebuilt/source/cad-assets/robot/native/README.md#known-rail-step-exchange-limitation).
+
 Part of **CadCove**: an MIT open-source monorepo for agent-assisted CAD,
 robot code, and local FRC simulation.
 
@@ -8,28 +19,29 @@ are not available yet. The Team 3310 robot CAD, code and simulation bindings
 are included. Setup downloads REBUILT field geometry directly from FIRST and
 builds the robot with your installed WPILib toolchain.
 
-## Agent tools start with the editor
+## Agent workflow: files and CLI
 
-In a trusted CadCove workspace, the extension starts an authenticated local MCP
-server and advertises **CadCove** to VS Code's agent tool picker. Enable it there
-and approve the editor's normal tool-access prompt if asked. “Open robot CAD”
-uses `open_robot_cad` directly; it does not need a repository scan or simulation
-startup. `workspace_context`, `cad_status`, `capture_scene`, `set_camera`, and
-simulation tools provide structured feedback. Edit source with normal editor tools.
+Use **CadCove: Open Toolbox Terminal** for the packaged CLI. New projects select
+`models.py`; configure a Python 3.12 environment with the shipped pinned
+`cad-requirements.txt`, then set `CADCOVE_PYTHON` or project `pythonPath` and the
+editor's `instantcad.pythonPath` to that interpreter. Python dependencies are
+installed explicitly, not downloaded when opening a model.
 
-For other local MCP-capable agents, configure a stdio server with command
-`cadcove`, arguments `["mcp", "--workspace", "/absolute/path/to/robot-project"]`.
-Use the CLI path from a new **CadCove: Open Toolbox Terminal** if it is not on
-PATH. Keep that workspace open in VS Code. The bridge reads a private generated
-endpoint descriptor under the configured build folder; never commit it or copy
-its token into agent prompts. A workspace reload requires reconnecting the agent
-MCP server. No remote service or AI API key is needed.
+```sh
+cadcove cad-build --workspace .
+cadcove cad-inspect --workspace . --script checks.py
+cadcove cad-export --workspace . --output build/robot.step
+cadcove cad-capture --workspace . --view iso --ids bracket --output build/bracket.png
+```
 
-Use **CadCove: Update Agent Guidance** once in existing projects, then start a
-new agent conversation so its discovery instructions are current. Team edits are
-preserved. Server availability alone cannot force an agent to use a tool; the
-workspace guidance directs simple open requests to the tool immediately.
+Build, inspect and export work without VS Code. Capture requires the model open
+in the editor's WebGPU canvas; it fits the requested parts without changing the
+user's camera. For repeated iterations use `cad-session` and JSONL requests to
+keep one native worker warm. Errors and revisions are structured, so agents can
+repair source from measured feedback. MCP remains an optional compatibility
+bridge; agent setup does not require enabling tools or a hosted API.
 
+Use **CadCove: Update Agent Guidance** after upgrading. Team edits are preserved.
 
 Local CAD, robot-code integration, and native FRC simulation in one VS Code
 extension. Use your own Codex, Claude Code, Copilot, or filesystem agent. CadCove adds no
@@ -37,10 +49,9 @@ AI chat box, API key, or cloud account requirement.
 
 Original CadCove code and its included generic CAD core are [MIT licensed](LICENSE).
 Third-party dependencies retain their own licenses; see [dependency notices](licenses/README.md).
-This is independent of the NativeCAD application: CAD is JavaScript through
-brepjs and OCCT-WASM inside the viewer worker. It does not use NativeCAD's
+This is independent of the NativeCAD application: CAD uses local Python/CadQuery and native OCCT exclusively. It does not use NativeCAD's
 server, native OCCT worker, custom command language, API keys or services.
-The included native Rust process runs physics, not CAD modeling.
+The native Rust process runs Rapier physics independently of Python CAD modeling.
 
 **Development candidate — not a production release yet.** macOS arm64 has passed
 installed-extension CAD, native simulation, live viewing, agent capture and
@@ -63,7 +74,7 @@ vendor-aware CAD/code skills and private, page-cited manual imports.
    `.github/copilot-instructions.md` (Copilot), preserving existing instructions.
    All point to `.cadcove/AGENT.md`. No manual copying of a `.github` folder is
    required. Use the [agent quickstart](docs/AGENT-QUICKSTART.md) to verify discovery.
-4. Author CAD JavaScript under the configured source folder and open it with
+4. Author CAD Python under the configured source folder and open it with
    **CadCove: Open in CAD Canvas**. File edits rebuild the model; the CLI supplies
    revision-checked status and PNG previews for agent feedback.
 5. Integrate the robot's Java/WPILib program, native world and CAD bindings using
@@ -102,8 +113,8 @@ entry blocks are added without replacing existing root instructions.
 
 ### Play the team robot
 
-The main example is Team 3310's Amarillo: 1,958 CAD occurrences, 109 converted
-brepjs part designs, retained STEP parts, the actual Java/Phoenix robot program,
+The main example is Team 3310's Amarillo: 1,958 CAD occurrences, 109 authored
+part designs, retained STEP parts, the actual Java/Phoenix robot program,
 and the reviewed gameplay world and intake alignment. Robot source lives in
 [examples/team3310-rebuilt/source](examples/team3310-rebuilt/source).
 

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "sourceRevision": "a42b26fec9865cd2674a983a3df900e8a1e1aad7",
+  "sourceRevision": "140a9e61b3b1f61646bbd02cddb736499af7c521",
   "policy": "config/toolbox-source.json",
   "files": {
     ".gitattributes": {
@@ -16,16 +16,16 @@
       "sha256": "930dcbd44afd6b5d5f9c88bddd1dc757df5bfb9ffd47790cdd3b22158d2d9822"
     },
     ".github/workflows/toolbox-source.yml": {
-      "bytes": 2489,
-      "sha256": "2f9cbbd62cf9dc73a066d71f751cab3872637473fa6921b28c821588540f0c78"
+      "bytes": 2892,
+      "sha256": "bb1d19023c8706a0c0707a7ed9aa73dbadf4661b78a1bbd5e08945e4ab972f3d"
     },
     ".gitignore": {
-      "bytes": 309,
-      "sha256": "b392dc5ad9b365c704165b655e5530ac0885c8e5cb0257ca14aed1a8baca597c"
+      "bytes": 396,
+      "sha256": "020150c56438ef9cc08d677b28d1e66a8d0cb32e5855b2785eb760771f903ad7"
     },
     "AGENTS.md": {
-      "bytes": 1075,
-      "sha256": "cf43ef63ce415b6633c6cf932fd574e3eeebcfb2b11465c715b134de6af892b9"
+      "bytes": 1183,
+      "sha256": "ce03a9588ed8e2f061a11cbf461910fa8563d206f0b5521f03c475b9de339bc9"
     },
     "CHANGELOG.md": {
       "bytes": 1150,
@@ -36,8 +36,8 @@
       "sha256": "f514d08d08f54bada6c8107692b6cea3c2ad1962f49102523745acb633fb998b"
     },
     "CONTRIBUTING.md": {
-      "bytes": 2598,
-      "sha256": "e4d7ace10814475b6a8cc446efb070d3f7e066112108babbf95f36658b212032"
+      "bytes": 2606,
+      "sha256": "bcad8ff0d67aff250484bf5b29956cc46345e8aa0eef4143a00c38c9de2f43bf"
     },
     "Cargo.lock": {
       "bytes": 21232,
@@ -52,16 +52,16 @@
       "sha256": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6"
     },
     "README.md": {
-      "bytes": 13535,
-      "sha256": "bf28d4c1a6b59548e48acc4fccf1ceddbc7d43b5d2dad0477b2c4f28d962692c"
+      "bytes": 14169,
+      "sha256": "2914ffe30e4066c7817b48179dd45abb9f39cd13245d887c1be2646c6ed738d2"
     },
     "SECURITY.md": {
       "bytes": 1453,
       "sha256": "7a1ba16a3fa36d1f90f561104f26d54c38e049f9917ea5c2631fdaa6eb6c6324"
     },
     "agent-skills/frc-cad-mechanisms/SKILL.md": {
-      "bytes": 3336,
-      "sha256": "a1d0ab9d01e35e21deab3c435bfa6d42c84616802ba7a2dddea09a14c84ad5e5"
+      "bytes": 3399,
+      "sha256": "1418395041f818c221dd62d1bdb275945be13dcf6a398ba9788fc773f086e063"
     },
     "agent-skills/frc-ctre-controls/SKILL.md": {
       "bytes": 2691,
@@ -84,12 +84,20 @@
       "sha256": "c04b8dec6c082152ac65c6cf747f7ce60f3c9cc69bd4347241011af1c27a6fb5"
     },
     "agent-skills/references/cad-authoring.md": {
-      "bytes": 4729,
-      "sha256": "9366a537bd9f8000b8bca23a7687aeda5a814637ad8682d6def5612d2284e61c"
+      "bytes": 2973,
+      "sha256": "1fca8bd023e374f91078f60dbc290c74010234c29050442dc143e76c20359a0f"
+    },
+    "agent-skills/references/cadquery-api.md": {
+      "bytes": 2578,
+      "sha256": "23c9acd8cfd0cc4d64d8bec45225f59b34eca534db04d9e47b14ce1171445e2d"
     },
     "agent-skills/references/frc-components.md": {
       "bytes": 2800,
       "sha256": "df42f61f638b665d86918d96030c5eb9315935349b38ebe69ac8f2ff76318425"
+    },
+    "agent-skills/references/native-cadquery.md": {
+      "bytes": 4702,
+      "sha256": "1cf2dfbe2d9b30986f04fe28351be6ee134d03f913d00d735d0cf4ce2fbb05b4"
     },
     "agent-skills/references/physics-authoring.md": {
       "bytes": 11446,
@@ -100,8 +108,8 @@
       "sha256": "db50539af755e159e84f154508ab56d531a95057c52c131dc1ae7bead7fee306"
     },
     "bin/cadcove.js": {
-      "bytes": 13458,
-      "sha256": "d1a16b28810de926651c11213543efcdb8b5fdbfc15e707d12a6c080672d9eae"
+      "bytes": 14681,
+      "sha256": "6ed7f9eca50145fd048fc50a6e4b9f06355756d2bcbf21d3858473d247be08ee"
     },
     "bridge/java/org/instantcad/frc/DeviceMath.java": {
       "bytes": 1771,
@@ -164,12 +172,12 @@
       "sha256": "c8ad77ca191a4e399ffaf10415c2985baa94f40f9c8dd07a0659d44b129659ed"
     },
     "bun.lock": {
-      "bytes": 59142,
-      "sha256": "e58f93c5045741fdcb4f1ea8c81f22a4d34bd4b1039f1aea178f6ed33c0beab8"
+      "bytes": 56991,
+      "sha256": "d0bf29cb8dabe10bef6f94f5b45d0340d5331615c4b5f9d114256aabe5f71d10"
     },
     "config/toolbox-source.json": {
-      "bytes": 5105,
-      "sha256": "2e76f4b0ee855916fb35ca24dc2902668cffe1465896c2dedd080856378cc94a"
+      "bytes": 5298,
+      "sha256": "5c18df66939b0d7bff3df326567ee5e91bd7505614b2f48be0ca20941e40cb0f"
     },
     "crates/sim-core/Cargo.toml": {
       "bytes": 779,
@@ -252,8 +260,8 @@
       "sha256": "bb363712b0cf32a4fd4318b990614a0dcd7c7f3acf5fca852059a2f7af6d6430"
     },
     "docs/AGENT-QUICKSTART.md": {
-      "bytes": 6163,
-      "sha256": "86c4fae4a77760c9f208d15224d22581397f611a2f35348c34a3068805b9fdad"
+      "bytes": 5479,
+      "sha256": "eaf177593fac890141d05f21646042822cc6eaf2f52d6be2ee13c52deca9099a"
     },
     "docs/BUN-REBUILD.md": {
       "bytes": 12320,
@@ -271,13 +279,17 @@
       "bytes": 6062,
       "sha256": "4fe87f1a4d1718875d7d64566229d0e70db8fde0b711cf1c4ab22de80f505f67"
     },
-    "docs/OCCT-REBUILD.md": {
-      "bytes": 8684,
-      "sha256": "f72530746a12c63da8955db87947f1677014933b36c537e09280bfb7ed609746"
+    "docs/LAUNCH-POST.md": {
+      "bytes": 2272,
+      "sha256": "93ac7f7b2b1e9eb23ab2af075321e312dade249a21a1035aabfc732b5feea79f"
+    },
+    "docs/NATIVE-CADQUERY-PROFILE.md": {
+      "bytes": 14036,
+      "sha256": "1164b3d125915f6afcfe4cdd23234f49e315961b43594765d55b6f51568722fe"
     },
     "docs/ROBOT-PROJECTS.md": {
-      "bytes": 12534,
-      "sha256": "5d795d25854bf41ff3e2f55dae8c0e9f5fa323ea4432aeddab2f9a76886b864c"
+      "bytes": 12535,
+      "sha256": "2381a86f7f40473cea95b4b18db4237d5b0f6eacee540b11e4f4d76122ee4158"
     },
     "docs/SEASON-PLUGINS.md": {
       "bytes": 5681,
@@ -287,9 +299,13 @@
       "bytes": 8477,
       "sha256": "fb64b73056fece6db1c2c456fa868504503bf16cc9dbabf4318e9e00f35c0a99"
     },
+    "docs/SYSTEM-CARD.md": {
+      "bytes": 6317,
+      "sha256": "c01989b83324218f2937567b6f68b989fb6832617fb29452821045400218d25a"
+    },
     "docs/TOOLBOX-RELEASE.md": {
-      "bytes": 4762,
-      "sha256": "c8e91a505f5332b6f0d70b633e46f1e32f95d94e192f2b2a528de601b7406189"
+      "bytes": 6092,
+      "sha256": "9a183a5195060694fd4b7d70a870c4fa2cfe9e00a92f0fa5ec12a6531d6164ae"
     },
     "examples/season-plugin/README.md": {
       "bytes": 1484,
@@ -308,8 +324,8 @@
       "sha256": "1e0364e42e70cf88fe9188aec67b58e2ffbe364b6a9f0c45c393ebd3fc6ba971"
     },
     "examples/team3310-rebuilt/README.md": {
-      "bytes": 6085,
-      "sha256": "5de1be2acea3d13f9459d6292734f23518b56d3c707413b4cd54957719794e09"
+      "bytes": 6938,
+      "sha256": "d9c3634e403201b3a9be8792b9f89d0448ecee0b12c420247974e0940cade5ca"
     },
     "examples/team3310-rebuilt/THIRD-PARTY-NOTICES.md": {
       "bytes": 1275,
@@ -336,20 +352,16 @@
       "sha256": "0eaf8ee95425b54c47cb343eedbc7d27e3704be7606b82d553379812478e6c8b"
     },
     "examples/team3310-rebuilt/source/cad-assets/robot/PARAMETRIC-README.md": {
-      "bytes": 1097,
-      "sha256": "7b62b0a5a7cae2a15a1fd0b8aa7deb1c769eb9ab1565bba51c3298a22d312f13"
+      "bytes": 968,
+      "sha256": "7361acfd1103d8e997a49d6802622ae4b7ab38256fcd30fa18eacaefb1ce1c56"
     },
     "examples/team3310-rebuilt/source/cad-assets/robot/assembly.json": {
-      "bytes": 1682161,
-      "sha256": "669439b24614ade54d207fc322463694d118804600e904ad546a1bbced3691b6"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/catalog.js": {
-      "bytes": 407210,
-      "sha256": "08f42e925ed888e2c24af900497ccadd1e70f5d84827ce9ede2973065f2378f9"
+      "bytes": 690678,
+      "sha256": "dfc073d090ff9975e67b6467bbc6acdb759cfd38c28e230d1ebe74a84c384648"
     },
     "examples/team3310-rebuilt/source/cad-assets/robot/catalog.json": {
-      "bytes": 528141,
-      "sha256": "3ac00ea20bcc5ff758ee42be76ef4b9997e3f3e1fa6c7ac17ff350a1e21dbf5d"
+      "bytes": 525017,
+      "sha256": "b340b9ba2b9fe76af2692dd886fbc43867b5e4e3ca413d51090943698273673e"
     },
     "examples/team3310-rebuilt/source/cad-assets/robot/components/0-250-id-x-0-625-od-x-0-196-wd-flanged-bearing-wcp-0042-f75cb63470d2.step": {
       "bytes": 39065,
@@ -1630,10 +1642,6 @@
     "examples/team3310-rebuilt/source/cad-assets/robot/components/x2-molded-wheel-e2a6bdccb3d5.step": {
       "bytes": 1493718,
       "sha256": "e2a6bdccb3d5c47c85b5c3058e5c06587932f9ca3fd34215798a8b53dbaea20b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/instances.js": {
-      "bytes": 660748,
-      "sha256": "511bdebf68caf9e2ee5b5362b55a9a2ff76e82893434e577d8000c9390bd8eff"
     },
     "examples/team3310-rebuilt/source/cad-assets/robot/instances.json": {
       "bytes": 905482,
@@ -2919,1317 +2927,1521 @@
       "bytes": 597776,
       "sha256": "5817a4af8d23a9e43cd58725d120a9a2308cc5ef5f4bdb04ad6d99ad03068ddf"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/model.js": {
-      "bytes": 2364,
-      "sha256": "50fe75752f384561cf9a212fbf1317fc755df1f6bce2e8544dc2ea8b5ad84994"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/analytic-blend-face.js": {
-      "bytes": 1107,
-      "sha256": "65a1c451387836e1dd563a7e22a43e703db687b38d4d8521f8a147b2f76e018b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/analytic-blend.js": {
-      "bytes": 1323,
-      "sha256": "684dd7cfcca263944d0242be98b604ae419efe4cbe612b59f6d3091f0ef286eb"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-remover.js": {
-      "bytes": 549,
-      "sha256": "464a40d67f26af2409591be30b98d5ebaefc3b7f982b2ff474dc159a9071be08"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-right-normalized-stock.js": {
-      "bytes": 381,
-      "sha256": "c1f4579eef98fce5de2a7f12aed961b6649aff031bdda8041425cd5bad6bd2a6"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-right-pcurve-data.js": {
-      "bytes": 34765,
-      "sha256": "b046d3a5e5ab0f9075df17aa75869ab53665b4bae8e58d37381b9a940c87c7cc"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-right-profile.js": {
-      "bytes": 1865,
-      "sha256": "08fe4fa5bbfa94abd14280139ed99f3822d0627db67baf828a4c4e1579adcccd"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-right-stock-candidate.js": {
-      "bytes": 4581,
-      "sha256": "55544a45c44fa84eacb39fca6c9bba628e60f3cf7603081b3b6361496e77cc89"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-right-stock-data.js": {
-      "bytes": 7364,
-      "sha256": "6279c446cbc398caf050064814fec3203ecd77fa7971b9c10efd405d5daf366b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-right-trim-parameters.js": {
-      "bytes": 1541,
-      "sha256": "626ded794250b2f7a7dff00b9c0635c59c34b73897978e1849ceb918bace60d0"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-right-trimmed.js": {
-      "bytes": 3250,
-      "sha256": "2ff00690c3bc148f71f31a9d3502b97310866898c702ea4f61dc09c8f1e6206c"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-right.js": {
-      "bytes": 1590,
-      "sha256": "a4f6d73056482ea0e034305b2dd1a4063d3213e0a5aab119c36d0833d891c6e5"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-stock.js": {
-      "bytes": 10250,
-      "sha256": "f52963673b2d192ed9b95bab0053905d26cfb983fa50dc17032b87f2137a31d2"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-trim-parameters.js": {
-      "bytes": 1733,
-      "sha256": "f7df8e25b2c606c32f0c550ea68c0a85b396232d24a7bb5868519ed65aaee204"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-trimmed.js": {
-      "bytes": 3227,
-      "sha256": "d5514a7977ab2ea5b69de7212c1cdb818dee49e8f112086cfc5f17a5ee6d3cde"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/backlash-trims.js": {
-      "bytes": 10570,
-      "sha256": "fb56b784b61fcad92988c72e3191252b094a76b028985e81426c02e2911bb330"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-cross-bore-stock-data.js": {
-      "bytes": 308721,
-      "sha256": "00cda585812ab092005d333f59c72f84d2b0334b84a6c46bd30dc0659e0cbafa"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-editable.js": {
-      "bytes": 234,
-      "sha256": "de9b17a4c1e19268bbd267ddf92a603c3229479c01c8ba6fe22d10887f7582d7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-front-blend-data.js": {
-      "bytes": 95612,
-      "sha256": "793e7bb56b25848e4e32b47b314cd301840289a50196bcd9c5cb781c22f74e54"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-lip-parametric.js": {
-      "bytes": 2577,
-      "sha256": "011cfd41af4a8537b932dd220255e1fad4c675c501534c09bde690ab340eaefa"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-lip-surface-data.js": {
-      "bytes": 93646,
-      "sha256": "20e1365e6bc7f51219c0313d2d5af5ca634dc6b2353af3f29a8ba19e503636b6"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-profile-parametric.js": {
-      "bytes": 11842,
-      "sha256": "d91a4e54450c7b75d39b7b615491b7e6b5e30dff3913928e4202a9df16bdf2f6"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-rear-blend-data.js": {
-      "bytes": 95587,
-      "sha256": "f14208dec9743669a7d7a8a9edc44f84a34c65f666ee6a4a353859c127361d64"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-split-trimmed.js": {
-      "bytes": 1449,
-      "sha256": "7f8ea543423f4d50f8c777fb2d60758792646bc2911c53618767d5c58d9a8ce8"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-stock-parametric.js": {
-      "bytes": 1032,
-      "sha256": "467a854b6dc17b8bd628febdb33cc0e09b65070bc109553a11202827430188c4"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017-trimmed-inplace.js": {
-      "bytes": 4456,
-      "sha256": "f6ecd7e4078eef4a8bf1eaf065ec697b494a0b9101634e6b71480950ba14b770"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017m-editable.js": {
-      "bytes": 428,
-      "sha256": "da364bf8d94c8d97e19d5f90f8ab1b699c9e4a6a3520485058c3d77f3dd34cca"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket017m-split-trimmed.js": {
-      "bytes": 1030,
-      "sha256": "d575b8eed9779d315d8e2ac86e53b8ff67f2da23c7659d62407447b558aba938"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket022-healed.js": {
-      "bytes": 4506,
-      "sha256": "b2d886506489ccec8cb9a745275bfd0ad33f47d01d648d680bcdfc600fd94ecb"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket022-normalized.js": {
-      "bytes": 884,
-      "sha256": "16db639417b0d6af4124231a36f97e9b0bb5e32810addc702b356e9ccb709043"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket022-notch-compact-data.js": {
-      "bytes": 68243,
-      "sha256": "c31d2bdb4f94a8923458e2427edaef77829abf6fe93eef750c20198f3c60887f"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket022-notch-original-edge.js": {
-      "bytes": 3224,
-      "sha256": "63b6308e45ee69a0716ae7e7e6cd24870623d0e8f07b81a85ccec535a6010580"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket022-origin-local-junction-data.js": {
-      "bytes": 248329,
-      "sha256": "ac69a5b8f04657da9ee27893f11e8189bf46a36656a21432493095998c212623"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket022-origin-stock.js": {
-      "bytes": 3255,
-      "sha256": "73c0dc9bfb636de8cff11ca57d64d74de7d7e66514957613a2b140a156547d7a"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket022-profile-data.js": {
-      "bytes": 3668,
-      "sha256": "c6cff3a0ea28a3941c550e775fac2d1349cf9b7f2546f7aff779970e08742fd9"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/bracket022m-normalized.js": {
-      "bytes": 966,
-      "sha256": "5c0a6f8d07c863450b6ed2d69e5846d15ec397214a2033a28d42dc45e9e37284"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/build-local-blend.js": {
-      "bytes": 1169,
-      "sha256": "c7a6759f612a7a99d7fa9f430e6482f63d222c996cca6db72b07cfdece51568a"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/build022.js": {
-      "bytes": 1499,
-      "sha256": "be08286da03a57561bac0cef9cd66bd0e6494208d4673bf3a933ce3d74d9b43d"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/conversion-summary.json": {
-      "bytes": 6392,
-      "sha256": "14a57f0e227714caea847f625c3ec013a7a78f7981c29c3e36e02da6ccef8465"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/drive-spacer.js": {
-      "bytes": 3524,
-      "sha256": "415388146fa4db4bf47fedc953be8d5533a3182f2ac6edd07293c1f86c4abb25"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/front-corner.js": {
-      "bytes": 162761,
-      "sha256": "010e644b4006f97afc5a5d41c8321101d0793d62209a799b3528d045b407b6ec"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/layouts/belly-pan-contours.js": {
-      "bytes": 106013,
-      "sha256": "f23a57b4bc5b36c2fa858f627aff4d061f1b782b725df9afebb514f77a595ac2"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/lower-b-in-a-frame.js": {
-      "bytes": 154,
-      "sha256": "9d3d815c937dd1d7dcbdaf839db2ebfac0c5386546bb884e68c13f43a45c8cf5"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/lower-b-rounded.js": {
-      "bytes": 572,
-      "sha256": "794a97cd9e4da519aae2ce6b43db42802c29c7ae55e0ae9cee978c7aece377b7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/00ecf471986858c50e0155c954523710b16d1a1b9b4f520245833a3737e1381c.bin": {
-      "bytes": 401352,
-      "sha256": "00ecf471986858c50e0155c954523710b16d1a1b9b4f520245833a3737e1381c"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/0623ab72e8fa31bb75378b376cd7587440e5d21ed5721bf2e86a71f8f1cdd475.bin": {
-      "bytes": 29316,
-      "sha256": "0623ab72e8fa31bb75378b376cd7587440e5d21ed5721bf2e86a71f8f1cdd475"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/063a1dc3624a0bdeaecce2cde7ddfc5ab0034e2108bc121e4f72b0aec5a36ef7.bin": {
-      "bytes": 218244,
-      "sha256": "063a1dc3624a0bdeaecce2cde7ddfc5ab0034e2108bc121e4f72b0aec5a36ef7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/0971649c2fff03db9c9230ff24e2f292d4c637b5d48b5cbf89dbf4d6af3659fb.bin": {
-      "bytes": 365568,
-      "sha256": "0971649c2fff03db9c9230ff24e2f292d4c637b5d48b5cbf89dbf4d6af3659fb"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/0a11ad57c7c73459b4d83dea159cefc709e42c05db6c66601cf740c62104cb36.bin": {
-      "bytes": 372480,
-      "sha256": "0a11ad57c7c73459b4d83dea159cefc709e42c05db6c66601cf740c62104cb36"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/0a427ac0664ffe003dd32e154ea68639c36b4019f4d89f1deeb398063a4ffea8.bin": {
-      "bytes": 61632,
-      "sha256": "0a427ac0664ffe003dd32e154ea68639c36b4019f4d89f1deeb398063a4ffea8"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/0ac29adc8b627ef9a359e5b3280253659042c749fca99d04b51e8044d51336c7.bin": {
-      "bytes": 124156,
-      "sha256": "0ac29adc8b627ef9a359e5b3280253659042c749fca99d04b51e8044d51336c7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/0ae15e9f1b0c1f225c9d11943a501eac30f97f06956562b0b378393b14324ef0.bin": {
-      "bytes": 831212,
-      "sha256": "0ae15e9f1b0c1f225c9d11943a501eac30f97f06956562b0b378393b14324ef0"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/101e049c267d57a7b679c1b3d715108c3642fb2385bfa5dc52edef1e7f2b8d31.bin": {
-      "bytes": 165256,
-      "sha256": "101e049c267d57a7b679c1b3d715108c3642fb2385bfa5dc52edef1e7f2b8d31"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/173bc298138a3d85ca1f5980253fb73ef1965b090c7fc9140d907d6691206303.bin": {
-      "bytes": 1131564,
-      "sha256": "173bc298138a3d85ca1f5980253fb73ef1965b090c7fc9140d907d6691206303"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/1793df7122176c0bebd45f549f7fe390c2d0f96b9783d2433efd0472220a9a43.bin": {
-      "bytes": 115900,
-      "sha256": "1793df7122176c0bebd45f549f7fe390c2d0f96b9783d2433efd0472220a9a43"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/18739b77d7734770f87d043abf1712da396825540a12f4f2a7d6211c55ded826.bin": {
-      "bytes": 519612,
-      "sha256": "18739b77d7734770f87d043abf1712da396825540a12f4f2a7d6211c55ded826"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/1d669539f55c90e407b8c49cbe99eb4ecdc8eb0161344d1699d70710843f4672.bin": {
-      "bytes": 139820,
-      "sha256": "1d669539f55c90e407b8c49cbe99eb4ecdc8eb0161344d1699d70710843f4672"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/1de2765a47ec01bef5270772257ea70d1a30427b4d35f43507d73b6099a728f9.bin": {
-      "bytes": 97320,
-      "sha256": "1de2765a47ec01bef5270772257ea70d1a30427b4d35f43507d73b6099a728f9"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/1edaa6f3060b9f888dbbb9253cd5af0a5929be4776c0249d6b15ca71ff1dc397.bin": {
-      "bytes": 457476,
-      "sha256": "1edaa6f3060b9f888dbbb9253cd5af0a5929be4776c0249d6b15ca71ff1dc397"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/1f3b8f6456ecb116b38bc23e5c3277d37a9c55b9ed8e02fb0103bbd2350f4633.bin": {
-      "bytes": 218348,
-      "sha256": "1f3b8f6456ecb116b38bc23e5c3277d37a9c55b9ed8e02fb0103bbd2350f4633"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/20407caff235754c592b7052ba5b643be34f10044bb944394cb2164b11e42b3a.bin": {
-      "bytes": 110344,
-      "sha256": "20407caff235754c592b7052ba5b643be34f10044bb944394cb2164b11e42b3a"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/20a310bb350f3144bd1b6b70c352193222a8301cb79ec9b0e5ac730a2e74a55c.bin": {
-      "bytes": 60540,
-      "sha256": "20a310bb350f3144bd1b6b70c352193222a8301cb79ec9b0e5ac730a2e74a55c"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/25b436d44a54121d4825457b7e5a3cada759e3abcfc86faf2a9f4f8eb5094884.bin": {
-      "bytes": 116564,
-      "sha256": "25b436d44a54121d4825457b7e5a3cada759e3abcfc86faf2a9f4f8eb5094884"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/26e562a60eb0fe947f66bdbda9a40b83a6da4b42adf42b605afb43a7cac8bc92.bin": {
-      "bytes": 60540,
-      "sha256": "26e562a60eb0fe947f66bdbda9a40b83a6da4b42adf42b605afb43a7cac8bc92"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/27cc684da8e4f30808c325a61576ee7f0629ad8a2061ad8170d03abc4a9b24a9.bin": {
-      "bytes": 457540,
-      "sha256": "27cc684da8e4f30808c325a61576ee7f0629ad8a2061ad8170d03abc4a9b24a9"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/2f1b1056c57073dbc5eb4811808ef94c00806d18f0ccefbde3ce3e37a5e0924c.bin": {
-      "bytes": 59852,
-      "sha256": "2f1b1056c57073dbc5eb4811808ef94c00806d18f0ccefbde3ce3e37a5e0924c"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/3259f6703cbb69901fb7befa66e6d5d420df357e7f737add9c2cff013414cb25.bin": {
-      "bytes": 5500,
-      "sha256": "3259f6703cbb69901fb7befa66e6d5d420df357e7f737add9c2cff013414cb25"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/33a19c6a8df65c2ff38529388a6c139cb5fcea0e20f18575163e1874328ea593.bin": {
-      "bytes": 9060,
-      "sha256": "33a19c6a8df65c2ff38529388a6c139cb5fcea0e20f18575163e1874328ea593"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/35be47f9f5aab13d5ec3d62d94e5be97e3c417d64313e13eea075e853b5b95c9.bin": {
-      "bytes": 9040,
-      "sha256": "35be47f9f5aab13d5ec3d62d94e5be97e3c417d64313e13eea075e853b5b95c9"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/36b184a040129a38d54ebbbcd360fe882fdfa1f2dcd384d0a933cb2dac351b0d.bin": {
-      "bytes": 262596,
-      "sha256": "36b184a040129a38d54ebbbcd360fe882fdfa1f2dcd384d0a933cb2dac351b0d"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/37c372b9b1f8d0df70ceddb4a72bc4f95c2120bcdb2fb380355c287a68388f54.bin": {
-      "bytes": 37916,
-      "sha256": "37c372b9b1f8d0df70ceddb4a72bc4f95c2120bcdb2fb380355c287a68388f54"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/39964a82c38c7a60520849b58be6591ea35d1a04224e513e46262f118ea7868c.bin": {
-      "bytes": 60540,
-      "sha256": "39964a82c38c7a60520849b58be6591ea35d1a04224e513e46262f118ea7868c"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/3ad7c3c09aa12cdecdd337c98d9f4fa9adceed1ca7d82cd184ac5f22f95b9b60.bin": {
-      "bytes": 5496,
-      "sha256": "3ad7c3c09aa12cdecdd337c98d9f4fa9adceed1ca7d82cd184ac5f22f95b9b60"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/3c8576f467f2b6360c58b02cf093aec9bd665826a1bc4301a234348ca987615a.bin": {
-      "bytes": 11988,
-      "sha256": "3c8576f467f2b6360c58b02cf093aec9bd665826a1bc4301a234348ca987615a"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/404adf5e0748e6cdf04d2b6347bc2d974ff25c8b54eec66d2c3769a2bbb77eec.bin": {
-      "bytes": 423480,
-      "sha256": "404adf5e0748e6cdf04d2b6347bc2d974ff25c8b54eec66d2c3769a2bbb77eec"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/4361be48d036c3bc2fc087bd6817a1952147397b94bbdf25b639fb3b1ad2222a.bin": {
-      "bytes": 11992,
-      "sha256": "4361be48d036c3bc2fc087bd6817a1952147397b94bbdf25b639fb3b1ad2222a"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/43dcba7d8b6ca792998d8fbd51c12ba63413aa4c8938f604f75422497ac3e9d7.bin": {
-      "bytes": 1094100,
-      "sha256": "43dcba7d8b6ca792998d8fbd51c12ba63413aa4c8938f604f75422497ac3e9d7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/452c44f28da106ef76ae68e46332028e70d0adf34e65cd8797e6d40a431a7284.bin": {
-      "bytes": 5068,
-      "sha256": "452c44f28da106ef76ae68e46332028e70d0adf34e65cd8797e6d40a431a7284"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/471b05e3f41157036594880968a754e5b36f9f5a24b4c31e07d3965500e5db6d.bin": {
-      "bytes": 60540,
-      "sha256": "471b05e3f41157036594880968a754e5b36f9f5a24b4c31e07d3965500e5db6d"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/49379d74e3e0b8d28107751efb3cba7fb18e755c6aad5a1ee990fb539bdacc57.bin": {
-      "bytes": 10744,
-      "sha256": "49379d74e3e0b8d28107751efb3cba7fb18e755c6aad5a1ee990fb539bdacc57"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/4eaeace51db6ba4126c96c6dd526af4d5447bf7b3f75b96456f9628e33514f0b.bin": {
-      "bytes": 838128,
-      "sha256": "4eaeace51db6ba4126c96c6dd526af4d5447bf7b3f75b96456f9628e33514f0b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/50cdeee6c7993a3073c16bc4c9801b0a44c4c1ec7fd4b307931922f23acc22e6.bin": {
-      "bytes": 253368,
-      "sha256": "50cdeee6c7993a3073c16bc4c9801b0a44c4c1ec7fd4b307931922f23acc22e6"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/538573842533a45a78f67b3d1bfbde865c31525687075346b4594e5af40f64ce.bin": {
-      "bytes": 9640,
-      "sha256": "538573842533a45a78f67b3d1bfbde865c31525687075346b4594e5af40f64ce"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/5736e74b82c8ce156eafe1031ac898f3e4d5b47d2de23a18f0d59ff17d1e75ad.bin": {
-      "bytes": 2216480,
-      "sha256": "5736e74b82c8ce156eafe1031ac898f3e4d5b47d2de23a18f0d59ff17d1e75ad"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/57d312b5446673ccfcf551c3192b4628c10c5a59c1074b120428bd94a9a54df8.bin": {
-      "bytes": 9620,
-      "sha256": "57d312b5446673ccfcf551c3192b4628c10c5a59c1074b120428bd94a9a54df8"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/5a47ddbf75cf243f53842b15f343727d04032db218538551da62f1ee079eee4d.bin": {
-      "bytes": 22940,
-      "sha256": "5a47ddbf75cf243f53842b15f343727d04032db218538551da62f1ee079eee4d"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/5d73a8159dff7a21f3b3b57b9534720ba2eac6728350202a2afa5350b5fd46b7.bin": {
-      "bytes": 259836,
-      "sha256": "5d73a8159dff7a21f3b3b57b9534720ba2eac6728350202a2afa5350b5fd46b7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/5d8d74a8d01b66cd968e0b81dba5670d5a895ac57d1f47e66c50fd5ee4588038.bin": {
-      "bytes": 8988,
-      "sha256": "5d8d74a8d01b66cd968e0b81dba5670d5a895ac57d1f47e66c50fd5ee4588038"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/63b53457a21a10ff80f0c457737120d12c7445e579be64f5a34f653f74b0aba6.bin": {
-      "bytes": 115896,
-      "sha256": "63b53457a21a10ff80f0c457737120d12c7445e579be64f5a34f653f74b0aba6"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/63c521d653fac6ae7f55ea35cf6e04cde4e443ce36e2b8e596e275a9d90ff07c.bin": {
-      "bytes": 190528,
-      "sha256": "63c521d653fac6ae7f55ea35cf6e04cde4e443ce36e2b8e596e275a9d90ff07c"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/64cf461992cbc17d4c454e1097231853821a3bbfcb43828d1b71ada53af95da7.bin": {
-      "bytes": 113948,
-      "sha256": "64cf461992cbc17d4c454e1097231853821a3bbfcb43828d1b71ada53af95da7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/6b85a58c0ef197016ec14b8639823ccb4cd438be14fb9fd580187149bd2cfabd.bin": {
-      "bytes": 115896,
-      "sha256": "6b85a58c0ef197016ec14b8639823ccb4cd438be14fb9fd580187149bd2cfabd"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/700d2075bd8f7d6d6b768f0e05bc90911eda86a2bc49c5dea5cbaccef9c711c7.bin": {
-      "bytes": 213504,
-      "sha256": "700d2075bd8f7d6d6b768f0e05bc90911eda86a2bc49c5dea5cbaccef9c711c7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/70232f84939956536fb933bc291bfa03b027a295b9b7ace9e7397d73438a2098.bin": {
-      "bytes": 59856,
-      "sha256": "70232f84939956536fb933bc291bfa03b027a295b9b7ace9e7397d73438a2098"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/71ee2f14e0c98c2933b1d1787f7a2fba39c160bcee70f91da7973ef1c764b289.bin": {
-      "bytes": 60540,
-      "sha256": "71ee2f14e0c98c2933b1d1787f7a2fba39c160bcee70f91da7973ef1c764b289"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/7224a7be0d8c7cb8845d331a33252c8fa6b0bf064939c43820d03ede70495583.bin": {
-      "bytes": 9072,
-      "sha256": "7224a7be0d8c7cb8845d331a33252c8fa6b0bf064939c43820d03ede70495583"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/7366393acb981b50d1d983b9a3b445222f2454bc005b13ebbfa151d24b03ade3.bin": {
-      "bytes": 450356,
-      "sha256": "7366393acb981b50d1d983b9a3b445222f2454bc005b13ebbfa151d24b03ade3"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/75790857fa8894fc895777c063469db04811403dd597762e424291689c9406de.bin": {
-      "bytes": 61916,
-      "sha256": "75790857fa8894fc895777c063469db04811403dd597762e424291689c9406de"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/7668289c325270324c781f8ab3977274fa5521b968188fb9029419f319ee4d8f.bin": {
-      "bytes": 60536,
-      "sha256": "7668289c325270324c781f8ab3977274fa5521b968188fb9029419f319ee4d8f"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/77a7536d8daa5affe699d2d11a88c79990f83af053dc122517ab9af45b673cf4.bin": {
-      "bytes": 60536,
-      "sha256": "77a7536d8daa5affe699d2d11a88c79990f83af053dc122517ab9af45b673cf4"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/7ad9ded0f4792cf3b6a6085d1c220d7bfa721fc1e39a19ba5ac044e75fb68ef3.bin": {
-      "bytes": 119128,
-      "sha256": "7ad9ded0f4792cf3b6a6085d1c220d7bfa721fc1e39a19ba5ac044e75fb68ef3"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/7e019dfc0ce3d987f8e9f26bd99b4547e0e90ccc674f618ebd59eee57a2b4f06.bin": {
-      "bytes": 551980,
-      "sha256": "7e019dfc0ce3d987f8e9f26bd99b4547e0e90ccc674f618ebd59eee57a2b4f06"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/7e81eb958e9879fbbb93b15383808120493aff3c3a078a351e0b994e3fe24527.bin": {
-      "bytes": 84996,
-      "sha256": "7e81eb958e9879fbbb93b15383808120493aff3c3a078a351e0b994e3fe24527"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/823219814069f0f9b9398168680aa9cd20219ef1673cb9b0f4d371f678af5137.bin": {
-      "bytes": 217472,
-      "sha256": "823219814069f0f9b9398168680aa9cd20219ef1673cb9b0f4d371f678af5137"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/87470974ab4642f162afecd3e04fad5973cd82da673cd790782981e7129c5007.bin": {
-      "bytes": 72576,
-      "sha256": "87470974ab4642f162afecd3e04fad5973cd82da673cd790782981e7129c5007"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/89c7a6d0e4f15185a61036be8f703539b527d8078bb6d31d30c0a133b829278e.bin": {
-      "bytes": 32012,
-      "sha256": "89c7a6d0e4f15185a61036be8f703539b527d8078bb6d31d30c0a133b829278e"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/8d5242df75cd20f7d4e5afcbfd575304a334d44a4590196e15a10b833496850f.bin": {
-      "bytes": 236904,
-      "sha256": "8d5242df75cd20f7d4e5afcbfd575304a334d44a4590196e15a10b833496850f"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/8d669cb96c1aae64319dd5b553d02ca70972ca9c55cf814f7a49d626bc0ab566.bin": {
-      "bytes": 114332,
-      "sha256": "8d669cb96c1aae64319dd5b553d02ca70972ca9c55cf814f7a49d626bc0ab566"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/90dd8e6994d46a1274417dff45c853ff28e312a0478315c6b9a4565355a25b68.bin": {
-      "bytes": 5068,
-      "sha256": "90dd8e6994d46a1274417dff45c853ff28e312a0478315c6b9a4565355a25b68"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/9599c2e5a92b3c0f26e592796fcc8380db8dfee5e2e11f4b31780a8b1f25ee09.bin": {
-      "bytes": 22892,
-      "sha256": "9599c2e5a92b3c0f26e592796fcc8380db8dfee5e2e11f4b31780a8b1f25ee09"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/966d7b3f252619ec128626bb2795ca9a0f654ce31478ce0e7980b611601e50f1.bin": {
-      "bytes": 115896,
-      "sha256": "966d7b3f252619ec128626bb2795ca9a0f654ce31478ce0e7980b611601e50f1"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/96ab1e865806bd82fdbe20652f4e0286052029929d177696dfc3afeab7163728.bin": {
-      "bytes": 506844,
-      "sha256": "96ab1e865806bd82fdbe20652f4e0286052029929d177696dfc3afeab7163728"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/976c94d7c1d3cbe6718e7ac89b445115aa2a02e9cf735a2928b61a2458c9b1e5.bin": {
-      "bytes": 107988,
-      "sha256": "976c94d7c1d3cbe6718e7ac89b445115aa2a02e9cf735a2928b61a2458c9b1e5"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/99cd3e27b5a1a3a355e3a6940bdad98a02823f921e994a207389e7540a045c7c.bin": {
-      "bytes": 79004,
-      "sha256": "99cd3e27b5a1a3a355e3a6940bdad98a02823f921e994a207389e7540a045c7c"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/a00c879e5b877cc587537ed0ae207433c46aacfb6e175a48bc5a384049deed08.bin": {
-      "bytes": 229628,
-      "sha256": "a00c879e5b877cc587537ed0ae207433c46aacfb6e175a48bc5a384049deed08"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/a125b8566335ca29980408d62f1e9b62e3d0e7e5dec0115e3a16bdbfad4ec387.bin": {
-      "bytes": 1032,
-      "sha256": "a125b8566335ca29980408d62f1e9b62e3d0e7e5dec0115e3a16bdbfad4ec387"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/a612c3b56e4b4b1cfa1856f4884780d4bbb4428dd942ded19698bc253633b3c2.bin": {
-      "bytes": 285692,
-      "sha256": "a612c3b56e4b4b1cfa1856f4884780d4bbb4428dd942ded19698bc253633b3c2"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/a66ca2aec9246905113e4cce7d6c1c080752ba2a3b51289de0d6ea9aa9ec53d5.bin": {
-      "bytes": 39496,
-      "sha256": "a66ca2aec9246905113e4cce7d6c1c080752ba2a3b51289de0d6ea9aa9ec53d5"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/a7c96486ee71265463074651e9f723ea3b3904823b900a6fc7979d171c1601e5.bin": {
-      "bytes": 1131564,
-      "sha256": "a7c96486ee71265463074651e9f723ea3b3904823b900a6fc7979d171c1601e5"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/a92769e4e8acdc5a60560621dda99ec18a945b7ca9341893ae556b2beef4aad0.bin": {
-      "bytes": 39492,
-      "sha256": "a92769e4e8acdc5a60560621dda99ec18a945b7ca9341893ae556b2beef4aad0"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/ac21dcb4ef7bb5cf9d35962d7de3b723bee61e9c6cd279bb7e10d37ed3c08f3d.bin": {
-      "bytes": 57232,
-      "sha256": "ac21dcb4ef7bb5cf9d35962d7de3b723bee61e9c6cd279bb7e10d37ed3c08f3d"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/af02e2efdbd24a611ba6004ba9084a0f1df27be8b5fb12940714e308c2a8c5cb.bin": {
-      "bytes": 60540,
-      "sha256": "af02e2efdbd24a611ba6004ba9084a0f1df27be8b5fb12940714e308c2a8c5cb"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/b11e4fb42339f8fec42a2151d4c82e19fd6a1bbe18498b6c36187129e688d1f8.bin": {
-      "bytes": 16044,
-      "sha256": "b11e4fb42339f8fec42a2151d4c82e19fd6a1bbe18498b6c36187129e688d1f8"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/b60d764b29ab316ab9d91d67ca5759c9302da8db6ff6d609e50e0fbf19fa3720.bin": {
-      "bytes": 60536,
-      "sha256": "b60d764b29ab316ab9d91d67ca5759c9302da8db6ff6d609e50e0fbf19fa3720"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/b8a97d2f58424a2560920ee8d07edfc2a7526c474af16fca69bda5766d534592.bin": {
-      "bytes": 60536,
-      "sha256": "b8a97d2f58424a2560920ee8d07edfc2a7526c474af16fca69bda5766d534592"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/bb579675a2509dadebfe01c17df83cacced06b7554480309169a4ffcbfd02528.bin": {
-      "bytes": 141696,
-      "sha256": "bb579675a2509dadebfe01c17df83cacced06b7554480309169a4ffcbfd02528"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/bd6e36b2eaf1fac24c496e29ef205c8bb2ca3b0d3cac15b08140d77865cae2ba.bin": {
-      "bytes": 9640,
-      "sha256": "bd6e36b2eaf1fac24c496e29ef205c8bb2ca3b0d3cac15b08140d77865cae2ba"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/bee68cdec7078facdcbaca1a592adf1dab6bbdf429769177548dc21eb53b065e.bin": {
-      "bytes": 9040,
-      "sha256": "bee68cdec7078facdcbaca1a592adf1dab6bbdf429769177548dc21eb53b065e"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/c13f1de0abf0afa2a9648421d631e85dc907f2145d3dadbbbc088665229d5aae.bin": {
-      "bytes": 495384,
-      "sha256": "c13f1de0abf0afa2a9648421d631e85dc907f2145d3dadbbbc088665229d5aae"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/c194d00649476108c3aa8a338db9721982e2ce2ca7afd7ee502600b8a99c1fbc.bin": {
-      "bytes": 116568,
-      "sha256": "c194d00649476108c3aa8a338db9721982e2ce2ca7afd7ee502600b8a99c1fbc"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/c288782a5a1561ccaef035fd9ff42c79d32364644d78d63bacf8a7ece438a316.bin": {
-      "bytes": 129120,
-      "sha256": "c288782a5a1561ccaef035fd9ff42c79d32364644d78d63bacf8a7ece438a316"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/c42d43070391421095643415129af3fd6cc4e483fe42c0ca44b444d3e890fda4.bin": {
-      "bytes": 92952,
-      "sha256": "c42d43070391421095643415129af3fd6cc4e483fe42c0ca44b444d3e890fda4"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/c72eb5d0681e6952c921881df4efa2abf3fde3b51629e2074a64c87e5d42182e.bin": {
-      "bytes": 237112,
-      "sha256": "c72eb5d0681e6952c921881df4efa2abf3fde3b51629e2074a64c87e5d42182e"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/ca8945ed5e1bb70488d3b885ed2e0b5788995c580a6a069b5083b04b96a4f51b.bin": {
-      "bytes": 10744,
-      "sha256": "ca8945ed5e1bb70488d3b885ed2e0b5788995c580a6a069b5083b04b96a4f51b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/d1fb26b1961d70fa01ff8c3d763f1f673fc430ac3d63adf08f91d67b14b17748.bin": {
-      "bytes": 311692,
-      "sha256": "d1fb26b1961d70fa01ff8c3d763f1f673fc430ac3d63adf08f91d67b14b17748"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/d2e5994277238061fdaf67779bcc09b6f12a150abf9eb7943d828131531e8d20.bin": {
-      "bytes": 535800,
-      "sha256": "d2e5994277238061fdaf67779bcc09b6f12a150abf9eb7943d828131531e8d20"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/d7313bc189a576ca06c4352775108ae983989c8e0cfb9b70f07cdef257f504cd.bin": {
-      "bytes": 5552,
-      "sha256": "d7313bc189a576ca06c4352775108ae983989c8e0cfb9b70f07cdef257f504cd"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/d92a33e2a77099b081abda0532e65d3330721188df108b6850bc00a0aec2bc08.bin": {
-      "bytes": 5068,
-      "sha256": "d92a33e2a77099b081abda0532e65d3330721188df108b6850bc00a0aec2bc08"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/db2071acde161bb8f43bfd6c571bf479ba5f5f8a4a48075c2db7909aa5f6402e.bin": {
-      "bytes": 189240,
-      "sha256": "db2071acde161bb8f43bfd6c571bf479ba5f5f8a4a48075c2db7909aa5f6402e"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/dc1078b3d5736900105feb2bf5c0b8bdb65c62cf3e5d81f448eccc1a71fda5c6.bin": {
-      "bytes": 1847884,
-      "sha256": "dc1078b3d5736900105feb2bf5c0b8bdb65c62cf3e5d81f448eccc1a71fda5c6"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/e34b75dab23908e7f62ef4d3dc40c4c86182fe3b3c542205dc242ed56c0a9711.bin": {
-      "bytes": 262596,
-      "sha256": "e34b75dab23908e7f62ef4d3dc40c4c86182fe3b3c542205dc242ed56c0a9711"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/e3da0cd2a7df2a619bbc75cce23e61b662a8feaeb97e90414ac6acf5f4bb1909.bin": {
-      "bytes": 1099516,
-      "sha256": "e3da0cd2a7df2a619bbc75cce23e61b662a8feaeb97e90414ac6acf5f4bb1909"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/e8fcab8f1ef237d1efed571f32706e9e95244d9eaa7b7798bc1d555ba4c82c49.bin": {
-      "bytes": 236904,
-      "sha256": "e8fcab8f1ef237d1efed571f32706e9e95244d9eaa7b7798bc1d555ba4c82c49"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/ebc1a1c88491ce9a6c4470ab7573526ec919bf6417a3530ca9e216a2a04c9dbd.bin": {
-      "bytes": 103484,
-      "sha256": "ebc1a1c88491ce9a6c4470ab7573526ec919bf6417a3530ca9e216a2a04c9dbd"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/efba4966ebda0552a6b29ecafbb644fe1b999c214b00e539393117874346fb2b.bin": {
-      "bytes": 9640,
-      "sha256": "efba4966ebda0552a6b29ecafbb644fe1b999c214b00e539393117874346fb2b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/f1bef4eb7eaf9a1a4b4b44783296e0e74cc066d38902bb55f9dc0697db93af35.bin": {
-      "bytes": 248016,
-      "sha256": "f1bef4eb7eaf9a1a4b4b44783296e0e74cc066d38902bb55f9dc0697db93af35"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/f613b4de3d42d6c14c028dedcd94d7000c8d38d464db074709d9cbdcb729ab15.bin": {
-      "bytes": 119084,
-      "sha256": "f613b4de3d42d6c14c028dedcd94d7000c8d38d464db074709d9cbdcb729ab15"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/f65f221d0525bd7741ca64aa6aff4aec7d75890e96eac3891bb84efff655c706.bin": {
-      "bytes": 84996,
-      "sha256": "f65f221d0525bd7741ca64aa6aff4aec7d75890e96eac3891bb84efff655c706"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/fbd71e085391680ce83cbad5d945d77f5f8d055007cbca0e98eb5205cd271b8b.bin": {
-      "bytes": 5552,
-      "sha256": "fbd71e085391680ce83cbad5d945d77f5f8d055007cbca0e98eb5205cd271b8b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/fc35903d5825f33abba5ef622fd7e33f9660f99d4c5bc5761c20eec6f07f44a3.bin": {
-      "bytes": 63596,
-      "sha256": "fc35903d5825f33abba5ef622fd7e33f9660f99d4c5bc5761c20eec6f07f44a3"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/fd24cfc88037bc04dc32844842452f11160b2affe333bf77044e1c009b44ff6a.bin": {
-      "bytes": 5068,
-      "sha256": "fd24cfc88037bc04dc32844842452f11160b2affe333bf77044e1c009b44ff6a"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/fe62a572c52a0460956b0ff2bd85cc07cb68239b3ddf2388b6923f1f06402f5c.bin": {
-      "bytes": 478732,
-      "sha256": "fe62a572c52a0460956b0ff2bd85cc07cb68239b3ddf2388b6923f1f06402f5c"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/meshes/ff9d0f9d144a28b7e65af8e8c309aa4fe61ab0a32f67b61efc1f8d19d86ea85e.bin": {
-      "bytes": 39140,
-      "sha256": "ff9d0f9d144a28b7e65af8e8c309aa4fe61ab0a32f67b61efc1f8d19d86ea85e"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/migration.json": {
-      "bytes": 277259,
-      "sha256": "1490f0744aaee950c27a3f49e0bf37efff5ea27515f29b948152731da4137d36"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/mount2025-blends.js": {
-      "bytes": 129227,
-      "sha256": "d0d1e3b2f26c04a02d81600dc48a17b69f9ce5f59a7b4d0c855fca47253ed22e"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/mount2025-stock.js": {
-      "bytes": 3903,
-      "sha256": "7b6223ca93be5d90380ea87f9266c78ae7bd2dd042e9352b6ce91160b4fa5337"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/mount2025-trims.js": {
-      "bytes": 3050,
-      "sha256": "b29d0c822a925312900c7daee0ef404b1df2de2257c0971c2b397e2b13556c65"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/mount2025.js": {
-      "bytes": 2284,
-      "sha256": "24ff7d294d2d21d41860f1b9c0a5d9babdbebaf03f0536dc8da42e45ae0766cb"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parametric-spline-data.js": {
-      "bytes": 2276,
-      "sha256": "888664a4409e98085f547d38e61749b5662647756c2227b101486112944addc1"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-2-rounded-hex-24-996-l-13-75mm-od-10c910583edd.js": {
-      "bytes": 3175,
-      "sha256": "5e895b562771c03d3404d75f17848572b58ca69e44bd1c990361a8570e4c280f"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-2-rounded-hex-7-843-in-0157e962a79c.js": {
-      "bytes": 4779,
-      "sha256": "62ae64ef3bc28400ddc34a1db7b30e1ae654e32a0f12f1870cf67bebf272f9b0"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-2-rounded-hex-8-19-in-9da79a5073f0.js": {
-      "bytes": 3532,
-      "sha256": "fef7c7e8ec2d9bb78ec930054ac8d1b8c2165a2dc3d60e76f8f2e0200cf3d7a8"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-1f8371dac9fe.js": {
-      "bytes": 3229,
-      "sha256": "4268144cfcd0cff82d9cd6d0e290e63229bab87943fbad3e96331def5d25bed4"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-2457503da660.js": {
-      "bytes": 3239,
-      "sha256": "2f9239c04a09f75973f52655b127a794af496c581cdc52895ea108f1797e5bab"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-43606f8e0a26.js": {
-      "bytes": 3229,
-      "sha256": "4268144cfcd0cff82d9cd6d0e290e63229bab87943fbad3e96331def5d25bed4"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-567d6aaea52f.js": {
-      "bytes": 3240,
-      "sha256": "532651531ba42f8915a4f99e666900643178de0865a6fbebfad0639736764756"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-675257026dbd.js": {
-      "bytes": 3221,
-      "sha256": "6c2a634429388cc2a934ec7510f11671501d288eaff134f216482c83a299f999"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-8eda9bf1c576.js": {
-      "bytes": 3236,
-      "sha256": "856879481e582a47503ea81993c2ed7e76bdc0bebe542bdafc7d66fa559a7886"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-993862eff2a0.js": {
-      "bytes": 3250,
-      "sha256": "de39ac8a6441110b9e92ad9001c80c21a1d8c7fe1c6e4c4773def3fd397e780b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-bbc9e4f9f516.js": {
-      "bytes": 3239,
-      "sha256": "e7d26ea60a48c93b5c364af039bf63955c8fec96ed8abad2f0e3351c04bede3f"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-db680514e5e4.js": {
-      "bytes": 3239,
-      "sha256": "e7d26ea60a48c93b5c364af039bf63955c8fec96ed8abad2f0e3351c04bede3f"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-e33f357a272b.js": {
-      "bytes": 3252,
-      "sha256": "07feddba84cdd04a74fa63647453cb4cdeb311e8386f3752a447c06065541f03"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/3-8-rounded-hex-2-565-l-10-25mm-od-130de71a8862.js": {
-      "bytes": 3182,
-      "sha256": "79ea85b69d4f797d3a28dddd6e0b603f9b6c8aaa3065874470f6df7158cc7646"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/3-8-rounded-hex-27-565-l-10-25mm-od-f36724821bc0.js": {
-      "bytes": 3183,
-      "sha256": "a2a296a80cd9fb364f76000b34be4f0fe2e7f5d2d8d53b71c755fc639887629f"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/back-rail-15991ee5f759.js": {
-      "bytes": 16558,
-      "sha256": "488f0fa2720aaa66391741bd800e86f634e7ca822bedef0694a6a67d1dc7b4fc"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/backlash-remover-left-side-c70badece837.js": {
-      "bytes": 316,
-      "sha256": "010498b3284be9c5be526c0ddd85be9cb48ec581c54b3897268f4bb5a58f2089"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/backlash-remover-right-side-fe6bf528179b.js": {
-      "bytes": 181,
-      "sha256": "0197ae99c392865cd8631cf7627b2b288259009dfac8ce1037de7fa0f2aa8d93"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/battery-plate-3564a64afaca.js": {
-      "bytes": 34850,
-      "sha256": "8b655b1fbdff1ddf79aec9c3ff764b3434d64f08abe55698efc51be195c9d899"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/belly-pan-6b59cb2988d9.js": {
-      "bytes": 20410,
-      "sha256": "17afdb575543a85c69b5e110680fc0ebce00cd20ad78a07a8b2d111e8f619c36"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2024-130-001a-4dde5764e7c3.js": {
-      "bytes": 5742,
-      "sha256": "a9c8c6333e64898e2e72998f57055e8ac7d71595b627d947afaa4f5c093744f0"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2024-130-001a-704f10f175a7.js": {
-      "bytes": 3761,
-      "sha256": "a2b9c579df6c7d507ab88295fd89be4f3ac3ede5d98eed87f0a5501e08f96034"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2024-130-001a-77cd209a4fb2.js": {
-      "bytes": 3761,
-      "sha256": "6893d6dd4a6064cf5faf696ad5668c4146d3ee4fdfc60fc6f16ae4b818dbcc64"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2024-130-001b-432b77e608ad.js": {
-      "bytes": 11057,
-      "sha256": "6a39dc19796b79c5783beae2bc3ffbadbc9d9e266a9058ca3a1dd8944c6a1cd9"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2025-100-022-e288be426a61.js": {
-      "bytes": 260,
-      "sha256": "7169ed63d703cd79fdc232af9bc15211f6de68877e48df490779ae68827b338b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-300-002-000a3a334dfd.js": {
-      "bytes": 16832,
-      "sha256": "843e9d0999be9740b8839841064365c7ac8ea0effe88b115afa7a8221d669889"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-300-003-02272cafbb8d.js": {
-      "bytes": 967,
-      "sha256": "1fcb0d54059e5c2ade2944cd41861fdc7c24a2b87d881954d2c7296fb297534f"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-300-008-3e3227464e72.js": {
-      "bytes": 5810,
-      "sha256": "1f7de105244c7e39caf9cb489867ca28f62169dd4e7bd93862e3566941096c8a"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-300-009-06a532f8490e.js": {
-      "bytes": 948,
-      "sha256": "a7d4f117004d67c22441dfeecff2caddd773afa7cdbca37c0a077f521f169ff4"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-001-105a60cebde5.js": {
-      "bytes": 143012,
-      "sha256": "0434adfb22adb09bc9002271137fafbd150576a8b68c2daabb3cc3f52c4cf903"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-002-244af0c35fdf.js": {
-      "bytes": 31565,
-      "sha256": "972e59a09eba9e747ca2cb478934b21f287feedfe6229578d36a5b134e732140"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-003-d75b78a75baf.js": {
-      "bytes": 18560,
-      "sha256": "6a10222e71f34cac617c8bb25ce49a3ad6de7330915b22eec9dd5256e322efb7"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-004-e75cfd713fd0.js": {
-      "bytes": 16004,
-      "sha256": "6ca52c3e669a236723595eddc73ba2acdd7eb88016e0230f8f65546240ad6046"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-005-b5b879a8e88d.js": {
-      "bytes": 3220,
-      "sha256": "46375f123b853a855e99c2d84b3423a68b36d81900b487ec5b605c5810227d67"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-006-3e1d72d87606.js": {
-      "bytes": 5270,
-      "sha256": "852a4eeb81ac80e450311eb43dd5b99b2b2b8805dd24417f80f91edbe1eba879"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-007-9ba359d7e17c.js": {
-      "bytes": 3219,
-      "sha256": "7cc5fb76ea2c8d07b941ba81a7a6d2394820310275218bdc4817092e3dd38a8d"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-008-258aaf2b1a54.js": {
-      "bytes": 48982,
-      "sha256": "0e29ad5bfa450e54130a2ec9800829973674fb9a919363604b2e50daee48ef54"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-011-15b0e1706e9e.js": {
-      "bytes": 19370,
-      "sha256": "7cca914caae81de4fa0e012f617e2587b94d261fdbaab972940521606939e006"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-012-ba26c88f549f.js": {
-      "bytes": 12201,
-      "sha256": "6519f4602b5d9193f0a7bb16eb332d8f3bc45c6b1810e3c779d0adf32b76f9ba"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-013a-d230e0921e95.js": {
-      "bytes": 8510,
-      "sha256": "77bd85b2062895f3cc3d01310f23ed1d7c50183f739afb2efe61a2869d4631cb"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-013b-10a3b616a4ed.js": {
-      "bytes": 17829,
-      "sha256": "6231c5f603254973ecd5323e69bdb05ba90f50d1217c36f641b0633c0d3865cc"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-014-top-d26859488e35.js": {
-      "bytes": 77,
-      "sha256": "ffaa7f818db6a5f58b78f42739bf8c45073711cccf1f2dfb17d0fd5ac77137f5"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-014m-top-22ebd4ced951.js": {
-      "bytes": 73,
-      "sha256": "8ae88268e259036f2e1c99c01edaa42375f67de8a54ed91dfaafcfc6f5283cde"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-017-821e3e1f1842.js": {
-      "bytes": 62,
-      "sha256": "626d639eaaadf0e126dc79ace037452547de65b7d469e022bf052273d7729a90"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-017m-fd4f5acaf62b.js": {
-      "bytes": 63,
-      "sha256": "8a9f2e56a49ad514878d054d73df7f2675280e528367c1af75060ddb64d2f790"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-019-8e4b63bd1867.js": {
-      "bytes": 66,
-      "sha256": "99f5fdd8210268a865dd6dea1b66d0b7ddb119f636513685ae88b269e8dbee6b"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-019m-2e0b774f61c1.js": {
-      "bytes": 73,
-      "sha256": "b3c0f370956315a8227929ab8d3166c0991036fdf785615e8e9f05bb84784fa4"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-021-fa82999a309d.js": {
-      "bytes": 5994,
-      "sha256": "1aa63f5d85854cd1bc46dd6815bfcbe311cef59a7f0768dc691236a032e3b372"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-022-64c66d54eb11.js": {
-      "bytes": 67,
-      "sha256": "82c5e1ddd0671d99b813c8f809b219316bdcf3c30d95b50f06880ce16b2708e6"
-    },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-022m-005027036523.js": {
+    "examples/team3310-rebuilt/source/cad-assets/robot/models.py": {
+      "bytes": 3276,
+      "sha256": "87f8514801f4942c73cb65040ba03432d8dfb029ea8036cac3feea2e19fdc2f5"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/README.md": {
+      "bytes": 3360,
+      "sha256": "575588567b86313b26681e43f2cb5e04fde7b82961dcf32eedf6727c9806cd8c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/backlash.py": {
+      "bytes": 15479,
+      "sha256": "ef78ef2bffd5ee2430429f39c2293ead10f8b38d034cdee8f4c25c9252880fb7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/brackets.py": {
+      "bytes": 13724,
+      "sha256": "72c1e80548eb3f77812ac214215cb1f8f58b625378fd72d19e404ba23cf0aa43"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/corners.py": {
+      "bytes": 5951,
+      "sha256": "b00376f44efa321c050b5e70e96a535a89138e85d7dc9bd38490ffb3bd337314"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-2-rounded-hex-24-996-l-13-75mm-od-10c910583edd.json": {
+      "bytes": 3184,
+      "sha256": "fb77b0ec97287f473c886681dae21d029197ceea65003fc874430227f40e96db"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-2-rounded-hex-7-843-in-0157e962a79c.json": {
+      "bytes": 4625,
+      "sha256": "15b7e13ef7cd4ab95ab4f56d1c198128f6b7f60b1125848ae51d2444a96a7cf7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-2-rounded-hex-8-19-in-9da79a5073f0.json": {
+      "bytes": 3599,
+      "sha256": "c6369c7bc7fa59bc2a37fe57e3d76fd94c2319ad69676844425287f280b9a94b"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-1f8371dac9fe.json": {
+      "bytes": 2878,
+      "sha256": "0a0cea6dc2f431e017675b13006fa06f409ec63184b69a7a9ada0dd878a1effa"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-2457503da660.json": {
+      "bytes": 2888,
+      "sha256": "f85bcfaa93fd8d9bf1e1252c712a69bf5f37c7833a35463ee49419f21a86b5db"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-43606f8e0a26.json": {
+      "bytes": 2878,
+      "sha256": "0a0cea6dc2f431e017675b13006fa06f409ec63184b69a7a9ada0dd878a1effa"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-567d6aaea52f.json": {
+      "bytes": 2889,
+      "sha256": "921a9239924af5426815c028282e12fef1a37de83db33f3e453d7cc3e2ddacf2"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-675257026dbd.json": {
+      "bytes": 2870,
+      "sha256": "ebd7713f8cfcf8656f61d9a4d77abbac50a5faeccd0b6763d98919495a16bd60"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-8eda9bf1c576.json": {
+      "bytes": 2885,
+      "sha256": "c88b7d1b4a1df3e98afeb78dabd1dcdae4f8673042f5ceb4c20952273abf3803"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-993862eff2a0.json": {
+      "bytes": 2899,
+      "sha256": "28330512f5bb13c91fe1bf96e05982774c2167b8db4a07683f1052a0f9da281f"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-bbc9e4f9f516.json": {
+      "bytes": 2888,
+      "sha256": "81d225ab87bb371c3957bedd4cbfbdf79647303d042788f96ec163cf040872c6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-db680514e5e4.json": {
+      "bytes": 2888,
+      "sha256": "81d225ab87bb371c3957bedd4cbfbdf79647303d042788f96ec163cf040872c6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-e33f357a272b.json": {
+      "bytes": 2901,
+      "sha256": "e53165db37b9064cfd88e12f3c092f2b3e66cc00a589abece96588dcac82b93d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/3-8-rounded-hex-2-565-l-10-25mm-od-130de71a8862.json": {
+      "bytes": 3192,
+      "sha256": "be5cde3ac8b91b1c502239781beeb8119afc0c3adcd1044c91906d0ab45a141d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/3-8-rounded-hex-27-565-l-10-25mm-od-f36724821bc0.json": {
+      "bytes": 3194,
+      "sha256": "b90c4510680fd7badcbb3d5f7a82ce714694503b59dcae2fcf80ab3e04b4477d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/back-rail-15991ee5f759.json": {
+      "bytes": 17767,
+      "sha256": "51e5360b3756edb4fa0cb26e1b905497e9688bdf7d46e40a0c084564458fbb24"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/backlash-left-stock.json": {
+      "bytes": 7601,
+      "sha256": "b784371922ebea9949bbe1f1641cf56282cac9e50ec88faea1b7c34379a982f5"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/backlash-left-trims.json": {
+      "bytes": 10446,
+      "sha256": "f4a600af68ce9d63b3dcc53a179c7b0f34d81ebf99f2cb6d9188ef309776ca32"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/backlash-remover-left-side-c70badece837.json": {
       "bytes": 68,
-      "sha256": "141244a0fab03d2ab82ce9af66ea3986e7719ca81b7a7490cc01364ed0e608ea"
+      "sha256": "1c4d12cb3b878d3a3493f44b993cc1e73b58b02cf76549573c85c7afc6fefad7"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-023-fca3921ce554.js": {
-      "bytes": 5007,
-      "sha256": "92a6f0dfb7e4c52f79488b4b7ad6bf2e12ea80b3ed0e36414a12f0b51e27279b"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/backlash-remover-right-side-fe6bf528179b.json": {
+      "bytes": 68,
+      "sha256": "2a776e750e9cf2d4fac8a239cd29d84340bc6e24ad6dc4d34051c5ca5bc2aa04"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-024-20687e021f36.js": {
-      "bytes": 38880,
-      "sha256": "e1a84b72c9015c44f58e1c4545547eadc8508334f463a2c005977badfe95c07c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/backlash-right-stock.json": {
+      "bytes": 7347,
+      "sha256": "0fb8da27650f76d2058b5bf0fad65990493c85acb927dba1a8d4d233b93fef0f"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-027-34d684a8c9de.js": {
-      "bytes": 325,
-      "sha256": "a2dad66c02f01f0f314bdc09d81e0b53dd767eb362ae16b9d287c5506a2883e6"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/backlash-right-trims.json": {
+      "bytes": 34676,
+      "sha256": "6091b11314f3cb98acb8f1cc6f3a98bee8f438d45fd7b5016550f7c811c8ec04"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-027m-538f738485fe.js": {
-      "bytes": 327,
-      "sha256": "aa843c89fb727af081c9aebb25fabd6faa3ffa1d55c3c2adb5cac024755a0ed5"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/battery-plate-3564a64afaca.json": {
+      "bytes": 38482,
+      "sha256": "0b57065453bf6531cc8dbfed8d006ac89d7408e464629b73c5159fc218a5b23b"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-032-5dfd19723c27.js": {
-      "bytes": 964,
-      "sha256": "8386f7c5134cad94bb6e96ed969b0b21a71dcb40d2a8bc2560bcb8dae58b52e8"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/belly-pan-6b59cb2988d9.json": {
+      "bytes": 524755,
+      "sha256": "4abf26ef41d519907359418a3e2f20a1f859f0a9bd344e299c31c95e244e651e"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-033-178be009fceb.js": {
-      "bytes": 30583,
-      "sha256": "0ddcdd20bc5808447b0a695e1e9490ef81e9a51c353ed5f7ece8227ec192fb85"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2024-130-001a-4dde5764e7c3.json": {
+      "bytes": 6120,
+      "sha256": "e42fc55b3fc767d5d2ae37f711efcd62d41907dbb31bad33142f780dc5bcf7a5"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-034-cdf7d621b44d.js": {
-      "bytes": 17564,
-      "sha256": "4cdf8d3df22223adcda4ebe2e66ef4d379c911b7802cacc8693440cadf1b2c0e"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2024-130-001a-704f10f175a7.json": {
+      "bytes": 3843,
+      "sha256": "702587061f843eb5e33aed532325d9e94b1a56a87f815f7b3fa410693a27e80a"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-500-034m-663a52158a5a.js": {
-      "bytes": 364,
-      "sha256": "16424932c0cb3dca053987f12c839317767a8c3c3bc40a6ae35f77b490aa90da"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2024-130-001a-77cd209a4fb2.json": {
+      "bytes": 3843,
+      "sha256": "103a9192212dd4484d60e40e40e85a61553e0db28a7041bbaa3ad487cdb98863"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-501-001-21b0618b94d6.js": {
-      "bytes": 18981,
-      "sha256": "605b923ec39e22e32514d2e302e5107809b46b4080212e375776584b79aa233b"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2024-130-001b-432b77e608ad.json": {
+      "bytes": 12091,
+      "sha256": "449e9f7fd14cfdc83fd6578a94cc73a2f18980c6a1c177330360f9635add9a0d"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-501-002-154ce885e9c6.js": {
-      "bytes": 14828,
-      "sha256": "6e4505571bcb15e0039696f0477ee14a656db310f8c2fb86e95cc6ac299e3d75"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2025-100-022-e288be426a61.json": {
+      "bytes": 84,
+      "sha256": "496af9474aa25c9230dec652fe6694905e6d1e99a510da5ce4e23b894b43ff22"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-600-003-ea37fa06fae4.js": {
-      "bytes": 6869,
-      "sha256": "3f6969d30900440534d2188399f0946fb4349f58109d2314c74bf9c8eb762b57"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-300-002-000a3a334dfd.json": {
+      "bytes": 18493,
+      "sha256": "a3f65b5947767869b7280fe14152397f49d9da9ad43f62a7ce03c7bca3d9e531"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-600-004a-fdc0673fe431.js": {
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-300-003-02272cafbb8d.json": {
+      "bytes": 704,
+      "sha256": "8fd8fb09d976499d2824ddddcf4f6d6c7243e57b2b5d432d77bce65661903aae"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-300-008-3e3227464e72.json": {
+      "bytes": 6187,
+      "sha256": "304a296a81860d7dfa93480e8fa033c5e7e015f01a38293c210ede7fb30fa3fa"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-300-009-06a532f8490e.json": {
+      "bytes": 685,
+      "sha256": "606013d193ce117e31271f2f923275e2c784842f5cb52f93a8cff8683c9b54d8"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-001-105a60cebde5.json": {
+      "bytes": 158973,
+      "sha256": "1e0ca70f77a165886daae28b836485abe80da9d6491c23646be1ff4c5deca40a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-002-244af0c35fdf.json": {
+      "bytes": 34968,
+      "sha256": "a00916ebb4609b32fdb1139ba7e854059480497a56b99e4c7d5417bc349b84c6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-003-d75b78a75baf.json": {
+      "bytes": 20455,
+      "sha256": "1b6641383a006dc17640b67e4fa7a3914af14bea714dc0d23043d3c9ffde4357"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-004-e75cfd713fd0.json": {
+      "bytes": 17475,
+      "sha256": "2c3e6879923abe93495d0b2e328e1d21969f80a9279356cee8ad5c2bc934e434"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-005-b5b879a8e88d.json": {
+      "bytes": 2943,
+      "sha256": "3aaa000a7532fc98e155818a16fb74adda7b2b8648034d0db082fcc032fbf7c8"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-006-3e1d72d87606.json": {
+      "bytes": 5523,
+      "sha256": "0a51095d74bf2e769fa801873c6de846d4431ce85194a271570e0f7eab149370"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-007-9ba359d7e17c.json": {
+      "bytes": 2942,
+      "sha256": "774bd6a47d686f025bef527ebdfe2bd19da07075260b14fc0b9a40598e6254ae"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-008-258aaf2b1a54.json": {
+      "bytes": 54227,
+      "sha256": "f67934e971bb68a427b65ab14f2d052720a752a96687adce4c8bd3456c902aa4"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-011-15b0e1706e9e.json": {
+      "bytes": 21415,
+      "sha256": "ca5ab9a1b7632018fde6dde0c8fff8919d08653d2cb5b92cc06e9300ff247fbd"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-012-ba26c88f549f.json": {
+      "bytes": 13276,
+      "sha256": "a8417b7ceb536f8285e71262505681a0a3be5fdfcd1188afe49cbb4d01f12d60"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-013a-d230e0921e95.json": {
+      "bytes": 13417,
+      "sha256": "38d461d7c7c757cd7789abe763149dfcdf63075d83e8894248d4fba2187d66ab"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-013b-10a3b616a4ed.json": {
+      "bytes": 41288,
+      "sha256": "925ac1ff93c4a4730d4d1a6b5cadacfca7b3317f8826f83a65098389cf997384"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-014-top-d26859488e35.json": {
+      "bytes": 45,
+      "sha256": "93b750b2fbac465a41a43e147d07dea1d484c39a4f4530386a00cfaae68cbbee"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-014m-top-22ebd4ced951.json": {
+      "bytes": 45,
+      "sha256": "93b750b2fbac465a41a43e147d07dea1d484c39a4f4530386a00cfaae68cbbee"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-017-821e3e1f1842.json": {
+      "bytes": 61,
+      "sha256": "4838ec007cb1c3dff24c1dfc2d3112b19dbf90961e214e468e790d55d4d5d18e"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-017m-fd4f5acaf62b.json": {
+      "bytes": 91,
+      "sha256": "e11a6b8a3ae71f65fa62f1a8f82cec9b5d2d9e1c8b00917621558a528a71f5ea"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-019-8e4b63bd1867.json": {
       "bytes": 59,
-      "sha256": "c90120b2ca54574de7247f6bc99739e3660c1863d1e6f5b5fdee1b3f7504e1ad"
+      "sha256": "906f771db557be77985cc550d252b691f8c2e26f582b75c73eaa1a251da61977"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-600-004b-5c0ed452f82d.js": {
-      "bytes": 60,
-      "sha256": "7ab0e1ee0d46e84ee643c4680b38a4551072294ea17874203c246c23b0441a0d"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-019m-2e0b774f61c1.json": {
+      "bytes": 59,
+      "sha256": "906f771db557be77985cc550d252b691f8c2e26f582b75c73eaa1a251da61977"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-600-005-1a0fc844ce6e.js": {
-      "bytes": 4521,
-      "sha256": "e6f0f245359da25c95b0c8470c25d2309f5a264a0df26fdb34179895939d8b5f"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-021-fa82999a309d.json": {
+      "bytes": 10000,
+      "sha256": "a64900da8edd5461dbab17c9e698e3a1753fbb7331525cf7f0e3c247d47fe6a0"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-600-006-2aabf8888b9d.js": {
-      "bytes": 3696,
-      "sha256": "15c20e8cf57312c8f501c6f0227c09bdf8035619a65782cb7fc561f89cb33e3f"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-022-64c66d54eb11.json": {
+      "bytes": 61,
+      "sha256": "4838ec007cb1c3dff24c1dfc2d3112b19dbf90961e214e468e790d55d4d5d18e"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-600-009-55277c8c2a54.js": {
-      "bytes": 2718,
-      "sha256": "426784bb89d3e4891d9f53ad9b8aafb12622625bcb1cb6d75e95d51fa3520680"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-022m-005027036523.json": {
+      "bytes": 96,
+      "sha256": "a2012bf10ba36e5d3abd21274f44325d5c2621ffac3389ffb1279b41794ab724"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-704-001-2410118654f2.js": {
-      "bytes": 16516,
-      "sha256": "7916196f4a293d91c40c8937d3aabcdd6d8703c3ea7b866283ef82aee24ff69c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-023-fca3921ce554.json": {
+      "bytes": 4108,
+      "sha256": "7531d2a7cd43a7ff10de45f8c035cff185efe5295be5facbbbfd59158cd7591d"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-704-002-1652ef623ba8.js": {
-      "bytes": 19281,
-      "sha256": "10578c77dceefd4027886a23fe38047956c17a4cf48339b4b86c95cb47c6af28"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-024-20687e021f36.json": {
+      "bytes": 42858,
+      "sha256": "442acc36a4eab2fc6f79b2bd73357e58f19c1998e521276135c6bfee1dcfc07c"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-704-003a-3a3fa010a23b.js": {
-      "bytes": 13008,
-      "sha256": "224e1d7c1771cc0101c185abe7811db81c8e3e21ba65b96730b3b90e09451cf4"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-027-34d684a8c9de.json": {
+      "bytes": 72,
+      "sha256": "c1523e846a7220c8ff05d0160ccfb37e24dd3f453570f72cc0727ed292093719"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-704-003b-fba19a426349.js": {
-      "bytes": 13007,
-      "sha256": "84587f0f57276ad9ac6e3c725069334f616d45706cf8e1afd6481a8801fa676c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-027m-538f738485fe.json": {
+      "bytes": 72,
+      "sha256": "c1523e846a7220c8ff05d0160ccfb37e24dd3f453570f72cc0727ed292093719"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-704-005-8e25fe6858d9.js": {
-      "bytes": 4316,
-      "sha256": "d65f0179f94daef795d00d41844a106d00d328aec291f71e42ec42d3cc5b1b60"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-032-5dfd19723c27.json": {
+      "bytes": 701,
+      "sha256": "16b3646c4096c3d0214f9c6af665138e32d7cdcd302066b9c1be66271eae5f57"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-704-010-89a3449bb12a.js": {
-      "bytes": 5970,
-      "sha256": "cdd2304030dbfae95809d7a3f3a0aa9532a3cc29e7414c59117adeb97cb696e0"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-033-178be009fceb.json": {
+      "bytes": 56194,
+      "sha256": "b385971d9ec9743ca0fade360ea0206e1e9ac6962165237abb2ec2e4a9af174c"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/bhr-2026-704-011-39792b4ea64a.js": {
-      "bytes": 40970,
-      "sha256": "245a4eaadf53aee39c0d0d4fea6d9c4b6dec58475fb54f8eb41ca85490397fa2"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-034-cdf7d621b44d.json": {
+      "bytes": 18219,
+      "sha256": "e27b98c3e885521de222481c41bff1d2fb9506a70a7d19e453d67d72e38bfdbd"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/black-wire-1-fa8cc576b6ab.js": {
-      "bytes": 1761,
-      "sha256": "425359b67e9f0adaa6de299857c59f87240f8aa34d3a216383a10da14bb2438b"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-500-034m-663a52158a5a.json": {
+      "bytes": 68,
+      "sha256": "59de36aec485304fa4ea855390e9940a0aec1a3c9b2bcd97ecc1b6dbdfbc3254"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/black-wire-2-f69d9c79342a.js": {
-      "bytes": 1770,
-      "sha256": "0b2199603f332d71dedd9eb4bae6879066a2cac738b66dc05606543d358e4f61"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-501-001-21b0618b94d6.json": {
+      "bytes": 20854,
+      "sha256": "0ccfca7d0d0ecfa8680dd78eeb3e9c2370240f29b808269601a9d6d31b5e0ead"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/can-wire-1-4fb295069a53.js": {
-      "bytes": 1638,
-      "sha256": "1d829c2707971e24215b92d8fc22a2f75ef18006f9af5d0bca1afea0c6a619a8"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-501-002-154ce885e9c6.json": {
+      "bytes": 16297,
+      "sha256": "c0c9706f532e92db77006b236b8da4c4d3be430bec73b79ea076e9e3bec4cb4a"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/can-wire-2-6d1dd4a6ed7d.js": {
-      "bytes": 1633,
-      "sha256": "e07c4340049e2975b84662f7b3b9695878d081f481a8658319b92ac475aefbdd"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-600-003-ea37fa06fae4.json": {
+      "bytes": 6140,
+      "sha256": "9935cc5a3be50d2406f721c43dc57cf51b0eee0a6d00f809a893737485ea2d72"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/can-wire-3-b5f8e7694f0f.js": {
-      "bytes": 1636,
-      "sha256": "08f433e50b47d9aec5dff0df5ca88d7289acb7b5bbb3258bd0c56b65419ca849"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-600-004a-fdc0673fe431.json": {
+      "bytes": 74,
+      "sha256": "9787eb25f5e5ba10bc8852520d2b9d66cb4aabab2009d06ad20bfed3a8a6cb84"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/can-wire-4-a9c3166df384.js": {
-      "bytes": 1631,
-      "sha256": "15ac9d60af2c008767f761a994f6077a705dce3362ea920f8d9b7d80b78b8fd8"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-600-004b-5c0ed452f82d.json": {
+      "bytes": 74,
+      "sha256": "9787eb25f5e5ba10bc8852520d2b9d66cb4aabab2009d06ad20bfed3a8a6cb84"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/cross-tube-77658e64ee9c.js": {
-      "bytes": 11018,
-      "sha256": "7422689b10c26c0f1a514a6bf3f0b8d7ed3f0623f46dfffec6f67e5b5ebf942b"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-600-005-1a0fc844ce6e.json": {
+      "bytes": 4195,
+      "sha256": "26a93b1b370b0e7f59bae1861f4204e259d494a4c036253d7e7eceb700e508e2"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/front-rail-3d6ef15b73d2.js": {
-      "bytes": 15084,
-      "sha256": "daae3c6e0eddf899d35b6d4c3751b40f4a88e0c6e65f50362d344061e0c44c93"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-600-006-2aabf8888b9d.json": {
+      "bytes": 3769,
+      "sha256": "4c420262b842f761db52430c6d693747d50a2f0145adfb15ee23f652673bd33d"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/left-front-corner-block-a8312ccb6369.js": {
-      "bytes": 372,
-      "sha256": "012bf09cacf54cd1fe7a0cfa8e643e9ff0fb4bc5654eb3a4c5eaf95a2eac52bd"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-600-009-55277c8c2a54.json": {
+      "bytes": 3341,
+      "sha256": "db2151ec6a321b922be512a0d46f49b6d3e0da86df7be48ce54e53f7622a7e35"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/left-rail-1ee532c27934.js": {
-      "bytes": 33875,
-      "sha256": "f75017a9fe8d73e91ad04021aeb85fe1c373672e4e0ce31e7b5c19694b6ddfbf"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-704-001-2410118654f2.json": {
+      "bytes": 18057,
+      "sha256": "8a43193356c6ac52372bc2f9d7275fe65bfcf9796a5a27e63d9b482c98065bc2"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/left-rear-corner-block-3112b49a80b2.js": {
-      "bytes": 248,
-      "sha256": "3ccd79315d65e88c5c28efca292858bc6e96d63a8a583d32a18e4d3af808c878"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-704-002-1652ef623ba8.json": {
+      "bytes": 21144,
+      "sha256": "aa93fb2c31308faaa00ec2f2559a6269950c95fa23f996f3874b8f8c3dd8b930"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/origin-cube-c4333aff6108.js": {
-      "bytes": 431,
-      "sha256": "3df26e5aa3b439b240316772a030e8b0e45b2330cb7a05481cb21fa001403224"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-704-003a-3a3fa010a23b.json": {
+      "bytes": 14116,
+      "sha256": "c172cba874049913dcf251987e471dd1468d3f247438b3cac7bf38463eaf1cca"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-1-fdc3301b3e8e.js": {
-      "bytes": 8537,
-      "sha256": "539c6cdc435af24fadf0970494415733ae4962f85b9fef32a51ba94c2a71b048"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-704-003b-fba19a426349.json": {
+      "bytes": 14115,
+      "sha256": "84dca414ecb470e99665fe7188253756e3287b8bd66ee3fd08a4b8c69f62acd1"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-13-9970d95455ef.js": {
-      "bytes": 413,
-      "sha256": "dd37385ee6a9d2827bac1ce5561d9ab4d6b834b43cc17fa2912797dce91fbddd"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-704-005-8e25fe6858d9.json": {
+      "bytes": 4297,
+      "sha256": "dd875c8ade5831cb9c458b4ca8c48efdf05638382de22cabc654f04af1958c50"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-14-8abf4254dadc.js": {
-      "bytes": 418,
-      "sha256": "0efc2340a31e160eadde28d7d5e355a05a00fc42b75c2dfac5eae1946d5294a7"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-704-010-89a3449bb12a.json": {
+      "bytes": 4634,
+      "sha256": "b8e2ddb9518ab21c07325c3e588151c4ff0ac562d4ce4169033da7ccec1ea9b3"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-15-907c7ca283a6.js": {
-      "bytes": 406,
-      "sha256": "0e2e76862be19ed8acfe07a9a0339e77754fde7b08396655ff100a5de0453831"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bhr-2026-704-011-39792b4ea64a.json": {
+      "bytes": 45054,
+      "sha256": "c68a2301358d37e344a5a0d2a1b4a832ce9798d201a0548a1bc2cd89fbd52afd"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-16-3719e89e2b68.js": {
-      "bytes": 3294,
-      "sha256": "40393276460fc5ed191a7465308e034b6c14567b8d7b5c474ecec8e5cf697935"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/black-wire-1-fa8cc576b6ab.json": {
+      "bytes": 1613,
+      "sha256": "8b4b54f5669bf21db0fd7f16c8920b9a908c4d30e6be462711c77f92251880d9"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-17-dda90457e304.js": {
-      "bytes": 943,
-      "sha256": "6a2a2a3279f1fd9778eb10606bacee6566b3c29dffacf435d1571da6e4c0fcb0"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/black-wire-2-f69d9c79342a.json": {
+      "bytes": 1622,
+      "sha256": "a70c6e775d571ccaf66cf01d2fa7e53a76148f7ee049d0d2421d70529a52e674"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-19-5ee4e5fec190.js": {
-      "bytes": 13221,
-      "sha256": "63c27a46acfd62510274ea196a273c4c3ed351d7b4682d0fb3562fef1e7053ae"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket017-front-blend-data.json": {
+      "bytes": 95522,
+      "sha256": "ca3696e0f723a56fdd83e866962e6d7fb366972222eb71cdad928300c13e2376"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-2-688ce357daa8.js": {
-      "bytes": 6235,
-      "sha256": "a2ac927beed7dc7a7c71bdb6a819182f2d0d04f6cd9d12ee819a5e6860799123"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket017-lip-surface-data.json": {
+      "bytes": 93629,
+      "sha256": "6826e0d0c17795afffd59387bd9ad3a488e47f5bf0909d313b9d8ad02b851515"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-20-3b1bdb058696.js": {
-      "bytes": 13272,
-      "sha256": "fc664831260776024ad3bc64c9f79659112262f76c0d7af79cb086433163172e"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket017-profile-parametric.json": {
+      "bytes": 7532,
+      "sha256": "1eebb60303cea3dd502f70f9dd2d1a5e5179f8a3b9ca117f02800f6f70492371"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-29-4ed5484af5a2.js": {
-      "bytes": 3170,
-      "sha256": "3858161f69db9300d09112f25d6c74421ca9acc868b7e90823f44c3f1da53a54"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket017-rear-blend-data.json": {
+      "bytes": 95497,
+      "sha256": "a348ad5935a384b1a339fae8baa633e9b8787602c5f535fd067ca0eeb36cc667"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-5-03517a6d0148.js": {
-      "bytes": 7749,
-      "sha256": "ca3fc6ab920b1cffdaf17ca5a58905dc69492bd77ab433126e528b1e7078e2af"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket022-notch-compact-data.json": {
+      "bytes": 194733,
+      "sha256": "cb98c0d4e37dcf2e689ecc5880a984c37f49bffeebad7ba44c8f09241e0334fa"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-57-7033dcf6a029.js": {
-      "bytes": 1685,
-      "sha256": "6d0ecd6d233a019609750fbb8246cc16b8722ffb0616d1fe3b8ba0cea95486b7"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket022-profile-data.json": {
+      "bytes": 3651,
+      "sha256": "81e827c3fad13272606736f4127efa0280a16bf226727a6831e338e9d0181432"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-58-7efccbf29789.js": {
-      "bytes": 4973,
-      "sha256": "3b77ed46c767353418b346fa460751147cfac1698e646d8d4839b76b70dc909a"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/can-wire-1-4fb295069a53.json": {
+      "bytes": 1462,
+      "sha256": "3d6f781c6091cc5a6ce94e05d328fae70021c3f644adce1bb944ed2826213e76"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-8-b54e6b3bd144.js": {
-      "bytes": 10917,
-      "sha256": "515a1a271475ca0556231611d2226b68cce773419ee87c8d81288919df97f71e"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/can-wire-2-6d1dd4a6ed7d.json": {
+      "bytes": 1457,
+      "sha256": "028dcf83f6348944ef2391baf3830f18a4fa9b06a669cf95920508d0f03618a3"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-8m-cdb28235d4d6.js": {
-      "bytes": 8992,
-      "sha256": "448110a7546e42c683b5186602e7e952778f774f03b69e1e57dcf8e469eaf51c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/can-wire-3-b5f8e7694f0f.json": {
+      "bytes": 1460,
+      "sha256": "f28b82202119a879a0ec8d66154eda04748fee9003ee8cbdad994ebf9966886f"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/part-9-a1188eb00db5.js": {
-      "bytes": 11263,
-      "sha256": "e1ca2921fad16771d731eb0be8cddb8913413cfe2356cec74a4250dc2e1e4545"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/can-wire-4-a9c3166df384.json": {
+      "bytes": 1455,
+      "sha256": "952af89688d6db432c93487a52eee26873d5356b4d502874b18860c972067c6a"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/red-wire-1-982ad20a5fa4.js": {
-      "bytes": 1590,
-      "sha256": "67d83cd60ded9acf5f4e8111b5f6bec6b6fc4d4dc2ebea276df013507db49f75"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/corners-front.json": {
+      "bytes": 158251,
+      "sha256": "54f44df42b613fe9307b931e0854e8b7889dedee0356691858f238fa03cca104"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/red-wire-2-4f65121a1f57.js": {
-      "bytes": 1584,
-      "sha256": "9c6a13a04964b851af9353a79fe70d27375b3b5342ab9cfdb6ac83db1edd1616"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/corners-rear.json": {
+      "bytes": 254415,
+      "sha256": "4bf11dc46024eb6c446266c6916f092d689755f48bfde61ae25a46d0f145eb4d"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/right-front-corner-block-2f5e06f0b352.js": {
-      "bytes": 4075,
-      "sha256": "4c9c7c9bab8e8bac4cc82152f849c2f42b213f9a6f1355a3da0dee1bfb7894c0"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/corners-right-front-glyphs.json": {
+      "bytes": 2958,
+      "sha256": "c564651c8b68ec9856cf3711764471c375dbfc7841c37a5b5d20620ec81c1113"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/right-rail-7c45201869e4.js": {
-      "bytes": 31665,
-      "sha256": "46158fb6453dddb918103a2ebb94fc5f8c470974a0e3c02444aa914156b8e234"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/corners-right-rear-glyphs.json": {
+      "bytes": 4028,
+      "sha256": "1bbccc17565a16c11135f17fb601a6e420fe9a8e0e943b51652239ac89befa15"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/right-rear-corner-block-74b524db1283.js": {
-      "bytes": 5142,
-      "sha256": "b9d1b44738dd6db2bf6483fb72632a9356ba3b2eafc1b57f7cbf23039e76b02e"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/cross-tube-77658e64ee9c.json": {
+      "bytes": 12091,
+      "sha256": "bd70f47176420aa50f742bc7105a72b5a4e65942d2f18acb41f5d32a12677e4e"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/shroud-5023935d6e1a.js": {
-      "bytes": 175,
-      "sha256": "2220daaa87d99d2b9e379b22edd509907b43fa5dc4ab5619e81b432ac69c5ac8"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/drive-spacer.json": {
+      "bytes": 1930,
+      "sha256": "2b7af558adf1eeb4e10e09d5c6da31bfc6d7607fbf2ee6c18516380c73a740c7"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/tube-1-x1-x15-9cfd38f9d566.js": {
-      "bytes": 3678,
-      "sha256": "479376978c6da6cdde9163298570bf8cc933176d15cdef6909e1a8f390bc591e"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/front-rail-3d6ef15b73d2.json": {
+      "bytes": 16172,
+      "sha256": "6c7b4e718c8e6c5640bf21cd4896cacffc3f46e8b5090120c973bb449b5489ab"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/parts/tube-1-x1-x15-fc5a76267339.js": {
-      "bytes": 3655,
-      "sha256": "9b45646081b850afd050da5694199bff767d85031326a7d77aed54502b5cb8a7"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/left-front-corner-block-a8312ccb6369.json": {
+      "bytes": 9881,
+      "sha256": "08328883580fe9b9d8ad8c158920c6ba01edf36fefd0f032b07ed852cebf6d86"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/pattern-profile.js": {
-      "bytes": 675,
-      "sha256": "3b4e9d87ae62433709d22ff49e8fbb6fb33c34396440439c7799ea94e65eea21"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/left-rail-1ee532c27934.json": {
+      "bytes": 36808,
+      "sha256": "a07038c7b11cb4b6fd230353c554fbc6378014d24b71cfa0e3e0176f857730c0"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-blend-face.js": {
-      "bytes": 1359,
-      "sha256": "f7d17758fc1fc5f3253121628f9ea4e705c2edd64c986d2620d0af6da8adc859"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/left-rear-corner-block-3112b49a80b2.json": {
+      "bytes": 75,
+      "sha256": "5c1db61f4e6b7da425610ba2fcac4d68255747503d223b6164e1d0a6b28ac685"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-blends.js": {
-      "bytes": 497109,
-      "sha256": "7d1d2b920221b9b1a9818b1f9f4237b784a1a61314e0a12ef842d20eb5d0a2a0"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/mount2025-blends.json": {
+      "bytes": 129210,
+      "sha256": "b85e4a9d7267fe980965ed9836ac80ec41b8f146aba9a6c09e9986dee63bd83c"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-cap-trims.js": {
-      "bytes": 23467,
-      "sha256": "f387bffa2bbc5ab88a04f03ebc6c94f65b3fc97753c040c8f6ba03ac8e6c5dd2"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/mount2025-stock.json": {
+      "bytes": 1430,
+      "sha256": "310d1cf621e52b923cc214903c923319c0efae9c61b7a91a8164c9e2ca61c266"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-cut-stock.js": {
-      "bytes": 1162,
-      "sha256": "a883f4feea4015e7c82d5ba4972561373ad8dd23257c583f401228b9ef53a8b5"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/mount2025-trims.json": {
+      "bytes": 3033,
+      "sha256": "594a1f63db332164de86a0b6414a35a757520132bd9b5e13905eab7ac26f67fe"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-holes.js": {
-      "bytes": 194,
-      "sha256": "33aa4660c9dda5fbfb4967e49856742cf625020702d17a1f7790d25578b20de1"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/origin-cube-c4333aff6108.json": {
+      "bytes": 43,
+      "sha256": "0cb3f44671b42695cd593d126beb1c23f9998b0d050b9db3c8ff62796f924f3f"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-ring-stock.js": {
-      "bytes": 1701,
-      "sha256": "cd410590112b6443c6565b4f0deca83b529b2ec9f8a3adcef54e0e86cb35bd9a"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-1-fdc3301b3e8e.json": {
+      "bytes": 9184,
+      "sha256": "bd1741d1442d120ab39ef9e2b86db804b7b3c4be8490f31efd5adaed3d628017"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-round-targets.js": {
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-13-9970d95455ef.json": {
+      "bytes": 101,
+      "sha256": "c6cdc9f77688b2f4e6d3d48ae83fbfd52c19a42ab13a3ca5ebbd28ec07a40d64"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-14-8abf4254dadc.json": {
+      "bytes": 102,
+      "sha256": "42d490071a580892b0fe73f2fc3dd10c601c3329f4669f520622caff6ed6397d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-15-907c7ca283a6.json": {
+      "bytes": 100,
+      "sha256": "8fa9899e2ddb041ab1b851f2972e2b1542f4220bbf788843319bb88e14a3c23a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-16-3719e89e2b68.json": {
+      "bytes": 2397,
+      "sha256": "a8a1ce8b638a39b4142e3d6160ba35914c4f82d7d48977de5eadc4a491acbd90"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-17-dda90457e304.json": {
+      "bytes": 689,
+      "sha256": "67f2bee91c4136b06412e91e1b010ff970059d437fd00bf299c90210a432ff68"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-19-5ee4e5fec190.json": {
+      "bytes": 14421,
+      "sha256": "42c04a8f9e4aaf39ac685160ed77a94417f17353e9d710c25b4b7d17744728b6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-2-688ce357daa8.json": {
+      "bytes": 6640,
+      "sha256": "f6511f1492557a261c94d11dcf5465fa686705e0952602107a55743d83fcc23f"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-20-3b1bdb058696.json": {
+      "bytes": 14472,
+      "sha256": "af5cda1359a144a2544593d4a69ce045ff6b419c9ce89a2ee3f0800d7f3eaef6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-29-4ed5484af5a2.json": {
+      "bytes": 3212,
+      "sha256": "734a0670fe234177e578cc588d1e0dfd4f6a8c885dd636743eee7a001eb84725"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-5-03517a6d0148.json": {
+      "bytes": 14888,
+      "sha256": "0e842c9db54cb88d86e863ee38df6f4692cc028ce10e16ce4f035216811deb70"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-57-7033dcf6a029.json": {
+      "bytes": 65,
+      "sha256": "2f866445fdf33220760505624165d5efaa81634c38ee1adeba21182a3cb4ccc1"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-58-7efccbf29789.json": {
+      "bytes": 7213,
+      "sha256": "99548df2f1432b93dafce01b458fadd0bfcfc09006f693b45b068880300f65a8"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-8-b54e6b3bd144.json": {
+      "bytes": 21397,
+      "sha256": "559a00f28a00fb9cc323a4cf288a8b3cc1758dba76709298e5d71457e539ee83"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-8m-cdb28235d4d6.json": {
+      "bytes": 9734,
+      "sha256": "e5828589da2fab2fd9b45353b31d65f86278f3e9d9618b29d7cf49d14740107a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/part-9-a1188eb00db5.json": {
+      "bytes": 12252,
+      "sha256": "324b6dab979883940b6e42f125af7af9d92f1c3252062911b5b9aa4be957e3e0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform014-patches-0.json": {
+      "bytes": 496733,
+      "sha256": "3064d96de32596fd1a85db4fef8f91395a2fa78645665cd4e7fb4d0427ca2afd"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform014-patches-1.json": {
+      "bytes": 244422,
+      "sha256": "4441f57a2694ef239c24bec75365f50acab7d2207fe5878ca4079413c83ea0fa"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform014.json": {
+      "bytes": 219062,
+      "sha256": "f900df1ab68b71f4fc1c806fead23415d9c01125e79826c3977f8e5ebab68277"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform019-patches-0.json": {
+      "bytes": 504102,
+      "sha256": "9ede22d6ce4e7839940cfa21f01afd1b0073245f4c1d65f8d7c44b2f8d0500be"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform019-patches-1.json": {
+      "bytes": 503542,
+      "sha256": "edcf8e2e94c9bc5bad3eaff19b8802327f64128359214ed34db06ed12dd39273"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform019-patches-2.json": {
+      "bytes": 504844,
+      "sha256": "0ace1342d2e88142d7030b0cd7758d1e9e9e5a6f63d4627c450a669566104f66"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform019-patches-3.json": {
+      "bytes": 504614,
+      "sha256": "c3f6940f82b8d1dea8542e98192b263830b41e2de655d0c6f3b88e2adf2ca0ee"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform019-patches-4.json": {
+      "bytes": 253813,
+      "sha256": "515097f713b378a991c15cc42612b4a507612fedc243959536594967c2de32e0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform019.json": {
+      "bytes": 526313,
+      "sha256": "b447db964c5023e4253b6b1d40205cc7ffa36179e1f2048d0ad1cb975d10aabd"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform027-patches-0.json": {
+      "bytes": 497092,
+      "sha256": "fccca02db790f18297296b648bb88392a4dc2e5e6aaba0497d0ed25129042d8d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/platform027.json": {
+      "bytes": 514419,
+      "sha256": "778ffbc5d094dff2cf6c84545122fe92533ac911a4a3fc13594036316f600a09"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/rail600004-lower-candidate.json": {
+      "bytes": 16521,
+      "sha256": "3891d0fe136f056bbe5c0918fbbabb99ee07ef23dfcd2a51e9c9617acd52f951"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/rail600004-region-data.json": {
+      "bytes": 929081,
+      "sha256": "eccc71670d03e23b6aa7b44c8a4ac51a297770482d82d9a7274e89885ea4628e"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/rail600004-upper-candidate.json": {
+      "bytes": 545,
+      "sha256": "838c41068415cfbc5faed8a5b56d66864677651a66b51f944f0d4953790d8f4d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/rail600004b-lower-candidate.json": {
+      "bytes": 16058,
+      "sha256": "905e2ee3b6ed4122372bc4d8b44ee2d3e52fd6e72a1f0bfc086f82016635eaf3"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/red-wire-1-982ad20a5fa4.json": {
+      "bytes": 1414,
+      "sha256": "494b72665a2d0e043805a3e85e58e9a15cbc3e557fe3458ffaa7a5f0f6813cda"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/red-wire-2-4f65121a1f57.json": {
+      "bytes": 1408,
+      "sha256": "2ea3f1f8ff42f1a2a8549ba1e4c43290604818c331a5b1d6513e3bbec0f1ad93"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/right-front-corner-block-2f5e06f0b352.json": {
+      "bytes": 75,
+      "sha256": "5c1db61f4e6b7da425610ba2fcac4d68255747503d223b6164e1d0a6b28ac685"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/right-rail-7c45201869e4.json": {
+      "bytes": 34365,
+      "sha256": "5097935f79b624f6e590acfd56eafeac8017bb663f9ffed3688969ec881d24b4"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/right-rear-corner-block-74b524db1283.json": {
+      "bytes": 75,
+      "sha256": "5c1db61f4e6b7da425610ba2fcac4d68255747503d223b6164e1d0a6b28ac685"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/shroud-5023935d6e1a.json": {
+      "bytes": 55,
+      "sha256": "a826aba1a1346735832a5ee0ae69a1fd426301428b046b8f2f612f783bca95e6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/shroud-rim-compact-data.json": {
+      "bytes": 525439,
+      "sha256": "3b585b5f4d61ac07add4ecd730826769275d86ab99a5e9e27f8f16bdc0e7b854"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/shroud-toe-compact-data.json": {
+      "bytes": 48936,
+      "sha256": "7f6cedca570dc6feb560c731ae519434f7dd5cb694abd6893682f8ac20aca55e"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/tube-1-x1-x15-9cfd38f9d566.json": {
+      "bytes": 3789,
+      "sha256": "1845a9ed1bf385282bd9739da93b9d857257c29fb6c87ebc7cb49f10626f0655"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/data/tube-1-x1-x15-fc5a76267339.json": {
+      "bytes": 3766,
+      "sha256": "aab49fe399583155f9be873764bbc668bc0f1b45fbd197ee44e832d24997bda7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/drive_spacer.py": {
+      "bytes": 2103,
+      "sha256": "5b7f9488a7eef40c8be2e3b502ba6ef4114d93cc742a2139579930931be0e150"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/evidence/legacy-geometry-validation.json": {
+      "bytes": 564747,
+      "sha256": "c5ec471ccb6db0efe6f7971b206370d4cdfae06c3ead8465d8d349cfdd7dfb18"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/manufacturing.py": {
+      "bytes": 2058,
+      "sha256": "088393f49fad6a7d54a56441acc8007d8ef97c7a6e9144d5e4382e4350c322d0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/093a00b9083695603c9e4159a7bd5ed62dcf6b2428436ce28359be2eff3f7380.bin": {
+      "bytes": 68700,
+      "sha256": "093a00b9083695603c9e4159a7bd5ed62dcf6b2428436ce28359be2eff3f7380"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/11805da3d7cbddc4cb44c933da71ecebfb4294869cfe1557d07d1166a8e27e0b.bin": {
+      "bytes": 131052,
+      "sha256": "11805da3d7cbddc4cb44c933da71ecebfb4294869cfe1557d07d1166a8e27e0b"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/11f89f9efb157b852caf7fb3ae07ca12fdeb73ac4a93b38618fbd6f85204eb8a.bin": {
+      "bytes": 119892,
+      "sha256": "11f89f9efb157b852caf7fb3ae07ca12fdeb73ac4a93b38618fbd6f85204eb8a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/124c8608d91c93c7a7f1af650d0d8df0fa2260f25a5590790f225b3ec3d7d1a6.bin": {
+      "bytes": 140732,
+      "sha256": "124c8608d91c93c7a7f1af650d0d8df0fa2260f25a5590790f225b3ec3d7d1a6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/13a04a657f0e2383bf14465142f4eca9d22b9a03ce4450557a16bfc3bbb142b4.bin": {
+      "bytes": 132456,
+      "sha256": "13a04a657f0e2383bf14465142f4eca9d22b9a03ce4450557a16bfc3bbb142b4"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/156fa1fa0fee178728b971d7b5d06931ebcb243ac2e42db60aa4601586c782f3.bin": {
+      "bytes": 149724,
+      "sha256": "156fa1fa0fee178728b971d7b5d06931ebcb243ac2e42db60aa4601586c782f3"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/1592258aa3748e0b987525f3f5fbcb9f7a90e1ee38681e1405f3a427d53b5183.bin": {
+      "bytes": 10888,
+      "sha256": "1592258aa3748e0b987525f3f5fbcb9f7a90e1ee38681e1405f3a427d53b5183"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/1635045f51e54c9fb16f5b0cf7607f58137e164a27ec7f113bf4473d86af57ac.bin": {
+      "bytes": 10856,
+      "sha256": "1635045f51e54c9fb16f5b0cf7607f58137e164a27ec7f113bf4473d86af57ac"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/1834106dbb211f01d792f165e4a9b806225b0b5f979991341ec4d14d0828b9a0.bin": {
+      "bytes": 119608,
+      "sha256": "1834106dbb211f01d792f165e4a9b806225b0b5f979991341ec4d14d0828b9a0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/195907743a4e379689a36440fac02fac3f6b25ea3ec6e8fa8201a26bde3b652c.bin": {
+      "bytes": 320772,
+      "sha256": "195907743a4e379689a36440fac02fac3f6b25ea3ec6e8fa8201a26bde3b652c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/1bb2499c6bf2d6f55be8912328bdd1adde607333168c514ac29f9ff535953731.bin": {
+      "bytes": 25312,
+      "sha256": "1bb2499c6bf2d6f55be8912328bdd1adde607333168c514ac29f9ff535953731"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/1c9ad4e2645e0a6d54a75f9734bf82219f47b799c56db7babf72697caa17f39c.bin": {
+      "bytes": 68708,
+      "sha256": "1c9ad4e2645e0a6d54a75f9734bf82219f47b799c56db7babf72697caa17f39c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/1caf2d976b15321b2bd047b7337aeb6655cb6bcd0af74352a932abce8d85cc52.bin": {
+      "bytes": 68708,
+      "sha256": "1caf2d976b15321b2bd047b7337aeb6655cb6bcd0af74352a932abce8d85cc52"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/1fc7676cf52535b0fcd92727cc7aadce98613aa61982ecd87e250961e8b2c872.bin": {
+      "bytes": 6040,
+      "sha256": "1fc7676cf52535b0fcd92727cc7aadce98613aa61982ecd87e250961e8b2c872"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/21be8f98f6ec6ff14573283071ef8c29b754632ba91760801791168bdfb661e8.bin": {
+      "bytes": 105132,
+      "sha256": "21be8f98f6ec6ff14573283071ef8c29b754632ba91760801791168bdfb661e8"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/29d9175b39c0c71c2ecfa2f3bcfb794f425174660dcacfefe2404c37bfd6d265.bin": {
+      "bytes": 5904,
+      "sha256": "29d9175b39c0c71c2ecfa2f3bcfb794f425174660dcacfefe2404c37bfd6d265"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/2a2dd933ab60eb2ce8fac45c8bfea84486278f8bd4715ed32f1194cf48bd1af9.bin": {
+      "bytes": 241172,
+      "sha256": "2a2dd933ab60eb2ce8fac45c8bfea84486278f8bd4715ed32f1194cf48bd1af9"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/2eff07cf4242892c6716d3323eb97c36068d02fa5bc337b623561c3d64488f11.bin": {
+      "bytes": 63376,
+      "sha256": "2eff07cf4242892c6716d3323eb97c36068d02fa5bc337b623561c3d64488f11"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/3138bebbd7f241f65436fca64b0fd09a5b8f413c8744822709b9fe47ed7ee16d.bin": {
+      "bytes": 168676,
+      "sha256": "3138bebbd7f241f65436fca64b0fd09a5b8f413c8744822709b9fe47ed7ee16d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/33503b7e86675de924f9e877779282d8f15d01496081ed742f6aab67b4b86bc0.bin": {
+      "bytes": 44172,
+      "sha256": "33503b7e86675de924f9e877779282d8f15d01496081ed742f6aab67b4b86bc0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/395bba47ca52268ce9b348b6bbe8e918e2373918ede61ef20f20975f57352a41.bin": {
+      "bytes": 2458188,
+      "sha256": "395bba47ca52268ce9b348b6bbe8e918e2373918ede61ef20f20975f57352a41"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/3a0db66e56da2457f25da19fe40f5220abdcb5c46ab725367afa407f033909dd.bin": {
+      "bytes": 9728,
+      "sha256": "3a0db66e56da2457f25da19fe40f5220abdcb5c46ab725367afa407f033909dd"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/3b7049bc2a479570291b653c04522e34e566a5bf8b6763f0a5d2f20da31e0ee5.bin": {
+      "bytes": 11988,
+      "sha256": "3b7049bc2a479570291b653c04522e34e566a5bf8b6763f0a5d2f20da31e0ee5"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/3c2860ad81f417728a360d1ecd6aed49623ccdd604109846b19869b61a0e389a.bin": {
+      "bytes": 72464,
+      "sha256": "3c2860ad81f417728a360d1ecd6aed49623ccdd604109846b19869b61a0e389a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/3ccda79a3dbc44c15659b35db5b53f1e4e45bf4e0e13534591a0a5702a291ab4.bin": {
+      "bytes": 68700,
+      "sha256": "3ccda79a3dbc44c15659b35db5b53f1e4e45bf4e0e13534591a0a5702a291ab4"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/3e1bbea62a25658ee30d95f7df76ba576f6380659f2de7cf1966b658dde5cef9.bin": {
+      "bytes": 450140,
+      "sha256": "3e1bbea62a25658ee30d95f7df76ba576f6380659f2de7cf1966b658dde5cef9"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/41dbeb7eace5dddae46d30f33e78537c54b1683ba6b88d1d09a11c92456a3174.bin": {
+      "bytes": 36300,
+      "sha256": "41dbeb7eace5dddae46d30f33e78537c54b1683ba6b88d1d09a11c92456a3174"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/447412c22fa0d274d4ffb50273e27ec3b136556369d14580b81e5e155caba578.bin": {
+      "bytes": 68700,
+      "sha256": "447412c22fa0d274d4ffb50273e27ec3b136556369d14580b81e5e155caba578"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/4a276da6afbcd1397a1e82159a994f9dc32954d7e2c095d5ea3e85bfd18afc3b.bin": {
+      "bytes": 5900,
+      "sha256": "4a276da6afbcd1397a1e82159a994f9dc32954d7e2c095d5ea3e85bfd18afc3b"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/4f3480d94f76eeb811157cb35b15d17436726d9ad767c00d8fac1b1914ba34a5.bin": {
+      "bytes": 150544,
+      "sha256": "4f3480d94f76eeb811157cb35b15d17436726d9ad767c00d8fac1b1914ba34a5"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/558328b673a6f41c8451bce2d905e54e9bdf6be1932e189aa69a58b59b476583.bin": {
+      "bytes": 236188,
+      "sha256": "558328b673a6f41c8451bce2d905e54e9bdf6be1932e189aa69a58b59b476583"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/56312455b46d5e0243c31e006534526c74c24f34f1814d35ea5c141ffd5f386c.bin": {
+      "bytes": 5900,
+      "sha256": "56312455b46d5e0243c31e006534526c74c24f34f1814d35ea5c141ffd5f386c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/5769fc8b67901afe022d051047dc3711005e43403c6ca14d4772771f59b73766.bin": {
+      "bytes": 230524,
+      "sha256": "5769fc8b67901afe022d051047dc3711005e43403c6ca14d4772771f59b73766"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/5868c4c653a3130c4c11f8104715c5f93bdda4eea8332868ba05ca47ba650a9c.bin": {
+      "bytes": 259440,
+      "sha256": "5868c4c653a3130c4c11f8104715c5f93bdda4eea8332868ba05ca47ba650a9c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/5aa37fa9881e9cb174c61e46fb9842bd30ecd07d887bd143ee403803ce952435.bin": {
+      "bytes": 453256,
+      "sha256": "5aa37fa9881e9cb174c61e46fb9842bd30ecd07d887bd143ee403803ce952435"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/5c430541bea6744bf0171b9d9c91cc0ebcc3ce2c91bbf799f59ebe73d245921e.bin": {
+      "bytes": 209496,
+      "sha256": "5c430541bea6744bf0171b9d9c91cc0ebcc3ce2c91bbf799f59ebe73d245921e"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/60ecea50585dcfde658c72049a58388c462c83da8d8480cb02bf1a32bab29e20.bin": {
+      "bytes": 102556,
+      "sha256": "60ecea50585dcfde658c72049a58388c462c83da8d8480cb02bf1a32bab29e20"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/65b51b12a48be50c2832956e3782c8c2cf995435cc1253f7ac2e1e59018cd386.bin": {
+      "bytes": 142476,
+      "sha256": "65b51b12a48be50c2832956e3782c8c2cf995435cc1253f7ac2e1e59018cd386"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/6733bdfc00a10f1ed0fe8ffe67782cf27b5a01183c1a7f8127e019aafbe2e53c.bin": {
+      "bytes": 533828,
+      "sha256": "6733bdfc00a10f1ed0fe8ffe67782cf27b5a01183c1a7f8127e019aafbe2e53c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/681e0771267d76fa23ed543d7bd0467d3cdb3e6200055a4d461f63caaf1711f4.bin": {
+      "bytes": 162972,
+      "sha256": "681e0771267d76fa23ed543d7bd0467d3cdb3e6200055a4d461f63caaf1711f4"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/697fbc49a4a8258b09214db7a91745c96b88d6b75777ad0a92ea749d107c280a.bin": {
+      "bytes": 255548,
+      "sha256": "697fbc49a4a8258b09214db7a91745c96b88d6b75777ad0a92ea749d107c280a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/6d4e6adeb8a8283733109b9d25502b9ad96f30dbb5f3b6554ef4b5573468d3e0.bin": {
+      "bytes": 9676,
+      "sha256": "6d4e6adeb8a8283733109b9d25502b9ad96f30dbb5f3b6554ef4b5573468d3e0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/6e7e422b1f82ee2a0b5dcb4d2bb72c46424c92349c5ef920c3966f04e31ef097.bin": {
+      "bytes": 244780,
+      "sha256": "6e7e422b1f82ee2a0b5dcb4d2bb72c46424c92349c5ef920c3966f04e31ef097"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/6eba549d8128b1731bc677717320d701bd57662f2560c04a615aa97d17548e0d.bin": {
+      "bytes": 358712,
+      "sha256": "6eba549d8128b1731bc677717320d701bd57662f2560c04a615aa97d17548e0d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/710d05285d6cf79f4fa11d5fb6318ff035b85a152554b92a17bd38e5556306d7.bin": {
+      "bytes": 13220,
+      "sha256": "710d05285d6cf79f4fa11d5fb6318ff035b85a152554b92a17bd38e5556306d7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/71bcce22affd8601737a11400de5846be3b8bdc0a41e99e8f6cb8ef1b1cf34b1.bin": {
+      "bytes": 88824,
+      "sha256": "71bcce22affd8601737a11400de5846be3b8bdc0a41e99e8f6cb8ef1b1cf34b1"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/720b56031e7d66dc2debd69c7c5a97474db2a68de99a7aaae8a5bef88f03b4eb.bin": {
+      "bytes": 255548,
+      "sha256": "720b56031e7d66dc2debd69c7c5a97474db2a68de99a7aaae8a5bef88f03b4eb"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/72b5a03ed4cfa666263f0552c63c896735055784bc91614548aa60629961bb07.bin": {
+      "bytes": 510120,
+      "sha256": "72b5a03ed4cfa666263f0552c63c896735055784bc91614548aa60629961bb07"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/755f1aae2242456a1c0a9593bf8af4f2b7f9fbee9a0bdfe22701da47d70ed405.bin": {
+      "bytes": 324964,
+      "sha256": "755f1aae2242456a1c0a9593bf8af4f2b7f9fbee9a0bdfe22701da47d70ed405"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/7a4f4172d19ca81cd3453e0243e6149c4d8c6f3396714f8f51a9bf8d8302cd2f.bin": {
+      "bytes": 68312,
+      "sha256": "7a4f4172d19ca81cd3453e0243e6149c4d8c6f3396714f8f51a9bf8d8302cd2f"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/7af81b4b785d34c097bab0487d884a6f8686b6ef292c0f1dbe97e05e0663b4ed.bin": {
+      "bytes": 13220,
+      "sha256": "7af81b4b785d34c097bab0487d884a6f8686b6ef292c0f1dbe97e05e0663b4ed"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/7b7b71578f966e43fc866ad9eeb292fa3f9abbb66a2595d3c277c5d9f3528e75.bin": {
+      "bytes": 9740,
+      "sha256": "7b7b71578f966e43fc866ad9eeb292fa3f9abbb66a2595d3c277c5d9f3528e75"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/7dfd479f3d568c54a12a976646b3601e7484835f98f45fcddf9bff84ff521b97.bin": {
+      "bytes": 98564,
+      "sha256": "7dfd479f3d568c54a12a976646b3601e7484835f98f45fcddf9bff84ff521b97"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/7e15cda74f9bdefc53ab976592cdaf62ee08606a89acb0f13e0b5bff0d421bd1.bin": {
+      "bytes": 925900,
+      "sha256": "7e15cda74f9bdefc53ab976592cdaf62ee08606a89acb0f13e0b5bff0d421bd1"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/7e4c1dec427c1d56afa10faa925c18b84c92b3931ce1772ca6fc31dd9a1c6d04.bin": {
+      "bytes": 73544,
+      "sha256": "7e4c1dec427c1d56afa10faa925c18b84c92b3931ce1772ca6fc31dd9a1c6d04"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/7feaf84dc7c3f3cf37499c0c35fd9fb22390836978b0bef01d740f09ba9641d0.bin": {
+      "bytes": 9676,
+      "sha256": "7feaf84dc7c3f3cf37499c0c35fd9fb22390836978b0bef01d740f09ba9641d0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/81dfc8c1606443c74811efb96325a9bb68908d8a47e93b4719f27369a25d0bf5.bin": {
+      "bytes": 14944,
+      "sha256": "81dfc8c1606443c74811efb96325a9bb68908d8a47e93b4719f27369a25d0bf5"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/845bf5ff3cfe68dfe757fe8c3d2fa75bb5e702512ba62f8f82d8931723ffd7a5.bin": {
+      "bytes": 81268,
+      "sha256": "845bf5ff3cfe68dfe757fe8c3d2fa75bb5e702512ba62f8f82d8931723ffd7a5"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/86764a1fba1907a1b1a94596def2c5be57fefc0cb3627b798da68968cc9969b9.bin": {
+      "bytes": 358712,
+      "sha256": "86764a1fba1907a1b1a94596def2c5be57fefc0cb3627b798da68968cc9969b9"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/87443b9f2b1651725d7c811c75d26a7a6c41b79c792bd6d6c3b565f30f862cf6.bin": {
+      "bytes": 43840,
+      "sha256": "87443b9f2b1651725d7c811c75d26a7a6c41b79c792bd6d6c3b565f30f862cf6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/8a0278ae17252fbea0401561223220780dab2e8f9044e7a29484f0582d4d46e3.bin": {
+      "bytes": 265884,
+      "sha256": "8a0278ae17252fbea0401561223220780dab2e8f9044e7a29484f0582d4d46e3"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/8a5933595fda22c28b63750e1fa883a13a472753c10995949a8a084fc181eaa6.bin": {
+      "bytes": 10892,
+      "sha256": "8a5933595fda22c28b63750e1fa883a13a472753c10995949a8a084fc181eaa6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/8a95df1307aaa05f0d259d379dc2438cc08722e43651195aa8adf459b7fafdfc.bin": {
+      "bytes": 41440,
+      "sha256": "8a95df1307aaa05f0d259d379dc2438cc08722e43651195aa8adf459b7fafdfc"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/8f54c2d168674ff8eb70dccdb5887f0a0e95b1661ebd0dc210fa872a41faa0f9.bin": {
+      "bytes": 5904,
+      "sha256": "8f54c2d168674ff8eb70dccdb5887f0a0e95b1661ebd0dc210fa872a41faa0f9"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/8f735c9a6fc8aeb70eec9d30debe721d2ec30cd9ebcb96f5ba606089c5d94095.bin": {
+      "bytes": 325236,
+      "sha256": "8f735c9a6fc8aeb70eec9d30debe721d2ec30cd9ebcb96f5ba606089c5d94095"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/908fba9bc1733429a54707851b6e9e6036cb21a7afba9c5d0a992b4d05dc222e.bin": {
+      "bytes": 477676,
+      "sha256": "908fba9bc1733429a54707851b6e9e6036cb21a7afba9c5d0a992b4d05dc222e"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/95ecd59f59c1a4fb22562c9d785779da6074131fe893bae34835a37404342b95.bin": {
+      "bytes": 68708,
+      "sha256": "95ecd59f59c1a4fb22562c9d785779da6074131fe893bae34835a37404342b95"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/99812339a3678ac6b946c29f1d0b7735ade9ca545d48f85ad639da234a6e2452.bin": {
+      "bytes": 68308,
+      "sha256": "99812339a3678ac6b946c29f1d0b7735ade9ca545d48f85ad639da234a6e2452"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/9e7a51fb99f9b23e48a1485e342b792cf4fcd1a2d21d68dbbef7227028296af6.bin": {
+      "bytes": 140732,
+      "sha256": "9e7a51fb99f9b23e48a1485e342b792cf4fcd1a2d21d68dbbef7227028296af6"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/9f3132a0de62136cd35e65369d931c8032dfb3182065b75ad7639bf92534d4f7.bin": {
+      "bytes": 131052,
+      "sha256": "9f3132a0de62136cd35e65369d931c8032dfb3182065b75ad7639bf92534d4f7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/a067e36e1135464fb2b9825adde2cb7c2fe142e0bc0b565b640f4924e15a82cd.bin": {
+      "bytes": 1060,
+      "sha256": "a067e36e1135464fb2b9825adde2cb7c2fe142e0bc0b565b640f4924e15a82cd"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/a0c23dbf97d865136c7a648562cca764797daab2e4fb838425fe487bec336500.bin": {
+      "bytes": 141384,
+      "sha256": "a0c23dbf97d865136c7a648562cca764797daab2e4fb838425fe487bec336500"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/a1c66c6ad5262eab48bec095cbb5f3152ac1b96fe066535dbd89002940874c87.bin": {
+      "bytes": 130036,
+      "sha256": "a1c66c6ad5262eab48bec095cbb5f3152ac1b96fe066535dbd89002940874c87"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/a1cc1baccb7f7f30956cf6f5465bd70c383ea46088e4b75bddea5e5dc1d41491.bin": {
+      "bytes": 98564,
+      "sha256": "a1cc1baccb7f7f30956cf6f5465bd70c383ea46088e4b75bddea5e5dc1d41491"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/b212f63b8dce018c424655d2d6554392ec750f68be22db1047092fb60758c734.bin": {
+      "bytes": 141256,
+      "sha256": "b212f63b8dce018c424655d2d6554392ec750f68be22db1047092fb60758c734"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/b6b6630868b102c033dbf62d1ad60c330f5ef667c24ed1be2f70480db935052d.bin": {
+      "bytes": 151020,
+      "sha256": "b6b6630868b102c033dbf62d1ad60c330f5ef667c24ed1be2f70480db935052d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/b7937e51823d132fc88668dd83ede76e688800dfb2ccbf03a5db51d6cfe8adad.bin": {
+      "bytes": 142572,
+      "sha256": "b7937e51823d132fc88668dd83ede76e688800dfb2ccbf03a5db51d6cfe8adad"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/ba0729601b3a4722e8a2ddc30fdce8b04207aa73d3facce0f717c86771eebb5c.bin": {
+      "bytes": 141264,
+      "sha256": "ba0729601b3a4722e8a2ddc30fdce8b04207aa73d3facce0f717c86771eebb5c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/ba0d896f3655b062bb05a69bd5443d90d9d24e3cbf8ded7887471dbdadc748d8.bin": {
+      "bytes": 11984,
+      "sha256": "ba0d896f3655b062bb05a69bd5443d90d9d24e3cbf8ded7887471dbdadc748d8"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/ba82b828e276bfc29b13c943aca417f1a5c9e7fde0e96de4f476e40eec4f6375.bin": {
+      "bytes": 148492,
+      "sha256": "ba82b828e276bfc29b13c943aca417f1a5c9e7fde0e96de4f476e40eec4f6375"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/bb4ba0a79033e39883d2b6422da54c598340b68492f0217a16eed9b177f0543c.bin": {
+      "bytes": 9660,
+      "sha256": "bb4ba0a79033e39883d2b6422da54c598340b68492f0217a16eed9b177f0543c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/bc656831a715998a3c67902b2fa92b38c39735d3e317a451a494ba630f68c2fe.bin": {
+      "bytes": 6092,
+      "sha256": "bc656831a715998a3c67902b2fa92b38c39735d3e317a451a494ba630f68c2fe"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/c1d8b50fb091879b5c524a20e3c625b512e0f20f86a57dc99d03cc4fe9473034.bin": {
+      "bytes": 299668,
+      "sha256": "c1d8b50fb091879b5c524a20e3c625b512e0f20f86a57dc99d03cc4fe9473034"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/c60c880b2c7dd5a3e6aa1fc7d0bea3a8c2c4981cf022adfc463c1f855684c315.bin": {
+      "bytes": 109064,
+      "sha256": "c60c880b2c7dd5a3e6aa1fc7d0bea3a8c2c4981cf022adfc463c1f855684c315"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/c93e93bf7d6c31629f38472402a646c40b0ff06e0d9940b7c98fb2f886499049.bin": {
+      "bytes": 245800,
+      "sha256": "c93e93bf7d6c31629f38472402a646c40b0ff06e0d9940b7c98fb2f886499049"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/ca7a907e9f92c94f11fae467060f444df91704586f101c3854c42fb9f4de988d.bin": {
+      "bytes": 68708,
+      "sha256": "ca7a907e9f92c94f11fae467060f444df91704586f101c3854c42fb9f4de988d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/ca9e9d5a96ddd520ab10a6d3eba4f94d3bd1b53f0b053e5a42c8a9cbb9307e7c.bin": {
+      "bytes": 141548,
+      "sha256": "ca9e9d5a96ddd520ab10a6d3eba4f94d3bd1b53f0b053e5a42c8a9cbb9307e7c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/cc49c4fffe83950080b16b2c8fd7979b6e32e06fccdbe9bc258ab212887d5abe.bin": {
+      "bytes": 368504,
+      "sha256": "cc49c4fffe83950080b16b2c8fd7979b6e32e06fccdbe9bc258ab212887d5abe"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/cf45c27d2c16912ba3f5c0806ef412ed1cf6217740ecf1d3b59978d236ecef68.bin": {
+      "bytes": 141296,
+      "sha256": "cf45c27d2c16912ba3f5c0806ef412ed1cf6217740ecf1d3b59978d236ecef68"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/d13a826d969bf4095c7ed49aa656f62afc6a13c8db7cf2e77a842f7b760a8340.bin": {
+      "bytes": 27212,
+      "sha256": "d13a826d969bf4095c7ed49aa656f62afc6a13c8db7cf2e77a842f7b760a8340"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/d1bbad9a064c970e6b323a7bb1b5da2996dc9c2b6194cd4a6bdc534282ef156f.bin": {
+      "bytes": 68708,
+      "sha256": "d1bbad9a064c970e6b323a7bb1b5da2996dc9c2b6194cd4a6bdc534282ef156f"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/d5cd68f27a3a71c7a647da2d9670999f53709a6a40297c824bd246f6202b03f4.bin": {
+      "bytes": 103828,
+      "sha256": "d5cd68f27a3a71c7a647da2d9670999f53709a6a40297c824bd246f6202b03f4"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/d7d2ceac6dc5232ade4172d8b84fa1cb69267c186dcbf62ca85a0a455389e60f.bin": {
+      "bytes": 6092,
+      "sha256": "d7d2ceac6dc5232ade4172d8b84fa1cb69267c186dcbf62ca85a0a455389e60f"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/de9ea70b117a6a24e9fb6393472a33b64f2a7ce50a6346b3b92473a1f44e337b.bin": {
+      "bytes": 113392,
+      "sha256": "de9ea70b117a6a24e9fb6393472a33b64f2a7ce50a6346b3b92473a1f44e337b"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/e175efa415567db604f2f89545cc996a74e38d91498ec25690cb7f4cfa95ef2c.bin": {
+      "bytes": 133144,
+      "sha256": "e175efa415567db604f2f89545cc996a74e38d91498ec25690cb7f4cfa95ef2c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/e2e1fd1a9a6ddcc12bb59f86cbacde8cc83c166fa4fdb35d4200a88c4ba74eb7.bin": {
+      "bytes": 459652,
+      "sha256": "e2e1fd1a9a6ddcc12bb59f86cbacde8cc83c166fa4fdb35d4200a88c4ba74eb7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/efaa0b6550e19aeea5e175ef58556e8631bc940d785b7ec05897f98dda7a5f9a.bin": {
+      "bytes": 138716,
+      "sha256": "efaa0b6550e19aeea5e175ef58556e8631bc940d785b7ec05897f98dda7a5f9a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/f0b4ef7cbd987ea98fa2532652b91c16d8dcdfa62eccb75f83a0caeb3fd8d5e3.bin": {
+      "bytes": 68700,
+      "sha256": "f0b4ef7cbd987ea98fa2532652b91c16d8dcdfa62eccb75f83a0caeb3fd8d5e3"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/f2b74be69ea2091cad0f1f20f71f02d8c5eada5938e48fe595f4c7c87601c788.bin": {
+      "bytes": 188552,
+      "sha256": "f2b74be69ea2091cad0f1f20f71f02d8c5eada5938e48fe595f4c7c87601c788"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/f3753a0e5143db6e9e223297b01bd26284fdba2d26371822022516de48189435.bin": {
+      "bytes": 70312,
+      "sha256": "f3753a0e5143db6e9e223297b01bd26284fdba2d26371822022516de48189435"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/f39ac302a9bd4c9b5f60e57cdc7a6e5303d0b60030c9632d8f5182e153b4f247.bin": {
+      "bytes": 145836,
+      "sha256": "f39ac302a9bd4c9b5f60e57cdc7a6e5303d0b60030c9632d8f5182e153b4f247"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/f3fb229ac95611cd70d85a5b168e15ab0151b4df04822eb9587cac2b856b6ac3.bin": {
+      "bytes": 26016,
+      "sha256": "f3fb229ac95611cd70d85a5b168e15ab0151b4df04822eb9587cac2b856b6ac3"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/f6e359a2524199d41b3d8730d62bd20b740a6fca6df0ca2bccc554951bb0420d.bin": {
+      "bytes": 6032,
+      "sha256": "f6e359a2524199d41b3d8730d62bd20b740a6fca6df0ca2bccc554951bb0420d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/fbfaacd29e6c1240b0e50700fc7d6970b29b372225c1d9020dc23b2537fcd8fc.bin": {
+      "bytes": 10852,
+      "sha256": "fbfaacd29e6c1240b0e50700fc7d6970b29b372225c1d9020dc23b2537fcd8fc"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/fbfd7d360033cdcf4a77b64e135ed11a79419c3c16994a8288b8a25a1d2eb24e.bin": {
+      "bytes": 89772,
+      "sha256": "fbfd7d360033cdcf4a77b64e135ed11a79419c3c16994a8288b8a25a1d2eb24e"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/fc163ca00af5c7891fb4f4f18b257c9ecbd2c103eb426e803af3eb3c964343cb.bin": {
+      "bytes": 68708,
+      "sha256": "fc163ca00af5c7891fb4f4f18b257c9ecbd2c103eb426e803af3eb3c964343cb"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/fc48a91833f5256cde7abf1b781787c52464855881daf426db53ac39d0b4bbeb.bin": {
+      "bytes": 44172,
+      "sha256": "fc48a91833f5256cde7abf1b781787c52464855881daf426db53ac39d0b4bbeb"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/fe0f358b6138d144eb07365526fca08b0e7be998a42848fc37258d4d1d395d31.bin": {
+      "bytes": 266560,
+      "sha256": "fe0f358b6138d144eb07365526fca08b0e7be998a42848fc37258d4d1d395d31"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/meshes/ff64ac84846df062e0a39d90dd7806e9c4ee02c3e91a9510e0712afd82d61545.bin": {
+      "bytes": 134464,
+      "sha256": "ff64ac84846df062e0a39d90dd7806e9c4ee02c3e91a9510e0712afd82d61545"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/migration.json": {
+      "bytes": 25929,
+      "sha256": "d6347f3c2a0d87191bfba2cc7bf9da535653c2c3b79249ec85a401641e06c511"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/mount2025.py": {
+      "bytes": 4396,
+      "sha256": "882a050fe67beba440330d4dec8a8f03aa1c3f00bdd42ecaf44c4dd3b304e182"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_1f8371dac9fe.py": {
+      "bytes": 976,
+      "sha256": "4c923700eb990a7468d823294273be0205579b5198f7b0abacbc7b6240747c79"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_2457503da660.py": {
+      "bytes": 976,
+      "sha256": "323f07eeb57da9cdebb428dcd7216a3ac36f3641c91486d5e581d6d735b56c0e"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_43606f8e0a26.py": {
+      "bytes": 976,
+      "sha256": "8f7d4d29b62b325b16b3641821282fe85665b0777197e95a5dc6ed46d188a6c7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_567d6aaea52f.py": {
+      "bytes": 976,
+      "sha256": "8603fdcc746d049f71c5cd198aacffb0f094da34e3f83d45cde5dc5d145b134c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_675257026dbd.py": {
+      "bytes": 976,
+      "sha256": "ec22222e3fb14ce0df5d6b7e485810133564b3e4012a5593e399d04ec25a6b75"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_8eda9bf1c576.py": {
+      "bytes": 976,
+      "sha256": "47c282a8f6883d9e42d72736227eab7c202b60971478e895d7962958b6d9b73c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_993862eff2a0.py": {
+      "bytes": 976,
+      "sha256": "225e6545420f8108a237f8a2b228d02654ee5048dde7df21266bc0b982b2a19e"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_bbc9e4f9f516.py": {
+      "bytes": 976,
+      "sha256": "fef569851f0e635c895a23163d863fd6b427ed0e5a52a17bbdfe671bf17cf0e9"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_db680514e5e4.py": {
+      "bytes": 976,
+      "sha256": "a75581be60d9830ddcf897b0ef83e2a6ea28104f759d547c022fc571d076ba0c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_200_30_5mm_od_x_1_125_28_5mm_id_carbon_fiber_tube_36_wcp_0289_e33f357a272b.py": {
+      "bytes": 976,
+      "sha256": "1bcbae5427b574b81c95ac7b9b97e869531a71b574201800a6c69e906197b14f"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_2_rounded_hex_24_996_l_13_75mm_od_10c910583edd.py": {
+      "bytes": 754,
+      "sha256": "4fd5d1bca40409c915c2d9298aa613ca85bc4ec66227f226ac390875c85bb2ef"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_2_rounded_hex_7_843_in_0157e962a79c.py": {
+      "bytes": 912,
+      "sha256": "5a968803db06aad9877f3a725e2f3be997e17c1d6187b793e695fa41bae6f7db"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_1_2_rounded_hex_8_19_in_9da79a5073f0.py": {
+      "bytes": 706,
+      "sha256": "c1688b03359f2b98c546b3fe5c17e31de1273d27e91aba8da075769c1e5b7e61"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_3_8_rounded_hex_27_565_l_10_25mm_od_f36724821bc0.py": {
+      "bytes": 754,
+      "sha256": "a7fc7d98fd9d7f58b587a57fedd51d60d70cf08c6c74aa591ff79ccff3f66259"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_3_8_rounded_hex_2_565_l_10_25mm_od_130de71a8862.py": {
+      "bytes": 750,
+      "sha256": "bed090fad6a89e742ed23915f4e17369be6f80428d9df8f8e0991f73eb03111d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_back_rail_15991ee5f759.py": {
+      "bytes": 693,
+      "sha256": "5ca0684266f82344c072ab640daf95c90f843e3200dda413518273c4d38b33b9"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_backlash_remover_left_side_c70badece837.py": {
+      "bytes": 410,
+      "sha256": "782bc4201d48d587c6dd8d81c15fc091232164c817c91154bdb4ced744dfb980"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_backlash_remover_right_side_fe6bf528179b.py": {
+      "bytes": 411,
+      "sha256": "eca035e509a8c8d8ed7ebc2ebcfaf49d7b82a8bd283730ec245034be311b0443"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_battery_plate_3564a64afaca.py": {
+      "bytes": 666,
+      "sha256": "23eb23086c750443aa4937b25e63eddcda1f1b4ff7ddcaef74dd3ceef63d9c54"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_belly_pan_6b59cb2988d9.py": {
+      "bytes": 851,
+      "sha256": "4ae95cf2cc8c45acd97852cfddf4ec9c4ffb93f532c6686b88b0325ee3093f10"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2024_130_001a_4dde5764e7c3.py": {
+      "bytes": 682,
+      "sha256": "2361dc1ee2e5b95c7aab9d4ce96de5cf521ae6c6420e83d4e642689069cbe2b7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2024_130_001a_704f10f175a7.py": {
+      "bytes": 682,
+      "sha256": "cf9c51bc3f442c02fc9a7477fe7f00bde1a0ea7a44b2acb1d3a472276e757471"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2024_130_001a_77cd209a4fb2.py": {
+      "bytes": 682,
+      "sha256": "ea897a4ed2d40b00aac231bb980a0c1d1545b5d37b4a46888489e5e6cc102bf2"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2024_130_001b_432b77e608ad.py": {
+      "bytes": 682,
+      "sha256": "0cb7a5a2e1aa921604bce8733a9dcc9c4671f7b87c3198548025816d9cb89d5c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2025_100_022_e288be426a61.py": {
+      "bytes": 136,
+      "sha256": "6600c42a3065caf4094af63ce931a98dee283a83efdb9b807721c57a560b8e96"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_300_002_000a3a334dfd.py": {
+      "bytes": 678,
+      "sha256": "026c0e9b3ad67dcf87b3807ff7f8ea2824c4eaf67b6aaf816b730b19822784e0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_300_003_02272cafbb8d.py": {
+      "bytes": 678,
+      "sha256": "f44e992dbf91cf6ee12ac86db22389cf94c12d8b8d5f7e48e288351105b7eada"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_300_008_3e3227464e72.py": {
+      "bytes": 678,
+      "sha256": "cfc257b42de782c14958a14cd89c8017cf3fab652d468c8f39b11523d7c29223"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_300_009_06a532f8490e.py": {
+      "bytes": 678,
+      "sha256": "e3c31851c502c159e23f21035a003fcb47007fb0788051a74e29a120e4279050"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_001_105a60cebde5.py": {
+      "bytes": 678,
+      "sha256": "220fe7c4403af6b4b43abb873f303f4cfc54d0cad8a95cf2262cff1887ca95a7"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_002_244af0c35fdf.py": {
+      "bytes": 678,
+      "sha256": "53a216e96219e00912584c3f8fac843c32c4b2598c94c0ebd2a373cfadbeae2a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_003_d75b78a75baf.py": {
+      "bytes": 678,
+      "sha256": "ed5fb9911615449722aedca79c552fa03e6f69e6ac3df70c5111452bae7d41d3"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_004_e75cfd713fd0.py": {
+      "bytes": 678,
+      "sha256": "26616596582c804313758e2f3f8ed42da1236b327e2c8959e04f426d90cd43b0"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_005_b5b879a8e88d.py": {
+      "bytes": 880,
+      "sha256": "227185c179034cf2662908d1a91b83127dfbdbe69ed11228feb59371310141fd"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_006_3e1d72d87606.py": {
+      "bytes": 678,
+      "sha256": "d44b5ec41dbf593652d2c4ea7056e2b2d6fc076eae5ca28807a805f5eab34d87"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_007_9ba359d7e17c.py": {
+      "bytes": 880,
+      "sha256": "286fa1d5b01be6a6b0bb37c7f0f8d8e33bfd9c486f0e22cf4aed7ba32051226f"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_008_258aaf2b1a54.py": {
+      "bytes": 678,
+      "sha256": "2fd64dddaada733220a6f4683a551b4c8a62517c2e2101bc52fcffc6353a2075"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_011_15b0e1706e9e.py": {
+      "bytes": 678,
+      "sha256": "60ac6e581b48fbc71da816105003f7c8a246286c8a52bdcd86e9e857d09404f3"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_012_ba26c88f549f.py": {
+      "bytes": 678,
+      "sha256": "c23dcdfa4c0c7cbb7abb02f46e77b75b003dd2e74f8ae302992f181adc1b4c0d"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_013a_d230e0921e95.py": {
+      "bytes": 1755,
+      "sha256": "3ebe1e8577441d1e93dfae2b3c85d0645e426ac376a50ada57db05e417d74cdc"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_013b_10a3b616a4ed.py": {
+      "bytes": 1016,
+      "sha256": "5a727604d06edcdc3c45652f851a1aa38a136e3d738b6f5cbfd83bf49c000f4c"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_014_top_d26859488e35.py": {
+      "bytes": 207,
+      "sha256": "f740ae3b993c8cda443eb16e6b14af43de470fc663678dd70d4ba48293ed9f73"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_014m_top_22ebd4ced951.py": {
+      "bytes": 232,
+      "sha256": "e0f706d09507ed3e528dbf872323e950b7ca0c045fedce5d03a0d2df1c271391"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_017_821e3e1f1842.py": {
+      "bytes": 367,
+      "sha256": "c546e06d7b6dc90bf24a4727f7a9ffa3209efe95067f79da79c9df68be36f3ce"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_017m_fd4f5acaf62b.py": {
+      "bytes": 397,
+      "sha256": "ae5f4a45358e13754495793af696c85f3860e43e3cc06433c332f91ce149be9a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_019_8e4b63bd1867.py": {
+      "bytes": 203,
+      "sha256": "96b6f63a1a499a1bf3f1c2d64912bff126076bd414a42cdd8c966a2e902e2235"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_019m_2e0b774f61c1.py": {
+      "bytes": 228,
+      "sha256": "d80ea2f4e97a1ab3bec3e74fa3d4c52a99f7744eab7688f12e415b239268c189"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_021_fa82999a309d.py": {
+      "bytes": 1730,
+      "sha256": "ab70c8aca1715b6d2ef945f3633377d785b6ebfa5771bd240bb138093ab4c6b5"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_022_64c66d54eb11.py": {
+      "bytes": 367,
+      "sha256": "195e38dcfa7a1b109d67e0bd09a554ed51d3808a2bac39dc70721b3129791cb2"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_022m_005027036523.py": {
+      "bytes": 402,
+      "sha256": "e2a2e13b9582c595413a243c7ecdf9dc05c4785ef07a566f71d2bd5077d4c1bb"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_023_fca3921ce554.py": {
+      "bytes": 1122,
+      "sha256": "974a916ce6131fddc4b2095ba14ce9b6665268b559b75bbd667c3f849353f55a"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_024_20687e021f36.py": {
       "bytes": 720,
-      "sha256": "5a77442274609f1f7771e6b8212bb17f3f96a8586c5d1c748cd4f05926b4e130"
+      "sha256": "2c6441bb61a847bae0f3ac3f50e59f0348e61abf7aee2aa5f3f4c2c74dbb0a8c"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-rounded-stock.js": {
-      "bytes": 3569,
-      "sha256": "86f817cac7e77eb66cc465a6bc3634235a22a98c73cd325a29b68f99ac3f7225"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_027_34d684a8c9de.py": {
+      "bytes": 197,
+      "sha256": "b4377f1c2ad59a38e3f7848e96541fc47f2f4bc3b8bb2cf7a2d349ce9fa27b35"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-stock-profiles.js": {
-      "bytes": 8473,
-      "sha256": "7048d2e35370e8fd46a76ed4326212b037714866953d94e7fd138b063c9de1e9"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_027m_538f738485fe.py": {
+      "bytes": 222,
+      "sha256": "3088f12ba557dbc4d42c970f2a37030ff3b91f170797fc5c3caedb5a4e86e0b3"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-tori.js": {
-      "bytes": 2411,
-      "sha256": "abda31b955a105fe17778803ccb01d00d93f1c096687cd2cbe87783abf44e7b3"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_032_5dfd19723c27.py": {
+      "bytes": 678,
+      "sha256": "aaf21ee72a82ec9b4a2050159a2dd0e12d0748aa9b96a409c7bad083d089e4db"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard-trims.js": {
-      "bytes": 479466,
-      "sha256": "9bd8d7f015f040f7b92676677634f6c22b6f12b345ac121dfd47d7c843b64462"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_033_178be009fceb.py": {
+      "bytes": 2048,
+      "sha256": "b122451c442da6cf7d4b4fbed56161db112ee5f094c2eeed9a99dff754f0a613"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform-guard.js": {
-      "bytes": 4868,
-      "sha256": "c13f5f425b060ca911a7006bcea4cddb761d5e489e712f48b448980574350cbf"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_034_cdf7d621b44d.py": {
+      "bytes": 1100,
+      "sha256": "09cd0bf3f3cea7ce422184a24fa42fb00a325dc30a13982ba2261bb28526e12e"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/bracket014top-stock.js": {
-      "bytes": 1619,
-      "sha256": "4ac3543ff2c20edea1592e38c490975db540a1c075f7efdb294a606806fbc01b"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_034m_663a52158a5a.py": {
+      "bytes": 726,
+      "sha256": "bd66934bf4601170a1f97a4081d19b7f6f856d870f8e3f7e66a051f5e8e17a28"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/panel014top-mirror.js": {
-      "bytes": 235,
-      "sha256": "f6166e6eaf642d7e676fc31bd05879ad0460bd700160fe363721a37d1e2c6a60"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_501_001_21b0618b94d6.py": {
+      "bytes": 678,
+      "sha256": "0165c198fcbfa8c69f6c9fa11a1912b7ddbba941112c0c6f552e5a9cb660b2bd"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/panel014top-patch-19.js": {
-      "bytes": 249631,
-      "sha256": "bfd596def381394de00709925313a69d471732ce354b458e47a73a40b4db7d66"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_501_002_154ce885e9c6.py": {
+      "bytes": 678,
+      "sha256": "dae8fb3399d76ee95883adecb98739affbe05a66be885cf90e92f5837eb647b6"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/panel014top-patch-46.js": {
-      "bytes": 244492,
-      "sha256": "339191b27f08c8b27f349d6054be7dc8f902da649cedc01bcbd976003025f2fa"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_600_003_ea37fa06fae4.py": {
+      "bytes": 1405,
+      "sha256": "43b2d3f4a143b9c4c57ba894c8441473b3bb5882e826707074f19813134a5f6d"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/panel014top-patch-7.js": {
-      "bytes": 247243,
-      "sha256": "149eba06343c27dad09025eaca2cb50563d562873bfd5814bc045b5080a8a643"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_600_004a_fdc0673fe431.py": {
+      "bytes": 363,
+      "sha256": "205ec4b2072d1f4d56fac8240fa8eee1f9f230701cbe4461617b499bcde793f6"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/panel014top-patches.js": {
-      "bytes": 162,
-      "sha256": "47bd025f309636164bf4d6b0e13b966483b6a832b03edfdc6c20eb78eb974f27"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_600_004b_5c0ed452f82d.py": {
+      "bytes": 371,
+      "sha256": "e8268de6fa75984b91c3dbf81894e311180dbd84e9e2b91dece590ef495d2dc0"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/panel014top-pcurve-trims.js": {
-      "bytes": 19,
-      "sha256": "d7076912d1c9786ca76231a2a77cef475b7fafbe4950a8ecc430af171422993c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_600_005_1a0fc844ce6e.py": {
+      "bytes": 939,
+      "sha256": "17b99379499fb87d5b111145796ccdb7553c1afd67ef76551b169623058d6393"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/panel014top-procedural.js": {
-      "bytes": 6126,
-      "sha256": "684df465bbb067aa5f8d591180c63739b45d160692211aa59d528935ad55809c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_600_006_2aabf8888b9d.py": {
+      "bytes": 678,
+      "sha256": "4f985e191f778b6f368cab586777501976390eac44fb7f91bee3430a8d07adca"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform014top/panel014top-trims.js": {
-      "bytes": 219063,
-      "sha256": "82d2349eda3ff31680b50d1004ac29f8013c2b77195179d2346f2ca666208256"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_600_009_55277c8c2a54.py": {
+      "bytes": 1100,
+      "sha256": "ac7e99a2fc2c925af8844ef6911dc70d5ad6babe6e1a2878cf438ea40090f389"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019-dense-mirror.js": {
-      "bytes": 219,
-      "sha256": "e7a6513ce64c9fdaa4730ab9da029d9272b10eb6b09b04aeb08b69da4cf81ade"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_704_001_2410118654f2.py": {
+      "bytes": 678,
+      "sha256": "7eb3e65787753c3406de53d6126aefd0d0882395ba4ae6b6763ce2cfbd9fd9f2"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019-dense.js": {
-      "bytes": 6228,
-      "sha256": "33a1beaa277b162f529cc209cf91a0b2ffcdb57ae12a31d8f34ad8f3a326dcc9"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_704_002_1652ef623ba8.py": {
+      "bytes": 678,
+      "sha256": "ac5bba6c6fca43a8abce72cfbeb1a1a9e6248177a77cae09ff21a6100e28bcd2"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019-pcurve-trims.js": {
-      "bytes": 57911,
-      "sha256": "5c397f1f143a8cd8d5257036aa3b875bff97335e8046a812f88c7313ef8ca9ae"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_704_003a_3a3fa010a23b.py": {
+      "bytes": 682,
+      "sha256": "16f0ae945650beae7be0adb9e235a6e0ef2a445fed3c3bbb6558af40551444d3"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019-profiles.js": {
-      "bytes": 8328,
-      "sha256": "42d3efc19cfd2203127c5fc151387e1cee6c5ced9f813c55802f6a5b5b30d027"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_704_003b_fba19a426349.py": {
+      "bytes": 682,
+      "sha256": "7126cb77eb7cc8a4e0fa350092bf5b9858a802859a13daff36223201e18b8b42"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019dense-patches-0.js": {
-      "bytes": 756103,
-      "sha256": "4608797000833991b9e9aee1a5d41780859fd0a39d8a966987554e34cda2fa27"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_704_005_8e25fe6858d9.py": {
+      "bytes": 788,
+      "sha256": "18a1920f6d69972a636b392d4def76543405a74fa19a3adfb868a16cab21bf73"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019dense-patches-1.js": {
-      "bytes": 756590,
-      "sha256": "f83a950b4bbeeae8e1d66395c60a131f348fbf41f67b8f452f241b69d41e1eb4"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_704_010_89a3449bb12a.py": {
+      "bytes": 1709,
+      "sha256": "30240e4c09f934338737813e01a1aa4e6107653e00916e4cc1919a81c475a56a"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019dense-patches-2.js": {
-      "bytes": 758529,
-      "sha256": "c038996ce858fd5b32bd8bafce1b4b384cdc70457df2f9684e1373ec4a60074e"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_704_011_39792b4ea64a.py": {
+      "bytes": 1091,
+      "sha256": "925a3b9cfa3a6e9cf1aeac2e1156aa32374a1920e675138aa1747b96fcb5b453"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019dense-patches.js": {
-      "bytes": 177,
-      "sha256": "739b7b5691ce73f8973751114135a4b7d29a2073e43ed1435edf6452ceb01225"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_black_wire_1_fa8cc576b6ab.py": {
+      "bytes": 662,
+      "sha256": "f3ad12facfd258a25dd3796aa00212467ca5305dcbb118c8e99bbe6c0bfe0471"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/platform019/panel019dense-trims.js": {
-      "bytes": 468334,
-      "sha256": "5b2886d90ff18718e5ec98066d7871764aa90f7cece2cdf25ab32497589a1f21"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_black_wire_2_f69d9c79342a.py": {
+      "bytes": 662,
+      "sha256": "56a6fc60e7ffbdfa1257e7b53d91d94146f567f32d8669fdee3494c47a9f25c8"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/profile.js": {
-      "bytes": 1706,
-      "sha256": "98f88ab415836f00e11a2a1e61cd381e8a2229dd09198c4ddbe26eacb66c8ea1"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_can_wire_1_4fb295069a53.py": {
+      "bytes": 654,
+      "sha256": "479a705d1abcfd7e931d61f95697da7da4dce87120137ec8198fb85dcc46043e"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004-candidate.js": {
-      "bytes": 2402,
-      "sha256": "bb156ec2bcfac75bcdd16b62f8c371f07b5cf27d1b1b672ee920058160179388"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_can_wire_2_6d1dd4a6ed7d.py": {
+      "bytes": 654,
+      "sha256": "94ee522b1e24ce4ad7b4a811e065b7e21c96572f789b775b89bb5e55118052b2"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004-editable.js": {
-      "bytes": 278,
-      "sha256": "518c5bb57026cda3c0dc640c064c0360edd15d3622667961c03341f0fb1061fd"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_can_wire_3_b5f8e7694f0f.py": {
+      "bytes": 654,
+      "sha256": "0b939e99c9ae0ef93cb614560ded0439fe849e5f3c1ef70ee996d0399df4765b"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004-lower-candidate.js": {
-      "bytes": 18316,
-      "sha256": "4a377734d1c6ec082585cd6307d2cc098f34b6b4159899d2aa559d41a61fac28"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_can_wire_4_a9c3166df384.py": {
+      "bytes": 654,
+      "sha256": "f9b03d0e16be0c1804c58cabf7242e5ded1cf02e43485561c197272aaf159437"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004-patched.js": {
-      "bytes": 3067,
-      "sha256": "c72d2392e59c01200f253168d22f77962df18b03471da2e35271bf18101a08e9"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_cross_tube_77658e64ee9c.py": {
+      "bytes": 764,
+      "sha256": "43f9950a20cb2527415a0a8a2b118728ea9b2e0b89fe03f526dd59da8fad5c2d"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004-region-data.js": {
-      "bytes": 929200,
-      "sha256": "7e3980264a0d8caca9b301cda29142f23b5a8f26414541a502610258575ab503"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_front_rail_3d6ef15b73d2.py": {
+      "bytes": 697,
+      "sha256": "f984a1a4a680cd2837fe4b031d37ac942dcc076ef33801cf6ef27d288d581b52"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004-upper-candidate.js": {
-      "bytes": 3403,
-      "sha256": "5f86e773feb19f80570b7012b2d9a357aa8260654711b471ec2f8efef94ac2b9"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_left_front_corner_block_a8312ccb6369.py": {
+      "bytes": 421,
+      "sha256": "ba709431dc77788cea771f10154e6d67be5b083f62c311327645ac7999a5b6b3"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004b-editable.js": {
-      "bytes": 191,
-      "sha256": "450b66e8edf7bbc4793973d7a02d023951f2b21e1e3673c2b38d36bf49765c17"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_left_rail_1ee532c27934.py": {
+      "bytes": 693,
+      "sha256": "b487a221d34021b0b89cbfccbddbf894c5c80b4384a860514da2fa87a77e3caa"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004b-lower-candidate.js": {
-      "bytes": 17853,
-      "sha256": "cb9359e0b3b682eabed68cfc1ee7b6780f6743f02e494faae19687c8db08302c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_left_rear_corner_block_3112b49a80b2.py": {
+      "bytes": 418,
+      "sha256": "c76e58dc9b8196d23a13b2f698002aa406ead73d2580a4238c33b9668748692d"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004b-patched-in-a-frame.js": {
-      "bytes": 3075,
-      "sha256": "4f8b1ebb12c084a619a0dd552de6bc19b248f30145d67965aa6258280a4d4c47"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_origin_cube_c4333aff6108.py": {
+      "bytes": 701,
+      "sha256": "318a6d801bd8a4b25501664ec4ba7cf3334da4625ac9e37ef26ff24d1ad3935a"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004b-stock-in-a-frame.js": {
-      "bytes": 2386,
-      "sha256": "0e194850a6de8bf5c23ed10e2c2fd16f1a2561980656dd6f4597a5e90b3c06c5"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_13_9970d95455ef.py": {
+      "bytes": 388,
+      "sha256": "6f10f1e7b7f5424a3606260299a221711922e050b2c10100f1a22838c368ac90"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rail600004b.js": {
-      "bytes": 167,
-      "sha256": "d938fe54b5e9c9587855330535c7321befc0461b08770710751e3447671e83b2"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_14_8abf4254dadc.py": {
+      "bytes": 393,
+      "sha256": "32dc1ee359d6c89f77b97c547932408e272f0dd74c61999576860157f4f8c0b4"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rear-bottom-blend-data.js": {
-      "bytes": 64145,
-      "sha256": "62a0cbca88c8e5dd4210c59f2bc7561078f6ed895bb8a9a3d579cff1c87ea150"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_15_907c7ca283a6.py": {
+      "bytes": 381,
+      "sha256": "f0290a0c7a9b7e0f70ffc99415d6a545a2d5fd7eeede6ead5bfe70d3131550d0"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rear-corner-stock.js": {
-      "bytes": 7257,
-      "sha256": "ce91102d42c1ecb511fdde09bec167e1a2067b48f061a5796bdaed513ea5c972"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_16_3719e89e2b68.py": {
+      "bytes": 387,
+      "sha256": "2abdc897760917a94c9439fe36de774d24dbd78c9d5839fb2fde2c2a8737bd23"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rear-corner.js": {
-      "bytes": 1627,
-      "sha256": "2df4012f20dcf6e0ddbc23aaa5a0fb7b78a4cec3372d56e083c79247d8298f65"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_17_dda90457e304.py": {
+      "bytes": 642,
+      "sha256": "5c432468e7c9edd9062aaed49eed077429c0069e8768281a51fc979b22620cc5"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rear-step-blend-data.js": {
-      "bytes": 91835,
-      "sha256": "f7c7603c666274d1c1eba6b0ca3aebb8d35e0bedfdcc85d317f33f434baf152b"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_19_5ee4e5fec190.py": {
+      "bytes": 642,
+      "sha256": "5375191458ff8c1a928932d5f405dedbc9ddada7cf6f362a3490aa2d0d5f3467"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rear-top-blend-data.js": {
-      "bytes": 93545,
-      "sha256": "36ac6994e14c15ad4dae688a3cfd88ea6eddc327e54feae8434b48a1bb4a2a74"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_1_fdc3301b3e8e.py": {
+      "bytes": 638,
+      "sha256": "8113573311b419023a9c74cb077e60c746ee84283cddd066ecf9f5bf16fa9b47"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/registry.js": {
-      "bytes": 12371,
-      "sha256": "185bead01847e075159a1576d2fcc9c823d578dec5318aff9ca4d7b193436cb2"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_20_3b1bdb058696.py": {
+      "bytes": 642,
+      "sha256": "8dad0d03245dc345839fad24ebf5be3ce3787b914347beff3bcf982c43176ae9"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/rolling-blend.js": {
-      "bytes": 1169,
-      "sha256": "c7a6759f612a7a99d7fa9f430e6482f63d222c996cca6db72b07cfdece51568a"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_29_4ed5484af5a2.py": {
+      "bytes": 642,
+      "sha256": "cb1aa45ca5b93796e512f4977868e7688cc34e43cc0ad4234c30faa8094a55a7"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/shroud-candidate.js": {
-      "bytes": 5026,
-      "sha256": "d53e7ee40346ad9047930edeb9a793f92f1611c76f6fad18454168698cbd7422"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_2_688ce357daa8.py": {
+      "bytes": 638,
+      "sha256": "c6ccbf1b9a82ded65e45625ba17108ead334e4a72b5096ffaea930eb0ac46307"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/shroud-hybrid.js": {
-      "bytes": 903,
-      "sha256": "6f8a0df333cb3b2f54aa71400da0630901a5aa0d63535350fb6b49d0b2dfca8c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_57_7033dcf6a029.py": {
+      "bytes": 1633,
+      "sha256": "389bf7b219fdd60d096f90af0219de72842db795165a7d13f51a7dd4c28fce78"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/shroud-lower-compact.js": {
-      "bytes": 3943,
-      "sha256": "66ad1783e5bd102a96e5773c7a3f7bf043ec8526af8b28cd0246544a43a9af52"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_58_7efccbf29789.py": {
+      "bytes": 1187,
+      "sha256": "4c55a478b299402999f9faeb2d9fc15943b48964b2ce562f1df4f2b86f06deb4"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/shroud-rim-compact-data.js": {
-      "bytes": 129618,
-      "sha256": "89991d50ed90de05975235e927854fbe6a395e85c045766b69425efbde021d4f"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_5_03517a6d0148.py": {
+      "bytes": 1100,
+      "sha256": "3339bc76fa02ef2f83f93bc4cc456b837b62a0e936a8ffe17d91c685277c2091"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/shroud-rim-compact.js": {
-      "bytes": 2933,
-      "sha256": "1a561248f02c49a24db224b3608b637413b737a981288e785eae5ede5c87b603"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_8_b54e6b3bd144.py": {
+      "bytes": 1100,
+      "sha256": "9ec7bdbd028c1d063c445ba63b957c24239b89f34d6643133d5ce5dd52f66c34"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/shroud-toe-compact-data.js": {
-      "bytes": 5176,
-      "sha256": "b37d9adbfa46b8164bc453ffda93d518c72b92effc60f0e6dadc3779272dfff2"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_8m_cdb28235d4d6.py": {
+      "bytes": 642,
+      "sha256": "017c8dbe72ecf6903be54c3a50fba0dec5479f6634d0b5c5a85359712e3fef25"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/source-checks.json": {
-      "bytes": 1142804,
-      "sha256": "96e1635ffb01378e57b368f176a2128725059b3a37e250c5514be604533b88e8"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_part_9_a1188eb00db5.py": {
+      "bytes": 638,
+      "sha256": "b967074dae778f36b4028f0b2ba8884e420b37f779dfb70c32fde01660cb24a4"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/unround-profile.js": {
-      "bytes": 2278,
-      "sha256": "e96f218a0681d2e661872561b750a419fdcb80f06bea9119efea07ffc398d70c"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_red_wire_1_982ad20a5fa4.py": {
+      "bytes": 654,
+      "sha256": "c7921890846d36f92683f04e6cbc5694da9300f7a4d81cd3df5702a81206e664"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/upper-b-in-a-frame.js": {
-      "bytes": 4037,
-      "sha256": "74dad426effb60f2a322f7bfc1df655609f922bda87b6be2107d3154eaa5ca6d"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_red_wire_2_4f65121a1f57.py": {
+      "bytes": 654,
+      "sha256": "15b4e5a2919493155d303a16208bf62c46b3eeb5d1e8968968c4efc30684a1d9"
     },
-    "examples/team3310-rebuilt/source/cad-assets/robot/parametric/validation.json": {
-      "bytes": 1121058,
-      "sha256": "aef6c688dd6e538a97aa19bf45a2382be3a6d53ebbdfcb20ec0ab154cf9ea34a"
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_right_front_corner_block_2f5e06f0b352.py": {
+      "bytes": 422,
+      "sha256": "3950b9c1a3468db64db9629e1d4917e5f0e4b4e597d4b9eb6f8addd05367b797"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_right_rail_7c45201869e4.py": {
+      "bytes": 697,
+      "sha256": "332d685540deb3d093fe48fd5792d5dd03cd79ae4207a226d4d97ceeb2e70e45"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_right_rear_corner_block_74b524db1283.py": {
+      "bytes": 419,
+      "sha256": "7cdf8151dcb59250388a3db9502c31527fa9b42433d6a916768f155118c30dd1"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_shroud_5023935d6e1a.py": {
+      "bytes": 317,
+      "sha256": "679684f1704454364854bb8542f7ab068b6d8d390a9e30fbc6b3554e97be9026"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_tube_1_x1_x15_9cfd38f9d566.py": {
+      "bytes": 666,
+      "sha256": "2dd4f6cadb95d02c8e70367e749daf77f617639365a2c52bd52154f13c215e82"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_tube_1_x1_x15_fc5a76267339.py": {
+      "bytes": 666,
+      "sha256": "00574c111b3ab0edc0941a19e7bcbcc0d7206f7a232b06e39e04cdfc27ff4ead"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/platforms.py": {
+      "bytes": 9443,
+      "sha256": "74c012d21aeb0e01f1221ec618ab98daa0be2dd6d89fc3bcbaf8be4ad81524d8"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/prototypes.py": {
+      "bytes": 272,
+      "sha256": "285a1f1a8fb3f7c966f232c1f5deb4eb969821a5682354ee0c904a1f55475f7f"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/rails.py": {
+      "bytes": 9095,
+      "sha256": "6db5d594ad8618c20249c759c1afd782c85aca7d7eafa8e0e9a0d6977ebda572"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/shroud.py": {
+      "bytes": 10048,
+      "sha256": "dfd679de09d0b1066c513e611b325301493d38c866febdbc2d85f63bb21543d1"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/surface_tools.py": {
+      "bytes": 4924,
+      "sha256": "022c64c439900b94687bca2d82ebea8fdf1dfa03b58181740929af481ece23c9"
+    },
+    "examples/team3310-rebuilt/source/cad-assets/robot/native/validate.py": {
+      "bytes": 1168,
+      "sha256": "24aa85cce9af7d03f4a594349571e440acfd52bbcb4eb2ebb3289c290fd75280"
+    },
+    "examples/team3310-rebuilt/source/native-migration-validation.json": {
+      "bytes": 76613,
+      "sha256": "0e08d299166ab36ffa826c295f54b28f070af3cd8198e049c48b74180adaa77f"
     },
     "examples/team3310-rebuilt/source/physics-assets/build/colliders/067c381fb1632dc8e4441d5befb6ba9cc905a63d450e7e0d5657053f017f0800.ctm": {
       "bytes": 52092,
@@ -5404,8 +5616,8 @@
       "sha256": "c2f8cf4593b832681daff35ea66ceb5fe18249c15ea57e6de2a4573d2794a0b6"
     },
     "examples/team3310-rebuilt/source/scene-bindings.json": {
-      "bytes": 1030035,
-      "sha256": "e60907c34fa8cdbb88bf7ab1ed3ed67c841caff49ac7fb3f9534682202636710"
+      "bytes": 1100706,
+      "sha256": "55f87878cf5d8663c68e0ce09210ce495e826050251563bcb522ef009d0c6214"
     },
     "examples/team3310-rebuilt/source/world.json": {
       "bytes": 825802,
@@ -5423,13 +5635,17 @@
       "bytes": 1282,
       "sha256": "ed5b66c4abe9eb01b05c86f2e20fb5ce1a8baaa15fb63982a605e992152cabcc"
     },
-    "examples/training-robot/cad/design.js": {
-      "bytes": 1836,
-      "sha256": "2fff07497a0e963baba22efdd08ae30aa93b529865d6ac429e70b3f9883c835d"
+    "examples/training-robot/cad/design.json": {
+      "bytes": 4516,
+      "sha256": "2c203b298f475729502c281304b085a8fc0047f821840c568ef2495f948406dd"
     },
-    "examples/training-robot/cad/model.js": {
-      "bytes": 535,
-      "sha256": "8e48f33ca8b7ccbcc4db5e3281fd78f859b040f5e2ad9c8ea19695c8cb5d3b13"
+    "examples/training-robot/cad/field.py": {
+      "bytes": 249,
+      "sha256": "a686a63115ca43dd242d23a931304dc6e192ed0e62571cb41787ae9e8a51bcb5"
+    },
+    "examples/training-robot/cad/models.py": {
+      "bytes": 816,
+      "sha256": "20ac947d9f71a2cdc63cdb7471964da012c73343a6b597bba02918788792cbb4"
     },
     "examples/training-robot/settings.gradle": {
       "bytes": 115,
@@ -5456,24 +5672,24 @@
       "sha256": "b5fbd095d3376c8f6d5393e9683c958981508c6b69e2658d0b865c4b1bfe3c57"
     },
     "extensions/vscode/README.md": {
-      "bytes": 9948,
-      "sha256": "e9511ee3e40b62efdba64c03730619ee972d80f6ec58d8bc6077718cfe36744d"
+      "bytes": 9847,
+      "sha256": "90748b2ce4bc88ca049b8aa6ca867e6c066a48ec1271e4acf22bf4635c3effca"
     },
     "extensions/vscode/package.json": {
-      "bytes": 2940,
-      "sha256": "c6fb73a2f3f89ab844836a9aabda7386077bb01118ade5af81b8b4a97851c28d"
+      "bytes": 3281,
+      "sha256": "fa4c09a5014528870c3c409404c7d70d814d3a5536ddbee362c6b07881e2208c"
     },
     "extensions/vscode/src/extension.js": {
-      "bytes": 14486,
-      "sha256": "9c1e5948da601f35ba36972368f5fbd65adf90f5302c43e8176d989c07b015d1"
+      "bytes": 14502,
+      "sha256": "a00b007a3fe3cf629d17dd6b8ee262f6e79488ad9f5e56b70074046d38f82660"
     },
     "extensions/vscode/src/mcp.js": {
-      "bytes": 8507,
-      "sha256": "a39b7debf2a65b2c9fc7076ec763c1f11c2aa360578f2c575a6319bd3ba29e97"
+      "bytes": 9272,
+      "sha256": "9312f05573623e5b9804642d3e5d59725b0cfc338f254f4fdc3e1e73f42b0775"
     },
     "extensions/vscode/src/robot-panel.js": {
-      "bytes": 4127,
-      "sha256": "03646764a247e19794e189ed18acb8f8a503484ad1f06e0e4a738eadb9189c39"
+      "bytes": 4161,
+      "sha256": "7f63fd63af8dea1fdaa74ae09b7755928a37e9b0d50dc24c314bf9b692e4c224"
     },
     "extensions/vscode/src/simulation-panel.js": {
       "bytes": 8659,
@@ -5484,36 +5700,44 @@
       "sha256": "00f965ce97c8bfd6360c0d2f57ba60628f0603be6f26fa68fcf3ba0b46932e9f"
     },
     "lib/agent-guidance.js": {
-      "bytes": 2093,
-      "sha256": "a0cc378afc0d85f04bb2593560f828cbe0b75f79ad3214ce5bf2157d7a8ea99c"
+      "bytes": 2250,
+      "sha256": "d8261c1ca6b181551fda3b2770830e6c2d8a6a2159909ba3432f1c29ef062080"
     },
     "lib/bridge-export.js": {
       "bytes": 4463,
       "sha256": "b2a83a61031eab5ead19287694fb0df5c83a603bc075b9be61b724de16ffb33d"
     },
+    "lib/cad-capture.js": {
+      "bytes": 1063,
+      "sha256": "7ac3f12527132af30441a11044b4e741ee94e88ef74542e43ecacf8204bcdc54"
+    },
+    "lib/cad-command.js": {
+      "bytes": 2870,
+      "sha256": "1edbf1e125ad1169a4b969855dad053c2f8bc3545f7b74395183e252bc3b46ef"
+    },
     "lib/cad-feedback.js": {
-      "bytes": 3812,
-      "sha256": "8631e1a0ea5389cdbb838af56d52dc66ea6064dd34da45a5d9f80eae1a15f83d"
+      "bytes": 3965,
+      "sha256": "3842e913d242d20f0ecdaa146b0ee1d00d09c4e1e47d1dd0d24008c87dea242d"
     },
     "lib/cad-project.js": {
       "bytes": 814,
       "sha256": "761be261c43e507a5bea9a9ec596b1c3c888576b8524ccd9e3fbdf7113c239e5"
     },
     "lib/cad-reference.js": {
-      "bytes": 2916,
-      "sha256": "63c591b8fc2a5e27c5d27dadb166359d50969c52f6b56d0d39489e38324a50c2"
+      "bytes": 1330,
+      "sha256": "da216ff6a7ff4125d23a763cca23589d6a754da427044fd868892b4c97ccff84"
     },
     "lib/cli-build-provenance.js": {
       "bytes": 2475,
       "sha256": "62107846ef515b3c00f477d538d25e2078c0d625598eb2ec7b6087419473c38c"
     },
     "lib/dependency-notices.js": {
-      "bytes": 22569,
-      "sha256": "e645c9c6082fab089ceb3385ddec2dffc599586db696b408e85d60a314975d35"
+      "bytes": 18757,
+      "sha256": "934b927d2c9584c50483fc34c4a127f98d6e64bf899f471f88b6f62ed811d648"
     },
     "lib/example-bundle.js": {
-      "bytes": 2453,
-      "sha256": "fa87766c1b8df3cc6103a1038db8c64a6bc1fbd8ba8263696cc907644c8da570"
+      "bytes": 2471,
+      "sha256": "d76f6fe5cf9873fb5cf5ee110d304ecd3aae24a5f8624917201cc8e80835ba76"
     },
     "lib/example-create.js": {
       "bytes": 4627,
@@ -5528,8 +5752,8 @@
       "sha256": "350c75a9edda1a0a9f6b549614167a3956d289ff58f223b8c5ec55aaeca20975"
     },
     "lib/mcp-proxy.js": {
-      "bytes": 2469,
-      "sha256": "77bfc3f699a3316612e434873a214be873dc3577196f53d9467596149dcf2e8c"
+      "bytes": 2605,
+      "sha256": "8efb3403e73505ef92235aac2c5aefea459f76268b4af1c8a84c969cdec121bc"
     },
     "lib/mcp-server.js": {
       "bytes": 3144,
@@ -5588,8 +5812,8 @@
       "sha256": "f34aa50ea35c877ea6635421abae449084efa23f852e2d096ec472f0cdbb13d2"
     },
     "lib/toolbox-project.js": {
-      "bytes": 19949,
-      "sha256": "7e11e485615ea33c2d9f319e72d54995c065597d134b5aa465f075a4e9023422"
+      "bytes": 20268,
+      "sha256": "0c7818cb9e02531e332984de0fadda83c3342f47c17f63b8ebc499f006d46502"
     },
     "lib/transforms.js": {
       "bytes": 2212,
@@ -5600,8 +5824,8 @@
       "sha256": "7bab8667c400bbdc98db98121e75062a426268123e654c594f06c3b29bcd797a"
     },
     "licenses/README.md": {
-      "bytes": 10344,
-      "sha256": "78f8681a66054506eeadcc2e5ee37cd4ba203b68a001e02243dd97a10191f48c"
+      "bytes": 7918,
+      "sha256": "3c60e06c2353863a269f254b6a5de215ce92f16ac427e263c73a589ea3865479"
     },
     "licenses/bun-polyfills.json": {
       "bytes": 72012,
@@ -5615,17 +5839,13 @@
       "bytes": 25957,
       "sha256": "6faa4700e8fe2006cb97aa48959bac7be3d82658188fad8f2a732dc799143fff"
     },
-    "licenses/occt-source.json": {
-      "bytes": 4770,
-      "sha256": "d1d91e281e5f4fe060ddfa22a9d79984c6f909fe334bf0c27ade9a8617e209e3"
-    },
     "licenses/patches/bun-jsc-relink-probe.patch": {
       "bytes": 971,
       "sha256": "a5744f6bee35beba436f043f10072eb82e3aff0ae5e8e87a355668ad76232370"
     },
     "licenses/upstream.json": {
-      "bytes": 263118,
-      "sha256": "69a3982ae23deeec66453ee420b00fb4a10d7bf4441d0ce8b1096772db78677a"
+      "bytes": 258167,
+      "sha256": "8b731fe4976ff004674d65d3778bd5a45766d00dc27a4ddc861e5be046d5a260"
     },
     "licenses/upstream/OCCT-LGPL-2.1.txt": {
       "bytes": 26434,
@@ -7767,38 +7987,6 @@
       "bytes": 6204,
       "sha256": "f9bc4423732350eb0b3f7ed7e91d530298476f8fec0c6c427a1c04ade22655af"
     },
-    "licenses/upstream/occt-dejavu-font-notice.txt": {
-      "bytes": 3185,
-      "sha256": "33f66ec26ad2aca752db087548a211bead5a45b5caf017934575e5b849116785"
-    },
-    "licenses/upstream/occt-delabella-cpp-notice.txt": {
-      "bytes": 1130,
-      "sha256": "fdd27b13866b5f0d12f3b5b7f9b8cdd2324a2ce1095b1122e20563156c123f9b"
-    },
-    "licenses/upstream/occt-delabella-pxx-notice.txt": {
-      "bytes": 1130,
-      "sha256": "fdd27b13866b5f0d12f3b5b7f9b8cdd2324a2ce1095b1122e20563156c123f9b"
-    },
-    "licenses/upstream/occt-flexlexer-notice.txt": {
-      "bytes": 1213,
-      "sha256": "e4b9262c54d6a79455230287b91253da7fe8531b6abe23008af6967f1a6d84f3"
-    },
-    "licenses/upstream/occt-halton-sampler-notice.txt": {
-      "bytes": 1148,
-      "sha256": "d6530dcba1418cc8ef7246025d4259bb47971b3af7ae8bd2bfb8399bb945524b"
-    },
-    "licenses/upstream/occt-khrplatform-notice.txt": {
-      "bytes": 1146,
-      "sha256": "fd7c88f69e70ffa778137ba0bc8267fa8dd83189365d9ff5a2533161432b3d0b"
-    },
-    "licenses/upstream/occt-wrapper-APACHE.txt": {
-      "bytes": 834,
-      "sha256": "cb38eeb588249a8f458607604d68d7c4d8f7f62ec9d4b2ca6eca0a9e17601380"
-    },
-    "licenses/upstream/occt-wrapper-MIT.txt": {
-      "bytes": 1065,
-      "sha256": "0c6ec66bfa0b33581cb449b395cbc0eaee0591908fcd939170eb989e1778e129"
-    },
     "licenses/upstream/parry-LICENSE.txt": {
       "bytes": 11347,
       "sha256": "ceacfa4d7fa67df64ab09a56fe248c50a3bfc9bc00374d69bd74ad763b14b89c"
@@ -7828,52 +8016,60 @@
       "sha256": "3aa41caccecaeddad6fcf2f36ce14146ab7baae57064b05b12ecc6b52d5e917f"
     },
     "package.json": {
-      "bytes": 1895,
-      "sha256": "901f58a96dbce5df88d24b93f97eb0209a61cf2c86e2dca443f0fe91db786a00"
+      "bytes": 1834,
+      "sha256": "f638600f2677b933cf4fb47bcbd911ede9709e728f0fb064f8b0b75ee0d2b7c9"
     },
     "scripts/build-example-field.js": {
-      "bytes": 5280,
-      "sha256": "e4313c49799e6d548984b9f7921de967b608d88c879a3a75f7ac18d993cd8a5a"
+      "bytes": 658,
+      "sha256": "e047b1249359a15e182c5402ee39682373f9023d38a9d0365d1b8025ebd3f449"
     },
     "scripts/build-native-runtime.js": {
       "bytes": 2347,
       "sha256": "00a6ad7ac7dad5dcd5c7bf0536d75c535b6472e0e260c96f6b93a0d3f9c31448"
     },
     "scripts/build-toolbox-extension.js": {
-      "bytes": 7464,
-      "sha256": "05ca5a4832db72d9489a2a73776b29ccfbd644db39a3166a650ebb3939a32ec2"
+      "bytes": 4561,
+      "sha256": "c6dbfe2e6155212e2d0bc55641cfef4286d35698f1c1c757158eeeb0f4954220"
     },
     "scripts/build-training-example.js": {
-      "bytes": 7466,
-      "sha256": "8cd9e75eee1db5d43f81a0e737b8bfb583cedf70131a8a38c381c82875894202"
+      "bytes": 7764,
+      "sha256": "5acccaac12c5b666415755f4e52407059d3689dbf8fed418351dbcc683febd2b"
     },
-    "scripts/component-model.js": {
-      "bytes": 670,
-      "sha256": "449e59227321efa0ec0e4ed382046ac08121457a27ec9ec2f69103724164b3e2"
+    "scripts/component-model.py": {
+      "bytes": 709,
+      "sha256": "b9c6362dc271e18f2b3b43af1e2030461686b9f82c7d5e1b9d3a7fe7391f8e6b"
     },
     "scripts/dependency-notices.js": {
       "bytes": 487,
       "sha256": "5ae9924f6f1245d0fedab1cf7c5f195723e592c3e2d21952d5cda34e7b5051a8"
     },
     "scripts/export-example-workspace.js": {
-      "bytes": 10554,
-      "sha256": "eba5b28cd7891f56ba65fa22a1bb455fadc9f09151a82cbc4f23374cf9101044"
+      "bytes": 10552,
+      "sha256": "f878f01c6b83d2b9525a53156aece4c55a2d600a5037dfd5035d04581dc3abc2"
     },
     "scripts/export-toolbox-source.js": {
       "bytes": 4100,
       "sha256": "f6e4a4f6bf97ed91b5b52972c737f59e0670c7adff0d64c21079927d83bba507"
     },
     "scripts/extract-appearance.js": {
-      "bytes": 5943,
-      "sha256": "13a323624f2359504f26b9ebe958536fe9381d3ea56f3d682e5da97cf6e4eb1c"
+      "bytes": 1862,
+      "sha256": "ea569dbcfdf0058b21732a1694704161c00e658a4179ef1312e8eb697d54eac8"
+    },
+    "scripts/fixtures/cadquery-manufacturing.py": {
+      "bytes": 1386,
+      "sha256": "b1fb608033fc9ab883abe96273bb2920c0273f25e60e71ce5e87e5c6d333f8eb"
+    },
+    "scripts/native-field.py": {
+      "bytes": 6980,
+      "sha256": "84c415643317dfb44b490b7c9d0aaa0f49a81ccff49cf89d4d4617b8cc3f3105"
     },
     "scripts/package-runtime.js": {
-      "bytes": 6568,
-      "sha256": "1c5f72759e165c58a696dbdd3b7e62e32023bf129a7fe6c67bd572fc0581e819"
+      "bytes": 6943,
+      "sha256": "fbe1125e97fecdcb937289692aa001e33e0de1df38282e4a7dd9795e9dc66a23"
     },
     "scripts/package-toolbox-extension.js": {
-      "bytes": 4830,
-      "sha256": "f7f770b5a49c4567ea626be6c52bdcc42e673527567ca9b310cd2cc27675cc8b"
+      "bytes": 4364,
+      "sha256": "39f03cfb66c5800b8b2c7f645b70dbedfc922a55e6932b725d063629c6c8fc1d"
     },
     "scripts/package-training-example.js": {
       "bytes": 2495,
@@ -7882,10 +8078,6 @@
     "scripts/prepare-bun-source.js": {
       "bytes": 11194,
       "sha256": "b4c43917de578a77c1f9d88be0570cb69f4c3f8f71511a36e32ffb9962f3741f"
-    },
-    "scripts/prepare-occt-source.js": {
-      "bytes": 4225,
-      "sha256": "16b70de148f9c21fd7ac90761d684f41f05c1bb278c3d22466f1d0a12b97473d"
     },
     "scripts/seed-bun-build-cache.js": {
       "bytes": 2874,
@@ -7896,12 +8088,12 @@
       "sha256": "13dec2f0a967b5695bd6ec4a6bbdf3c67c20854be2ace2cf73f8890f6e6b3640"
     },
     "scripts/test-toolbox-extension.js": {
-      "bytes": 9591,
-      "sha256": "f1e3840c59c786313bff79bed31ae9ca32647cec3c2a01bd2a730852c020bb98"
+      "bytes": 10508,
+      "sha256": "5b3bc7233d912e607e032a619f2d2b624cd8c6fa1f7d25669f6828800722b5d8"
     },
     "scripts/vendor-cad-core.js": {
-      "bytes": 1933,
-      "sha256": "4544025ba61427b7423d4e51dd6ae5e035c8812c8ab7e62aaa56eff3f2a69a7b"
+      "bytes": 2201,
+      "sha256": "99ea2c44699ce863620ecbe31215d8d8a10aa7aeeb836168d503539325636413"
     },
     "scripts/verify-team-example.js": {
       "bytes": 3400,
@@ -7979,29 +8171,33 @@
       "bytes": 1776,
       "sha256": "38bacac80e11246aa1c7799ed11d6985da2ac29de973475bb03b7032aa696083"
     },
+    "tests/cad-command.test.js": {
+      "bytes": 1712,
+      "sha256": "6fa6bc8be83c254dc30a6c552d59503376e3a3051145796fa045eb725eec555f"
+    },
     "tests/cad-feedback.test.js": {
-      "bytes": 3507,
-      "sha256": "5fd07d38e38462b82aac1324b00dbeb82e71a02f7ad1e73afd03b55c5a571bb0"
+      "bytes": 5536,
+      "sha256": "706630aacce5742022769e36b4485f9b25b1eaf8b2837484f786a9bdb306f731"
     },
     "tests/cli-build-provenance.test.js": {
       "bytes": 1588,
       "sha256": "bf8a84b06f3f39b81cda8d8f5fddd22af33926fdafba76aa1fd51b768d949a86"
     },
     "tests/dependency-notices.test.js": {
-      "bytes": 3793,
-      "sha256": "c34895e5e80b8817bb8d72e791029b34b6ee98727fb281d1a3603e31f791ac7f"
+      "bytes": 2625,
+      "sha256": "c95fdf93ec1bdf6e7079a62625d7325466b1bc23be0997dc4d7d9e06e2751306"
     },
     "tests/device-adapters.js": {
       "bytes": 3576,
       "sha256": "46902fa0fd8eafb65f825bedf0eb9b5599b46b70c76999b5108672b904424def"
     },
     "tests/example-bundle.test.js": {
-      "bytes": 1749,
-      "sha256": "20e7601ea9e70e62a70045b6f63d77db0e07dba2729087755d2495dd6b0d4ff2"
+      "bytes": 1751,
+      "sha256": "bf8eadd2c51a69a8310b563296c0ddb8f693b1d389955ce48736ce0864876943"
     },
     "tests/example-export.test.js": {
-      "bytes": 6261,
-      "sha256": "da37136ade6f5242195ec33ece95ae874119a3fb03fa906298c890e260406e6e"
+      "bytes": 6268,
+      "sha256": "2e324528345ea80630960ddfc563e28638bae1a18fad69694ba7f5cc37b4d68d"
     },
     "tests/fixtures/season-compatibility.json": {
       "bytes": 13479,
@@ -8024,8 +8220,8 @@
       "sha256": "01dbec0a01951ce89c5c6919298adad5bf343b705d36f29b5128fbf41c357882"
     },
     "tests/packaged-runtime.js": {
-      "bytes": 18449,
-      "sha256": "19b07b965cc3ef723cde7bf6fc737c350969e61190825438827490266d59b97b"
+      "bytes": 18232,
+      "sha256": "ae73afa4f2a6193bcb7b22f0d94dcbef6e04c02d2676eff71576583064fbd26c"
     },
     "tests/physics-modes.test.js": {
       "bytes": 6544,
@@ -8080,16 +8276,16 @@
       "sha256": "523f660c7a84cf874383d38fe21478b6b079eb8d22e4427dc2f5cba1a4e862be"
     },
     "tests/team-example-source.test.js": {
-      "bytes": 2281,
-      "sha256": "5e5d3df770c6e9a268a2b8480eeb412d52bc7d19a897fcb3c5bcd9f57a4bf41c"
+      "bytes": 6785,
+      "sha256": "49db4c3647f57e86d0dfa09b04dd8c1a0c42b624795f353c382ac0eb1211b57d"
     },
     "tests/toolbox-extension-runner.cjs": {
-      "bytes": 18139,
-      "sha256": "aefb36eb94006949a418026fcea1f6a992d92ef6fb31bc5e9483902a692418cd"
+      "bytes": 22248,
+      "sha256": "b8dfb691d7aa62a24fe062f7a222dc54b48aab48ed124cf50fa60bffc10ded9f"
     },
     "tests/toolbox.test.js": {
-      "bytes": 7570,
-      "sha256": "dbc09e788914ef4a0a25634052cba69b0d35bca1ec5e7126c70946c6a627baf9"
+      "bytes": 7342,
+      "sha256": "66799ab71414889ab50203254232986b56ffef1e222424e626298d4b017cf15f"
     },
     "tests/training-robot.js": {
       "bytes": 7778,
@@ -8103,41 +8299,25 @@
       "bytes": 1077,
       "sha256": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6"
     },
-    "vendor/cad-core/docs/AGENT_WORKFLOW.md": {
-      "bytes": 9872,
-      "sha256": "91a56a0006431ea84539903e037735572b24dc4433b6b8dfc095eb236a82c4f2"
-    },
-    "vendor/cad-core/docs/COMPANION-BOUNDARY.md": {
-      "bytes": 6182,
-      "sha256": "8d784628b96071cbb3a3ef8ca80eab426d14654841cfba9bbb629fe742ce6ac7"
-    },
-    "vendor/cad-core/extensions/vscode/src/compile-model.js": {
-      "bytes": 1306,
-      "sha256": "3644f8b5f77488421c82ae7a229b84b9ed3fad9084538db43b35f5e4543ef868"
+    "vendor/cad-core/docs/NATIVE-CADQUERY.md": {
+      "bytes": 5898,
+      "sha256": "7f336b6a12738baaeaa806a0f0f5d3545e90273c0754d7c5428febb9602e0614"
     },
     "vendor/cad-core/extensions/vscode/src/extension.js": {
-      "bytes": 11653,
-      "sha256": "7269ea5bfa86971e0066841edae6436c29aa5d98a3297064657a05b2ad6f5e7f"
+      "bytes": 13696,
+      "sha256": "87015da13b96639447f7fb86d912566fab8b46deb79c7427efb6de0ab10c3562"
     },
     "vendor/cad-core/extensions/vscode/src/project-files.js": {
-      "bytes": 3688,
-      "sha256": "5575ce3d43e1e32a4d99eacbe1a99ce5196bf1807f858f1094c140aa6ef989a9"
+      "bytes": 4179,
+      "sha256": "f614994f6f3799a89a396597a7bb75bbfba984ed895863ca28e1e01c4735998f"
     },
     "vendor/cad-core/extensions/vscode/src/step-source.js": {
-      "bytes": 1303,
-      "sha256": "4f9b1351ac4dc999f9e25d600a186f7e39fa6c7ed4f479107c44993df8fe9e62"
+      "bytes": 862,
+      "sha256": "0fe88df4c91e59d995c2691aaee1ecff984a1a7baa706820c8f31b251cd541ac"
     },
     "vendor/cad-core/index.html": {
       "bytes": 4181,
       "sha256": "fcad867ac158d07305548ab75c0b10665b7475006d135e65160d09055fcaaab3"
-    },
-    "vendor/cad-core/package.json": {
-      "bytes": 940,
-      "sha256": "2a1a8c99753d5b1296ed9d080c40bd5a3ce0ad58365428cdeaa709d1f7db0181"
-    },
-    "vendor/cad-core/src/brepjs.js": {
-      "bytes": 24,
-      "sha256": "41ebcf96f1529f2c4c0e37c253da2af5d439fce44e2bd1278eaab6b532c06815"
     },
     "vendor/cad-core/src/core/assembly-capture.js": {
       "bytes": 5788,
@@ -8147,105 +8327,69 @@
       "bytes": 7168,
       "sha256": "7223359f10177581e822ac32b3716c8bb56d7b9a385471800f353f40a344dcd7"
     },
-    "vendor/cad-core/src/core/cad-client.js": {
-      "bytes": 4069,
-      "sha256": "e184a25112fd2688ea1d363ce779e30fc9bde12866eec8330bd5e9362217c96d"
-    },
-    "vendor/cad-core/src/core/component-cache.js": {
-      "bytes": 5419,
-      "sha256": "7c25d2cf11af8bad2acf399b71cf9c44607600375b8feeb7cf1c13aea0877660"
-    },
-    "vendor/cad-core/src/core/geometry.js": {
-      "bytes": 3074,
-      "sha256": "21f6b1f4f1b3229ca7ecf41a0b79ab5dcf873c558f164a81b5c5e65678a6f1c5"
-    },
-    "vendor/cad-core/src/core/kernel-worker.js": {
-      "bytes": 11328,
-      "sha256": "42c2ba8234bf36f675cd9a0c7df15ecd0dc7e81527a3d9caaf1895d3d6ba63a1"
-    },
     "vendor/cad-core/src/core/mesh.js": {
       "bytes": 2670,
       "sha256": "359f6d1e0df22ba37dc3f05dd0b20b647ded8712a5c432f4aa331d987390b9ab"
     },
     "vendor/cad-core/src/core/revision.js": {
-      "bytes": 1130,
-      "sha256": "34c97bbf59bb0763d701dc825e07a069de6fbe5d3ad576a9ba7f05f731da82cb"
+      "bytes": 946,
+      "sha256": "a4908d7914e77b51f3c770bf396e593a4b4a7b25d03e109698daf2d22fc18fff"
+    },
+    "vendor/cad-core/src/core/scene-capture.js": {
+      "bytes": 3894,
+      "sha256": "759697908092eb815861145dbebd65d4a41433abb02acee7ae10d07ce657ca07"
     },
     "vendor/cad-core/src/core/source-limits.js": {
-      "bytes": 393,
-      "sha256": "70132416afd79cf9f9fabbd3a40777656eba7517efd25653708f50329a5036d8"
-    },
-    "vendor/cad-core/src/core/step-model.js": {
-      "bytes": 2168,
-      "sha256": "ddc93116460f5ad1cace1ea2d7f9a92ba756291324b0d9a463e337eefe51c83f"
+      "bytes": 397,
+      "sha256": "156ef65c49fa50ccdfd168d268d08aae0a8b0d750234bc8fbb1408ed1f6b1937"
     },
     "vendor/cad-core/src/core/viewer.js": {
       "bytes": 14314,
       "sha256": "d311faeea3ee12482f833e39fe5c41ff0fdc058cc7aa166d1a432cffb1de407b"
     },
-    "vendor/cad-core/src/geometry.js": {
-      "bytes": 104,
-      "sha256": "1559d828ce95dc82f07af30b599fc7243ed24f8a03e62da48291c1621e65ad65"
-    },
-    "vendor/cad-core/src/hosts/browser.js": {
-      "bytes": 981,
-      "sha256": "2dccbc627abcf84a969f50460d59653f4690845c5c302a670f5a7e9cb869e783"
-    },
     "vendor/cad-core/src/hosts/vscode.js": {
-      "bytes": 3291,
-      "sha256": "49b83b5522a79d6cbc7509982e0ec08529a35bf6b869ceae0efecf6fe929b1f6"
+      "bytes": 3633,
+      "sha256": "64a4c443640e7bd24e5ebf44682b95a647988a24a41ebb13e2735bb9cdfdf9f1"
     },
-    "vendor/cad-core/src/kernel-worker.js": {
-      "bytes": 34,
-      "sha256": "1572b8db2a1de2a9aa6ea879975e69de82c06cce25d95d3395d4df65447b1ac8"
+    "vendor/cad-core/src/native/client.js": {
+      "bytes": 3412,
+      "sha256": "15b4922729dc1d660c9060f677e834c02ea4a726988896a992d0e41543554a4a"
     },
-    "vendor/cad-core/src/main.js": {
-      "bytes": 24550,
-      "sha256": "4ff262da52a9295ba558327208c21567654b98106f6100ddef69a8f2fb32bd7b"
+    "vendor/cad-core/src/native/geometry.py": {
+      "bytes": 2451,
+      "sha256": "252178b10b44c4e3e319f085fe378e5e98d1d40bae4905482177429d9120a790"
     },
-    "vendor/cad-core/src/mesh.js": {
-      "bytes": 100,
-      "sha256": "45a746fb2f7c4703b3fb7785007da151e27408ca18033dbe39f5fb7977d7896d"
+    "vendor/cad-core/src/native/requirements.txt": {
+      "bytes": 44,
+      "sha256": "8365d8c2f92c2561701887d9312d4a53d424a8bbb5e22c883137711723355fac"
     },
-    "vendor/cad-core/src/mirror.js": {
-      "bytes": 2042,
-      "sha256": "0d40570b2275525333d85e3e0b8b8db589912390493181e57d05376a80d880da"
+    "vendor/cad-core/src/native/session.js": {
+      "bytes": 3805,
+      "sha256": "3d873adfe5ca372bfc79cc78ea0c2ebdc5c4775502ff70dd66687e434685d8e0"
     },
-    "vendor/cad-core/src/projects.js": {
-      "bytes": 3018,
-      "sha256": "c21e485dc34adfaf0e234bc9f24c662cf4edaa6e4df9148b6873cf7066fae2a7"
-    },
-    "vendor/cad-core/src/storage.js": {
-      "bytes": 3235,
-      "sha256": "c2e3857248352a45a08e6e0e46937bfd918bfea4a59488a012fbb09c6651d167"
-    },
-    "vendor/cad-core/src/sw.js": {
-      "bytes": 3652,
-      "sha256": "292a7368ddb3c5c1a16963a96b9e44c5f1ca4b99cbf1993e2d63ee476e79fdc8"
-    },
-    "vendor/cad-core/src/viewer.js": {
-      "bytes": 102,
-      "sha256": "11ebbfba1faa02ff9b7f106e30ac50d1f631d02f53a0282abd6f7547ebc1f5df"
+    "vendor/cad-core/src/native/worker.py": {
+      "bytes": 15251,
+      "sha256": "71d671cd16c140ad9a4ba2cf78bc8c4bca027e8b8eef16fa03a22348d3a952d6"
     },
     "vendor/cad-core/src/vscode-main.js": {
-      "bytes": 8225,
-      "sha256": "3f0006e77b983f350fb2da431264e41ba362f4bff41334c5aa5787a15b444cca"
+      "bytes": 8318,
+      "sha256": "fe2546b63292b54f27f54843bf07022124ff1d18d0105f6505b5dff5ac87496f"
     },
-    "vendor/cad-core/tests/component-cache.test.js": {
-      "bytes": 5225,
-      "sha256": "bfc00e5c618d7ae34b0d134d6ab9bcb98cab45e06177fd77525ec330e5dfaec7"
+    "vendor/cad-core/tests/native-cad.test.js": {
+      "bytes": 6248,
+      "sha256": "f08a76edfa88234eb3442dab79198c68784f7d6720f3717f7610f68db56e947e"
     },
-    "vendor/cad-core/tests/component-worker.test.js": {
-      "bytes": 1778,
-      "sha256": "39ed255f9da242b6cf2f34fcb2303bd70a490146b2fc08f04eab4a4c8b867065"
+    "vendor/cad-core/tests/native-session.test.js": {
+      "bytes": 3091,
+      "sha256": "50d665c29aff71d7f334285068d53504c6f9a9a49afebd772495975706e7eb29"
     },
     "vendor/cad-core/tests/vscode-host.test.js": {
-      "bytes": 9272,
-      "sha256": "74591147bb763c654b334f411b8d96ceedc5ecb87a1b19fb2f08221270bdd239"
+      "bytes": 5822,
+      "sha256": "209d4aed68465c9713a4be1d32c66a5bf74942c6524a83ecb900138f3163301c"
     },
     "vendor/cad-core/upstream.json": {
-      "bytes": 3677,
-      "sha256": "8339a980915893c802e888369e8ee6658d0b6c56a6f069095055dc0ae3bc92e6"
+      "bytes": 2472,
+      "sha256": "0bb3bb4ebb75108acbe64329c15a7e4f0e41370d09eacc246688d90884918458"
     },
     "vendor/glamx/.gitignore": {
       "bytes": 21,

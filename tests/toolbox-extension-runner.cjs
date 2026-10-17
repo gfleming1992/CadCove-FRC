@@ -26,7 +26,7 @@ exports.run=async function(){
   const init=await api.initializeWorkspace();assert.equal(init.ok,true);
   for(const file of ['AGENTS.md','CLAUDE.md','.github/copilot-instructions.md'])assert.match(await fs.readFile(path.join(folder,file),'utf8'),/\.cadcove\/AGENT\.md/);
   const instructions=await fs.readFile(path.join(folder,'AGENTS.md'),'utf8');assert.match(instructions,/\.cadcove\/AGENT.md/);
-  assert.match(await fs.readFile(path.join(folder,'.cadcove/skills/references/brepjs-api.md'),'utf8'),/export declare function box\(/);
+  assert.match(await fs.readFile(path.join(folder,'.cadcove/skills/references/cadquery-api.md'),'utf8'),/CadQuery 2.6.1/);
   let runtime=await api.ensureRuntime();await fs.access(runtime);
   const {Client}=await import('@modelcontextprotocol/sdk/client/index.js');
   const {StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js');
@@ -37,8 +37,14 @@ exports.run=async function(){
   assert.equal(JSON.parse((await mcpCall('workspace_context')).content[0].text).workspace,folder);
   const doctor=await api.doctor();assert.equal(doctor.ok,false);
   assert.equal(doctor.checks.find(c=>c.id==='native-engine').ok,true);
-  const entry=path.join(folder,'cad/model.js');
-  const code=`import {box,cylinder,translate,cut,fillet,unwrap} from 'brepjs';\nexport default ()=>{const plate=unwrap(cut(unwrap(fillet(box(100,80,5),1)),translate(cylinder(4,9),[30,40,-2])));return [{id:'base',name:'Base',color:'#dd4400',shape:plate},{id:'upright',name:'Upright',color:'#4488ff',shape:translate(box(5,20,60),[10,10,5])}];};\n`;
+  const initialConfigFile=path.join(folder,'.cadcove/project.json'),initialConfig=JSON.parse(await fs.readFile(initialConfigFile,'utf8'));initialConfig.entryPoint='models.py';await fs.writeFile(initialConfigFile,JSON.stringify(initialConfig));
+  const entry=path.join(folder,'cad/models.py');
+  const code=`import cadquery as cq
+def build(ctx):
+    plate=cq.Workplane('XY').box(100,80,5,centered=False).edges().fillet(1).cut(cq.Workplane('XY').center(30,40).circle(4).extrude(9).translate((0,0,-2)))
+    return [dict(id='base',name='Base',color='#dd4400',shape=plate),dict(id='upright',name='Upright',color='#4488ff',shape=cq.Workplane('XY').box(5,20,60,centered=False).translate((10,10,5)))]
+`;
+
   await fs.writeFile(entry,code);
   const waitFor=async predicate=>{const until=Date.now()+60000;while(Date.now()<until){const state=api.getDiagnostics()[0];if(predicate(state))return state;await delay(100);}throw Error('Timed out: '+JSON.stringify(api.getDiagnostics()));};
   await api.openModel();
@@ -46,7 +52,7 @@ exports.run=async function(){
   assert.equal(initial.phase,'ready',JSON.stringify(initial));assert.equal(initial.parts,2);assert.equal(initial.source,'build');
   assert.equal(initial.sourceDirectory,path.join(folder,'cad'));
   assert.equal(initial.buildDirectory,path.join(folder,'build/cadcove/cad-cache'));
-  const cache=path.join(initial.buildDirectory,'model');
+  const cache=path.join(initial.buildDirectory,'models.py');
   let status=JSON.parse(await fs.readFile(path.join(cache,'status.json'),'utf8'));
   assert.equal(status.ok,true);assert.equal(status.parts.length,2);
   const base=status.parts.find(p=>p.id==='base');
@@ -61,7 +67,7 @@ exports.run=async function(){
   await fs.writeFile(entry,code.replace('100,80,5','140,80,5'));
   const edited=await waitFor(s=>s?.phase==='ready'&&s.revision!==initial.revision);
   assert.equal(edited.parts,2);
-  await fs.writeFile(entry,'export default ()=>{throw Error("intentional failed CAD edit")}');
+  await fs.writeFile(entry,'raise ValueError("intentional failed CAD edit")');
   const failed=await waitFor(s=>s?.phase==='error');assert.match(failed.error,/intentional failed CAD edit/);assert.equal(failed.revision,edited.revision);assert.equal(failed.parts,2);
   await fs.writeFile(entry,code.replace('100,80,5','140,80,5'));await waitFor(s=>s?.phase==='ready');
   assert.equal((await query('cad-status')).ok,true,'Restored source clears failed CLI feedback');
@@ -102,16 +108,16 @@ exports.run=async function(){
   try{
     const config=JSON.parse(originalConfig);config.sourceDirectory='exported-example/cad';config.buildDirectory='exported-example/build/cadcove';
     await fs.writeFile(projectConfig,JSON.stringify(config));
-    await api.openModel(vscode.Uri.file(path.join(sample,'cad/model.js')));
+    await api.openModel(vscode.Uri.file(path.join(sample,'cad/models.py')));
     const sampleState=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');
     assert.equal(sampleState.phase,'ready',JSON.stringify(sampleState));assert.equal(sampleState.parts,11);
-    const sampleStatus=JSON.parse(await fs.readFile(path.join(sampleState.buildDirectory,'model/status.json'),'utf8'));
+    const sampleStatus=JSON.parse(await fs.readFile(path.join(sampleState.buildDirectory,'models.py/status.json'),'utf8'));
     assert.equal(sampleStatus.parts.find(p=>p.id==='bumper-front').color,'#cf303d');
     assert.ok(sampleStatus.parts.every(p=>p.metrics.valid));
     assert.equal((await query('cad-preview')).ok,true);
     report.exampleExport={fromInstalledRuntime:true,cadParts:sampleState.parts,colored:true,revision:sampleState.revision,robotBuildRequired:true};
   }finally{api.closeAll();await fs.writeFile(projectConfig,originalConfig);await delay(300);}
-  let teamExample=false;
+  let teamExample=false,simulationFixture=path.join(folder,'simulation-fixture.json');
   if(await fs.access(path.join(path.dirname(runtime),'team-example.cpack')).then(()=>true,()=>false)){
     const destination=path.join(folder,'amarillo');
     const created=await api.createTeamExample(vscode.Uri.file(destination),{open:false});
@@ -122,12 +128,29 @@ exports.run=async function(){
     for(const key of ['robot','field'])profile.cad[key]=path.resolve(destination,profile.cad[key]);
     for(const key of ['project','jar','nativeLibraries','assetRoot'])profile.runtime[key]=path.resolve(destination,profile.runtime[key]);
     profile.build=path.resolve(destination,profile.build);
-    await fs.writeFile(path.join(folder,'simulation-fixture.json'),JSON.stringify(profile));
+    simulationFixture=path.join(destination,'simulation-fixture.json');
+    await fs.writeFile(simulationFixture,JSON.stringify(profile));
     report.teamExample={createdByExtension:true,example:created.example,robotBuildRequired:false};teamExample=true;
+    const teamConfig=JSON.parse(await fs.readFile(path.join(destination,'.cadcove/project.json'),'utf8'));
+    assert.equal(teamConfig.entryPoint,'models.py','Packaged robot defaults to native Python');
+    const savedConfig=await fs.readFile(projectConfig,'utf8');
+    api.closeAll();await delay(200);
+    try{
+      const viewing={...teamConfig,sourceDirectory:'amarillo/'+teamConfig.sourceDirectory,buildDirectory:'amarillo/'+teamConfig.buildDirectory};
+      await fs.writeFile(projectConfig,JSON.stringify(viewing));
+      await api.openModel(vscode.Uri.file(path.join(destination,teamConfig.sourceDirectory,'models.py')));
+      const nativeTeam=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');
+      assert.equal(nativeTeam.phase,'ready',JSON.stringify(nativeTeam));assert.equal(nativeTeam.parts,1958);
+      assert.equal(nativeTeam.source,'disk-cache');assert.equal(nativeTeam.workerLoaded,false);
+      const capture=await mcpCall('cad_capture',{view:'iso'});assert.equal(capture.content[1].type,'image');
+      const image=path.join(folder,'native-team.png');await fs.writeFile(image,Buffer.from(capture.content[1].data,'base64'));
+      report.teamExample.nativeCad={parts:nativeTeam.parts,source:nativeTeam.source,workerLoaded:false,image,revision:nativeTeam.revision};
+    }finally{api.closeAll();await fs.writeFile(projectConfig,savedConfig);await delay(200);}
+
   }
-  if(await fs.access(path.join(folder,'simulation-fixture.json')).then(()=>true,()=>false)){
+  if(await fs.access(simulationFixture).then(()=>true,()=>false)){
     const configFile=path.join(folder,'.cadcove/project.json'),config=JSON.parse(await fs.readFile(configFile,'utf8'));
-    config.simulationProject='simulation-fixture.json';await fs.writeFile(configFile,JSON.stringify(config));
+    config.simulationProject=path.relative(folder,simulationFixture).split(path.sep).join('/');await fs.writeFile(configFile,JSON.stringify(config));
     const project=path.join(folder,config.simulationProject),manifest=JSON.parse(await fs.readFile(project,'utf8'));
     assert.equal((await api.doctor()).ok,true);
     await fs.rename(entry,entry+'.mcp-test-backup');
@@ -186,6 +209,32 @@ exports.run=async function(){
     while(Date.now()<until&&await fs.access(lock).then(()=>true,()=>false))await delay(100);
     await assert.rejects(fs.access(lock));await assert.rejects(fs.access(path.join(manifest.build,'cadcove-session.json')));simulationStarted=false;
     report.simulation={launchedFromInstalledExtension:true,packagedCLI:true,runId:state.runId,tickBefore:state.state.tick,tickAfter:after.state.tick,controlMode:after.controlMode,cleanShutdown:true};
+  }
+  if(process.env.CADCOVE_PYTHON){
+    api.closeAll();
+    const project=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(project,'utf8');
+    const config=JSON.parse(saved);config.entryPoint='native.py';
+    const nativeEntry=path.join(folder,config.sourceDirectory,'native.py');
+    const source=`import cadquery as cq\ndef build(ctx):\n    return [{'id':'native-part','color':'#e64b36','shape':ctx.component('part',lambda:cq.Workplane('XY').box(30,40,5))}]\n`;
+    const preferences=vscode.workspace.getConfiguration('instantcad',vscode.workspace.workspaceFolders[0].uri);
+    try{
+      await preferences.update('pythonPath',process.env.CADCOVE_PYTHON,vscode.ConfigurationTarget.WorkspaceFolder);
+      await fs.writeFile(nativeEntry,source);await fs.writeFile(project,JSON.stringify(config));
+      await mcpCall('open_robot_cad');
+      const first=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(first.phase,'ready',JSON.stringify(first));assert.equal(first.workerLoaded,true);
+      assert.equal((await query('cad-status')).sourceRevision,first.revision);
+      await fs.writeFile(nativeEntry,source.replace('30,40,5','35,40,5'));
+      const edit=await waitFor(s=>s?.phase==='ready'&&s.revision!==first.revision);assert.deepEqual(edit.camera,first.camera);
+      assert.equal((await query('cad-status')).sourceRevision,edit.revision);
+      const capture=await mcpCall('cad_capture',{view:'front',ids:['native-part']});assert.equal(capture.content[1].type,'image');
+      const captureMeta=JSON.parse(capture.content[0].text);assert.equal(captureMeta.revision,edit.revision);
+      assert.deepEqual(api.getDiagnostics()[0].camera,edit.camera,'Focused capture preserves camera');
+      api.closeAll();await delay(200);
+      await preferences.update('pythonPath','/nonexistent/python',vscode.ConfigurationTarget.WorkspaceFolder);
+      await mcpCall('open_robot_cad');
+      const cachedNative=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(cachedNative.source,'disk-cache',JSON.stringify(cachedNative));assert.equal(cachedNative.workerLoaded,false);
+      report.nativeCad={first,edit,cached:cachedNative,mcpOpen:true,mcpCapture:true,packagedCliFeedback:true,cameraPreserved:true};
+    }finally{api.closeAll();await fs.writeFile(project,saved);}
   }
   await fs.writeFile(reportFile,JSON.stringify(report,null,2));api.closeAll();
  }catch(error){if(simulationStarted){await api?.stopSimulation().catch(()=>{});await delay(1500);simulationStarted=false;}await fs.writeFile(reportFile,JSON.stringify({ok:false,error:String(error.stack),stdout:error.stdout,diagnostics:api?.getDiagnostics()},null,2));api?.closeAll();throw error;}

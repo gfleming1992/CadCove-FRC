@@ -61,7 +61,10 @@ try {
   if(await example.exited)throw Error('Training example packaging failed');
   const inventory=await writeDependencyNotices(root,staging);
   if(!version.includes('-')&&!inventory.releaseReady)throw Error('Production runtime packaging requires resolved dependency/license gates; inspect dependency-notices output first');
-  const extra=[];
+  await cp(path.join(root,'vendor/cad-core/src/native/worker.py'),path.join(staging,'cad-worker.py'));
+  await cp(path.join(root,'vendor/cad-core/src/native/requirements.txt'),path.join(staging,'cad-requirements.txt'));
+  await cp(path.join(root,'vendor/cad-core/src/native/geometry.py'),path.join(staging,'geometry.py'));
+  const extra=['cad-worker.py','geometry.py','cad-requirements.txt'];
   if(options['--team-example']){await packageTeamExample(path.resolve(options['--team-example']),path.join(staging,'team-example.cpack'));extra.push('team-example.cpack');}
   const files = [];
   for (const name of [...names,...extra,'bridge-sources.json','cad-reference.json','training-example.json','native-build.json','cli-build.json','THIRD-PARTY-NOTICES.txt','dependency-inventory.json']) {

@@ -27,6 +27,10 @@ if(process.env.CADCOVE_TEST_WPILIB_CONFIG){
  await mkdir(path.join(folders.user,'User'),{recursive:true});
  await writeFile(path.join(folders.user,'User/settings.json'),JSON.stringify({'update.mode':'none','extensions.autoUpdate':false,'extensions.autoCheckUpdates':false}));
 }
+if(process.env.CADCOVE_PYTHON){
+ const file=path.join(folders.user,'User/settings.json');await mkdir(path.dirname(file),{recursive:true});
+ const settings=await readFile(file,'utf8').then(JSON.parse,()=>({}));settings['instantcad.pythonPath']=process.env.CADCOVE_PYTHON;await writeFile(file,JSON.stringify(settings));
+}
 // Optional full runtime fixture. Copy generated world data to a fresh build
 // directory so this editor test never controls an existing demo session.
 if(process.env.CADCOVE_TEST_SIMULATION_PROJECT){
@@ -62,6 +66,14 @@ else if(process.platform==='win32'&&path.basename(executable).toLowerCase()==='c
 else if(process.platform==='linux'&&path.basename(path.dirname(executable))==='bin')executable=path.resolve(path.dirname(executable),'../code');
 const cli=process.platform==='darwin'?path.resolve(path.dirname(executable),'../Resources/app/out/cli.js'):path.join(path.dirname(executable),'resources/app/out/cli.js');
 await access(executable);await access(cli);
+// GitHub's extracted Electron archive lacks the required setuid helper metadata.
+// Restore the official helper on the disposable Linux runner; retain sandboxing.
+if(process.platform==='linux'&&process.env.CI==='true'&&process.env.CADCOVE_TEST_PREPARE_SANDBOX==='1'){
+ const helper=path.join(path.dirname(executable),'chrome-sandbox');await access(helper);
+ for(const command of [['sudo','-n','chown','root:root',helper],['sudo','-n','chmod','4755',helper]]){
+  const p=Bun.spawn(command,{stdout:'inherit',stderr:'inherit'});if(await p.exited)throw Error('Cannot prepare Electron sandbox');
+ }
+}
 const env={...process.env};
 for(const key of ['ELECTRON_RUN_AS_NODE','VSCODE_IPC_HOOK_CLI','NODE_OPTIONS','NODE_REPL_EXTERNAL_MODULE'])delete env[key];
 const archive=await readZip(path.resolve(vsix),name=>name==='extension/package.json');

@@ -1,12 +1,10 @@
 import fs from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
 import {createHash} from 'node:crypto';
-import path from 'node:path';
 import {inside,relativePath} from './project-files.js';
-import {buildStepScene} from '../../../src/core/step-model.js';
 
 export const isStepFile = file => /\.(step|stp)$/i.test(file);
-export const stepEntry = relative => '__step_preview__/'+relativePath(relative)+'.js';
+export const stepEntry = relative => '__step_preview__/'+relativePath(relative)+'.py';
 
 export async function readStepSource(root,relative) {
   if(!isStepFile(relative))throw Error('Choose a STEP or STP file');
@@ -15,7 +13,5 @@ export async function readStepSource(root,relative) {
   const digest=createHash('sha256');
   for await(const bytes of createReadStream(file))digest.update(bytes);
   const sha=digest.digest('hex');
-  // No generated source is written into the user's CAD folder. Its revision
-  // includes the asset digest, so changing/replacing the STEP invalidates cache.
-  return {[stepEntry(relative)]:`const buildStepScene=${buildStepScene.toString()};\nexport default async function(context){return buildStepScene(context,await context.readAsset(${JSON.stringify(relative)},${JSON.stringify(sha)}),${JSON.stringify(path.basename(relative))});}\n`};
+  return {[stepEntry(relative)]:`# Native STEP preview: ${sha}\n`,[relative]:'sha256:'+sha};
 }

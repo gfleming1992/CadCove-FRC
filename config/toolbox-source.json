@@ -113,8 +113,6 @@
     "tests/guidance-update.test.js",
     "tests/simulation-tasks.test.js",
     "scripts/package-toolbox-extension.js",
-    "scripts/prepare-occt-source.js",
-    "docs/OCCT-REBUILD.md",
     "docs/BUN-REBUILD.md",
     "tests/dependency-notices.test.js",
     "tests/bun-source.test.js",
@@ -141,9 +139,17 @@
     "scripts/setup-team-example.js",
     "scripts/build-example-field.js",
     "scripts/extract-appearance.js",
-    "scripts/component-model.js",
     "tests/team-example-source.test.js",
-    "scripts/verify-team-example.js"
+    "scripts/verify-team-example.js",
+    "scripts/fixtures/cadquery-manufacturing.py",
+    "docs/NATIVE-CADQUERY-PROFILE.md",
+    "lib/cad-command.js",
+    "lib/cad-capture.js",
+    "tests/cad-command.test.js",
+    "scripts/native-field.py",
+    "scripts/component-model.py",
+    "docs/SYSTEM-CARD.md",
+    "docs/LAUNCH-POST.md"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

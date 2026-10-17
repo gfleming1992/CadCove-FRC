@@ -1,0 +1,2828 @@
+{
+  "schema": 1,
+  "date": "2026-10-17",
+  "runtime": "CadQuery 2.6.1 / OCP 7.8.1.1",
+  "authoredParts": 109,
+  "retainedStepParts": 320,
+  "occurrences": 1958,
+  "defaultValidity": [
+    {
+      "id": "bhr-2026-704-005-8e25fe6858d9",
+      "ok": true,
+      "volumeMm3": 53721.488043062505,
+      "solids": 1,
+      "buildMs": 1740.457666106522
+    },
+    {
+      "id": "bhr-2026-500-005-b5b879a8e88d",
+      "ok": true,
+      "volumeMm3": 3900.6480407898116,
+      "solids": 1,
+      "buildMs": 19.89529188722372
+    },
+    {
+      "id": "can-wire-3-b5f8e7694f0f",
+      "ok": true,
+      "volumeMm3": 37.824327701169295,
+      "solids": 1,
+      "buildMs": 7.562375161796808
+    },
+    {
+      "id": "bhr-2024-130-001a-4dde5764e7c3",
+      "ok": true,
+      "volumeMm3": 1520170.653346343,
+      "solids": 1,
+      "buildMs": 17.341208178550005
+    },
+    {
+      "id": "bhr-2026-300-009-06a532f8490e",
+      "ok": true,
+      "volumeMm3": 20291.60547842549,
+      "solids": 1,
+      "buildMs": 7.392958039417863
+    },
+    {
+      "id": "origin-cube-c4333aff6108",
+      "ok": true,
+      "volumeMm3": 16387.063999999995,
+      "solids": 1,
+      "buildMs": 7.019750075414777
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-993862eff2a0",
+      "ok": true,
+      "volumeMm3": 52985.90930985098,
+      "solids": 1,
+      "buildMs": 217.87595888599753
+    },
+    {
+      "id": "bhr-2026-704-001-2410118654f2",
+      "ok": true,
+      "volumeMm3": 66723.39000525037,
+      "solids": 1,
+      "buildMs": 53.0695840716362
+    },
+    {
+      "id": "red-wire-2-4f65121a1f57",
+      "ok": true,
+      "volumeMm3": 804.3981231690437,
+      "solids": 1,
+      "buildMs": 11.258291779085994
+    },
+    {
+      "id": "part-19-5ee4e5fec190",
+      "ok": true,
+      "volumeMm3": 265863.93012320186,
+      "solids": 1,
+      "buildMs": 43.75249985605478
+    },
+    {
+      "id": "back-rail-15991ee5f759",
+      "ok": true,
+      "volumeMm3": 136594.33217669284,
+      "solids": 1,
+      "buildMs": 89.90466687828302
+    },
+    {
+      "id": "bhr-2026-500-012-ba26c88f549f",
+      "ok": true,
+      "volumeMm3": 21628.31275039852,
+      "solids": 1,
+      "buildMs": 39.4142500590533
+    },
+    {
+      "id": "bhr-2024-130-001a-77cd209a4fb2",
+      "ok": true,
+      "volumeMm3": 496458.43454208196,
+      "solids": 1,
+      "buildMs": 10.553041938692331
+    },
+    {
+      "id": "battery-plate-3564a64afaca",
+      "ok": true,
+      "volumeMm3": 101359.62889246897,
+      "solids": 1,
+      "buildMs": 103.25391707010567
+    },
+    {
+      "id": "cross-tube-77658e64ee9c",
+      "ok": true,
+      "volumeMm3": 133654.26963467253,
+      "solids": 1,
+      "buildMs": 134.06708301045
+    },
+    {
+      "id": "part-2-688ce357daa8",
+      "ok": true,
+      "volumeMm3": 53764.356961061225,
+      "solids": 1,
+      "buildMs": 24.34933395124972
+    },
+    {
+      "id": "bhr-2026-500-002-244af0c35fdf",
+      "ok": true,
+      "volumeMm3": 267972.3880866988,
+      "solids": 1,
+      "buildMs": 112.74870787747204
+    },
+    {
+      "id": "bhr-2026-500-004-e75cfd713fd0",
+      "ok": true,
+      "volumeMm3": 11053.478350259964,
+      "solids": 1,
+      "buildMs": 43.880209093913436
+    },
+    {
+      "id": "black-wire-2-f69d9c79342a",
+      "ok": true,
+      "volumeMm3": 804.3981231086484,
+      "solids": 1,
+      "buildMs": 8.205666905269027
+    },
+    {
+      "id": "part-17-dda90457e304",
+      "ok": true,
+      "volumeMm3": 617.5197075977908,
+      "solids": 1,
+      "buildMs": 7.25716701708734
+    },
+    {
+      "id": "bhr-2026-500-007-9ba359d7e17c",
+      "ok": true,
+      "volumeMm3": 4011.7911634966913,
+      "solids": 1,
+      "buildMs": 11.75316609442234
+    },
+    {
+      "id": "1-2-rounded-hex-8-19-in-9da79a5073f0",
+      "ok": true,
+      "volumeMm3": 25958.725332900747,
+      "solids": 1,
+      "buildMs": 10.866125114262104
+    },
+    {
+      "id": "bhr-2026-500-011-15b0e1706e9e",
+      "ok": true,
+      "volumeMm3": 23379.52286527575,
+      "solids": 1,
+      "buildMs": 55.243375012651086
+    },
+    {
+      "id": "right-rail-7c45201869e4",
+      "ok": true,
+      "volumeMm3": 104157.86063703423,
+      "solids": 1,
+      "buildMs": 132.95733300037682
+    },
+    {
+      "id": "can-wire-1-4fb295069a53",
+      "ok": true,
+      "volumeMm3": 37.8243277011693,
+      "solids": 1,
+      "buildMs": 9.988541016355157
+    },
+    {
+      "id": "front-rail-3d6ef15b73d2",
+      "ok": true,
+      "volumeMm3": 137198.81001664116,
+      "solids": 1,
+      "buildMs": 64.69541694968939
+    },
+    {
+      "id": "bhr-2026-500-006-3e1d72d87606",
+      "ok": true,
+      "volumeMm3": 11085.091010361213,
+      "solids": 1,
+      "buildMs": 17.22304103896022
+    },
+    {
+      "id": "bhr-2026-500-032-5dfd19723c27",
+      "ok": true,
+      "volumeMm3": 7094.559778793917,
+      "solids": 1,
+      "buildMs": 7.40274996496737
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-db680514e5e4",
+      "ok": true,
+      "volumeMm3": 10207.864289489764,
+      "solids": 1,
+      "buildMs": 211.31925005465746
+    },
+    {
+      "id": "bhr-2026-704-002-1652ef623ba8",
+      "ok": true,
+      "volumeMm3": 62524.61667357383,
+      "solids": 1,
+      "buildMs": 46.02537490427494
+    },
+    {
+      "id": "bhr-2026-300-008-3e3227464e72",
+      "ok": true,
+      "volumeMm3": 130462.68485908213,
+      "solids": 1,
+      "buildMs": 25.50991694442928
+    },
+    {
+      "id": "can-wire-4-a9c3166df384",
+      "ok": true,
+      "volumeMm3": 37.824327699981446,
+      "solids": 1,
+      "buildMs": 8.397707948461175
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-e33f357a272b",
+      "ok": true,
+      "volumeMm3": 44735.969983746996,
+      "solids": 1,
+      "buildMs": 217.88774989545345
+    },
+    {
+      "id": "3-8-rounded-hex-2-565-l-10-25mm-od-130de71a8862",
+      "ok": true,
+      "volumeMm3": 4181.096958038679,
+      "solids": 1,
+      "buildMs": 13.442333089187741
+    },
+    {
+      "id": "red-wire-1-982ad20a5fa4",
+      "ok": true,
+      "volumeMm3": 804.3981231725539,
+      "solids": 1,
+      "buildMs": 7.916125003248453
+    },
+    {
+      "id": "can-wire-2-6d1dd4a6ed7d",
+      "ok": true,
+      "volumeMm3": 37.82432769998144,
+      "solids": 1,
+      "buildMs": 7.318667136132717
+    },
+    {
+      "id": "bhr-2026-704-003b-fba19a426349",
+      "ok": true,
+      "volumeMm3": 39781.91116158194,
+      "solids": 1,
+      "buildMs": 29.290749924257398
+    },
+    {
+      "id": "bhr-2024-130-001b-432b77e608ad",
+      "ok": true,
+      "volumeMm3": 1493833.9136281386,
+      "solids": 1,
+      "buildMs": 25.720458012074232
+    },
+    {
+      "id": "part-29-4ed5484af5a2",
+      "ok": true,
+      "volumeMm3": 78378.76139277147,
+      "solids": 1,
+      "buildMs": 10.73279115371406
+    },
+    {
+      "id": "part-8m-cdb28235d4d6",
+      "ok": true,
+      "volumeMm3": 62885.379107053035,
+      "solids": 1,
+      "buildMs": 38.284708047285676
+    },
+    {
+      "id": "bhr-2024-130-001a-704f10f175a7",
+      "ok": true,
+      "volumeMm3": 496458.4345420819,
+      "solids": 1,
+      "buildMs": 11.010332964360714
+    },
+    {
+      "id": "part-9-a1188eb00db5",
+      "ok": true,
+      "volumeMm3": 49965.74164728199,
+      "solids": 1,
+      "buildMs": 33.1108330283314
+    },
+    {
+      "id": "left-rail-1ee532c27934",
+      "ok": true,
+      "volumeMm3": 105751.32865785013,
+      "solids": 1,
+      "buildMs": 136.78462500683963
+    },
+    {
+      "id": "bhr-2026-500-024-20687e021f36",
+      "ok": true,
+      "volumeMm3": 60536.17928035609,
+      "solids": 1,
+      "buildMs": 153.64791708998382
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-bbc9e4f9f516",
+      "ok": true,
+      "volumeMm3": 10207.864289489764,
+      "solids": 1,
+      "buildMs": 218.4191660489887
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-1f8371dac9fe",
+      "ok": true,
+      "volumeMm3": 11062.931450328251,
+      "solids": 1,
+      "buildMs": 211.23837516643107
+    },
+    {
+      "id": "bhr-2026-704-003a-3a3fa010a23b",
+      "ok": true,
+      "volumeMm3": 39781.911161610136,
+      "solids": 1,
+      "buildMs": 39.37412495724857
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-43606f8e0a26",
+      "ok": true,
+      "volumeMm3": 11062.931450328251,
+      "solids": 1,
+      "buildMs": 206.4252090640366
+    },
+    {
+      "id": "bhr-2026-500-003-d75b78a75baf",
+      "ok": true,
+      "volumeMm3": 268225.8054110028,
+      "solids": 1,
+      "buildMs": 61.77391693927348
+    },
+    {
+      "id": "part-20-3b1bdb058696",
+      "ok": true,
+      "volumeMm3": 265863.93012322736,
+      "solids": 1,
+      "buildMs": 49.079708056524396
+    },
+    {
+      "id": "part-1-fdc3301b3e8e",
+      "ok": true,
+      "volumeMm3": 95419.268241994,
+      "solids": 1,
+      "buildMs": 29.648875119164586
+    },
+    {
+      "id": "bhr-2026-300-003-02272cafbb8d",
+      "ok": true,
+      "volumeMm3": 63744.00801248259,
+      "solids": 1,
+      "buildMs": 7.473332807421684
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-675257026dbd",
+      "ok": true,
+      "volumeMm3": 9085.72890781011,
+      "solids": 1,
+      "buildMs": 221.28370916470885
+    },
+    {
+      "id": "1-2-rounded-hex-24-996-l-13-75mm-od-10c910583edd",
+      "ok": true,
+      "volumeMm3": 79060.70681203043,
+      "solids": 1,
+      "buildMs": 10.636708931997418
+    },
+    {
+      "id": "tube-1-x1-x15-9cfd38f9d566",
+      "ok": true,
+      "volumeMm3": 55216.499072288534,
+      "solids": 1,
+      "buildMs": 27.804958168417215
+    },
+    {
+      "id": "bhr-2026-600-006-2aabf8888b9d",
+      "ok": true,
+      "volumeMm3": 5869.836174406056,
+      "solids": 1,
+      "buildMs": 13.241250067949295
+    },
+    {
+      "id": "bhr-2026-501-002-154ce885e9c6",
+      "ok": true,
+      "volumeMm3": 46041.130435550185,
+      "solids": 1,
+      "buildMs": 53.20458300411701
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-8eda9bf1c576",
+      "ok": true,
+      "volumeMm3": 53546.97700068852,
+      "solids": 1,
+      "buildMs": 211.1991250421852
+    },
+    {
+      "id": "bhr-2026-500-008-258aaf2b1a54",
+      "ok": true,
+      "volumeMm3": 78872.09324209545,
+      "solids": 1,
+      "buildMs": 126.28233409486711
+    },
+    {
+      "id": "1-2-rounded-hex-7-843-in-0157e962a79c",
+      "ok": true,
+      "volumeMm3": 25279.8218182586,
+      "solids": 1,
+      "buildMs": 20.455374848097563
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-567d6aaea52f",
+      "ok": true,
+      "volumeMm3": 43613.83460206806,
+      "solids": 1,
+      "buildMs": 216.36795904487371
+    },
+    {
+      "id": "black-wire-1-fa8cc576b6ab",
+      "ok": true,
+      "volumeMm3": 804.398123134067,
+      "solids": 1,
+      "buildMs": 10.081209009513259
+    },
+    {
+      "id": "bhr-2026-501-001-21b0618b94d6",
+      "ok": true,
+      "volumeMm3": 471475.61943636765,
+      "solids": 1,
+      "buildMs": 46.48587480187416
+    },
+    {
+      "id": "bhr-2026-300-002-000a3a334dfd",
+      "ok": true,
+      "volumeMm3": 57759.326296424086,
+      "solids": 1,
+      "buildMs": 62.209124909713864
+    },
+    {
+      "id": "tube-1-x1-x15-fc5a76267339",
+      "ok": true,
+      "volumeMm3": 55216.499072288534,
+      "solids": 1,
+      "buildMs": 39.70541711896658
+    },
+    {
+      "id": "bhr-2026-500-001-105a60cebde5",
+      "ok": true,
+      "volumeMm3": 492578.14149778715,
+      "solids": 1,
+      "buildMs": 499.3286670651287
+    },
+    {
+      "id": "3-8-rounded-hex-27-565-l-10-25mm-od-f36724821bc0",
+      "ok": true,
+      "volumeMm3": 44242.85301910085,
+      "solids": 1,
+      "buildMs": 13.133666943758726
+    },
+    {
+      "id": "1-200-30-5mm-od-x-1-125-28-5mm-id-carbon-fiber-tube-36-wcp-0289-2457503da660",
+      "ok": true,
+      "volumeMm3": 51437.362483133096,
+      "solids": 1,
+      "buildMs": 205.72795812040567
+    },
+    {
+      "id": "part-8-b54e6b3bd144",
+      "ok": true,
+      "volumeMm3": 892440.5191971431,
+      "solids": 1,
+      "buildMs": 130.45420800335705
+    },
+    {
+      "id": "part-5-03517a6d0148",
+      "ok": true,
+      "volumeMm3": 924301.050710027,
+      "solids": 1,
+      "buildMs": 108.20070817135274
+    },
+    {
+      "id": "bhr-2026-600-005-1a0fc844ce6e",
+      "ok": true,
+      "volumeMm3": 9093.949646772679,
+      "solids": 1,
+      "buildMs": 32.856791047379375
+    },
+    {
+      "id": "bhr-2026-704-010-89a3449bb12a",
+      "ok": true,
+      "volumeMm3": 16573.139999405812,
+      "solids": 1,
+      "buildMs": 1311.4685418549925
+    },
+    {
+      "id": "part-58-7efccbf29789",
+      "ok": true,
+      "volumeMm3": 8975.997227346235,
+      "solids": 1,
+      "buildMs": 90.93733294866979
+    },
+    {
+      "id": "belly-pan-6b59cb2988d9",
+      "ok": true,
+      "volumeMm3": 378387.7069112463,
+      "solids": 1,
+      "buildMs": 1922.8394159581512
+    },
+    {
+      "id": "part-57-7033dcf6a029",
+      "ok": true,
+      "volumeMm3": 21065.528606651438,
+      "solids": 1,
+      "buildMs": 47.75366699323058
+    },
+    {
+      "id": "bhr-2026-704-011-39792b4ea64a",
+      "ok": true,
+      "volumeMm3": 15359.764564688849,
+      "solids": 1,
+      "buildMs": 297.8556249290705
+    },
+    {
+      "id": "bhr-2026-500-021-fa82999a309d",
+      "ok": true,
+      "volumeMm3": 16532.257248995815,
+      "solids": 1,
+      "buildMs": 315.30191702768207
+    },
+    {
+      "id": "bhr-2026-500-023-fca3921ce554",
+      "ok": true,
+      "volumeMm3": 5142.510631935277,
+      "solids": 1,
+      "buildMs": 404.7424579039216
+    },
+    {
+      "id": "bhr-2026-600-009-55277c8c2a54",
+      "ok": true,
+      "volumeMm3": 5783.117892122468,
+      "solids": 1,
+      "buildMs": 930.9112089686096
+    },
+    {
+      "id": "bhr-2026-500-034m-663a52158a5a",
+      "ok": true,
+      "volumeMm3": 10948.735249778227,
+      "solids": 1,
+      "buildMs": 130.15141710639
+    },
+    {
+      "id": "bhr-2026-500-034-cdf7d621b44d",
+      "ok": true,
+      "volumeMm3": 10948.735249778234,
+      "solids": 1,
+      "buildMs": 181.9595000706613
+    },
+    {
+      "id": "part-13-9970d95455ef",
+      "ok": true,
+      "volumeMm3": 45828.056352522246,
+      "solids": 1,
+      "buildMs": 71.78029208444059
+    },
+    {
+      "id": "part-14-8abf4254dadc",
+      "ok": true,
+      "volumeMm3": 41246.66877336811,
+      "solids": 1,
+      "buildMs": 61.91962491720915
+    },
+    {
+      "id": "part-15-907c7ca283a6",
+      "ok": true,
+      "volumeMm3": 27017.88445676549,
+      "solids": 1,
+      "buildMs": 80.55262500420213
+    },
+    {
+      "id": "part-16-3719e89e2b68",
+      "ok": true,
+      "volumeMm3": 26007.430042192627,
+      "solids": 1,
+      "buildMs": 78.2056248281151
+    },
+    {
+      "id": "bhr-2026-500-033-178be009fceb",
+      "ok": true,
+      "volumeMm3": 19070.906077735486,
+      "solids": 1,
+      "buildMs": 3688.807667000219
+    },
+    {
+      "id": "bhr-2026-500-013a-d230e0921e95",
+      "ok": true,
+      "volumeMm3": 40103.88862101391,
+      "solids": 1,
+      "buildMs": 191.43154099583626
+    },
+    {
+      "id": "bhr-2026-500-013b-10a3b616a4ed",
+      "ok": true,
+      "volumeMm3": 39888.100594360956,
+      "solids": 1,
+      "buildMs": 535.9159170184284
+    },
+    {
+      "id": "bhr-2026-600-003-ea37fa06fae4",
+      "ok": true,
+      "volumeMm3": 77247.90143000755,
+      "solids": 1,
+      "buildMs": 642.7728750277311
+    },
+    {
+      "id": "left-rear-corner-block-3112b49a80b2",
+      "ok": true,
+      "volumeMm3": 125134.02403008017,
+      "solids": 1,
+      "buildMs": 3792.653708020225
+    },
+    {
+      "id": "bhr-2026-500-022m-005027036523",
+      "ok": true,
+      "volumeMm3": 8479.423158389252,
+      "solids": 1,
+      "buildMs": 844.6547498460859
+    },
+    {
+      "id": "left-front-corner-block-a8312ccb6369",
+      "ok": true,
+      "volumeMm3": 153743.6939062118,
+      "solids": 1,
+      "buildMs": 2544.5349169895053
+    },
+    {
+      "id": "bhr-2026-500-017-821e3e1f1842",
+      "ok": true,
+      "volumeMm3": 28212.489208346276,
+      "solids": 1,
+      "buildMs": 2182.8058750834316
+    },
+    {
+      "id": "bhr-2026-500-019m-2e0b774f61c1",
+      "ok": true,
+      "volumeMm3": 62760.18312500107,
+      "solids": 1,
+      "buildMs": 5179.728958988562
+    },
+    {
+      "id": "bhr-2026-600-004b-5c0ed452f82d",
+      "ok": true,
+      "volumeMm3": 123553.58207560323,
+      "solids": 1,
+      "buildMs": 5391.58995798789
+    },
+    {
+      "id": "bhr-2026-500-017m-fd4f5acaf62b",
+      "ok": true,
+      "volumeMm3": 27339.180528624936,
+      "solids": 1,
+      "buildMs": 2417.9967080708593
+    },
+    {
+      "id": "bhr-2026-500-019-8e4b63bd1867",
+      "ok": true,
+      "volumeMm3": 62760.18313172052,
+      "solids": 1,
+      "buildMs": 4918.099208036438
+    },
+    {
+      "id": "bhr-2026-500-022-64c66d54eb11",
+      "ok": true,
+      "volumeMm3": 9344.666126148177,
+      "solids": 1,
+      "buildMs": 611.0816670116037
+    },
+    {
+      "id": "backlash-remover-right-side-fe6bf528179b",
+      "ok": true,
+      "volumeMm3": 37655.13209389077,
+      "solids": 1,
+      "buildMs": 1115.831500152126
+    },
+    {
+      "id": "bhr-2026-600-004a-fdc0673fe431",
+      "ok": true,
+      "volumeMm3": 123001.74711375577,
+      "solids": 1,
+      "buildMs": 3830.4082499817014
+    },
+    {
+      "id": "bhr-2026-500-027-34d684a8c9de",
+      "ok": true,
+      "volumeMm3": 28272.18725032416,
+      "solids": 1,
+      "buildMs": 3072.2634999547154
+    },
+    {
+      "id": "bhr-2026-500-014m-top-22ebd4ced951",
+      "ok": true,
+      "volumeMm3": 22138.703314234328,
+      "solids": 1,
+      "buildMs": 658.6015829816461
+    },
+    {
+      "id": "shroud-5023935d6e1a",
+      "ok": true,
+      "volumeMm3": 35378.50065765695,
+      "solids": 1,
+      "buildMs": 752.3465000558645
+    },
+    {
+      "id": "bhr-2026-500-014-top-d26859488e35",
+      "ok": true,
+      "volumeMm3": 22138.703314234328,
+      "solids": 1,
+      "buildMs": 651.4877080917358
+    },
+    {
+      "id": "right-front-corner-block-2f5e06f0b352",
+      "ok": true,
+      "volumeMm3": 153734.17435436902,
+      "solids": 1,
+      "buildMs": 1501.2988750822842
+    },
+    {
+      "id": "bhr-2025-100-022-e288be426a61",
+      "ok": true,
+      "volumeMm3": 37621.76159071107,
+      "solids": 1,
+      "buildMs": 240.15233293175697
+    },
+    {
+      "id": "backlash-remover-left-side-c70badece837",
+      "ok": true,
+      "volumeMm3": 21931.96006648132,
+      "solids": 1,
+      "buildMs": 342.6680830307305
+    },
+    {
+      "id": "right-rear-corner-block-74b524db1283",
+      "ok": true,
+      "volumeMm3": 125124.55442044642,
+      "solids": 1,
+      "buildMs": 5335.001250030473
+    },
+    {
+      "id": "bhr-2026-500-027m-538f738485fe",
+      "ok": true,
+      "volumeMm3": 28272.18725032416,
+      "solids": 1,
+      "buildMs": 4662.870167056099
+    }
+  ],
+  "vendorValidity": [
+    {
+      "id": "10-aluminum-spacer-1-8-l-3-8-od-1e4561db4c2b",
+      "valid": true,
+      "volume": 164.4334555268883
+    },
+    {
+      "id": "10-32-x-3-000-l-bhcs-steel-black-oxide-50-pack-wcp-0263-9d42858e9f36",
+      "valid": true,
+      "volume": 1453.9335795294055
+    },
+    {
+      "id": "10-washer-5-8-od-0-031-wd-steel-black-zinc-4b412519bf9d",
+      "valid": true,
+      "volume": 140.5248642344814
+    },
+    {
+      "id": "10-32-x-3-4-l-bhcs-steel-black-oxide-1d6aadf4b95b",
+      "valid": true,
+      "volume": 454.6489902695144
+    },
+    {
+      "id": "10-32-x-7-8-l-bhcs-steel-black-oxide-da1f62dd3362",
+      "valid": true,
+      "volume": 512.7265347547647
+    },
+    {
+      "id": "10-32-nylon-insert-locknut-a605962a1b3e",
+      "valid": true,
+      "volume": 373.51023499293717
+    },
+    {
+      "id": "10-aluminum-spacer-1-4-l-3-8-od-c0dfcf44261a",
+      "valid": true,
+      "volume": 328.8669110537766
+    },
+    {
+      "id": "part-6-5ce2af403755",
+      "valid": true,
+      "volume": 16854766.066878766
+    },
+    {
+      "id": "10-32-x-1-4-l-bhcs-steel-black-oxide-2f55e41fa7a2",
+      "valid": true,
+      "volume": 222.33881232851343
+    },
+    {
+      "id": "1-2-hex-shaft-spacer-1-l-3-8-od-acetal-592a592c79d4",
+      "valid": true,
+      "volume": 3900.0143688100147
+    },
+    {
+      "id": "35t-htd-belt-58befd352106",
+      "valid": true,
+      "volume": 3469.694809197069
+    },
+    {
+      "id": "35t-htd-belt-47be03845dfe",
+      "valid": true,
+      "volume": 3469.0114708736987
+    },
+    {
+      "id": "1-2-hex-shaft-spacer-2-l-3-8-od-acetal-6998a1ee394b",
+      "valid": true,
+      "volume": 7800.0287376200295
+    },
+    {
+      "id": "kraken-x44-brushless-motor-5eb725076c3c",
+      "valid": true,
+      "volume": 115710.09770305433
+    },
+    {
+      "id": "10-32-x-0-25-l-shaft-end-screw-steel-black-oxide-67472d831188",
+      "valid": true,
+      "volume": 379.31791814369905
+    },
+    {
+      "id": "10-32-x-2-l-bhcs-steel-black-oxide-9aba2e84d474",
+      "valid": true,
+      "volume": 1035.4244351220166
+    },
+    {
+      "id": "10-aluminum-spacer-1-1-2-l-3-8-od-896ec85bd5e4",
+      "valid": true,
+      "volume": 1973.2014663226603
+    },
+    {
+      "id": "10-32-x-2-l-bhcs-steel-black-oxide-27a0095b941c",
+      "valid": true,
+      "volume": 1035.4244351220166
+    },
+    {
+      "id": "12t-aluminum-pulley-htd-5mm-15mm-wide-8mm-splinexs-bore-bbc97f0deb3a",
+      "valid": true,
+      "volume": 4847.689731574338
+    },
+    {
+      "id": "50t-htd-belt-f452c1da1bb6",
+      "valid": true,
+      "volume": 4925.829928682588
+    },
+    {
+      "id": "bhr-2026-300-010-eda0f57d95e1",
+      "valid": true,
+      "volume": 141062.3345616417
+    },
+    {
+      "id": "external-snapring-1-2-20-pack-wcp-0229-989a67c5d70d",
+      "valid": true,
+      "volume": 54.361859301214054
+    },
+    {
+      "id": "thin-lock-nut-10-32-zinc-100-pack-wcp-0326-cf7b3bd742f5",
+      "valid": true,
+      "volume": 296.0985986723386
+    },
+    {
+      "id": "2-1-4-l-x-1-2-od-stub-shaft-aluminum-1-4-bore-45b9f3c23507",
+      "valid": true,
+      "volume": 6303.827539510132
+    },
+    {
+      "id": "10-32-x-2-500-l-bhcs-steel-black-oxide-50-pack-wcp-0261-609214916e17",
+      "valid": true,
+      "volume": 1228.903061049856
+    },
+    {
+      "id": "0-500-id-x-0-875-od-x-0-281-wd-radial-bearing-wcp-0777-fae08db95d2a",
+      "valid": true,
+      "volume": 1712.6116211724677
+    },
+    {
+      "id": "20t-pulley-w-1-1-8-od-aluminum-stub-roller-hub-5mm-htd-wcp-1748-0-268a9979f9c5",
+      "valid": true,
+      "volume": 15261.202207601274
+    },
+    {
+      "id": "1-1-8-od-aluminum-stub-roller-hub-wcp-1746-001-277013532721",
+      "valid": true,
+      "volume": 11675.809081174422
+    },
+    {
+      "id": "1-3-4-l-x-1-2-od-stub-shaft-aluminum-1-4-bore-bab5e081f882",
+      "valid": true,
+      "volume": 4948.6741161059035
+    },
+    {
+      "id": "10-32-x-2-000-l-bhcs-steel-black-oxide-50-pack-wcp-0259-84d25658610a",
+      "valid": true,
+      "volume": 1003.8725425703063
+    },
+    {
+      "id": "12t-aluminum-pulley-htd-5mm-15mm-wide-8mm-splinexs-bore-mirrored-e8c06ae3534d",
+      "valid": true,
+      "volume": 4847.689731571357
+    },
+    {
+      "id": "3-8-hex-shaft-spacer-1-2-l-5-8-od-acetal-52bf8637e6b1",
+      "valid": true,
+      "volume": 1461.9681629765341
+    },
+    {
+      "id": "217-5896-20171130-8a8eb4af05b0",
+      "valid": true,
+      "volume": 16474.23637329477
+    },
+    {
+      "id": "1-4-20-x-1-2-l-bhcs-steel-black-oxide-9a0275f7cec7",
+      "valid": true,
+      "volume": 614.2249265224782
+    },
+    {
+      "id": "105t-htd-belt-d5b782aa781d",
+      "valid": true,
+      "volume": 10265.29887166617
+    },
+    {
+      "id": "3-8-hex-shaft-spacer-1-8-l-5-8-od-acetal-43020c6bbbe9",
+      "valid": true,
+      "volume": 365.49204074413353
+    },
+    {
+      "id": "10-32-x-1-4-l-bhcs-steel-black-oxide-45dfa96a3324",
+      "valid": true,
+      "volume": 222.33881232851343
+    },
+    {
+      "id": "10-32-thin-nylon-insert-locknut-faf2b6c9f95d",
+      "valid": true,
+      "volume": 269.10513016761615
+    },
+    {
+      "id": "26t-aluminum-spur-gear-20-dp-3-8-hex-bore-38d851e64725",
+      "valid": true,
+      "volume": 7363.386411256932
+    },
+    {
+      "id": "38t-aluminum-spur-gear-20-dp-3-8-hex-bore-568534f58522",
+      "valid": true,
+      "volume": 16563.174305054534
+    },
+    {
+      "id": "14t-steel-sprocket-25-1-2-hex-bore-double-hub-930f71940713",
+      "valid": true,
+      "volume": 2241.4747400477813
+    },
+    {
+      "id": "3-8-hex-shaft-spacer-1-4-l-5-8-od-acetal-144806c99ae5",
+      "valid": true,
+      "volume": 730.9840814882671
+    },
+    {
+      "id": "3-8-rounded-hex-10-25mm-id-bearing-0-875-od-0-281-wd-shielded-fla-b41b23d14a99",
+      "valid": true,
+      "volume": 2191.4762314731715
+    },
+    {
+      "id": "5-32-blind-rivet-159-250-grip-length-aluminum-13d26697c316",
+      "valid": true,
+      "volume": 193.95113010160156
+    },
+    {
+      "id": "10-32-x-7-8-l-bhcs-steel-black-oxide-3679c095a69d",
+      "valid": true,
+      "volume": 512.7265347547647
+    },
+    {
+      "id": "vex-edr-standoff-4e0d0f280222",
+      "valid": true,
+      "volume": 539.6211128595136
+    },
+    {
+      "id": "3-8-hex-shaft-spacer-1-32-l-3-8-od-acetal-ed49b3842ddd",
+      "valid": true,
+      "volume": 91.37301018603337
+    },
+    {
+      "id": "type-a-flat-washer-10-narrow-e3feedb41065",
+      "valid": true,
+      "volume": 127.41551723536298
+    },
+    {
+      "id": "bhr-2026-401-001b-7fcf9996787b",
+      "valid": true,
+      "volume": 97920.25560905813
+    },
+    {
+      "id": "18t-aluminum-pulley-htd-5mm-9mm-wide-1-2-hex-bore-be0b2e9f07e0",
+      "valid": true,
+      "volume": 5422.078948283646
+    },
+    {
+      "id": "1-4-20-x-1-2-l-bhcs-steel-black-oxide-24265eb7bd5b",
+      "valid": true,
+      "volume": 614.2249265224782
+    },
+    {
+      "id": "3-8-hex-to-1-2-rounded-hex-adapter-1-2-wd-5-pack-wcp-0063-15a9cd6a6184",
+      "valid": true,
+      "volume": 733.2644476253469
+    },
+    {
+      "id": "bhr-2026-401-001a-fb39b8ccd481",
+      "valid": true,
+      "volume": 97920.25560888187
+    },
+    {
+      "id": "10-32-x-1-l-bhcs-steel-black-oxide-8d8ec65d03ab",
+      "valid": true,
+      "volume": 570.8040792400147
+    },
+    {
+      "id": "kraken-x44-brushless-motor-c337f45e04b1",
+      "valid": true,
+      "volume": 113379.87964686526
+    },
+    {
+      "id": "3-8-hex-shaft-spacer-1-16-l-5-8-od-acetal-6d4a75258cb2",
+      "valid": true,
+      "volume": 182.74602037206677
+    },
+    {
+      "id": "55t-htd-belt-de6472116f45",
+      "valid": true,
+      "volume": 5411.178837165689
+    },
+    {
+      "id": "type-a-flat-washer-1-4-narrow-354686d2e785",
+      "valid": true,
+      "volume": 260.7300141018178
+    },
+    {
+      "id": "10-aluminum-spacer-1-2-l-3-8-od-f9df4bb921b1",
+      "valid": true,
+      "volume": 657.7338221075532
+    },
+    {
+      "id": "276-8016-001-rev1-ddcbce79f69f",
+      "valid": true,
+      "volume": 245.35235189500554
+    },
+    {
+      "id": "nut-832-nylock-373eadc05df0",
+      "valid": true,
+      "volume": 208.13379115849412
+    },
+    {
+      "id": "16t-aluminum-spur-gear-20-dp-3-8-hex-bore-66dbfbcadbc3",
+      "valid": true,
+      "volume": 2353.7612221708814
+    },
+    {
+      "id": "1-2-hex-shaft-spacer-1-8-l-3-4-od-acetal-49bcf10f3e1d",
+      "valid": true,
+      "volume": 443.54304747143243
+    },
+    {
+      "id": "part-13-437865a12915",
+      "valid": true,
+      "volume": 5247.335478582977
+    },
+    {
+      "id": "vex-edr-standoff-2422d76dc629",
+      "valid": true,
+      "volume": 810.0494299233543
+    },
+    {
+      "id": "10-aluminum-spacer-3-8-l-3-8-od-d7dc9cd09a99",
+      "valid": true,
+      "volume": 493.30036658066507
+    },
+    {
+      "id": "12t-steel-spur-gear-20-dp-splinexs-bore-5c4e91b6bd16",
+      "valid": true,
+      "volume": 2443.4454359189344
+    },
+    {
+      "id": "10-32-x-1-1-4-l-bhcs-steel-black-oxide-f6afd62d836f",
+      "valid": true,
+      "volume": 686.9591682105153
+    },
+    {
+      "id": "3-8-hex-shaft-spacer-1-8-l-3-8-od-acetal-64e18bee4a2d",
+      "valid": true,
+      "volume": 365.4920407441335
+    },
+    {
+      "id": "10-aluminum-spacer-3-4-l-3-8-od-5e978fc39c8a",
+      "valid": true,
+      "volume": 986.6007331613301
+    },
+    {
+      "id": "8mm-motor-spacer-1-4-l-5-8-od-d918704a8a7b",
+      "valid": true,
+      "volume": 878.0243895098638
+    },
+    {
+      "id": "id1238-2866e53bba7f",
+      "valid": true,
+      "volume": 105.37879244556832
+    },
+    {
+      "id": "id1243-7c9a0fa06426",
+      "valid": true,
+      "volume": 156.8077339775931
+    },
+    {
+      "id": "id1248-ff2964bbcbdc",
+      "valid": true,
+      "volume": 156.807733949371
+    },
+    {
+      "id": "id1253-0c4287119a66",
+      "valid": true,
+      "volume": 105.37879244557358
+    },
+    {
+      "id": "id1258-32bf1fa5b4d7",
+      "valid": true,
+      "volume": 156.80773397763355
+    },
+    {
+      "id": "id1263-a94687581062",
+      "valid": true,
+      "volume": 156.8077339775568
+    },
+    {
+      "id": "id1268-f6c5aec1c4cb",
+      "valid": true,
+      "volume": 156.8077339488658
+    },
+    {
+      "id": "id1273-3abb0b19397a",
+      "valid": true,
+      "volume": 156.8077339775592
+    },
+    {
+      "id": "id1278-7e632e29de49",
+      "valid": true,
+      "volume": 156.80773397761953
+    },
+    {
+      "id": "id1283-1d4fb0b4ee96",
+      "valid": true,
+      "volume": 105.37879244556868
+    },
+    {
+      "id": "id1288-bb5cefcbe79c",
+      "valid": true,
+      "volume": 156.807733934439
+    },
+    {
+      "id": "id1293-23321ed1d43a",
+      "valid": true,
+      "volume": 105.37879244557328
+    },
+    {
+      "id": "id1298-730f9d83f320",
+      "valid": true,
+      "volume": 156.80773394887512
+    },
+    {
+      "id": "id1303-2e3ac2d14d62",
+      "valid": true,
+      "volume": 105.37879244557172
+    },
+    {
+      "id": "id1308-5dd0d6f940eb",
+      "valid": true,
+      "volume": 156.80773394891128
+    },
+    {
+      "id": "id1313-a5012afd73ce",
+      "valid": true,
+      "volume": 105.37879244557223
+    },
+    {
+      "id": "id1318-0bdecc158d67",
+      "valid": true,
+      "volume": 156.80773394926138
+    },
+    {
+      "id": "id1323-0359f147e31d",
+      "valid": true,
+      "volume": 156.80773397762442
+    },
+    {
+      "id": "id1328-e0bccb33f504",
+      "valid": true,
+      "volume": 105.3787924455948
+    },
+    {
+      "id": "id1333-1bb935569103",
+      "valid": true,
+      "volume": 156.80773397752435
+    },
+    {
+      "id": "id1338-13721b2e788b",
+      "valid": true,
+      "volume": 105.37879244556716
+    },
+    {
+      "id": "id1343-cb0f0072ce4e",
+      "valid": true,
+      "volume": 105.3787924456132
+    },
+    {
+      "id": "id1348-40b6ec6fec04",
+      "valid": true,
+      "volume": 105.37879244556714
+    },
+    {
+      "id": "id1353-9eb9877db874",
+      "valid": true,
+      "volume": 105.37879244559805
+    },
+    {
+      "id": "id1358-d116ee38d450",
+      "valid": true,
+      "volume": 105.37879244559142
+    },
+    {
+      "id": "id1363-b0a0ad9b8c1f",
+      "valid": true,
+      "volume": 105.37879244561472
+    },
+    {
+      "id": "id1368-8a60421b0e7c",
+      "valid": true,
+      "volume": 105.37879244559022
+    },
+    {
+      "id": "id1373-6592d6c815b9",
+      "valid": true,
+      "volume": 105.37879244558931
+    },
+    {
+      "id": "id1378-435898f7a6fd",
+      "valid": true,
+      "volume": 105.37879244553906
+    },
+    {
+      "id": "id1383-608a6cfdbb40",
+      "valid": true,
+      "volume": 105.37879244561543
+    },
+    {
+      "id": "id1388-2e0d4d02435d",
+      "valid": true,
+      "volume": 156.80773397766114
+    },
+    {
+      "id": "id1393-a977459d5fe5",
+      "valid": true,
+      "volume": 156.80773392044236
+    },
+    {
+      "id": "id1398-a4d22e23cd03",
+      "valid": true,
+      "volume": 156.80773394891128
+    },
+    {
+      "id": "id1403-d7331732292d",
+      "valid": true,
+      "volume": 156.80773392044406
+    },
+    {
+      "id": "id1408-10afe943fa2d",
+      "valid": true,
+      "volume": 156.80773394883522
+    },
+    {
+      "id": "id1413-496ab3a5dca7",
+      "valid": true,
+      "volume": 105.37879244554625
+    },
+    {
+      "id": "id1418-67032d821265",
+      "valid": true,
+      "volume": 105.37879244558135
+    },
+    {
+      "id": "id1423-59c570aa96ea",
+      "valid": true,
+      "volume": 156.80773394894703
+    },
+    {
+      "id": "id1428-4133605697de",
+      "valid": true,
+      "volume": 156.80773392044787
+    },
+    {
+      "id": "id1433-a624b10b152b",
+      "valid": true,
+      "volume": 156.80773392039814
+    },
+    {
+      "id": "id1438-eee14a879e04",
+      "valid": true,
+      "volume": 156.80773392049466
+    },
+    {
+      "id": "id1443-20cdcf927c30",
+      "valid": true,
+      "volume": 156.80773397760782
+    },
+    {
+      "id": "id1448-163f9b5d60d8",
+      "valid": true,
+      "volume": 105.37879244557243
+    },
+    {
+      "id": "id1453-986ad2f84c36",
+      "valid": true,
+      "volume": 156.80773397752205
+    },
+    {
+      "id": "id1458-7722e3a9574a",
+      "valid": true,
+      "volume": 105.37879244556736
+    },
+    {
+      "id": "id1463-332bc3da1398",
+      "valid": true,
+      "volume": 156.80773397762442
+    },
+    {
+      "id": "id1468-d6ad3a838579",
+      "valid": true,
+      "volume": 105.3787924455702
+    },
+    {
+      "id": "id1473-160d1bfb8a2c",
+      "valid": true,
+      "volume": 156.80773394887794
+    },
+    {
+      "id": "id1478-0fa44995abc4",
+      "valid": true,
+      "volume": 105.37879244552525
+    },
+    {
+      "id": "id1483-667cd14627ca",
+      "valid": true,
+      "volume": 138.7523800752559
+    },
+    {
+      "id": "id1488-56b8bcab6a4c",
+      "valid": true,
+      "volume": 105.3787924455875
+    },
+    {
+      "id": "id1493-242eaabe11e6",
+      "valid": true,
+      "volume": 156.80773394879913
+    },
+    {
+      "id": "id1498-5fd384978351",
+      "valid": true,
+      "volume": 105.37879244557233
+    },
+    {
+      "id": "id1503-8f6706d4779f",
+      "valid": true,
+      "volume": 156.80773397762135
+    },
+    {
+      "id": "id1508-8e642d81eb09",
+      "valid": true,
+      "volume": 105.37879244556866
+    },
+    {
+      "id": "id1513-74018dd5703a",
+      "valid": true,
+      "volume": 156.80773397763932
+    },
+    {
+      "id": "id1518-f30e57bc5525",
+      "valid": true,
+      "volume": 105.37879244558476
+    },
+    {
+      "id": "id1523-b38f404dc2e9",
+      "valid": true,
+      "volume": 105.37879244556325
+    },
+    {
+      "id": "id1528-c8538960a1fe",
+      "valid": true,
+      "volume": 105.37879244558722
+    },
+    {
+      "id": "id1533-e3c70baf8d6c",
+      "valid": true,
+      "volume": 105.37879244556373
+    },
+    {
+      "id": "id1538-179954ebc3dd",
+      "valid": true,
+      "volume": 105.37879244554429
+    },
+    {
+      "id": "id1543-6ebd7dfbb9f3",
+      "valid": true,
+      "volume": 105.37879244554489
+    },
+    {
+      "id": "id1548-86cc4aef272c",
+      "valid": true,
+      "volume": 105.37879244558509
+    },
+    {
+      "id": "id1553-fa5fb9a2fd2c",
+      "valid": true,
+      "volume": 156.8077339203686
+    },
+    {
+      "id": "id1558-28d6ef0fb700",
+      "valid": true,
+      "volume": 156.80773397761527
+    },
+    {
+      "id": "id1563-05006a453caa",
+      "valid": true,
+      "volume": 156.80773394881575
+    },
+    {
+      "id": "id1568-e6cec6f8ad7d",
+      "valid": true,
+      "volume": 156.80773397761646
+    },
+    {
+      "id": "8-32-thin-nylon-insert-locknut-1d19144f2829",
+      "valid": true,
+      "volume": 235.68920780811513
+    },
+    {
+      "id": "32t-aluminum-spur-gear-20-dp-3-8-hex-bore-3838910b8c8a",
+      "valid": true,
+      "volume": 11528.696307252236
+    },
+    {
+      "id": "minimal-825a8b6dbcbe",
+      "valid": true,
+      "volume": 106407.90050556738
+    },
+    {
+      "id": "55t-htd-belt-884824956ae9",
+      "valid": true,
+      "volume": 5411.178837977134
+    },
+    {
+      "id": "18t-aluminum-sprocket-25-1-2-hex-bore-single-hub-9d14a3efe442",
+      "valid": true,
+      "volume": 4715.674083849059
+    },
+    {
+      "id": "276-8016-001-rev1-fb1af3b5f0c3",
+      "valid": true,
+      "volume": 331.8925284820875
+    },
+    {
+      "id": "35t-htd-belt-b8259baaf733",
+      "valid": true,
+      "volume": 3469.126159712962
+    },
+    {
+      "id": "20t-aluminum-pulley-htd-5mm-15mm-wide-1-2-hex-bore-147bb5a7c910",
+      "valid": true,
+      "volume": 9118.589721431701
+    },
+    {
+      "id": "100t-htd-belt-f5b6d56a94e4",
+      "valid": true,
+      "volume": 9780.095834526017
+    },
+    {
+      "id": "217-5901-20171130-f37c7c0a1375",
+      "valid": true,
+      "volume": 89388.55377659791
+    },
+    {
+      "id": "10-32-x-5-8-l-fhcs-steel-black-oxide-eed0a0a4e5cc",
+      "valid": true,
+      "volume": 372.3073122579725
+    },
+    {
+      "id": "part-21-4db788c512b0",
+      "valid": true,
+      "volume": 309008.6481610404
+    },
+    {
+      "id": "part-28-276effbff357",
+      "valid": true,
+      "volume": 244416.51250715763
+    },
+    {
+      "id": "part-26-88fa6b2ff70f",
+      "valid": true,
+      "volume": 244416.51316063406
+    },
+    {
+      "id": "40t-aluminum-spur-gear-20-dp-3-8-hex-bore-23378048073c",
+      "valid": true,
+      "volume": 18434.359158879448
+    },
+    {
+      "id": "32t-aluminum-spur-gear-20-dp-3-8-hex-bore-bad0d1818416",
+      "valid": true,
+      "volume": 11530.010711433111
+    },
+    {
+      "id": "bhr-2026-500-029m-727c1eda4ed5",
+      "valid": true,
+      "volume": 26036.210969947566
+    },
+    {
+      "id": "10-32-x-2-1-4-l-bhcs-steel-black-oxide-3abc79ddb56e",
+      "valid": true,
+      "volume": 1151.579524092517
+    },
+    {
+      "id": "mcmaster-94639a530-1ac15b57da3a",
+      "valid": true,
+      "volume": 1065.4687515383282
+    },
+    {
+      "id": "217-5899-20171130-009235c6ecd6",
+      "valid": true,
+      "volume": 5070.384000568631
+    },
+    {
+      "id": "socket-button-head-cap-screw-8-32-x-2-25-eeb9d1110912",
+      "valid": true,
+      "volume": 848.9908415180038
+    },
+    {
+      "id": "part-60-e4d3526cae46",
+      "valid": true,
+      "volume": 188372.02068625644
+    },
+    {
+      "id": "bhr-2026-500-028m-548b3aa577f2",
+      "valid": true,
+      "volume": 40068.41207375416
+    },
+    {
+      "id": "80t-htd-belt-558fa95ebe19",
+      "valid": true,
+      "volume": 7838.045174097802
+    },
+    {
+      "id": "10-plastite-x-0-5l-18ccc5e66173",
+      "valid": true,
+      "volume": 353.3959860931861
+    },
+    {
+      "id": "60t-htd-belt-e2cdd9cbf4d0",
+      "valid": true,
+      "volume": 5896.642706169625
+    },
+    {
+      "id": "0-375-id-bearing-0-875-od-0-281-wd-shielded-flanged-11f6abfdcfac",
+      "valid": true,
+      "volume": 2263.4186562791983
+    },
+    {
+      "id": "3-8-rounded-hex-10-25mm-id-bearing-0-875-od-0-281-wd-shielded-fla-fcd560353c8b",
+      "valid": true,
+      "volume": 2191.4762314731715
+    },
+    {
+      "id": "16t-steel-spur-gear-20-dp-3-8-hex-bore-a8a2d35ac048",
+      "valid": true,
+      "volume": 2386.3876888028603
+    },
+    {
+      "id": "1-2-hex-adapter-1-2-l-3-8-hex-bore-3b84fe014d0f",
+      "valid": true,
+      "volume": 733.2644476254641
+    },
+    {
+      "id": "robot-radio-vh-109-ddbbbf82b839",
+      "valid": true,
+      "volume": 182392.95035580997
+    },
+    {
+      "id": "35t-htd-belt-e7b0898e72eb",
+      "valid": true,
+      "volume": 3469.1293640067042
+    },
+    {
+      "id": "socket-button-head-cap-screw-8-32-x-0-5-17f581d58b8c",
+      "valid": true,
+      "volume": 243.20826781363542
+    },
+    {
+      "id": "minimal-bb53ee65e310",
+      "valid": true,
+      "volume": 106407.90050556738
+    },
+    {
+      "id": "bhr-2026-500-009-cbf5c1e0c93f",
+      "valid": true,
+      "volume": 21157.632528787843
+    },
+    {
+      "id": "mcmaster-94638a241-05e6a57f0e4b",
+      "valid": true,
+      "volume": 1243.0468767947161
+    },
+    {
+      "id": "10-32-x-1-2-l-bhcs-steel-black-oxide-25376a758713",
+      "valid": true,
+      "volume": 338.4939012990138
+    },
+    {
+      "id": "bhr-2026-500-031-8e3683bb60ec",
+      "valid": true,
+      "volume": 69640.40111849278
+    },
+    {
+      "id": "11t-steel-spur-gear-20-dp-12t-center-distance-splinexs-bore-8cc8b08e3cee",
+      "valid": true,
+      "volume": 2426.182926908449
+    },
+    {
+      "id": "bhr-2026-500-026-adc0434fb452",
+      "valid": true,
+      "volume": 74450.01365947933
+    },
+    {
+      "id": "10-32-x-1-2-l-bhcs-steel-black-oxide-0a5106fe01f4",
+      "valid": true,
+      "volume": 338.4939012990138
+    },
+    {
+      "id": "217-5896-20171130-86bd0d006b92",
+      "valid": true,
+      "volume": 5274.833334074452
+    },
+    {
+      "id": "60t-htd-belt-97cc3df64248",
+      "valid": true,
+      "volume": 5896.3976511736055
+    },
+    {
+      "id": "45t-htd-belt-dbcf7d63ac0f",
+      "valid": true,
+      "volume": 4440.478964781337
+    },
+    {
+      "id": "part-71-7a107daa8fc1",
+      "valid": true,
+      "volume": 11119.607025568375
+    },
+    {
+      "id": "bhr-2026-501-010-f626e358c441",
+      "valid": true,
+      "volume": 98824.6198253254
+    },
+    {
+      "id": "bhr-2026-500-014m-bottom-b9d17e754b95",
+      "valid": true,
+      "volume": 87421.43437719952
+    },
+    {
+      "id": "217-5899-20171130-29157f343df4",
+      "valid": true,
+      "volume": 3409.4883029981606
+    },
+    {
+      "id": "14t-aluminum-spur-gear-20-dp-3-8-hex-bore-ba6cd1fd8e92",
+      "valid": true,
+      "volume": 1917.0527611815605
+    },
+    {
+      "id": "24t-aluminum-spur-gear-20-dp-3-8-hex-bore-b5ec674652ca",
+      "valid": true,
+      "volume": 7654.0372646266605
+    },
+    {
+      "id": "minimal-8b1fb05383af",
+      "valid": true,
+      "volume": 106407.90050556738
+    },
+    {
+      "id": "socket-head-cap-screw-10-32-x-3-5-dadf792da70e",
+      "valid": true,
+      "volume": 1824.6911560037265
+    },
+    {
+      "id": "id2656-2c628f98a065",
+      "valid": true,
+      "volume": 426103.5539642884
+    },
+    {
+      "id": "bhr-2026-500-014-bottom-e014e0249f33",
+      "valid": true,
+      "volume": 87421.43438463552
+    },
+    {
+      "id": "1-4-20-flanged-button-head-x-1-2-long-4cdc8c201412",
+      "valid": true,
+      "volume": 577.2638641820498
+    },
+    {
+      "id": "part-69-d4d1b039a56d",
+      "valid": true,
+      "volume": 11119.60702583321
+    },
+    {
+      "id": "robot-signal-light-rsl-allen-bradley-1f0369bbb66d",
+      "valid": true,
+      "volume": 65348.585036164885
+    },
+    {
+      "id": "18t-pulley-w-1-1-8-od-3dp-9d6a5a52a2df",
+      "valid": true,
+      "volume": 12672.2469356253
+    },
+    {
+      "id": "2-1-4-l-x-1-2-od-stub-shaft-aluminum-1-4-bore-1c3d5068fcf8",
+      "valid": true,
+      "volume": 6303.827539510132
+    },
+    {
+      "id": "bhr-2026-500-028-a5d46b5b7cba",
+      "valid": true,
+      "volume": 40068.41207304961
+    },
+    {
+      "id": "20t-pulley-w-1-1-8-od-stub-roller-hub-3dp-fcdc91a903bf",
+      "valid": true,
+      "volume": 14855.276285462236
+    },
+    {
+      "id": "1-3-4-l-x-1-2-od-stub-shaft-aluminum-1-4-bore-d335271dd20a",
+      "valid": true,
+      "volume": 4948.6741161059035
+    },
+    {
+      "id": "1-1-8-od-aluminum-stub-roller-hub-wcp-1746-001-d7d6fc18c868",
+      "valid": true,
+      "volume": 11275.805950609516
+    },
+    {
+      "id": "bhr-2026-500-029-318dea783e9b",
+      "valid": true,
+      "volume": 26036.210969620668
+    },
+    {
+      "id": "bhr-2026-500-030-df128e2047df",
+      "valid": true,
+      "volume": 117522.22175939352
+    },
+    {
+      "id": "id3165-bd5bdfa04881",
+      "valid": true,
+      "volume": 97885.40610785961
+    },
+    {
+      "id": "lumaswitch-assembly-public-v2-9279f0f28688",
+      "valid": true,
+      "volume": 114.92000000000002
+    },
+    {
+      "id": "light-diffuser-v18-5d42cf65a071",
+      "valid": true,
+      "volume": 215.87610416727767
+    },
+    {
+      "id": "lumaswitch-enclosure-bottom-v4-6f569ae68b67",
+      "valid": true,
+      "volume": 17403.13922997341
+    },
+    {
+      "id": "lumaswitch-assembly-public-v2-5b422938088b",
+      "valid": true,
+      "volume": 439.28
+    },
+    {
+      "id": "lumaswitch-assembly-public-v2-c2005f9621a5",
+      "valid": true,
+      "volume": 356.49249999999995
+    },
+    {
+      "id": "2601-1102-v1-4778725c9372",
+      "valid": true,
+      "volume": 1405.7485420613689
+    },
+    {
+      "id": "lumaswitch-enclosure-top-public-v2-fac6f9e161d0",
+      "valid": true,
+      "volume": 42620.1516767372
+    },
+    {
+      "id": "10-plastite-x-0-75l-d26ba1e7710e",
+      "valid": true,
+      "volume": 429.6072644364563
+    },
+    {
+      "id": "bhr-2026-600-011a-401026830413",
+      "valid": true,
+      "volume": 89497.02268478232
+    },
+    {
+      "id": "0-375-id-bearing-0-875-od-0-281-wd-shielded-flanged-d82945939808",
+      "valid": true,
+      "volume": 2263.4186562791983
+    },
+    {
+      "id": "bhr-2026-600-012-c0939634f4fe",
+      "valid": true,
+      "volume": 36834.16481801069
+    },
+    {
+      "id": "bhr-2026-600-001-223bd1e45b9c",
+      "valid": true,
+      "volume": 364454.8876411858
+    },
+    {
+      "id": "10-32-x-1-1-2-l-bhcs-steel-black-oxide-55209bb7b7af",
+      "valid": true,
+      "volume": 803.1142571810157
+    },
+    {
+      "id": "bhr-2026-600-011b-1dbcb96a41c1",
+      "valid": true,
+      "volume": 96350.87933638995
+    },
+    {
+      "id": "bhr-2026-600-010-0115a9321e56",
+      "valid": true,
+      "volume": 72576.4911017354
+    },
+    {
+      "id": "2-stealth-wheel-40a-1-2-hex-bore-079e865fd782",
+      "valid": true,
+      "volume": 38127.38582772641
+    },
+    {
+      "id": "3-8-hex-shaft-spacer-1-4-l-3-8-od-acetal-1e39c21bc2e7",
+      "valid": true,
+      "volume": 730.984081488267
+    },
+    {
+      "id": "10-id-x-contact-bearing-10-5-od-x-0-25-wd-shielded-29afb5d0f515",
+      "valid": true,
+      "volume": 32304.886029781686
+    },
+    {
+      "id": "3-8-round-x-5-16-l-shoulder-5-16-18-x-0-8125-l-steel-black-oxide-e4eb980b7d61",
+      "valid": true,
+      "volume": 1692.3878719411316
+    },
+    {
+      "id": "bhr-2026-600-002-b4f052fd7c56",
+      "valid": true,
+      "volume": 156821.54611281148
+    },
+    {
+      "id": "bhr-2026-600-007-1f0fe94289ee",
+      "valid": true,
+      "volume": 138369.65647488655
+    },
+    {
+      "id": "18t-aluminum-pulley-htd-5mm-9mm-wide-1-2-hex-bore-53ca6da0d723",
+      "valid": true,
+      "volume": 5827.100381639609
+    },
+    {
+      "id": "10-32-x-3-4-l-bhcs-steel-black-oxide-ad05daf4491d",
+      "valid": true,
+      "volume": 454.6489902695144
+    },
+    {
+      "id": "10-32-x-0-5-l-shaft-end-screw-steel-black-oxide-f723b5fe6cc1",
+      "valid": true,
+      "volume": 495.47226687981293
+    },
+    {
+      "id": "1-2-hex-shaft-spacer-1-32-l-3-4-od-acetal-c7fd0482f60f",
+      "valid": true,
+      "volume": 110.88576186785811
+    },
+    {
+      "id": "1-2-hex-shaft-spacer-1-2-l-3-4-od-acetal-ecc20e8f8824",
+      "valid": true,
+      "volume": 1774.1721898857297
+    },
+    {
+      "id": "1-2-hex-shaft-spacer-1-4-l-3-4-od-acetal-faf183dbc320",
+      "valid": true,
+      "volume": 887.0860949428649
+    },
+    {
+      "id": "4-stealth-wheel-40a-1-2-hex-bore-997621bd055b",
+      "valid": true,
+      "volume": 88186.34970765101
+    },
+    {
+      "id": "1-2-hex-shaft-spacer-1-l-3-4-od-acetal-e7dd032a109d",
+      "valid": true,
+      "volume": 3548.3443797714594
+    },
+    {
+      "id": "36t-aluminum-pulley-htd-5mm-9mm-wide-1-2-hex-bore-e3a108bb5ca1",
+      "valid": true,
+      "volume": 18079.0954757715
+    },
+    {
+      "id": "1-2-rounded-hex-13-75mm-id-bearing-1-125-od-0-313-wd-shielded-fla-76a19c7a480a",
+      "valid": true,
+      "volume": 4008.781184660483
+    },
+    {
+      "id": "44t-aluminum-spur-gear-20-dp-1-2-hex-bore-983aa712f865",
+      "valid": true,
+      "volume": 22073.808200319716
+    },
+    {
+      "id": "8mm-motor-spacer-5-8-od-b4f09f5e10e9",
+      "valid": true,
+      "volume": 878.0243895098638
+    },
+    {
+      "id": "1-2-hex-shaft-spacer-2-l-3-4-od-acetal-907bf6aafa6a",
+      "valid": true,
+      "volume": 7096.688759542919
+    },
+    {
+      "id": "18t-aluminum-spur-gear-20-dp-1-2-hex-bore-2cb8cab0aa26",
+      "valid": true,
+      "volume": 3144.4100546698573
+    },
+    {
+      "id": "10t-steel-spur-gear-20-dp-12t-center-distance-splinexs-bore-0b9575836475",
+      "valid": true,
+      "volume": 2268.621138183413
+    },
+    {
+      "id": "70t-htd-belt-d8997e4246f7",
+      "valid": true,
+      "volume": 6867.052182417071
+    },
+    {
+      "id": "bhr-2026-704-004a-482cb5fbbe82",
+      "valid": true,
+      "volume": 56035.20684715549
+    },
+    {
+      "id": "10-32-x-0-375-l-heatset-insert-brass-aa6ecc26e05f",
+      "valid": true,
+      "volume": 214.008383147839
+    },
+    {
+      "id": "8mm-motor-spacer-1-8-l-5-8-od-f65c0ab96625",
+      "valid": true,
+      "volume": 439.0121947549319
+    },
+    {
+      "id": "bhr-2026-704-004b-c4174cbfc5ef",
+      "valid": true,
+      "volume": 56034.72675018041
+    },
+    {
+      "id": "115t-htd-belt-327b564ee58f",
+      "valid": true,
+      "volume": 11234.276712748455
+    },
+    {
+      "id": "kraken-x60-back-cap-wcp-79462ce71df6",
+      "valid": true,
+      "volume": 3813.2566838897537
+    },
+    {
+      "id": "kraken-x60-brushless-motor-113c08de05ba",
+      "valid": true,
+      "volume": 197987.3865099842
+    },
+    {
+      "id": "part-61-5b95522c2ca9",
+      "valid": true,
+      "volume": 322200.17870619084
+    },
+    {
+      "id": "10-32-x-2-1-2-l-bhcs-steel-black-oxide-0fbe77ce876d",
+      "valid": true,
+      "volume": 1267.7346130630176
+    },
+    {
+      "id": "cone-bumper-mount-bracket-4-pack-wcp-1576-5a001b1d4f05",
+      "valid": true,
+      "volume": 4407.911979764748
+    },
+    {
+      "id": "3-16-blind-rivet-090-159-grip-length-aluminum-670929a53a8f",
+      "valid": true,
+      "volume": 235.73473355007258
+    },
+    {
+      "id": "wcp-1109-002-rev1-60fcbdc075ab",
+      "valid": true,
+      "volume": 2103.2850359004747
+    },
+    {
+      "id": "id4424-2f780455f86d",
+      "valid": true,
+      "volume": 49497.732402309375
+    },
+    {
+      "id": "wcp-1109-001-rev1-6d89ea0da2df",
+      "valid": true,
+      "volume": 839.465099089606
+    },
+    {
+      "id": "cone-bumper-mount-bracket-4-pack-wcp-1576-f7cd9f91d396",
+      "valid": true,
+      "volume": 18276.776620072797
+    },
+    {
+      "id": "part-18-2163162ab2e2",
+      "valid": true,
+      "volume": 24526.066086853287
+    },
+    {
+      "id": "10-32-aluminum-standoff-3-8-hex-1-l-782c9b1a9f9a",
+      "valid": true,
+      "volume": 1630.0572935728926
+    },
+    {
+      "id": "part-19-b948dc52f0a3",
+      "valid": true,
+      "volume": 26552.749798355322
+    },
+    {
+      "id": "id4515-1c0dc5bc4ff4",
+      "valid": true,
+      "volume": 24454.271687018245
+    },
+    {
+      "id": "robot-battery-145abfdae29f",
+      "valid": true,
+      "volume": 2278388.6782617117
+    },
+    {
+      "id": "10-32-x-1-l-bhcs-steel-black-oxide-710471aa590c",
+      "valid": true,
+      "volume": 570.8040792400147
+    },
+    {
+      "id": "simplified-mpm-541402289cc3",
+      "valid": true,
+      "volume": 65192.78738673757
+    },
+    {
+      "id": "part-17-40ef08bf6f40",
+      "valid": true,
+      "volume": 24526.064585049757
+    },
+    {
+      "id": "120a-main-breaker-d2aff9434e37",
+      "valid": true,
+      "volume": 62288.113411875616
+    },
+    {
+      "id": "kraken-x44-brushless-motor-e949fdf264f5",
+      "valid": true,
+      "volume": 115710.09770305433
+    },
+    {
+      "id": "8mm-motor-spacer-1-4-l-5-8-od-6907541afcfd",
+      "valid": true,
+      "volume": 878.0243895098638
+    },
+    {
+      "id": "kraken-x60-brushless-motor-92d1275c9b7e",
+      "valid": true,
+      "volume": 197987.38618387096
+    },
+    {
+      "id": "aluminum-spacers-196-id-x-3-8-od-x-1-3-4-wd-28a2f8e1029c",
+      "valid": true,
+      "volume": 2302.0683773764367
+    },
+    {
+      "id": "8mm-id-x-16mm-od-x-5mm-wd-radial-bearing-wcp-1735-489ba8f86065",
+      "valid": true,
+      "volume": 740.1557768957118
+    },
+    {
+      "id": "10-32-x-2-250-l-bhcs-steel-black-oxide-50-pack-wcp-0260-dea430c67437",
+      "valid": true,
+      "volume": 1116.3878018100813
+    },
+    {
+      "id": "wcp-swerve-x2-rotation-double-gear-22t-16t-steel-wcp-1710-20a9be10d5b0",
+      "valid": true,
+      "volume": 9627.939385559897
+    },
+    {
+      "id": "wcp-swerve-x2-hardware-kit-wc0-1700-003-86dc48ee65d2",
+      "valid": true,
+      "volume": 1469.94062358535
+    },
+    {
+      "id": "wcp-swerve-x2-tube-mount-bottom-plate-wcp-1705-06f382b3154f",
+      "valid": true,
+      "volume": 59897.930582995046
+    },
+    {
+      "id": "wcp-2092-28f5e2b68c88",
+      "valid": true,
+      "volume": 2992.882923989528
+    },
+    {
+      "id": "10-32-x-500-l-bhcs-steel-black-oxide-50-pack-wcp-0253-594a011c62f3",
+      "valid": true,
+      "volume": 328.78098713165775
+    },
+    {
+      "id": "0-250-id-x-0-625-od-x-0-196-wd-flanged-bearing-wcp-0042-f75cb63470d2",
+      "valid": true,
+      "volume": 822.8576828620846
+    },
+    {
+      "id": "aluminum-spacers-196-id-x-3-8-od-x-1-wd-b96b21379c91",
+      "valid": true,
+      "volume": 1315.4676442151065
+    },
+    {
+      "id": "wcp-2091-001-rev1-e1fd0f58500e",
+      "valid": true,
+      "volume": 41726.690414198856
+    },
+    {
+      "id": "wcp-2091-002-rev1-b13845ab79ab",
+      "valid": true,
+      "volume": 17982.12622425103
+    },
+    {
+      "id": "ctr-cancoder-wcp-1484-002-0b676fcfab45",
+      "valid": true,
+      "volume": 1172.4211958174346
+    },
+    {
+      "id": "wcp-swerve-x2-hardware-kit-wcp-1700-005-ffdbe221b571",
+      "valid": true,
+      "volume": 3453.69929010449
+    },
+    {
+      "id": "aluminum-spacers-196-id-x-3-8-od-x-1-2-wd-8660d6041594",
+      "valid": true,
+      "volume": 657.7338221075532
+    },
+    {
+      "id": "38t-pocketed-steel-spur-gear-20-dp-3-8-round-1-4-round-wcp-1723-bc9c105d2311",
+      "valid": true,
+      "volume": 9401.08196301118
+    },
+    {
+      "id": "0-375-id-x-0-875-od-x-0-280-wd-flanged-bearing-wcp-0779-33e056dbd534",
+      "valid": true,
+      "volume": 2253.363679740857
+    },
+    {
+      "id": "10-32-x-1-250-l-bhcs-steel-black-oxide-50-pack-wcp-0256-54a38c601a0e",
+      "valid": true,
+      "volume": 666.3267648509822
+    },
+    {
+      "id": "13-75mm-1-2-thunderhex-id-x-1-125-od-x-0-313-wd-flanged-bearing-w-9d9f58368f59",
+      "valid": true,
+      "volume": 3993.1395885561315
+    },
+    {
+      "id": "10-32-x-2-500-l-bhcs-steel-black-oxide-50-pack-wcp-0261-f069565131d5",
+      "valid": true,
+      "volume": 1228.903061049856
+    },
+    {
+      "id": "10-32-x-375-l-bhcs-steel-black-oxide-50-pack-wcp-0252-e7e297f2e86b",
+      "valid": true,
+      "volume": 272.52335751177026
+    },
+    {
+      "id": "wcp-swerve-x2-top-support-plate-wcp-1707-001-6f72d1c0f8b3",
+      "valid": true,
+      "volume": 33107.77948154136
+    },
+    {
+      "id": "10-32-x-375-l-bhcs-steel-black-oxide-50-pack-wcp-0252-5320732120c3",
+      "valid": true,
+      "volume": 272.52335751177026
+    },
+    {
+      "id": "wcp-swerve-x2-hardware-kit-wcp-1700-004-441d8480c3d6",
+      "valid": true,
+      "volume": 2623.0944589786404
+    },
+    {
+      "id": "wcp-swerve-x2-drive-double-gear-54t-38t-steel-wcp-1713-ff09d0959516",
+      "valid": true,
+      "volume": 24691.616756985914
+    },
+    {
+      "id": "nfs-0024-250-20-thin-locknut-90566a029-e27ba2903400",
+      "valid": true,
+      "volume": 34.836230094898646
+    },
+    {
+      "id": "18t-steel-spur-gear-20-dp-3-8-hex-bore-wcp-0432-9d4702088ab5",
+      "valid": true,
+      "volume": 3162.4401792814892
+    },
+    {
+      "id": "wcp-swerve-x2-hardware-kit-wcp-1700-001-a10ccf71bccc",
+      "valid": true,
+      "volume": 6481.146495420067
+    },
+    {
+      "id": "wcp-swerve-x2-hardware-kit-wcp-1700-006-b6493b647666",
+      "valid": true,
+      "volume": 145.48175618042757
+    },
+    {
+      "id": "3-8-external-snapring-20-pack-wcp-0228-4d5d65ceb7ed",
+      "valid": true,
+      "volume": 22.25331285003358
+    },
+    {
+      "id": "10-32-x-1-500-l-shcs-steel-black-oxide-50-pack-wcp-0268-3471b43d887f",
+      "valid": true,
+      "volume": 876.5650796320725
+    },
+    {
+      "id": "nfs-0024-250-20-thin-locknut-90566a029-bd2458db7837",
+      "valid": true,
+      "volume": 351.3473890690465
+    },
+    {
+      "id": "wcp-swerve-x2-drive-bevel-gear-shaft-15t-standard-steel-wcp-1721-44e16e655ca5",
+      "valid": true,
+      "volume": 6521.5837788796525
+    },
+    {
+      "id": "250-20-x-0-5l-shcs-91251a537-c8aebf6a8d53",
+      "valid": true,
+      "volume": 697.5622284368819
+    },
+    {
+      "id": "0-250-od-x-0-500-wd-diametric-magnet-wcp-0156-ae26f8fea930",
+      "valid": true,
+      "volume": 401.6565316468898
+    },
+    {
+      "id": "wcp-swerve-x2-hardware-kit-wcp-1700-002-ff7248fe3f1e",
+      "valid": true,
+      "volume": 6583.194239182601
+    },
+    {
+      "id": "15mm-id-x-24mm-od-x-5mm-wd-radial-bearing-wcp-0078-c1dd027539af",
+      "valid": true,
+      "volume": 1335.8947033995555
+    },
+    {
+      "id": "250-20-x-3-5l-shcs-90044a316-c686d65029b4",
+      "valid": true,
+      "volume": 3188.5240072958954
+    },
+    {
+      "id": "3-5-id-x-4-od-x-25-wd-x-contact-bearing-wcp-0037-5f57664e07c9",
+      "valid": true,
+      "volume": 11298.548850849418
+    },
+    {
+      "id": "0-250-id-x-0-625-od-x-0-196-wd-radial-bearing-wcp-0041-bd1e8925ba4e",
+      "valid": true,
+      "volume": 771.4178000215193
+    },
+    {
+      "id": "wcp-swerve-x2-standard-wheel-fork-kit-wcp-1708-001-d12b6207fa5d",
+      "valid": true,
+      "volume": 16108.820497808236
+    },
+    {
+      "id": "wcp-swerve-x2-88t-rotation-gear-wcp-1712-28c0dbf2650e",
+      "valid": true,
+      "volume": 37683.69453892338
+    },
+    {
+      "id": "wcp-swerve-x2-standard-wheel-fork-kit-wcp-1708-002-8558a6ae05f0",
+      "valid": true,
+      "volume": 17401.803175380657
+    },
+    {
+      "id": "10-32-x-1-000-l-shcs-steel-black-oxide-50-pack-wcp-0267-de12bbe31908",
+      "valid": true,
+      "volume": 643.5021654338229
+    },
+    {
+      "id": "x2-molded-wheel-e2a6bdccb3d5",
+      "valid": true,
+      "volume": 286128.7037096856
+    },
+    {
+      "id": "0-500-id-x-1-125-od-x-0-313-wd-radial-bearing-wcp-0778-e0d32b61b775",
+      "valid": true,
+      "volume": 3937.488074406931
+    },
+    {
+      "id": "45t-steel-bevel-gear-1-5-module-round-bore-wcp-0233-40161788b877",
+      "valid": true,
+      "volume": 14926.098189363822
+    },
+    {
+      "id": "12mm-id-x-24mm-od-x-6mm-wd-flanged-bearing-wcp-1734-047faeef7210",
+      "valid": true,
+      "volume": 2137.340763156565
+    },
+    {
+      "id": "simplified-pdp-2-0-e5258b2e67fc",
+      "valid": true,
+      "volume": 553724.8264455268
+    },
+    {
+      "id": "id5624-35537e6d9809",
+      "valid": true,
+      "volume": 3937.067635526398
+    },
+    {
+      "id": "10-aluminum-spacer-5-16-l-3-8-od-11a7cd50a6cc",
+      "valid": true,
+      "volume": 411.08363881722084
+    },
+    {
+      "id": "aluminum-tube-plug-1-x-1-x-0-06-tube-bf8c61816f73",
+      "valid": true,
+      "volume": 7338.057046586557
+    }
+  ],
+  "platforms": [
+    {
+      "id": "bhr-2026-500-014-top-d26859488e35",
+      "valid": true,
+      "solids": 1,
+      "volume": 22138.703348122875,
+      "referenceVolume": 22138.703328302854,
+      "volumeDelta": 1.9820021407213062e-05,
+      "buildMs": 352.0135001745075
+    },
+    {
+      "id": "bhr-2026-500-014m-top-22ebd4ced951",
+      "valid": true,
+      "solids": 1,
+      "volume": 22138.703348122875,
+      "referenceVolume": 22138.703328302854,
+      "volumeDelta": 1.9820021407213062e-05,
+      "buildMs": 337.68979203887284
+    },
+    {
+      "id": "bhr-2026-500-019-8e4b63bd1867",
+      "valid": true,
+      "solids": 1,
+      "volume": 62760.18173479163,
+      "referenceVolume": 62760.181169309886,
+      "volumeDelta": 0.0005654817432514392,
+      "buildMs": 1283.6166250053793
+    },
+    {
+      "id": "bhr-2026-500-019m-2e0b774f61c1",
+      "valid": true,
+      "solids": 1,
+      "volume": 62760.18126120517,
+      "referenceVolume": 62760.18116051725,
+      "volumeDelta": 0.00010068792471429333,
+      "buildMs": 1187.0117911603302
+    },
+    {
+      "id": "bhr-2026-500-027-34d684a8c9de",
+      "valid": true,
+      "solids": 1,
+      "volume": 28272.187215444013,
+      "referenceVolume": 28272.187215423215,
+      "volumeDelta": 2.0798324840143323e-08,
+      "buildMs": 2082.300042035058
+    },
+    {
+      "id": "bhr-2026-500-027m-538f738485fe",
+      "valid": true,
+      "solids": 1,
+      "volume": 28272.187215444013,
+      "referenceVolume": 28272.187215423215,
+      "volumeDelta": 2.0798324840143323e-08,
+      "buildMs": 2122.3139581270516
+    }
+  ],
+  "cornersAndBacklash": {
+    "parts": [
+      {
+        "id": "left-front-corner-block-a8312ccb6369",
+        "valid": true,
+        "solids": 1,
+        "volume": 153743.6938264745,
+        "currentWasmVolume": 153743.69855393143,
+        "relativeVolumeError": 3.074894754630689e-08,
+        "buildMs": 1395.3591249883175,
+        "parameterTest": {
+          "options": {
+            "holeScale": 1.05,
+            "engravingDepth": 2
+          },
+          "valid": true,
+          "volume": 153413.05385678334
+        }
+      },
+      {
+        "id": "right-front-corner-block-2f5e06f0b352",
+        "valid": true,
+        "solids": 1,
+        "volume": 153734.17375882305,
+        "currentWasmVolume": 153734.1782207872,
+        "relativeVolumeError": 2.9023891807403085e-08,
+        "buildMs": 2064.9381671100855,
+        "parameterTest": {
+          "options": {
+            "holeScale": 1.05,
+            "engravingDepth": 2
+          },
+          "valid": true,
+          "volume": 153401.06404309953
+        }
+      },
+      {
+        "id": "left-rear-corner-block-3112b49a80b2",
+        "valid": true,
+        "solids": 1,
+        "volume": 125134.05061028352,
+        "currentWasmVolume": 125134.5614738172,
+        "relativeVolumeError": 4.082513477197792e-06,
+        "buildMs": 3909.981541801244,
+        "parameterTest": {
+          "options": {
+            "holeScale": 1.05,
+            "engravingDepth": 2
+          },
+          "valid": true,
+          "volume": 124801.64788528919
+        }
+      },
+      {
+        "id": "right-rear-corner-block-74b524db1283",
+        "valid": true,
+        "solids": 1,
+        "volume": 125124.57791909196,
+        "currentWasmVolume": 125125.09756036846,
+        "relativeVolumeError": 4.15297399673526e-06,
+        "buildMs": 3529.431707924232,
+        "parameterTest": {
+          "options": {
+            "holeScale": 1.05,
+            "engravingDepth": 2
+          },
+          "valid": true,
+          "volume": 124789.71882408344
+        }
+      },
+      {
+        "id": "backlash-remover-left-side-c70badece837",
+        "valid": true,
+        "solids": 1,
+        "volume": 21932.05348408956,
+        "currentWasmVolume": 21932.053507216817,
+        "relativeVolumeError": 1.0544957407397686e-09,
+        "buildMs": 226.8051248975098,
+        "parameterTest": {
+          "options": {
+            "holeScale": 1.05,
+            "hubLength": 14.0
+          },
+          "valid": true,
+          "volume": 22576.052826514555
+        }
+      },
+      {
+        "id": "backlash-remover-right-side-fe6bf528179b",
+        "valid": true,
+        "solids": 1,
+        "volume": 37655.38814006646,
+        "currentWasmVolume": 37655.183241227256,
+        "relativeVolumeError": 5.441451124872884e-06,
+        "buildMs": 1039.274499984458,
+        "parameterTest": {
+          "options": {
+            "holeScale": 1.05,
+            "hubLength": 26.7
+          },
+          "valid": true,
+          "volume": 38213.46959658993
+        }
+      }
+    ],
+    "source": "current WASM built and exported this turn; dimensional native source operations plus generated-only exchange normalization"
+  },
+  "rearSurfaceComparison": {
+    "nativeToWasm": {
+      "sampleCount": 1050,
+      "maxMm": 3.7353568769579714e-07,
+      "p99Mm": 4.549499131250132e-09,
+      "meanMm": 1.0785121754857024e-09
+    },
+    "wasmToNative": {
+      "sampleCount": 1050,
+      "maxMm": 0.0002483968448571712,
+      "p99Mm": 4.549499131250132e-09,
+      "meanMm": 6.738639545404452e-07
+    }
+  },
+  "bracketsRailsShroud": {
+    "schema": 1,
+    "status": "passed",
+    "scope": "Seven native CadQuery ports against current authored brepjs output; geometric equivalence, not hardware qualification",
+    "parts": [
+      {
+        "id": "bhr-2026-500-017-821e3e1f1842",
+        "nativeValid": true,
+        "nativeVolumeMm3": 28212.494590583003,
+        "parameterEdit": {
+          "id": "bhr-2026-500-017-821e3e1f1842",
+          "parameters": {
+            "frontMountHoleRadius": 2
+          },
+          "valid": true,
+          "volume": 28162.542123199317
+        },
+        "status": "passed",
+        "geometryCheck": {
+          "method": "bidirectional native OCCT Boolean difference volumes versus current WASM STEP export",
+          "fuzzyToleranceMm": 1e-07,
+          "nativeOnlyVolumeMm3": 0,
+          "referenceOnlyVolumeMm3": 0
+        }
+      },
+      {
+        "id": "bhr-2026-500-017m-fd4f5acaf62b",
+        "nativeValid": true,
+        "nativeVolumeMm3": 27339.26508195961,
+        "parameterEdit": {
+          "id": "bhr-2026-500-017m-fd4f5acaf62b",
+          "parameters": {
+            "counterboreDiameter": 8.1,
+            "rearPilotRadius": 2.3
+          },
+          "valid": true,
+          "volume": 27294.326948237696
+        },
+        "status": "passed",
+        "geometryCheck": {
+          "method": "bidirectional native OCCT Boolean difference volumes versus current WASM STEP export",
+          "fuzzyToleranceMm": 1e-07,
+          "nativeOnlyVolumeMm3": 0,
+          "referenceOnlyVolumeMm3": 0
+        }
+      },
+      {
+        "id": "bhr-2026-500-022-64c66d54eb11",
+        "nativeValid": true,
+        "nativeVolumeMm3": 9344.666135692194,
+        "parameterEdit": {
+          "id": "bhr-2026-500-022-64c66d54eb11",
+          "parameters": {
+            "frontMountHoleRadius": 2
+          },
+          "valid": true,
+          "volume": 9299.03164666091
+        },
+        "status": "passed",
+        "geometryCheck": {
+          "method": "bidirectional native OCCT Boolean difference volumes versus current WASM STEP export",
+          "fuzzyToleranceMm": 0.001,
+          "nativeOnlyVolumeMm3": 0,
+          "referenceOnlyVolumeMm3": 0,
+          "bothDifferenceShapesValid": true
+        }
+      },
+      {
+        "id": "bhr-2026-500-022m-005027036523",
+        "nativeValid": true,
+        "nativeVolumeMm3": 8479.427193284902,
+        "parameterEdit": {
+          "id": "bhr-2026-500-022m-005027036523",
+          "parameters": {
+            "counterboreDiameter": 8.1
+          },
+          "valid": true,
+          "volume": 8433.19406493912
+        },
+        "status": "passed",
+        "geometryCheck": {
+          "method": "bidirectional native OCCT Boolean difference volumes versus current WASM STEP export",
+          "fuzzyToleranceMm": 1e-07,
+          "nativeOnlyVolumeMm3": 0,
+          "referenceOnlyVolumeMm3": 0
+        }
+      },
+      {
+        "id": "bhr-2026-600-004a-fdc0673fe431",
+        "nativeValid": true,
+        "nativeVolumeMm3": 123001.77836668896,
+        "parameterEdit": {
+          "id": "bhr-2026-600-004a-fdc0673fe431",
+          "parameters": {
+            "holeScale": 1.03,
+            "nutAcrossFlats": 10
+          },
+          "valid": true,
+          "volume": 122643.86887653258
+        },
+        "status": "passed",
+        "geometryCheck": {
+          "id": "bhr-2026-600-004a-fdc0673fe431",
+          "method": "bidirectional exact edge and trimmed-surface samples with source-surface witness projection to native OCCT nearest shape",
+          "limitMm": 0.005,
+          "nativeToReference": {
+            "samples": 6525,
+            "maxDistanceMm": 2.7299566834911e-07,
+            "worst": [
+              -276.9140392629023,
+              -267.0,
+              398.99162588135647
+            ],
+            "projectionRecoveries": 2,
+            "maxSourceProjectionMm": 0.7019789667713494,
+            "wallSeconds": 43.78291254211217
+          },
+          "referenceToNative": {
+            "samples": 6556,
+            "maxDistanceMm": 6.000202896951614e-07,
+            "worst": [
+              -258.1333261927152,
+              -286.02664175652166,
+              393.2681993999995
+            ],
+            "projectionRecoveries": 2,
+            "maxSourceProjectionMm": 0.7019789667704074,
+            "wallSeconds": 70.62285862513818
+          }
+        }
+      },
+      {
+        "id": "bhr-2026-600-004b-5c0ed452f82d",
+        "nativeValid": true,
+        "nativeVolumeMm3": 123553.56464920563,
+        "parameterEdit": {
+          "id": "bhr-2026-600-004b-5c0ed452f82d",
+          "parameters": {
+            "holeScale": 1.03,
+            "nutAcrossFlats": 10
+          },
+          "valid": true,
+          "volume": 123195.65515848144
+        },
+        "status": "passed",
+        "geometryCheck": {
+          "id": "bhr-2026-600-004b-5c0ed452f82d",
+          "method": "bidirectional per-edge midpoint and per-face exact surface witness sampling",
+          "limitMm": 0.005,
+          "nativeToReference": {
+            "samples": 1308,
+            "maxDistanceMm": 1.9211690136356354e-08,
+            "worst": [
+              -260.6573506087135,
+              -57.70510507000012,
+              381.51658006070596
+            ],
+            "projectionRecoveries": 0,
+            "maxSourceProjectionMm": 0,
+            "wallSeconds": 13.359540667152032
+          },
+          "referenceToNative": {
+            "samples": 1313,
+            "maxDistanceMm": 1.9206762661675518e-08,
+            "worst": [
+              -260.65735144967374,
+              -57.705090983934085,
+              381.5165913517167
+            ],
+            "projectionRecoveries": 0,
+            "maxSourceProjectionMm": 0,
+            "wallSeconds": 16.852515457896516
+          }
+        }
+      },
+      {
+        "id": "shroud-5023935d6e1a",
+        "nativeValid": true,
+        "nativeVolumeMm3": 35378.50061746985,
+        "parameterEdit": {
+          "id": "shroud-5023935d6e1a",
+          "parameters": {
+            "mountHoleRadius": 3.5
+          },
+          "valid": true,
+          "volume": 35368.68645815762
+        },
+        "status": "passed",
+        "geometryCheck": {
+          "method": "bidirectional native OCCT Boolean difference volumes versus current WASM STEP export",
+          "fuzzyToleranceMm": 1e-07,
+          "nativeOnlyVolumeMm3": 0,
+          "referenceOnlyVolumeMm3": 0
+        }
+      }
+    ],
+    "rejectedMethods": [
+      {
+        "parts": [
+          "bhr-2026-500-022-64c66d54eb11"
+        ],
+        "method": "Boolean difference below .001mm fuzzy tolerance",
+        "reason": "One subtraction returns an invalid full-volume result. At .001mm both subtractions valid and zero."
+      },
+      {
+        "parts": [
+          "bhr-2026-600-004a-fdc0673fe431",
+          "bhr-2026-600-004b-5c0ed452f82d"
+        ],
+        "method": "STEP-exported reference and direct Boolean difference",
+        "reason": "STEP exchange changes reconstructed rail trims; direct BREP preserves reference geometry but subtraction produces invalid solids. Invalid results were excluded from acceptance."
+      },
+      {
+        "parts": [
+          "bhr-2026-600-004a-fdc0673fe431",
+          "bhr-2026-600-004b-5c0ed452f82d"
+        ],
+        "method": "Unwitnessed underlying-curve samples",
+        "reason": "Two samples per direction are about .702mm from their own trimmed source surface. Projecting to the source boundary before target comparison removes the false outlier."
+      }
+    ],
+    "knownLimitations": [
+      {
+        "kind": "pre-existing STEP exchange instability",
+        "parts": [
+          "bhr-2026-600-004a-fdc0673fe431",
+          "bhr-2026-600-004b-5c0ed452f82d"
+        ],
+        "description": "Both original WASM and faithful native rails change volume when STEP exported and reimported. Native A123001.778mm3 becomes110511.326mm3, original WASM A123001.767 becomes110507.680. Native BREP and rendered/physical native geometry retain the validated shapes. No-pcurve export, SameParameter and ShapeFix did not resolve this; no runtime geometry was changed to mask it."
+      }
+    ],
+    "evidenceFiles": [
+      "build/native-comparison-brackets-rails.json",
+      "build/native-brackets-parameter-check.json",
+      "build/native-rails-surface-check.json",
+      "build/native-rails-brep-check.json"
+    ],
+    "sourceSha256": {
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/brackets.py": "72c1e80548eb3f77812ac214215cb1f8f58b625378fd72d19e404ba23cf0aa43",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/rails.py": "6db5d594ad8618c20249c759c1afd782c85aca7d7eafa8e0e9a0d6977ebda572",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/shroud.py": "dfd679de09d0b1066c513e611b325301493d38c866febdbc2d85f63bb21543d1",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_017_821e3e1f1842.py": "c546e06d7b6dc90bf24a4727f7a9ffa3209efe95067f79da79c9df68be36f3ce",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_017m_fd4f5acaf62b.py": "ae5f4a45358e13754495793af696c85f3860e43e3cc06433c332f91ce149be9a",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_022_64c66d54eb11.py": "195e38dcfa7a1b109d67e0bd09a554ed51d3808a2bac39dc70721b3129791cb2",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_500_022m_005027036523.py": "e2a2e13b9582c595413a243c7ecdf9dc05c4785ef07a566f71d2bd5077d4c1bb",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_600_004a_fdc0673fe431.py": "205ec4b2072d1f4d56fac8240fa8eee1f9f230701cbe4461617b499bcde793f6",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_bhr_2026_600_004b_5c0ed452f82d.py": "e8268de6fa75984b91c3dbf81894e311180dbd84e9e2b91dece590ef495d2dc0",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/parts/p_shroud_5023935d6e1a.py": "679684f1704454364854bb8542f7ab068b6d8d390a9e30fbc6b3554e97be9026",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket017-profile-parametric.json": "1eebb60303cea3dd502f70f9dd2d1a5e5179f8a3b9ca117f02800f6f70492371",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket017-rear-blend-data.json": "a348ad5935a384b1a339fae8baa633e9b8787602c5f535fd067ca0eeb36cc667",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket017-front-blend-data.json": "ca3696e0f723a56fdd83e866962e6d7fb366972222eb71cdad928300c13e2376",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket017-lip-surface-data.json": "6826e0d0c17795afffd59387bd9ad3a488e47f5bf0909d313b9d8ad02b851515",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket022-profile-data.json": "81e827c3fad13272606736f4127efa0280a16bf226727a6831e338e9d0181432",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/bracket022-notch-compact-data.json": "cb98c0d4e37dcf2e689ecc5880a984c37f49bffeebad7ba44c8f09241e0334fa",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/rail600004-lower-candidate.json": "3891d0fe136f056bbe5c0918fbbabb99ee07ef23dfcd2a51e9c9617acd52f951",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/rail600004-upper-candidate.json": "838c41068415cfbc5faed8a5b56d66864677651a66b51f944f0d4953790d8f4d",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/rail600004b-lower-candidate.json": "905e2ee3b6ed4122372bc4d8b44ee2d3e52fd6e72a1f0bfc086f82016635eaf3",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/rail600004-region-data.json": "eccc71670d03e23b6aa7b44c8a4ac51a297770482d82d9a7274e89885ea4628e",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/shroud-rim-compact-data.json": "3b585b5f4d61ac07add4ecd730826769275d86ab99a5e9e27f8f16bdc0e7b854",
+      "examples/team3310-rebuilt/source/cad-assets/robot/native/data/shroud-toe-compact-data.json": "7f6cedca570dc6feb560c731ae519434f7dd5cb694abd6893682f8ac20aca55e"
+    },
+    "cadqueryVersion": "2.6.1",
+    "ocpVersion": "7.8.1.1"
+  },
+  "mount": {
+    "id": "bhr-2025-100-022-e288be426a61",
+    "valid": true,
+    "nativeAdaptiveVolume": 37621.76159071107,
+    "wasmStepAdaptiveVolume": 37621.783905477416,
+    "addedVolume": 0,
+    "missingVolume": 0
+  },
+  "limitations": [
+    "Kernel versions and STEP translation can produce different mass quadrature or trim tolerances. Volume comparisons are supplemented by Boolean or surface comparisons.",
+    "This records CAD migration equivalence, not physical calibration of contact, mass, inertia or mechanisms. Reviewed simulation collision approximations remain in use."
+  ]
+}

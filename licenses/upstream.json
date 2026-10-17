@@ -37,20 +37,6 @@
       "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
     },
     {
-      "component": "occt-wasm",
-      "version": "5.3.2",
-      "url": "https://raw.githubusercontent.com/andymai/occt-wasm/648410061fd93f2c97c65b3401f9883faaa3699e/LICENSE",
-      "file": "upstream/occt-wrapper-MIT.txt",
-      "sha256": "0c6ec66bfa0b33581cb449b395cbc0eaee0591908fcd939170eb989e1778e129"
-    },
-    {
-      "component": "occt-wasm",
-      "version": "5.3.2",
-      "url": "https://raw.githubusercontent.com/andymai/occt-wasm/648410061fd93f2c97c65b3401f9883faaa3699e/LICENSE-APACHE",
-      "file": "upstream/occt-wrapper-APACHE.txt",
-      "sha256": "cb38eeb588249a8f458607604d68d7c4d8f7f62ec9d4b2ca6eca0a9e17601380"
-    },
-    {
       "component": "OCCT",
       "version": "055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
       "url": "https://raw.githubusercontent.com/andymai/OCCT/055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/LICENSE_LGPL_21.txt",
@@ -4945,84 +4931,6 @@
       "gitBlob": "2842efa1288eef1de3a6778b5dd3519bc903308d",
       "sourceRevision": "b7e6a5d37e7a14ef0f2cc95214b95d66c4081415",
       "supplementForArchiveSha256": "fca113c5d5add8bfb1aa31129a24acb8d49aa69ab3c22a2cc569aec88960526d"
-    },
-    {
-      "component": "occt-in-tree:delabella",
-      "version": "055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
-      "url": "https://raw.githubusercontent.com/andymai/OCCT/055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/ModelingAlgorithms/TKMesh/BRepMesh/delabella.cpp",
-      "file": "upstream/occt-delabella-cpp-notice.txt",
-      "sha256": "fdd27b13866b5f0d12f3b5b7f9b8cdd2324a2ce1095b1122e20563156c123f9b",
-      "archiveSha256": "498f7cdbf6b6d8a5729fc09d3983d418d92532931b21b52c2f2ba285382d8324",
-      "archiveEntry": "OCCT-055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/ModelingAlgorithms/TKMesh/BRepMesh/delabella.cpp",
-      "archiveByteRange": {
-        "offset": 0,
-        "length": 1130
-      }
-    },
-    {
-      "component": "occt-in-tree:delabella",
-      "version": "055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
-      "url": "https://raw.githubusercontent.com/andymai/OCCT/055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/ModelingAlgorithms/TKMesh/BRepMesh/delabella.pxx",
-      "file": "upstream/occt-delabella-pxx-notice.txt",
-      "sha256": "fdd27b13866b5f0d12f3b5b7f9b8cdd2324a2ce1095b1122e20563156c123f9b",
-      "archiveSha256": "498f7cdbf6b6d8a5729fc09d3983d418d92532931b21b52c2f2ba285382d8324",
-      "archiveEntry": "OCCT-055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/ModelingAlgorithms/TKMesh/BRepMesh/delabella.pxx",
-      "archiveByteRange": {
-        "offset": 0,
-        "length": 1130
-      }
-    },
-    {
-      "component": "occt-in-tree:flexlexer",
-      "version": "055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
-      "url": "https://raw.githubusercontent.com/andymai/OCCT/055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/FoundationClasses/TKernel/FlexLexer/FlexLexer.h",
-      "file": "upstream/occt-flexlexer-notice.txt",
-      "sha256": "e4b9262c54d6a79455230287b91253da7fe8531b6abe23008af6967f1a6d84f3",
-      "archiveSha256": "498f7cdbf6b6d8a5729fc09d3983d418d92532931b21b52c2f2ba285382d8324",
-      "archiveEntry": "OCCT-055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/FoundationClasses/TKernel/FlexLexer/FlexLexer.h",
-      "archiveByteRange": {
-        "offset": 0,
-        "length": 1213
-      }
-    },
-    {
-      "component": "occt-in-tree:dejavu-font",
-      "version": "055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
-      "url": "https://raw.githubusercontent.com/andymai/OCCT/055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/Visualization/TKService/Font/Font_DejavuSans_Latin_woff.pxx",
-      "file": "upstream/occt-dejavu-font-notice.txt",
-      "sha256": "33f66ec26ad2aca752db087548a211bead5a45b5caf017934575e5b849116785",
-      "archiveSha256": "498f7cdbf6b6d8a5729fc09d3983d418d92532931b21b52c2f2ba285382d8324",
-      "archiveEntry": "OCCT-055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/Visualization/TKService/Font/Font_DejavuSans_Latin_woff.pxx",
-      "archiveByteRange": {
-        "offset": 0,
-        "length": 3185
-      }
-    },
-    {
-      "component": "occt-in-tree:halton-sampler",
-      "version": "055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
-      "url": "https://raw.githubusercontent.com/andymai/OCCT/055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/Visualization/TKOpenGl/OpenGl/OpenGl_HaltonSampler.hxx",
-      "file": "upstream/occt-halton-sampler-notice.txt",
-      "sha256": "d6530dcba1418cc8ef7246025d4259bb47971b3af7ae8bd2bfb8399bb945524b",
-      "archiveSha256": "498f7cdbf6b6d8a5729fc09d3983d418d92532931b21b52c2f2ba285382d8324",
-      "archiveEntry": "OCCT-055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/Visualization/TKOpenGl/OpenGl/OpenGl_HaltonSampler.hxx",
-      "archiveByteRange": {
-        "offset": 0,
-        "length": 1148
-      }
-    },
-    {
-      "component": "occt-in-tree:khrplatform",
-      "version": "055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765",
-      "url": "https://raw.githubusercontent.com/andymai/OCCT/055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/Visualization/TKOpenGl/OpenGl/OpenGl_khrplatform.h",
-      "file": "upstream/occt-khrplatform-notice.txt",
-      "sha256": "fd7c88f69e70ffa778137ba0bc8267fa8dd83189365d9ff5a2533161432b3d0b",
-      "archiveSha256": "498f7cdbf6b6d8a5729fc09d3983d418d92532931b21b52c2f2ba285382d8324",
-      "archiveEntry": "OCCT-055a9a8a2b3fbb33da2ec9a5445d2b97ffbcd765/src/Visualization/TKOpenGl/OpenGl/OpenGl_khrplatform.h",
-      "archiveByteRange": {
-        "offset": 51,
-        "length": 1146
-      }
     }
   ]
 }

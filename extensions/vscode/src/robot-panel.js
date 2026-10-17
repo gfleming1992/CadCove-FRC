@@ -10,7 +10,7 @@ export function robotPanels(context,{workspace,simulationProject,cad,settings}){
   const root=workspace(resource),configured=await settings(root);
   const source=path.join(root,configured.sourceDirectory,configured.entryPoint);
   const hasSource=await fs.access(source).then(()=>true,e=>{if(e.code==='ENOENT')return false;throw e;});
-  if(hasSource){panels.get(root)?.panel.dispose();await cad.openModel(vscode.Uri.file(source));return {ok:true,kind:'javascript',source};}
+  if(hasSource){panels.get(root)?.panel.dispose();await cad.openModel(vscode.Uri.file(source));return {ok:true,kind:source.endsWith('.py')?'cadquery':'javascript',source};}
   const file=await simulationProject(root),profile=JSON.parse(await fs.readFile(file,'utf8'));
   if(typeof profile.cad?.robot!=='string')throw Error('No robot CAD configured. Set CAD source or profile.cad.robot.');
   const asset=path.resolve(path.dirname(file),profile.cad.robot);

@@ -34,18 +34,17 @@ test('initialization works in another team workspace with nested CAD/build folde
   expect(await readFile(path.join(root, '.github/copilot-instructions.md'), 'utf8')).toStartWith('Existing Copilot instructions.');
   expect(await readdir(path.join(root, 'design/robot'))).toEqual([]);
   const guide=await readFile(path.join(root,'.cadcove/AGENT.md'),'utf8');
-  expect(guide).toContain('CAD-only work does not');
-  expect(await readFile(path.join(root,'.cadcove/skills/references/brepjs-api.md'),'utf8')).toContain('export declare function box(');
+  expect(guide).toContain('CAD-only work needs Python/CadQuery');
+  expect(await readFile(path.join(root,'.cadcove/skills/references/cadquery-api.md'),'utf8')).toContain('cq.Workplane');
   expect((await initializeToolbox({workspace: root, id: 'team-123', name: 'A different robot', cadDirectory: 'design/robot', buildDirectory: 'generated/cad'})).files).toEqual([]);
 }));
 
 test('offline CAD reference preserves installed declarations/license and rejects damaged or escaping entries',async()=>{
  const bundle=await cadReferenceBundle(),files=validateCadReference(bundle);
- expect(files['.cadcove/skills/references/brepjs-license.md']).toBe(await readFile(path.resolve(import.meta.dir,'../node_modules/brepjs/LICENSE'),'utf8'));
- expect(files['.cadcove/skills/references/brepjs-api.md']).toContain(await readFile(path.resolve(import.meta.dir,'../node_modules/brepjs/dist/index.d.ts'),'utf8'));
+ expect(files['.cadcove/skills/references/cadquery-api.md']).toContain('CadQuery 2.6.1');
  const badHash=structuredClone(bundle);badHash.files[0].text+='altered';expect(()=>validateCadReference(badHash)).toThrow('Invalid CAD reference entry');
  const escaped=structuredClone(bundle);escaped.files[0].file='../model.js';expect(()=>validateCadReference(escaped)).toThrow('Invalid CAD reference entry');
- const duplicate=structuredClone(bundle);duplicate.files[1]=duplicate.files[0];expect(()=>validateCadReference(duplicate)).toThrow('Invalid CAD reference entry');
+ const duplicate=structuredClone(bundle);duplicate.files.push(duplicate.files[0]);expect(()=>validateCadReference(duplicate)).toThrow('Invalid CAD reference bundle');
  expect(()=>validateCadReference({...bundle,version:'different'})).toThrow('Invalid CAD reference bundle');
 });
 

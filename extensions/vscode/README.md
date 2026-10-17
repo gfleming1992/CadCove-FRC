@@ -35,12 +35,11 @@ API key, or embedded chat box is added by this extension.
    a new terminal or its session restarted to inherit the PATH addition.
 4. Start a new agent conversation. Initialization adds `AGENTS.md`, `CLAUDE.md`
    and `.github/copilot-instructions.md`, each pointing at `.cadcove/AGENT.md`.
-   Existing team instructions are preserved. Ask the agent to read that guide and author the JavaScript entry
-   configured in `.cadcove/project.json` (initially `cad/model.js`). Initialization
-   installs an offline CAD authoring guide, searchable pinned brepjs API
-   signatures, and the upstream license under `.cadcove/skills/references/`.
-   These signatures are documentation; models remain JavaScript and require no
-   TypeScript compiler in the robot workspace. CAD authoring can begin before
+   Existing team instructions are preserved. Ask the agent to read that guide and
+   author the Python entry configured in `.cadcove/project.json` (initially
+   `cad/models.py`). Install Python 3.12 with the pinned `cad-requirements.txt`
+   and set `instantcad.pythonPath` to that interpreter. Initialization installs
+   native CadQuery authoring, inspection and capture guidance. CAD can run before
    Java/vendor dependencies and simulation integration are configured.
 5. Run **CadCove: Open in CAD Canvas**. Edits rebuild automatically. Orbit with left
    drag, pan with right/middle or Shift-drag, zoom with the wheel, and press F to

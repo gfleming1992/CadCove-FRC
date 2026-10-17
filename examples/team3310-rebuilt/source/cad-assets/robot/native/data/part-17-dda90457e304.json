@@ -1,0 +1,56 @@
+{
+  "parameters": {
+    "depth": 1.27,
+    "holeScale": 1
+  },
+  "profile": {
+    "origin": [
+      328.7725454,
+      -11.176,
+      512.7371
+    ],
+    "u": [
+      -1,
+      0,
+      0
+    ],
+    "v": [
+      0,
+      0,
+      1
+    ],
+    "normal": [
+      0,
+      1,
+      0
+    ],
+    "direction": [
+      0,
+      -1,
+      0
+    ],
+    "depth": 1.27,
+    "outline": [
+      {
+        "kind": "circle",
+        "center": [
+          0,
+          0
+        ],
+        "radius": 12.7
+      }
+    ],
+    "cutouts": [
+      [
+        {
+          "kind": "circle",
+          "center": [
+            0,
+            0
+          ],
+          "radius": 2.5527
+        }
+      ]
+    ]
+  }
+}

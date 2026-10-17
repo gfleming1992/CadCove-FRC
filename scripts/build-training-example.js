@@ -4,9 +4,10 @@ import path from 'node:path';
 import {readFile,mkdir,cp,writeFile,lstat,mkdtemp,rm} from 'node:fs/promises';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
-import {OcctKernel} from 'occt-wasm';
-import * as brep from 'brepjs';
-import {encodeScene} from '../vendor/cad-core/src/core/mesh.js';
+import {NativeCadClient} from '../vendor/cad-core/src/native/client.js';
+import {readSources} from '../vendor/cad-core/extensions/vscode/src/project-files.js';
+import {snapshot as cadSnapshot} from '../vendor/cad-core/src/core/revision.js';
+import {encodeScene,decodeScene} from '../vendor/cad-core/src/core/mesh.js';
 import {identity,translation} from '../lib/transforms.js';
 const args=process.argv.slice(2);
 if(args.length!==2||args[0]!=='--output')throw Error('Usage: bun scripts/build-training-example.js --output NEW_WORKSPACE');
@@ -23,26 +24,27 @@ await cp(path.join(root,'examples/season-plugin/src'),path.join(output,'src'),{r
 // Load geometry and physics parameters from the exact private source snapshot
 // we fingerprint and export. Imports from the live checkout could otherwise
 // execute one revision while a subsequent copy recorded another revision.
-const sourceFiles=await Promise.all(['model.js','design.js','components.js'].map(async name=>({name,bytes:await readFile(path.join(output,'cad',name))})));
+const sourceFiles=await Promise.all(['models.py','field.py','design.json','components.js'].map(async name=>({name,bytes:await readFile(path.join(output,'cad',name))})));
 await mkdir(path.join(root,'build'),{recursive:true});
 const snapshot=await mkdtemp(path.join(root,'build','.training-cad-'));let modules;
 try{
  for(const {name,bytes} of sourceFiles)await writeFile(path.join(snapshot,name),bytes);
- modules=await Promise.all(['model.js','design.js','components.js'].map(name=>import(pathToFileURL(path.join(snapshot,name)).href)));
+ modules=[JSON.parse(await readFile(path.join(snapshot,'design.json'),'utf8')),await import(pathToFileURL(path.join(snapshot,'components.js')).href)];
 }finally{await rm(snapshot,{recursive:true,force:true});}
-const [{default:model,field},{robotParts,fieldParts,wheels},{krakenX60,limelight}]=modules;
+const [{robotParts,fieldParts,wheels},{krakenX60,limelight}]=modules;
 const sourceInputs={schema:1,files:sourceFiles.map(({name,bytes})=>({file:'cad/'+name,sha256:hash(bytes)}))};
-const kernel=await OcctKernel.init({wasm:await readFile(path.join(root,'node_modules/occt-wasm/dist/occt-wasm.wasm'))});
-const adapter=brep.OcctWasmAdapter.fromKernel(kernel);brep.registerKernel('occt-wasm',adapter);
+const client=new NativeCadClient({python:process.env.CADCOVE_PYTHON||'python3',worker:path.join(root,'vendor/cad-core/src/native/worker.py')});
 const hashes={};
 try{
- for(const [kind,build] of [['robot',model],['field',field]]){
-  const parts=build(),instances=[],catalog={};
-  hashes[kind]=hash(Buffer.concat(['design.js','model.js'].map(name=>sourceFiles.find(f=>f.name===name).bytes)));
+ for(const [kind,entry] of [['robot','models.py'],['field','field.py']]){
+  const source=await cadSnapshot(await readSources(path.join(output,'cad')),entry),binary=path.join(output,'build/cadcove',kind,'native-scene.bin');
+  await mkdir(path.dirname(binary),{recursive:true});
+  await client.request({kind:'build',root:path.join(output,'cad'),entry,files:source.files,revision:source.revision,output:binary});
+  const data=await readFile(binary),parts=decodeScene(data.buffer.slice(data.byteOffset,data.byteOffset+data.byteLength)).parts,instances=[],catalog={};
+  await rm(binary);
+  hashes[kind]=hash(Buffer.concat(['design.json',entry,'models.py'].map(name=>sourceFiles.find(f=>f.name===name).bytes)));
   for(const part of parts){
-   const mesh=adapter.mesh(part.shape.wrapped,{tolerance:.5,angularTolerance:.4});
-   const positions=new Float32Array(mesh.vertices),normals=new Float32Array(mesh.normals),indices=new Uint32Array(mesh.triangles);
-   const metrics={valid:adapter.isValid(part.shape.wrapped),bounds:adapter.boundingBox(part.shape.wrapped),triangles:indices.length/3};
+   const {positions,normals,indices,metrics}=part;
    if(!metrics.valid)throw Error('Invalid example CAD '+part.id);
    const bytes=encodeScene({parts:[{...part,shape:undefined,positions,normals,indices,metrics}]});
    const file='meshes/'+part.id+'.bin';await mkdir(path.join(output,'build/cadcove',kind,'meshes'),{recursive:true});await writeFile(path.join(output,'build/cadcove',kind,file),new Uint8Array(bytes));
@@ -52,7 +54,7 @@ try{
   await write('build/cadcove/'+kind+'/catalog.json',catalog);await write('build/cadcove/'+kind+'/instances.json',instances);
   await write('build/cadcove/'+kind+'/assembly.json',{schema:1,id:kind,units:'mm',sourceHash:hashes[kind]});
  }
-}finally{kernel[Symbol.dispose]();}
+}finally{client.dispose();}
 const frame=robotParts.find(p=>p.id==='frame'),tray=robotParts.find(p=>p.id==='lift-tray');
 const chassis=frame.position,lift=tray.position;
 const body=(id,position,size,mass,fixed=false)=>({id,position,mass,fixed,colliders:[{kind:'box',half:size.map(v=>v/2)}]});
@@ -71,7 +73,7 @@ const worldText=JSON.stringify(world,null,2)+'\n';await write('build/cadcove/wor
 const robotBindings=Object.fromEntries(robotParts.map(p=>[p.id,{body:p.body,local:translation(world.bodies.find(b=>b.id===p.body).position.map(v=>-v))}]));
 await write('build/cadcove/scene-bindings.json',{schema:1,worldHash:hash(worldText),sourceHash:hashes.robot,fieldSourceHash:hashes.field,sourceInputs,start:[0,0,0],fieldOrigin:[0,0,0],robot:robotBindings,field:{}});
 await write('training-profile.json',{schema:1,id:'training-robot',name:'CadCove training robot',cad:{robot:'build/cadcove/robot',field:'build/cadcove/field'},build:'build/cadcove',runtime:{adapter:'wpilib-java-phoenix6',clock:'physics',project:'.',jar:'build/libs/robot.jar',nativeLibraries:'build/jni/release'},practiceInput:{driverPort:0},practiceControls:[],calibration:[
- {subject:'CAD geometry and occurrence bindings',status:'derived',evidence:'Original analytic teaching design; CAD and colliders use dimensions from cad/design.js.'},
- ...['Motor ratios and frame directions','Mass, inertia and center of gravity','Tire, fuel and mechanism contact behavior','Complete mechanism articulation and sensors','Full-match hardware comparison'].map(subject=>({subject,status:'estimated',evidence:'Synthetic teaching example, not calibrated to hardware. Review cad/design.js and generated world before adapting.'})),
+ {subject:'CAD geometry and occurrence bindings',status:'derived',evidence:'Original analytic teaching design; CAD and colliders use dimensions from cad/design.json.'},
+ ...['Motor ratios and frame directions','Mass, inertia and center of gravity','Tire, fuel and mechanism contact behavior','Complete mechanism articulation and sensors','Full-match hardware comparison'].map(subject=>({subject,status:'estimated',evidence:'Synthetic teaching example, not calibrated to hardware. Review cad/design.json and generated world before adapting.'})),
 ]});
 console.log(JSON.stringify({ok:true,workspace:output,robotParts:robotParts.length,fieldParts:fieldParts.length,motors:world.motors.length,requiresBridgeExportAndGradleBuild:true,hardwareQualified:false}));

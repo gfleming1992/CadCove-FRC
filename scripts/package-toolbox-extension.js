@@ -1,5 +1,4 @@
-// Release-engineering entry point. Always include esbuild's JS API and the
-// matching native compiler; a VSIX that merely builds is not installable proof.
+// Release-engineering entry point. Verify the installed native CAD assets.
 import path from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
 import {mkdir,lstat,readFile,rename,rm} from 'node:fs/promises';
@@ -17,18 +16,18 @@ const manifest=validateRuntimeManifest(JSON.parse(await readFile(path.join(cwd,'
 const inventory=JSON.parse(await readFile(path.join(cwd,'dependency-inventory.json'),'utf8'));
 const extension=JSON.parse(await readFile(path.join(cwd,'package.json'),'utf8'));
 if(!development&&(!inventory.releaseReady||!extension.license||extension.license==='UNLICENSED'||!extension.repository||!extension.publisher||extension.publisher==='cadcove-dev'))throw Error('Production VSIX requires resolved licensing and publication identity; use --development only for a local candidate');
-const required=['package.json','build-provenance.json','dependency-inventory.json','occt-source.json','out/extension.cjs','media/main.js','media/worker.js','media/occt.wasm','media/simulation.js','runtime/manifest.json','THIRD-PARTY-NOTICES.txt','node_modules/esbuild/lib/main.js','node_modules/esbuild/package.json',`node_modules/@esbuild/${manifest.target}/package.json`,`node_modules/@esbuild/${manifest.target}/`+(manifest.target.startsWith('win32-')?'esbuild.exe':'bin/esbuild')];
+const required=['package.json','build-provenance.json','dependency-inventory.json','out/extension.cjs','media/main.js','media/native/worker.py','media/native/geometry.py','media/native/requirements.txt','media/simulation.js','runtime/manifest.json','THIRD-PARTY-NOTICES.txt'];
 const expected=new Map();
 required.push('LICENSE.txt');
 for(const name of [...required,...manifest.files.map(f=>'runtime/'+f.name)]){const bytes=await readFile(path.join(cwd,name));expected.set('extension/'+name.toLowerCase(),createHash('sha256').update(bytes).digest('hex'));}
 for(const file of manifest.files)if(expected.get('extension/runtime/'+file.name.toLowerCase())!==file.sha256)throw Error('Staged runtime checksum mismatch: '+file.name);
-const kernelHash=expected.get('extension/media/occt.wasm');
 const provenance=JSON.parse(await readFile(path.join(cwd,'build-provenance.json'),'utf8'));
 if(!manifest.files.some(f=>f.name==='cli-build.json'&&!f.executable))throw Error('Runtime lacks a hashed CLI build record');
 const cliName='cadcove'+(manifest.target.startsWith('win32-')?'.exe':'');
 const cliBuild=validateCliBuild(JSON.parse(await readFile(path.join(cwd,'runtime/cli-build.json'),'utf8')),await readFile(path.join(cwd,'runtime',cliName)),await readFile(path.resolve(import.meta.dir,'../bun.lock')),{target:manifest.target,version:manifest.version});
 if(JSON.stringify(provenance.cliBuild)!==JSON.stringify(cliBuild))throw Error('Extension CLI provenance differs from its packaged runtime');
-if(provenance.occt?.wasmSha256!==kernelHash||inventory.components.find(c=>c.id==='wasm:occt-wasm@5.3.2')?.artifactSha256!==kernelHash)throw Error('Staged OCCT kernel differs from its build/dependency records');
+if(provenance.cadBackend!=='native-cadquery')throw Error('Expected native-only CAD package');
+
 await mkdir(path.dirname(output),{recursive:true});const temporary=path.join(path.dirname(output),'.vsix-'+randomUUID()+'.vsix');
 try{
  await createVSIX({cwd,packagePath:temporary,target:manifest.target,dependencies:true,useYarn:false,allowMissingRepository:development,skipLicense:development});

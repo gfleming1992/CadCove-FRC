@@ -33,6 +33,8 @@ try{
  await createVSIX({cwd,packagePath:temporary,target:manifest.target,dependencies:true,useYarn:false,allowMissingRepository:development,skipLicense:development});
  // readZip is pinned with vsce 4.0.0. This inspects our just-created archive,
  // not arbitrary user-supplied ZIPs; then compare critical bytes with staging.
+ const forbidden=await readZip(temporary,name=>/\.wasm$|(?:^|\/)kernel-worker\.js$|(?:^|\/)(?:brepjs|occt-wasm)(?:\/|$)/i.test(name));
+ if(forbidden.size)throw Error('Legacy CAD kernel leaked into VSIX: '+[...forbidden.keys()].join(', '));
  const entries=await readZip(temporary,name=>expected.has(name));
  for(const [name,hash] of expected){const bytes=entries.get(name);if(!bytes||createHash('sha256').update(bytes).digest('hex')!==hash)throw Error('VSIX missing or changed required file: '+name);}
  await rename(temporary,output);

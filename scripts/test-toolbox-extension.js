@@ -43,6 +43,15 @@ if(process.env.CADCOVE_TEST_SIMULATION_PROJECT){
  manifest.runtime.assetRoot??=base;
  manifest.build=path.join(folders.workspace,'build/simulation-test');await mkdir(manifest.build,{recursive:true});
  for(const name of ['world.json','scene-bindings.json'])await copyFile(path.join(oldBuild,name),path.join(manifest.build,name));
+ const sceneFile=path.join(manifest.build,'scene-bindings.json'),scene=JSON.parse(await readFile(sceneFile,'utf8'));
+ if(scene.sourceInputs?.root==='project'){
+  for(const input of scene.sourceInputs.files){
+   const destination=path.join(folders.workspace,'simulation-source',input.file);
+   await mkdir(path.dirname(destination),{recursive:true});await copyFile(path.join(base,input.file),destination);
+   input.file='simulation-source/'+input.file;
+  }
+  await writeFile(sceneFile,JSON.stringify(scene));
+ }
  await writeFile(path.join(folders.workspace,'simulation-fixture.json'),JSON.stringify(manifest,null,2));
 }
 await writeFile(path.join(folders.driver,'package.json'),JSON.stringify({name:'cadcove-test-driver',publisher:'cadcove-test',version:'0.0.1',engines:{vscode:'^1.100.0'},main:'./index.cjs',activationEvents:[]}));

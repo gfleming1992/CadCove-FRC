@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "ok": true,
+  "editorVersion": "1.105.1",
+  "wpilibActive": true,
+  "companions": {
+    "editorVersion": "1.105.1",
+    "extensions": [
+      {
+        "name": "wpilibsuite.vscode-wpilib",
+        "version": "2026.2.1"
+      },
+      {
+        "name": "ms-vscode.cpptools",
+        "version": "1.28.3"
+      },
+      {
+        "name": "redhat.java",
+        "version": "1.38.0"
+      },
+      {
+        "name": "vscjava.vscode-java-debug",
+        "version": "0.58.2"
+      },
+      {
+        "name": "vscjava.vscode-java-dependency",
+        "version": "0.24.1"
+      }
+    ]
+  },
+  "qualification": {
+    "target": "darwin-arm64",
+    "requestedVersion": "1.105.1",
+    "softwareGPURequested": false,
+    "vsixSha256": "c47b803ae0a8b758efe63d39782bf2445b4cd9f5f8f115a715cc84c8d18907f5",
+    "vendorSDKTested": true
+  },
+  "nativeTeam": {
+    "parts": 1958,
+    "source": "disk-cache",
+    "workerLoaded": false,
+    "revision": "7a096e3eb94c0f6118da6fa211c60958fd24bd377d4a3fbf07247a442811a7cc"
+  },
+  "driveDistanceMeters": 0.1043847430276189,
+  "simulation": {
+    "launchedFromInstalledExtension": true,
+    "packagedCLI": true,
+    "runId": "abe00fee-0ab7-487e-aa1d-443f698d912e",
+    "tickBefore": 123,
+    "tickAfter": 155,
+    "controlMode": "teleop",
+    "cleanShutdown": true
+  },
+  "nativeCad": {
+    "first": {
+      "entry": "native.py",
+      "phase": "ready",
+      "revision": "986f477c285b8bc860bd6465eae830eadfe52a6063f51ea6127a0454840db38c",
+      "workerLoaded": true,
+      "parts": 1,
+      "gpuBytes": 1008,
+      "camera": {
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 76.47958253053365,
+        "yaw": 1,
+        "pitch": 1
+      },
+      "upload": {
+        "uploadedBytes": 1008,
+        "reusedBatches": 0,
+        "rebuiltBatches": 1,
+        "drawCalls": 1
+      },
+      "source": "build",
+      "buildMs": 2038.2999999523163
+    },
+    "edit": {
+      "entry": "native.py",
+      "phase": "ready",
+      "revision": "9b1eba201226ab1f2754d0409d690bee6806a951b57eee0f90adafe688cab37c",
+      "workerLoaded": true,
+      "parts": 1,
+      "gpuBytes": 1008,
+      "camera": {
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 76.47958253053365,
+        "yaw": 1,
+        "pitch": 1
+      },
+      "upload": {
+        "uploadedBytes": 1008,
+        "reusedBatches": 0,
+        "rebuiltBatches": 1,
+        "drawCalls": 1
+      },
+      "source": "build",
+      "buildMs": 62.89999985694885
+    },
+    "cached": {
+      "entry": "native.py",
+      "phase": "ready",
+      "revision": "9b1eba201226ab1f2754d0409d690bee6806a951b57eee0f90adafe688cab37c",
+      "workerLoaded": false,
+      "parts": 1,
+      "gpuBytes": 1008,
+      "camera": {
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "distance": 81.25259636498062,
+        "yaw": 1,
+        "pitch": 1
+      },
+      "upload": {
+        "uploadedBytes": 1008,
+        "reusedBatches": 0,
+        "rebuiltBatches": 1,
+        "drawCalls": 1
+      },
+      "source": "disk-cache"
+    },
+    "mcpOpen": true,
+    "mcpCapture": true,
+    "packagedCliFeedback": true,
+    "cameraPreserved": true
+  }
+}

@@ -156,4 +156,4 @@ is not part of the generic MIT source export or a cleared public asset release.
 
 ### STEP previews
 
-Right-click `.step`, `.stp`, or `.js` files and select **CadCove: Open in CAD Canvas**. STEP files are imported directly without adding generated JavaScript to your CAD source folder. Preview caches update when the selected STEP changes.
+Right-click `.step`, `.stp`, or `.py` files and select **CadCove: Open in CAD Canvas**. STEP files are imported directly without adding generated source to your CAD source folder. Preview caches update when the selected STEP changes.

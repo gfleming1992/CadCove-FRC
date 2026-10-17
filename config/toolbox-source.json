@@ -149,7 +149,9 @@
     "scripts/native-field.py",
     "scripts/component-model.py",
     "docs/SYSTEM-CARD.md",
-    "docs/LAUNCH-POST.md"
+    "docs/LAUNCH-POST.md",
+    "docs/WINDOWS-CHECK.md",
+    "docs/release-evidence/"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

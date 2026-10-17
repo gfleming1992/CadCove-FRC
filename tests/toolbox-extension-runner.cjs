@@ -178,13 +178,17 @@ def build(ctx):
     const after=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
     assert.equal(after.runId,state.runId);assert.ok(after.state.tick>state.state.tick);assert.equal(after.controlMode,'teleop');
     if(teamExample){
-      const start=after.state.bodies.chassis.position;
-      for(let n=0;n<20;n++){
-        await fs.writeFile(packet,JSON.stringify({mode:'teleop',controllers:[{port:1,axes:[0,-.5,0,0,0,0],buttons:0,pov:-1},{port:0,axes:[0,0,0,0,0,0],buttons:n<3?2:0,pov:-1}]}));
+      const start=after.state.bodies.chassis.position,startTime=after.state.time;
+      let driven=after,distance=0,n=0;const driveDeadline=Date.now()+20000;
+      // Wait for simulated time, not two wall-clock seconds while the editor
+      // and cold vendor libraries compete with a release build for this CPU.
+      while(Date.now()<driveDeadline&&driven.state.time-startTime<3&&distance<=.1){
+        await fs.writeFile(packet,JSON.stringify({mode:'teleop',controllers:[{port:1,axes:[0,-.5,0,0,0,0],buttons:0,pov:-1},{port:0,axes:[0,0,0,0,0,0],buttons:n++<3?2:0,pov:-1}]}));
         await execute(runtime,['sim-controls','--project',project,'--input',packet]);await delay(100);
+        driven=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
+        const finish=driven.state.bodies.chassis.position;distance=Math.hypot(finish[0]-start[0],finish[1]-start[1]);
       }
-      const driven=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
-      const finish=driven.state.bodies.chassis.position,distance=Math.hypot(finish[0]-start[0],finish[1]-start[1]);assert.ok(distance>.1,'Packaged robot responds to actual driver controls');
+      assert.ok(distance>.1,'Packaged robot responds to actual driver controls: '+JSON.stringify({distance,simSeconds:driven.state.time-startTime,ticks:driven.state.tick-after.state.tick,robot:driven.robot}));
       report.teamExample.driveDistanceMeters=distance;report.teamExample.robotState=driven.robot;
       await fs.writeFile(packet,JSON.stringify({mode:'disabled',controllers:[]}));await execute(runtime,['sim-controls','--project',project,'--input',packet]);
     }

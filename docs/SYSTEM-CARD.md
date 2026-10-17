@@ -94,6 +94,22 @@ review remains an explicit packaging gate, not an implied MIT grant.
 
 ## Validation and known gaps
 
+The local macOS arm64 qualification passed 113 portable/native CAD contract
+tests and 62 default Rust tests. The separate CAD contact-witness test passed
+with its local geometry fixture. The clean exported source installed its VSIX
+into stock VS Code 1.105.1 and exercised native modeling, cache reopening, error
+recovery, captures and runtime repair. The WPILib 2026.2.1 companion stack also
+passed with the full packaged robot, 1,958-part cached CAD view, real Java/Phoenix
+controls, simulation rendering/capture, and clean shutdown. Evidence:
+[clean source](release-evidence/macos-source.json),
+[full installed example](release-evidence/macos-wpilib.json).
+
+The training example independently built with GradleRIO 2026.2.1 and Phoenix
+26.1.3 and passed its CLI robot/season integration contract. The field's 6,186
+occurrence placements matched the prior importer to within 1.2e-16 in matrix
+entries; the 51 multicolor occurrences and 33-color palette were retained.
+These are functional checks, not a hardware-accuracy or real-time guarantee.
+
 Release qualification results and artifact hashes are recorded separately from
 this description. Windows is intentionally untested for this candidate; the
 maintainer will perform the Windows check after downloading the source release.

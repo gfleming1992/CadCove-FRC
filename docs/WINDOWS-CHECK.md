@@ -1,0 +1,56 @@
+# Maintainer Windows check — not yet qualified
+
+This candidate has **not been tested on Windows 10 or Windows 11**. CI currently
+runs macOS and Linux only. These instructions are the handoff for the maintainer's
+Windows laptop; they do not turn a macOS VSIX into a Windows package.
+
+## Build from the source release
+
+Install Git, Python 3.12, Bun 1.4.2, and Rust 1.91.1 with the MSVC target and its
+Visual Studio C++ build tools. For robot simulation, install the team's WPILib
+2026 toolchain and the desktop libraries resolved by its vendor descriptors.
+Use a trusted, short local path and a fresh PowerShell session.
+
+```powershell
+git clone https://github.com/gfleming1992/CadCove-FRC.git
+cd CadCove-FRC
+py -3.12 -m venv .venv-cadquery
+.\.venv-cadquery\Scripts\python.exe -m pip install -r vendor/cad-core/src/native/requirements.txt
+$env:CADCOVE_PYTHON = (Resolve-Path .\.venv-cadquery\Scripts\python.exe).Path
+$env:CADCOVE_TEST_EDITOR_VERSION = '1.105.1'
+bun install --frozen-lockfile
+bun scripts/verify-toolbox-source.js --output ..\CadCove-Windows-check --editor
+```
+
+This builds a Windows native runtime, packages a local development VSIX, and
+installs it into an isolated editor profile for checks. It does not publish a
+binary, change the team's robot project, or qualify hardware behavior. Inspect
+`artifacts/source-verification-report.json` and the exported checkout's
+`artifacts/toolbox-extension-test-report.json`; a successful command must report
+`ok: true`, not merely create an archive.
+
+The resulting local VSIX is under
+`..\CadCove-Windows-check\artifacts\cadcove-source-check.vsix`. Install it in
+WPILib VS Code via **Extensions: Install from VSIX**. Configure
+`instantcad.pythonPath` to the Python executable above.
+
+## Manual acceptance
+
+- Initialize a new team workspace; confirm existing code/instructions are kept.
+- Create `models.py`, build, open its canvas, orbit/pan/zoom, then edit one part.
+  Camera should stay fixed; a failed build must preserve the last good scene and
+  expose an error. Close/reopen to verify cached viewing.
+- Right-click a colored assembly STEP file; verify placement and colors.
+- Ask the installed editor agent to build, inspect exact geometry, capture a
+  focused view, fix an error and export STEP using the generated instructions.
+- Follow the team example setup instructions to build the robot and vendor
+  libraries **on Windows**. Never copy macOS `.dylib` files into its native folder.
+- Run doctor/audit and sim-validate. Open live simulation, map the controllers in
+  WPILib Sim GUI, enable Teleoperated, and test drive, intake, shooting and stop.
+- Verify structured state/object queries, scene captures, disable/enable, clean
+  shutdown and runtime repair. Check live physics pace during crowded-ball play.
+
+Report OS/build, CPU/GPU/RAM, editor/WPILib versions, source commit, runtime/VSIX
+hashes, failures and logs. Keep generated endpoint credentials out of reports.
+CadCove's source is MIT; prebuilt binary redistribution retains the separate
+license gates documented in the system card.

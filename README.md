@@ -179,17 +179,23 @@ faster gameplay approximations are declared separately in project metadata.
 
 ## Build and verify a candidate
 
-Development needs Bun, Rust/Cargo and the appropriate native build toolchain.
+Development needs Bun 1.4.2, Rust 1.91.1, Python 3.12 with the pinned
+CadQuery requirements, and the appropriate native build toolchain.
+[Windows verification instructions](docs/WINDOWS-CHECK.md) are provided for the
+maintainer; Windows is deliberately not qualified by this candidate.
 This source tree includes the pinned generic core; no sibling checkout or team
 robot submodule is needed for the toolbox build and asset-free test suite.
 
 ```sh
+python3.12 -m venv .venv-cadquery
+.venv-cadquery/bin/python -m pip install -r vendor/cad-core/src/native/requirements.txt
+export CADCOVE_PYTHON="$PWD/.venv-cadquery/bin/python"
 bun install --frozen-lockfile
 bun run test:toolbox
 bun scripts/build-native-runtime.js
 # Windows native output ends in .exe.
 bun scripts/package-runtime.js --native-binary target/distribution/release/instantcad-sim \
-  --output artifacts/runtime-candidate --version 0.1.0-dev \
+  --output artifacts/runtime-candidate --version 0.2.0-native-preview \
   --base-url https://YOUR-RELEASE-HOST/RELEASE/TARGET
 bun tests/packaged-runtime.js artifacts/runtime-candidate
 bun scripts/build-toolbox-extension.js --runtime artifacts/runtime-candidate

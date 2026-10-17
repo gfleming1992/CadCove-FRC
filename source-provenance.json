@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "sourceRevision": "140a9e61b3b1f61646bbd02cddb736499af7c521",
+  "sourceRevision": "40ee8e43140ea76c3d07ab137c80f5b35817023b",
   "policy": "config/toolbox-source.json",
   "files": {
     ".gitattributes": {
@@ -16,8 +16,8 @@
       "sha256": "930dcbd44afd6b5d5f9c88bddd1dc757df5bfb9ffd47790cdd3b22158d2d9822"
     },
     ".github/workflows/toolbox-source.yml": {
-      "bytes": 2892,
-      "sha256": "bb1d19023c8706a0c0707a7ed9aa73dbadf4661b78a1bbd5e08945e4ab972f3d"
+      "bytes": 2935,
+      "sha256": "5986f377f094283e75e9ccac81e5a8853da5fcfa6a62b52e247b3a061c93cc2c"
     },
     ".gitignore": {
       "bytes": 396,
@@ -52,8 +52,8 @@
       "sha256": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6"
     },
     "README.md": {
-      "bytes": 14169,
-      "sha256": "2914ffe30e4066c7817b48179dd45abb9f39cd13245d887c1be2646c6ed738d2"
+      "bytes": 14565,
+      "sha256": "8ab994093bc0a0d0d1b5e041599cdc7aacbbbaef67d346eb4487a2f23a4c1f8d"
     },
     "SECURITY.md": {
       "bytes": 1453,
@@ -176,8 +176,8 @@
       "sha256": "d0bf29cb8dabe10bef6f94f5b45d0340d5331615c4b5f9d114256aabe5f71d10"
     },
     "config/toolbox-source.json": {
-      "bytes": 5298,
-      "sha256": "5c18df66939b0d7bff3df326567ee5e91bd7505614b2f48be0ca20941e40cb0f"
+      "bytes": 5357,
+      "sha256": "54ee4d235f8ea464a60510272ef88d29fab5cc4b16b25ab6134e913cd8403e43"
     },
     "crates/sim-core/Cargo.toml": {
       "bytes": 779,
@@ -300,12 +300,24 @@
       "sha256": "fb64b73056fece6db1c2c456fa868504503bf16cc9dbabf4318e9e00f35c0a99"
     },
     "docs/SYSTEM-CARD.md": {
-      "bytes": 6317,
-      "sha256": "c01989b83324218f2937567b6f68b989fb6832617fb29452821045400218d25a"
+      "bytes": 7364,
+      "sha256": "67dc16808ddbe345616b160ed0bdbde58de6c899d6abe77b728834c2540f0203"
     },
     "docs/TOOLBOX-RELEASE.md": {
       "bytes": 6092,
       "sha256": "9a183a5195060694fd4b7d70a870c4fa2cfe9e00a92f0fa5ec12a6531d6164ae"
+    },
+    "docs/WINDOWS-CHECK.md": {
+      "bytes": 3060,
+      "sha256": "3e099e6329d291965da6f2656586b9f0c18022e0de72820f34f9f1c6fde5a345"
+    },
+    "docs/release-evidence/macos-source.json": {
+      "bytes": 1453,
+      "sha256": "dacf4053c94ac469dc6b71701b6d6b5fd09263973c0994cb243b6159c43d7a34"
+    },
+    "docs/release-evidence/macos-wpilib.json": {
+      "bytes": 3211,
+      "sha256": "b113194a63c75a88381a3109873ec1ef6b7770ad871ce25728218cc6e1047e4d"
     },
     "examples/season-plugin/README.md": {
       "bytes": 1484,
@@ -5672,8 +5684,8 @@
       "sha256": "b5fbd095d3376c8f6d5393e9683c958981508c6b69e2658d0b865c4b1bfe3c57"
     },
     "extensions/vscode/README.md": {
-      "bytes": 9847,
-      "sha256": "90748b2ce4bc88ca049b8aa6ca867e6c066a48ec1271e4acf22bf4635c3effca"
+      "bytes": 9843,
+      "sha256": "650212e12ce5b505b1633ede78887f876069ef16007e29cbb998f8b37b4162a0"
     },
     "extensions/vscode/package.json": {
       "bytes": 3281,
@@ -5812,8 +5824,8 @@
       "sha256": "f34aa50ea35c877ea6635421abae449084efa23f852e2d096ec472f0cdbb13d2"
     },
     "lib/toolbox-project.js": {
-      "bytes": 20268,
-      "sha256": "0c7818cb9e02531e332984de0fadda83c3342f47c17f63b8ebc499f006d46502"
+      "bytes": 20247,
+      "sha256": "197b120af12849c596d79d380c5bacd543b2a91d1e43f8437c335f2e74f231dd"
     },
     "lib/transforms.js": {
       "bytes": 2212,
@@ -8068,8 +8080,8 @@
       "sha256": "fbe1125e97fecdcb937289692aa001e33e0de1df38282e4a7dd9795e9dc66a23"
     },
     "scripts/package-toolbox-extension.js": {
-      "bytes": 4364,
-      "sha256": "39f03cfb66c5800b8b2c7f645b70dbedfc922a55e6932b725d063629c6c8fc1d"
+      "bytes": 4604,
+      "sha256": "7f0d8051930d32e2455bf768dea9a4c21aead645c75be2fbb87879e152eb8853"
     },
     "scripts/package-training-example.js": {
       "bytes": 2495,
@@ -8088,8 +8100,8 @@
       "sha256": "13dec2f0a967b5695bd6ec4a6bbdf3c67c20854be2ace2cf73f8890f6e6b3640"
     },
     "scripts/test-toolbox-extension.js": {
-      "bytes": 10508,
-      "sha256": "5b3bc7233d912e607e032a619f2d2b624cd8c6fa1f7d25669f6828800722b5d8"
+      "bytes": 11019,
+      "sha256": "8798827a2bc718ac60f12996c5c81ea17b7d65e2e1bac5fe1447f2e1a6ccb93c"
     },
     "scripts/vendor-cad-core.js": {
       "bytes": 2201,
@@ -8220,8 +8232,8 @@
       "sha256": "01dbec0a01951ce89c5c6919298adad5bf343b705d36f29b5128fbf41c357882"
     },
     "tests/packaged-runtime.js": {
-      "bytes": 18232,
-      "sha256": "ae73afa4f2a6193bcb7b22f0d94dcbef6e04c02d2676eff71576583064fbd26c"
+      "bytes": 18231,
+      "sha256": "902c3e9275a8b5829f5c8656bb04e6bf6a0fa7265f426ae3b554caca28c990ce"
     },
     "tests/physics-modes.test.js": {
       "bytes": 6544,
@@ -8280,8 +8292,8 @@
       "sha256": "49db4c3647f57e86d0dfa09b04dd8c1a0c42b624795f353c382ac0eb1211b57d"
     },
     "tests/toolbox-extension-runner.cjs": {
-      "bytes": 22248,
-      "sha256": "b8dfb691d7aa62a24fe062f7a222dc54b48aab48ed124cf50fa60bffc10ded9f"
+      "bytes": 22697,
+      "sha256": "592d7b50823bd47a4fc4f2dda6f1dcb4d01683dd78fd83bff8e47518c611c429"
     },
     "tests/toolbox.test.js": {
       "bytes": 7342,

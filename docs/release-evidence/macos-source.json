@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "sourceRevision": "dd46110a5b3a62c16b5cf6cf41aa074b760a8c29",
+  "target": "darwin-arm64",
+  "ok": true,
+  "steps": [
+    {
+      "name": "export",
+      "exitCode": 0,
+      "ms": 985
+    },
+    {
+      "name": "frozen dependency installation",
+      "exitCode": 0,
+      "ms": 181
+    },
+    {
+      "name": "toolbox contracts",
+      "exitCode": 0,
+      "ms": 10322
+    },
+    {
+      "name": "native contracts",
+      "exitCode": 0,
+      "ms": 31403
+    },
+    {
+      "name": "baseline native release",
+      "exitCode": 0,
+      "ms": 52052
+    },
+    {
+      "name": "standalone runtime packaging",
+      "exitCode": 0,
+      "ms": 2011
+    },
+    {
+      "name": "relocated offline runtime",
+      "exitCode": 0,
+      "ms": 1592
+    },
+    {
+      "name": "extension build",
+      "exitCode": 0,
+      "ms": 389
+    },
+    {
+      "name": "verified development VSIX",
+      "exitCode": 0,
+      "ms": 1817
+    },
+    {
+      "name": "installed editor CAD and runtime",
+      "exitCode": 0,
+      "ms": 31731
+    }
+  ],
+  "editor": {
+    "version": "1.105.1",
+    "ok": true,
+    "actualInstalledVSIX": true,
+    "qualification": {
+      "target": "darwin-arm64",
+      "requestedVersion": "1.105.1",
+      "softwareGPURequested": false,
+      "vsixSha256": "851eca845ddac4157fd6198b87fb617539817d68a68aff1c31048bc832ccc494",
+      "vendorSDKTested": false
+    }
+  },
+  "windowsTested": false,
+  "hardwareQualified": false
+}

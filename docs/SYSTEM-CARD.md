@@ -110,8 +110,12 @@ occurrence placements matched the prior importer to within 1.2e-16 in matrix
 entries; the 51 multicolor occurrences and 33-color palette were retained.
 These are functional checks, not a hardware-accuracy or real-time guarantee.
 
-Release qualification results and artifact hashes are recorded separately from
-this description. Windows is intentionally untested for this candidate; the
+GitHub CI passed clean-source builds, native tests, relocated runtime tests and
+installed stock-editor checks on macOS and Linux:
+[CI run](https://github.com/gfleming1992/CadCove-FRC/actions/runs/39075403389),
+[Linux evidence](release-evidence/linux-ci.json),
+[macOS CI evidence](release-evidence/macos-ci.json). CI uses software GPU rendering;
+it does not measure hardware GPU performance or run the full vendor team program. Windows is intentionally untested for this candidate; the
 maintainer will perform the Windows check after downloading the source release.
 A package build alone is not platform qualification.
 

@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "ciRun": "https://github.com/gfleming1992/CadCove-FRC/actions/runs/39075403389",
+  "sourceRevision": "eb7c5b6cac50e5d42d8f11e5117ddc81edc975e0",
+  "target": "darwin-arm64",
+  "ok": true,
+  "steps": [
+    {
+      "name": "export",
+      "exitCode": 0,
+      "ms": 2521
+    },
+    {
+      "name": "frozen dependency installation",
+      "exitCode": 0,
+      "ms": 1175
+    },
+    {
+      "name": "toolbox contracts",
+      "exitCode": 0,
+      "ms": 21934
+    },
+    {
+      "name": "native contracts",
+      "exitCode": 0,
+      "ms": 84909
+    },
+    {
+      "name": "baseline native release",
+      "exitCode": 0,
+      "ms": 111035
+    },
+    {
+      "name": "standalone runtime packaging",
+      "exitCode": 0,
+      "ms": 5038
+    },
+    {
+      "name": "relocated offline runtime",
+      "exitCode": 0,
+      "ms": 1517
+    },
+    {
+      "name": "extension build",
+      "exitCode": 0,
+      "ms": 292
+    },
+    {
+      "name": "verified development VSIX",
+      "exitCode": 0,
+      "ms": 4903
+    },
+    {
+      "name": "installed editor CAD and runtime",
+      "exitCode": 0,
+      "ms": 39288
+    }
+  ],
+  "editorInstallationTested": true,
+  "vendorSDKTested": false,
+  "qualification": {
+    "target": "darwin-arm64",
+    "requestedVersion": "1.105.1",
+    "softwareGPURequested": true,
+    "vsixSha256": "bc63dfe6c8a598f91a956ed63d108b6f02e9fefb8bf55e274c002aa0f3a29a47",
+    "vendorSDKTested": false
+  }
+}

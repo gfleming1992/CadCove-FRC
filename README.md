@@ -55,10 +55,12 @@ The native Rust process runs Rapier physics independently of Python CAD modeling
 
 **Development candidate — not a production release yet.** macOS arm64 has passed
 installed-extension CAD, native simulation, live viewing, agent capture and
-runtime-repair checks, including the WPILib 2026.2.1 editor stack. Windows/Linux,
+runtime-repair checks, including the WPILib 2026.2.1 editor stack. Linux and macOS
+CI pass clean-source builds and installed stock-editor checks. Windows testing,
 hardware qualification and binary redistribution review remain open. The original
 code is MIT; this does not relicense dependencies or team/season assets.
-See the [release evidence and remaining gates](docs/TOOLBOX-RELEASE.md).
+See the [system card and test evidence](docs/SYSTEM-CARD.md) and
+[remaining release gates](docs/TOOLBOX-RELEASE.md).
 
 ## Student workflow
 

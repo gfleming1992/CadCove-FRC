@@ -52,7 +52,7 @@ try {
   assert.ok(manifest.files.some(f=>f.name==='cad-reference.json'&&!f.executable));
   for(const entry of reference.files)assert.equal(await readFile(path.join(workspace,entry.file),'utf8'),entry.text);
   assert.match(await readFile(path.join(workspace,'.cadcove/skills/references/cadquery-api.md'),'utf8'),/CadQuery 2.6.1/);
-  assert.match(await readFile(path.join(workspace,'.cadcove/skills/references/cad-authoring.md'),'utf8'),/cadcove cad-status/);
+  assert.match(await readFile(path.join(workspace,'.cadcove/skills/references/cad-authoring.md'),'utf8'),/cadcove cad-build/);
   // A damaged packaged reference must fail before initializing any workspace.
   const referenceFile=path.join(installed.directory,'cad-reference.json'),referenceBytes=await readFile(referenceFile);
   try{

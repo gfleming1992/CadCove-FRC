@@ -88,9 +88,11 @@ requires no remote AI service. Keep generated endpoint tokens and private season
 manual imports out of version control.
 
 Original CadCove code is MIT. Dependencies, team assets and FIRST content retain
-their own terms. Native Python packages are installed separately. The source
-release is distinct from prebuilt distribution: compiled Bun CLI redistribution
-review remains an explicit packaging gate, not an implied MIT grant.
+their own terms. Native Python packages are installed separately. Release packages use a small Rust CLI launcher and bundled JavaScript. Bun 1.4.2
+is installed separately; no Bun binary, JavaScriptCore or Bun embedded libraries
+are redistributed. The optional standalone developer package still carries its
+unresolved redistribution gate. Packaged Rust/JavaScript dependency notices
+are included and checked.
 
 ## Validation and known gaps
 

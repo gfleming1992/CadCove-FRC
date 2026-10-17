@@ -10,7 +10,7 @@ exports.run=async function(){
  const folder=vscode.workspace.workspaceFolders[0].uri.fsPath;
  const reportFile=path.join(folder,'extension-test-report.json');let api,mcpClient,simulationStarted=false;
  try{
-  const extension=vscode.extensions.getExtension(process.env.CADCOVE_TEST_EXTENSION_ID??'cadcove-dev.cadcove-toolbox');
+  const extension=vscode.extensions.getExtension(process.env.CADCOVE_TEST_EXTENSION_ID??'gfleming1992.cadcove-toolbox');
   assert.ok(extension,'Packaged toolbox must be installed');
   assert.ok(extension.extensionPath.includes('extensions'),'Use the installed VSIX, not the source checkout');
   let companions;
@@ -236,7 +236,14 @@ def build(ctx):
       api.closeAll();await delay(200);
       await preferences.update('pythonPath','/nonexistent/python',vscode.ConfigurationTarget.WorkspaceFolder);
       await mcpCall('open_robot_cad');
-      const cachedNative=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(cachedNative.source,'disk-cache',JSON.stringify(cachedNative));assert.equal(cachedNative.workerLoaded,false);
+      const cachedNative=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');
+      // A queued source/configuration watcher can report "unchanged" after the
+      // disk-cache ready event. Verify the cache outcome, not the last event label:
+      // the accepted revision/geometry reopened with an unusable interpreter.
+      assert.equal(cachedNative.phase,'ready',JSON.stringify(cachedNative));
+      assert.ok(['disk-cache','unchanged'].includes(cachedNative.source),JSON.stringify(cachedNative));
+      assert.equal(cachedNative.revision,edit.revision);assert.equal(cachedNative.parts,edit.parts);
+      assert.ok(cachedNative.gpuBytes>0);assert.equal(cachedNative.workerLoaded,false);
       report.nativeCad={first,edit,cached:cachedNative,mcpOpen:true,mcpCapture:true,packagedCliFeedback:true,cameraPreserved:true};
     }finally{api.closeAll();await fs.writeFile(project,saved);}
   }

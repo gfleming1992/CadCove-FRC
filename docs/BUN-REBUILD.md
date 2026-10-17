@@ -1,3 +1,7 @@
+> Historical engineering notes for the optional embedded-Bun developer build.
+> Public release packages use externally installed Bun and do not redistribute
+> this runtime. The gates below still apply if standalone packaging is selected.
+
 # Compiled CLI runtime source review
 
 CadCove's standalone CLI is built with Bun. This document tracks the source and

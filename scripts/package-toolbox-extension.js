@@ -24,7 +24,9 @@ for(const file of manifest.files)if(expected.get('extension/runtime/'+file.name.
 const provenance=JSON.parse(await readFile(path.join(cwd,'build-provenance.json'),'utf8'));
 if(!manifest.files.some(f=>f.name==='cli-build.json'&&!f.executable))throw Error('Runtime lacks a hashed CLI build record');
 const cliName='cadcove'+(manifest.target.startsWith('win32-')?'.exe':'');
-const cliBuild=validateCliBuild(JSON.parse(await readFile(path.join(cwd,'runtime/cli-build.json'),'utf8')),await readFile(path.join(cwd,'runtime',cliName)),await readFile(path.resolve(import.meta.dir,'../bun.lock')),{target:manifest.target,version:manifest.version});
+const cliRecord=JSON.parse(await readFile(path.join(cwd,'runtime/cli-build.json'),'utf8'));
+const cliBuild=validateCliBuild(cliRecord,await readFile(path.join(cwd,'runtime',cliName)),await readFile(path.resolve(import.meta.dir,'../bun.lock')),{target:manifest.target,version:manifest.version,...(cliRecord.schema===2?{script:await readFile(path.join(cwd,'runtime/cadcove.js')),launcherSource:await readFile(path.join(cwd,'runtime/launcher.rs'))}:{})});
+if(inventory.profile==='external-bun'&&cliRecord.schema!==2)throw Error('External Bun notices cannot qualify an embedded Bun executable');
 if(JSON.stringify(provenance.cliBuild)!==JSON.stringify(cliBuild))throw Error('Extension CLI provenance differs from its packaged runtime');
 if(provenance.cadBackend!=='native-cadquery')throw Error('Expected native-only CAD package');
 

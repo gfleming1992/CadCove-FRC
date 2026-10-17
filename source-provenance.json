@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "sourceRevision": "5df3f881585f36080938b473de9084647ec195ad",
+  "sourceRevision": "3dfbb9f1f152cf5453d9ca127e83146e71631826",
   "policy": "config/toolbox-source.json",
   "files": {
     ".gitattributes": {
@@ -16,8 +16,8 @@
       "sha256": "930dcbd44afd6b5d5f9c88bddd1dc757df5bfb9ffd47790cdd3b22158d2d9822"
     },
     ".github/workflows/toolbox-source.yml": {
-      "bytes": 2935,
-      "sha256": "5986f377f094283e75e9ccac81e5a8853da5fcfa6a62b52e247b3a061c93cc2c"
+      "bytes": 3621,
+      "sha256": "d0fd3907dd43a01ce4c4e0ad93f378510d5fe05d7be6080ae6334edd8ae6c7ee"
     },
     ".gitignore": {
       "bytes": 396,
@@ -28,8 +28,8 @@
       "sha256": "ce03a9588ed8e2f061a11cbf461910fa8563d206f0b5521f03c475b9de339bc9"
     },
     "CHANGELOG.md": {
-      "bytes": 1150,
-      "sha256": "d38dfa5998f4a698efab00857182a4f60ab9b8848d7a44c75d6ae7f748467de1"
+      "bytes": 1814,
+      "sha256": "0c13a731400f4c80e17ff3d2d257a2ebebaab05afd558fa55fa1324cc2109ae9"
     },
     "CLAUDE.md": {
       "bytes": 55,
@@ -52,8 +52,8 @@
       "sha256": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6"
     },
     "README.md": {
-      "bytes": 14690,
-      "sha256": "4f881e0a4bd0c2650c7f4897b9f532270e27dbc97eeb8e08e2b921f6d18026ae"
+      "bytes": 15272,
+      "sha256": "150136ed0202c8642102b90c42bb0a6c8a785c01b3169f41e4108dd92f2e8f2e"
     },
     "SECURITY.md": {
       "bytes": 1453,
@@ -108,8 +108,12 @@
       "sha256": "db50539af755e159e84f154508ab56d531a95057c52c131dc1ae7bead7fee306"
     },
     "bin/cadcove.js": {
-      "bytes": 14681,
-      "sha256": "6ed7f9eca50145fd048fc50a6e4b9f06355756d2bcbf21d3858473d247be08ee"
+      "bytes": 14731,
+      "sha256": "32f689a15c09517562bdc76527c5d466f3636adc87bd95d32a7423d57e18d5c4"
+    },
+    "bin/launcher.rs": {
+      "bytes": 1765,
+      "sha256": "4d864de60fd2628d6e8242000c13afc0d431cf8fd420045ae1b2d728f2312e7a"
     },
     "bridge/java/org/instantcad/frc/DeviceMath.java": {
       "bytes": 1771,
@@ -176,8 +180,8 @@
       "sha256": "d0bf29cb8dabe10bef6f94f5b45d0340d5331615c4b5f9d114256aabe5f71d10"
     },
     "config/toolbox-source.json": {
-      "bytes": 5357,
-      "sha256": "54ee4d235f8ea464a60510272ef88d29fab5cc4b16b25ab6134e913cd8403e43"
+      "bytes": 5380,
+      "sha256": "5846f0c115188b537fe8194dc8d9c3cc8812594b6cea023ae257c682c458ec1b"
     },
     "crates/sim-core/Cargo.toml": {
       "bytes": 779,
@@ -264,8 +268,8 @@
       "sha256": "eaf177593fac890141d05f21646042822cc6eaf2f52d6be2ee13c52deca9099a"
     },
     "docs/BUN-REBUILD.md": {
-      "bytes": 12320,
-      "sha256": "78ffeb7333e081a58898c819c4002c199fb71cee79ddf7fb0aba62dcc4468bd1"
+      "bytes": 12559,
+      "sha256": "fed30f4925f0ceaa6e97b1bec7ea969b3d4d3f009547b30ed7785be557ea31c4"
     },
     "docs/DEVICE-ADAPTERS.md": {
       "bytes": 9041,
@@ -279,9 +283,13 @@
       "bytes": 6062,
       "sha256": "4fe87f1a4d1718875d7d64566229d0e70db8fde0b711cf1c4ab22de80f505f67"
     },
+    "docs/INSTALL.md": {
+      "bytes": 3557,
+      "sha256": "f451b01ba83b5a031bbcef79a320518ddf13b01f20e19338cdbe66e1ceece5ef"
+    },
     "docs/LAUNCH-POST.md": {
-      "bytes": 2272,
-      "sha256": "93ac7f7b2b1e9eb23ab2af075321e312dade249a21a1035aabfc732b5feea79f"
+      "bytes": 2536,
+      "sha256": "821646dfb079c0af8382954329df5762c8705e7bc91d0a3809200f688ab833f5"
     },
     "docs/NATIVE-CADQUERY-PROFILE.md": {
       "bytes": 14036,
@@ -300,16 +308,16 @@
       "sha256": "fb64b73056fece6db1c2c456fa868504503bf16cc9dbabf4318e9e00f35c0a99"
     },
     "docs/SYSTEM-CARD.md": {
-      "bytes": 7694,
-      "sha256": "0beb608ea1f920bad5212f4283a2c4086d640689f140196bb755ea9576d57312"
+      "bytes": 7877,
+      "sha256": "a9769d3c9da5c45c819c105ef13acc2b4299b0047295feb24878543beeb47716"
     },
     "docs/TOOLBOX-RELEASE.md": {
-      "bytes": 6092,
-      "sha256": "9a183a5195060694fd4b7d70a870c4fa2cfe9e00a92f0fa5ec12a6531d6164ae"
+      "bytes": 6178,
+      "sha256": "b6cbb9750ff91aeaba40c6a719da22b18d7fea4f03b4e823519323cea6b03433"
     },
     "docs/WINDOWS-CHECK.md": {
-      "bytes": 3060,
-      "sha256": "3e099e6329d291965da6f2656586b9f0c18022e0de72820f34f9f1c6fde5a345"
+      "bytes": 3161,
+      "sha256": "525dc736c1d71e15ab5dd6da8fa8b275315293771dafcaf22296385b77e98970"
     },
     "docs/release-evidence/linux-ci.json": {
       "bytes": 1431,
@@ -5692,12 +5700,12 @@
       "sha256": "b5fbd095d3376c8f6d5393e9683c958981508c6b69e2658d0b865c4b1bfe3c57"
     },
     "extensions/vscode/README.md": {
-      "bytes": 9843,
-      "sha256": "650212e12ce5b505b1633ede78887f876069ef16007e29cbb998f8b37b4162a0"
+      "bytes": 10283,
+      "sha256": "4840a97f236afdeb993bddc4a7291958a7c7ca9e7a4f5ad768997aeb6ef9e2c3"
     },
     "extensions/vscode/package.json": {
-      "bytes": 3281,
-      "sha256": "fa4c09a5014528870c3c409404c7d70d814d3a5536ddbee362c6b07881e2208c"
+      "bytes": 3282,
+      "sha256": "9cfc717258aa24eba763457e3d43dd4565dad0988073a5c84b536cfc31862c09"
     },
     "extensions/vscode/src/extension.js": {
       "bytes": 14502,
@@ -5748,12 +5756,12 @@
       "sha256": "da216ff6a7ff4125d23a763cca23589d6a754da427044fd868892b4c97ccff84"
     },
     "lib/cli-build-provenance.js": {
-      "bytes": 2475,
-      "sha256": "62107846ef515b3c00f477d538d25e2078c0d625598eb2ec7b6087419473c38c"
+      "bytes": 3891,
+      "sha256": "220e7bebc02434cda8543563a29bf0a21f6a8f00737a2904c326ce760e7c0384"
     },
     "lib/dependency-notices.js": {
-      "bytes": 18757,
-      "sha256": "934b927d2c9584c50483fc34c4a127f98d6e64bf899f471f88b6f62ed811d648"
+      "bytes": 19808,
+      "sha256": "430eea78b1a1c7c7acad8428207c49a272574028913eddc887d17f77d30685b8"
     },
     "lib/example-bundle.js": {
       "bytes": 2471,
@@ -5800,8 +5808,8 @@
       "sha256": "3bc3b92ab725b267ef3e24469c8a4a2535e6449a0dd8cfbfa16aea43e5db26f8"
     },
     "lib/runtime-location.js": {
-      "bytes": 857,
-      "sha256": "43943095d55957d8eee6313377319a4cad43f7eaebd4fd9b014a9cf5ae1c6b5f"
+      "bytes": 1076,
+      "sha256": "5b29006ed25f64badab02905021027447625ec564cae60bbef8eb73379a115a2"
     },
     "lib/scene-bindings.js": {
       "bytes": 3741,
@@ -5844,8 +5852,8 @@
       "sha256": "7bab8667c400bbdc98db98121e75062a426268123e654c594f06c3b29bcd797a"
     },
     "licenses/README.md": {
-      "bytes": 7918,
-      "sha256": "3c60e06c2353863a269f254b6a5de215ce92f16ac427e263c73a589ea3865479"
+      "bytes": 8799,
+      "sha256": "b1d1328ee31a61aeed9ca5af3f983e865e7d72ffb41297ada150836e9eea1d04"
     },
     "licenses/bun-polyfills.json": {
       "bytes": 72012,
@@ -8048,8 +8056,8 @@
       "sha256": "00a6ad7ac7dad5dcd5c7bf0536d75c535b6472e0e260c96f6b93a0d3f9c31448"
     },
     "scripts/build-toolbox-extension.js": {
-      "bytes": 4561,
-      "sha256": "c6dbfe2e6155212e2d0bc55641cfef4286d35698f1c1c757158eeeb0f4954220"
+      "bytes": 4738,
+      "sha256": "6bd44d4c519146b08f6303fb85588aa64e3d9dea53bc816ebf5b2ab647c5bbfb"
     },
     "scripts/build-training-example.js": {
       "bytes": 7764,
@@ -8084,12 +8092,12 @@
       "sha256": "84c415643317dfb44b490b7c9d0aaa0f49a81ccff49cf89d4d4617b8cc3f3105"
     },
     "scripts/package-runtime.js": {
-      "bytes": 6943,
-      "sha256": "fbe1125e97fecdcb937289692aa001e33e0de1df38282e4a7dd9795e9dc66a23"
+      "bytes": 8977,
+      "sha256": "e6d389424536c753bce6c0644a3aeeedcb5f1abbee16ba2c837e7a3ebea93bd3"
     },
     "scripts/package-toolbox-extension.js": {
-      "bytes": 4604,
-      "sha256": "7f0d8051930d32e2455bf768dea9a4c21aead645c75be2fbb87879e152eb8853"
+      "bytes": 4928,
+      "sha256": "80ca8283ba806a83bfab1ab3f7a1a081a4a0b76bd60f5e15fdd3cf6e316dddad"
     },
     "scripts/package-training-example.js": {
       "bytes": 2495,
@@ -8120,8 +8128,8 @@
       "sha256": "9a58d56bb8104757b82b24a9352d076901d54e1343ff619b182479a30647fca7"
     },
     "scripts/verify-toolbox-source.js": {
-      "bytes": 4160,
-      "sha256": "cba5bdf35770f38d82782bd9c6fd20cdf75f9e532adb273d7cd2ddbdb6c473dc"
+      "bytes": 4145,
+      "sha256": "40dbe401f1423ab8c22ef5eb7bfe1d65cecc7d71da13d134c1e1ebf3a7fbfda6"
     },
     "scripts/verify-training-example.js": {
       "bytes": 3331,
@@ -8200,12 +8208,12 @@
       "sha256": "706630aacce5742022769e36b4485f9b25b1eaf8b2837484f786a9bdb306f731"
     },
     "tests/cli-build-provenance.test.js": {
-      "bytes": 1588,
-      "sha256": "bf8a84b06f3f39b81cda8d8f5fddd22af33926fdafba76aa1fd51b768d949a86"
+      "bytes": 2581,
+      "sha256": "91785d2580adb63e2ef58fd6a1b142dc459b21954cedd3896f6092a9da78a007"
     },
     "tests/dependency-notices.test.js": {
-      "bytes": 2625,
-      "sha256": "c95fdf93ec1bdf6e7079a62625d7325466b1bc23be0997dc4d7d9e06e2751306"
+      "bytes": 2997,
+      "sha256": "eb77d319d6f83034fc54daa3fccb5d814779ba3bd1401e4f93ee3a1b7335f0b9"
     },
     "tests/device-adapters.js": {
       "bytes": 3576,
@@ -8240,8 +8248,8 @@
       "sha256": "01dbec0a01951ce89c5c6919298adad5bf343b705d36f29b5128fbf41c357882"
     },
     "tests/packaged-runtime.js": {
-      "bytes": 18231,
-      "sha256": "902c3e9275a8b5829f5c8656bb04e6bf6a0fa7265f426ae3b554caca28c990ce"
+      "bytes": 19156,
+      "sha256": "55f12bc4a0b58abcdae363600f481cecbe7d1316468cc9bf5fec3f5ee2a5c5fe"
     },
     "tests/physics-modes.test.js": {
       "bytes": 6544,
@@ -8300,8 +8308,8 @@
       "sha256": "49db4c3647f57e86d0dfa09b04dd8c1a0c42b624795f353c382ac0eb1211b57d"
     },
     "tests/toolbox-extension-runner.cjs": {
-      "bytes": 22697,
-      "sha256": "592d7b50823bd47a4fc4f2dda6f1dcb4d01683dd78fd83bff8e47518c611c429"
+      "bytes": 23190,
+      "sha256": "d7f8db6c4a72f86c91111a06daa38acce0a2e3309a658ea8523f4cde311cb0ea"
     },
     "tests/toolbox.test.js": {
       "bytes": 7342,

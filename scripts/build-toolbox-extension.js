@@ -20,7 +20,8 @@ const runtime=path.resolve(runtimeDirectory),manifest=validateRuntimeManifest(JS
 for(const file of manifest.files){const bytes=await readFile(path.join(runtime,file.name));if(bytes.length!==file.bytes||createHash('sha256').update(bytes).digest('hex')!==file.sha256)throw Error('Runtime artifact mismatch: '+file.name);}
 if(!manifest.files.some(f=>f.name==='cli-build.json'&&!f.executable))throw Error('Runtime lacks a hashed CLI build record; repackage it');
 const cliName='cadcove'+(process.platform==='win32'?'.exe':'');
-const cliBuild=validateCliBuild(JSON.parse(await readFile(path.join(runtime,'cli-build.json'),'utf8')),await readFile(path.join(runtime,cliName)),await readFile(path.join(root,'bun.lock')),{target,version:manifest.version});
+const cliRecord=JSON.parse(await readFile(path.join(runtime,'cli-build.json'),'utf8'));
+const cliBuild=validateCliBuild(cliRecord,await readFile(path.join(runtime,cliName)),await readFile(path.join(root,'bun.lock')),{target,version:manifest.version,...(cliRecord.schema===2?{script:await readFile(path.join(runtime,'cadcove.js')),launcherSource:await readFile(path.join(runtime,'launcher.rs'))}:{})});
 await rm(out,{recursive:true,force:true});await mkdir(media,{recursive:true});
 for(const name of ['package.json','README.md'])await copyFile(path.join(root,'extensions/vscode',name),path.join(out,name));
 await copyFile(path.join(root,'LICENSE'),path.join(out,'LICENSE.txt'));

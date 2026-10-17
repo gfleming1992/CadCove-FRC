@@ -151,7 +151,8 @@
     "docs/SYSTEM-CARD.md",
     "docs/LAUNCH-POST.md",
     "docs/WINDOWS-CHECK.md",
-    "docs/release-evidence/"
+    "docs/release-evidence/",
+    "docs/INSTALL.md"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

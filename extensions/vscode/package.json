@@ -3,7 +3,7 @@
   "displayName": "CadCove FRC",
   "description": "Local, agent-driven CAD and FRC simulation workspace tools.",
   "version": "0.2.0",
-  "publisher": "cadcove-dev",
+  "publisher": "gfleming1992",
   "license": "MIT",
   "engines": {
     "vscode": "^1.100.0"

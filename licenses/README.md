@@ -12,6 +12,21 @@ at its root. This tool collects evidence and preserves texts. It does not label
 an incomplete review as compliance or silently turn a package's metadata into
 permission to redistribute its binary.
 
+## Current release profile: external Bun
+
+The default release ships a Rust launcher, bundled CLI JavaScript and the native
+physics executable. Users install Bun 1.4.2 themselves. No Bun executable or its
+embedded JSC/TinyCC/polyfill implementation is included. The release inventory
+therefore covers our Cargo graph, Rust standard library, CLI npm dependencies
+and the training helper; it excludes Bun runtime internals. Complete notices
+are included for this locked graph, and changed license expressions fail review.
+`releaseReady` describes this distribution inventory only, not hardware or
+platform qualification. GitHub publisher identity is `gfleming1992`; Marketplace
+registration is separate.
+
+The optional `--cli-mode standalone` remains development-only. The historical
+Bun review below applies to that profile and its gates remain intact.
+
 ## Scope and sources
 
 The inventory covers the locked Cargo dependency graph for the optimized native
@@ -111,7 +126,7 @@ complete file-level and release-distribution review still remain.
 
 Primary source documents are linked in `upstream.json` and generated inventory.
 
-## Unfinished release gates
+## Unfinished gates for the optional embedded-Bun profile
 
 The inventory deliberately reports `releaseReady: false` while these remain:
 

@@ -21,6 +21,11 @@ test('runtime notices include locked polyfills and reject changed inventory, pro
   expect(result.inventory.components.some(c=>c.id==='embedded:bun-nodejs-headers@26.3.0')).toBe(true);
   expect(polyfills.filter(c=>c.name==='bn.js (Bun browser polyfill)').length).toBe(2);
   expect(result.inventory.components.some(c=>c.id.includes('occt-wasm')||c.id.includes('brepjs'))).toBe(false);
+  const external=await dependencyNotices(temp,{...options,includeBunRuntime:false});
+  expect(external.inventory.releaseReady).toBe(true);
+  expect(external.inventory.unresolved).toEqual([]);
+  expect(external.inventory.components.some(c=>c.id.includes('bun'))).toBe(false);
+  expect(external.inventory.components.some(c=>c.id.startsWith('runtime:rust-std'))).toBe(true);
   for(const [relative,mutate,error] of [
    ['bun-polyfills.json',text=>text+' ',/polyfill inventory changed/],
    ['upstream.json',text=>{const data=JSON.parse(text);data.files.find(c=>c.component==='bun-polyfill:assert').archiveSha256='0'.repeat(64);return JSON.stringify(data);},/polyfill notice\/archive mismatch/],

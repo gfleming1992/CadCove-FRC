@@ -4,7 +4,7 @@ import {access, stat} from 'node:fs/promises';
 import {constants} from 'node:fs';
 import {initializeToolbox,updateToolboxGuidance} from '../lib/toolbox-project.js';
 import {readRobotProject, auditRobotProject} from '../lib/robot-project.js';
-import {bundledRuntime, runtimeVersion, nativeExecutable} from '../lib/runtime-location.js';
+import {bundledRuntime, externalBun, runtimeVersion, nativeExecutable} from '../lib/runtime-location.js';
 import {cadFeedback} from '../lib/cad-feedback.js';
 import {javaExecutable} from '../lib/java-runtime.js';
 import {runSimulation,sessionRequest,recoverSimulation} from '../lib/simulation-session.js';
@@ -101,7 +101,7 @@ async function run() {
     'sim-motor-controls': 'cadcove sim-motor-controls --project PATH (read-only host-side control requests)',
   }, output: 'JSON on stdout; exit 0 success, 1 failed checks, 2 invalid command/configuration'};
   if (command === 'capabilities') return {schema: 1, ok: true, version: runtimeVersion, commands: Object.keys(optionsByCommand),
-    distribution: bundledRuntime ? 'standalone-runtime' : 'source-checkout', bundledRuntimeInstaller: false,
+    distribution: bundledRuntime ? (externalBun?'external-bun-runtime':'standalone-runtime') : 'source-checkout', bundledRuntimeInstaller: false,
     agent: {providerRequired: false, interface: 'cli-and-filesystem', instructions: '.cadcove/AGENT.md'},
     adapters: [{id: 'wpilib-java-phoenix6', status: 'integration-required', devices: ['TalonFX', 'CANcoder', 'Pigeon2']},
       {id: 'limelight-networktables', status: 'simulation-subset', features: ['AprilTag pose observations', 'configured optics and latency']}],

@@ -14,8 +14,9 @@ and [rail STEP exchange limitation](examples/team3310-rebuilt/source/cad-assets/
 Part of **CadCove**: an MIT open-source monorepo for agent-assisted CAD,
 robot code, and local FRC simulation.
 
-**Source release:** build instructions are below. Public prebuilt VSIX releases
-are not available yet. The Team 3310 robot CAD, code and simulation bindings
+**Release candidate:** platform VSIX downloads and source are published on the
+[GitHub Releases page](https://github.com/gfleming1992/CadCove-FRC/releases).
+Only platforms with attached passing qualification reports are advertised. The Team 3310 robot CAD, code and simulation bindings
 are included. Setup downloads REBUILT field geometry directly from FIRST and
 builds the robot with your installed WPILib toolchain.
 
@@ -56,8 +57,8 @@ The native Rust process runs Rapier physics independently of Python CAD modeling
 **Development candidate — not a production release yet.** macOS arm64 has passed
 installed-extension CAD, native simulation, live viewing, agent capture and
 runtime-repair checks, including the WPILib 2026.2.1 editor stack. Linux and macOS
-CI pass clean-source builds and installed stock-editor checks. Windows testing,
-hardware qualification and binary redistribution review remain open. The original
+CI check clean-source builds and installed stock-editor behavior. Windows testing
+and hardware qualification remain open; consult the release-specific reports. The original
 code is MIT; this does not relicense dependencies or team/season assets.
 See the [system card and test evidence](docs/SYSTEM-CARD.md) and
 [remaining release gates](docs/TOOLBOX-RELEASE.md).
@@ -69,7 +70,8 @@ kept as a separate content pack with independently replaceable robot and field.
 See [FRC agent workflows and season knowledge](docs/FRC-AGENT-WORKFLOW.md) for
 vendor-aware CAD/code skills and private, page-cited manual imports.
 
-1. Install the platform toolbox VSIX in a local VS Code/WPILib workspace.
+1. Install Bun 1.4.2 and the platform toolbox VSIX in a local VS Code/WPILib
+   workspace. See [installation](docs/INSTALL.md) for exact prerequisites.
 2. Run **CadCove: Initialize Team Workspace**, then **Open Toolbox Terminal**.
 3. Start a **new agent conversation** in that workspace. Initialization adds
    `AGENTS.md` (Codex), `CLAUDE.md` (Claude Code) and
@@ -85,8 +87,11 @@ vendor-aware CAD/code skills and private, page-cited manual imports.
 6. Open Live Simulation for driving practice. The viewer uses the same CAD
    renderer and native physics as agent-driven runs. Driver Station owns live inputs.
 
-The extension ships verified platform executables; users do not need Rust or
-Bun to run them. Robot simulation additionally needs the team's WPILib JDK,
+The extension ships the native physics executable and a small CLI launcher; users
+do not need Rust to run them. Install **Bun 1.4.2** separately for CLI orchestration.
+The launcher uses `CADCOVE_BUN` (absolute executable path), then the usual
+`~/.bun/bin/bun` installation, then PATH. Restart VS Code after installing Bun.
+Bun is not embedded or downloaded by CadCove. Robot simulation additionally needs the team's WPILib JDK,
 compiled robot program and compatible desktop vendor libraries. CAD by itself
 does not identify actuator wiring, gear ratios, masses, friction or control
 semantics: integration and physical calibration must be explicit.
@@ -197,7 +202,7 @@ bun run test:toolbox
 bun scripts/build-native-runtime.js
 # Windows native output ends in .exe.
 bun scripts/package-runtime.js --native-binary target/distribution/release/instantcad-sim \
-  --output artifacts/runtime-candidate --version 0.2.0-native-preview \
+  --output artifacts/runtime-candidate --version 0.2.0-rc.1 \
   --base-url https://YOUR-RELEASE-HOST/RELEASE/TARGET
 bun tests/packaged-runtime.js artifacts/runtime-candidate
 bun scripts/build-toolbox-extension.js --runtime artifacts/runtime-candidate
@@ -209,13 +214,14 @@ and architecture):
 ```sh
 bun scripts/package-toolbox-extension.js \
   --extension build/toolbox-extension-darwin-arm64 \
-  --output artifacts/cadcove-toolbox-development.vsix --development
+  --output artifacts/cadcove-toolbox.vsix
 ```
 
-This verifies required VSIX contents and runtime/kernel provenance. Production
-publishing requires resolved license/repository metadata and
-platform qualification; development flags that skip those gates are not release
-approval. See `extensions/vscode/README.md` for runtime repair and terminal PATH
+This verifies required VSIX contents, runtime provenance and distribution notices.
+The default external-Bun package does not redistribute Bun. The optional
+`--cli-mode standalone` embeds Bun and remains blocked for public distribution
+until its separate source/notice review is complete. A package build does not
+replace installed-platform qualification. See `extensions/vscode/README.md` for runtime repair and terminal PATH
 behavior. Exported Java source updates are reviewed explicitly and never replace
 team customizations automatically.
 

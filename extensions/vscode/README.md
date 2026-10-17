@@ -1,4 +1,4 @@
-# CadCove Toolbox — development candidate
+# CadCove FRC — release candidate
 
 ## Agent tools start with the editor
 
@@ -27,7 +27,9 @@ A single editor wrapper for the shared local CAD core and native simulation
 toolbox. Use your existing Codex, Claude Code, Copilot, or command-line agent; no AI account,
 API key, or embedded chat box is added by this extension.
 
-1. Open a trusted local WPILib workspace.
+1. Install Bun 1.4.2 separately, restart VS Code, then open a trusted local WPILib
+   workspace. The launcher checks `CADCOVE_BUN` (absolute path), `~/.bun/bin/bun`,
+   then PATH. It does not download Bun. Python/CadQuery is also installed separately.
 2. Run **CadCove: Initialize Team Workspace**. This installs/verifies the bundled
    platform runtime and creates agent instructions without replacing robot code.
 3. Open **CadCove: Open Toolbox Terminal** to use `cadcove help`. New editor
@@ -122,9 +124,12 @@ versioned source copy and per-file comparison. Merge needed changes into the
 active `.cadcove/bridge`, preserve custom adapters, then rebuild the team's robot
 JAR and run integration checks. The review directory is not compiled by Gradle.
 
-This is not a production release yet. Other platforms, vendor
-coverage, redistribution licensing, and publication remain release gates. The
-development publisher name is not a Marketplace publishing claim.
+This is an early-access GitHub VSIX, not a Marketplace publication. The publisher
+identifier `gfleming1992` matches the GitHub maintainer; it makes no claim that a
+Marketplace publisher is registered. Remove an older `cadcove-dev` extension
+before installing this version to avoid duplicate commands. Windows and broader
+vendor/hardware qualification remain open. Bun is an external prerequisite;
+this package contains no embedded Bun runtime.
 
 ## Isolated installation checks
 

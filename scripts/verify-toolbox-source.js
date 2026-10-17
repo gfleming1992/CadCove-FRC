@@ -22,10 +22,10 @@ try{
  await run('native contracts',['cargo','test','--locked','--release','-p','instantcad-sim','--features','composite-compact','--target-dir','target/distribution']);
  await run('baseline native release',[process.execPath,'scripts/build-native-runtime.js']);
  const executable='instantcad-sim'+(process.platform==='win32'?'.exe':'');
- await run('standalone runtime packaging',[process.execPath,'scripts/package-runtime.js','--native-binary','target/distribution/release/'+executable,'--output','artifacts/runtime-source-check','--version','0.1.0-source-check','--base-url','https://releases.invalid/source-check/'+process.platform+'-'+process.arch]);
+ await run('external Bun runtime packaging',[process.execPath,'scripts/package-runtime.js','--native-binary','target/distribution/release/'+executable,'--output','artifacts/runtime-source-check','--version','0.2.0-rc.1','--base-url','https://github.com/gfleming1992/CadCove-FRC/releases/download/v0.2.0-rc.1']);
  await run('relocated offline runtime',[process.execPath,'tests/packaged-runtime.js','artifacts/runtime-source-check']);
  await run('extension build',[process.execPath,'scripts/build-toolbox-extension.js','--runtime','artifacts/runtime-source-check']);
- await run('verified development VSIX',[process.execPath,'scripts/package-toolbox-extension.js','--extension','build/toolbox-extension-'+process.platform+'-'+process.arch,'--output','artifacts/cadcove-source-check.vsix','--development']);
+ await run('verified release candidate VSIX',[process.execPath,'scripts/package-toolbox-extension.js','--extension','build/toolbox-extension-'+process.platform+'-'+process.arch,'--output','artifacts/cadcove-source-check.vsix']);
  const runtime=JSON.parse(await readFile(path.join(output,'artifacts/runtime-source-check/manifest.json'),'utf8'));
  const cliBuild=JSON.parse(await readFile(path.join(output,'artifacts/runtime-source-check/cli-build.json'),'utf8'));
  const vsix=await readFile(path.join(output,'artifacts/cadcove-source-check.vsix'));

@@ -8,18 +8,21 @@ import {validateRuntimeManifest} from '../lib/runtime-install.js';
 import {bridgeSources} from '../lib/bridge-export.js';
 import {cadReferenceBundle,validateCadReference} from '../lib/cad-reference.js';
 import {writeDependencyNotices} from '../lib/dependency-notices.js';
-import {readNativeBuild} from '../lib/native-build-provenance.js';
-import {cliCompilerRecord,cliBuildRecord} from '../lib/cli-build-provenance.js';
+import {readNativeBuild,parseRustCompiler} from '../lib/native-build-provenance.js';
+import {bunRelease,cliCompilerRecord,cliBuildRecord,externalCliBuildRecord} from '../lib/cli-build-provenance.js';
 
 const options = {};
 const args = process.argv.slice(2);
 while (args.length) {
   const key = args.shift(), value = args.shift();
-  if (!['--native-binary','--output','--base-url','--version','--team-example'].includes(key) || !value || value.startsWith('--') || key in options) throw Error('Usage: bun scripts/package-runtime.js --native-binary FILE --output NEW_DIRECTORY --base-url HTTPS_URL [--version 0.1.0-dev] [--team-example EXPORTED_WORKSPACE]');
+  if (!['--native-binary','--output','--base-url','--version','--team-example','--cli-mode'].includes(key) || !value || value.startsWith('--') || key in options) throw Error('Usage: bun scripts/package-runtime.js --native-binary FILE --output NEW_DIRECTORY --base-url HTTPS_URL [--version 0.1.0-dev] [--team-example EXPORTED_WORKSPACE] [--cli-mode external-bun|standalone]');
   options[key] = value;
 }
 for (const key of ['--native-binary','--output','--base-url']) if (!options[key]) throw Error('Missing ' + key);
 const root = path.resolve(import.meta.dir, '..'), output = path.resolve(options['--output']);
+const cliMode=options['--cli-mode']??'external-bun';
+if(!['external-bun','standalone'].includes(cliMode))throw Error('Invalid CLI mode');
+const external=cliMode==='external-bun';
 const base = new URL(options['--base-url'].replace(/\/?$/, '/'));
 if (base.protocol !== 'https:' || base.username || base.password || base.search || base.hash) throw Error('Release base URL must be HTTPS without credentials, query or fragment');
 const version = options['--version'] || '0.1.0-dev';
@@ -33,10 +36,27 @@ try {
   const names = ['cadcove' + suffix, 'instantcad-sim' + suffix];
   const compilerBytes=await readFile(process.execPath),lock=await readFile(path.join(root,'bun.lock'));
   const compiler=cliCompilerRecord(compilerBytes,{version:Bun.version,revision:Bun.revision,target:process.platform+'-'+process.arch});
-  const build = Bun.spawn([process.execPath, 'build', '--compile', '--minify', '--define', 'CADCOVE_BUNDLED=true', '--define', 'CADCOVE_VERSION=' + JSON.stringify(version), path.join(root, 'bin/cadcove.js'), '--outfile', path.join(staging, names[0])], {cwd: root, stdout: 'inherit', stderr: 'inherit'});
+  const cliOutput=path.join(staging,external?'cadcove.js':names[0]);
+  const build = Bun.spawn([process.execPath, 'build', ...(external?['--target=bun']:['--compile']), '--minify', '--define', 'CADCOVE_BUNDLED=true', '--define','CADCOVE_EXTERNAL_BUN='+external, '--define', 'CADCOVE_VERSION=' + JSON.stringify(version), path.join(root, 'bin/cadcove.js'), '--outfile', cliOutput], {cwd: root, stdout: 'inherit', stderr: 'inherit'});
   if (await build.exited) throw Error('Standalone CLI compilation failed');
   if(!compilerBytes.equals(await readFile(process.execPath))||!lock.equals(await readFile(path.join(root,'bun.lock'))))throw Error('CLI compiler or lock changed during compilation');
-  const cliBuild=cliBuildRecord(await readFile(path.join(staging,names[0])),lock,{compiler,target:process.platform+'-'+process.arch,version});
+  let launcherCompiler,launcherSource;
+  if(external){
+    // Check the exact qualified interpreter before loading any workspace code.
+    const script=(await readFile(cliOutput,'utf8')).replace(/^#![^\n]*\n/,'');
+    await writeFile(cliOutput,`if(Bun.version!==${JSON.stringify(bunRelease.version)}||Bun.revision!==${JSON.stringify(bunRelease.revision)}){console.error('CadCove requires Bun ${bunRelease.version}; install the pinned version or set CADCOVE_BUN.');process.exit(2);}\n`+script);
+    const rustc=Bun.which('rustc');if(!rustc)throw Error('Rust is required to build the CLI launcher');
+    const probe=Bun.spawn([rustc,'-Vv'],{stdout:'pipe',stderr:'inherit'});
+    const compilerText=await new Response(probe.stdout).text();if(await probe.exited)throw Error('Cannot inspect launcher compiler');
+    launcherCompiler=parseRustCompiler(compilerText);
+    launcherSource=await readFile(path.join(root,'bin/launcher.rs'));
+    await writeFile(path.join(staging,'launcher.rs'),launcherSource);
+    const launchBuild=Bun.spawn([rustc,'--edition=2021','--crate-name','cadcove_launcher','-C','opt-level=s','-C','strip=symbols','--remap-path-prefix',root+'=/cadcove',path.join(root,'bin/launcher.rs'),'-o',path.join(staging,names[0])],{cwd:root,stdout:'inherit',stderr:'inherit'});
+    if(await launchBuild.exited)throw Error('CLI launcher compilation failed');
+  }
+  const cliBytes=await readFile(path.join(staging,names[0]));
+  const buildOptions={compiler,target:process.platform+'-'+process.arch,version,launcherCompiler};
+  const cliBuild=external?externalCliBuildRecord(cliBytes,await readFile(cliOutput),launcherSource,lock,buildOptions):cliBuildRecord(cliBytes,lock,buildOptions);
   await writeFile(path.join(staging,'cli-build.json'),JSON.stringify(cliBuild,null,2)+'\n');
   await cp(path.resolve(options['--native-binary']), path.join(staging, names[1]));
   // Validate the staged bytes, not a source file that could change after copying.
@@ -59,12 +79,12 @@ try {
   await writeFile(path.join(staging,'cad-reference.json'),JSON.stringify(reference));
   const example=Bun.spawn([process.execPath,path.join(root,'scripts/package-training-example.js'),'--output',path.join(staging,'training-example.json')],{cwd:root,stdout:'inherit',stderr:'inherit'});
   if(await example.exited)throw Error('Training example packaging failed');
-  const inventory=await writeDependencyNotices(root,staging);
+  const inventory=await writeDependencyNotices(root,staging,{includeBunRuntime:!external});
   if(!version.includes('-')&&!inventory.releaseReady)throw Error('Production runtime packaging requires resolved dependency/license gates; inspect dependency-notices output first');
   await cp(path.join(root,'vendor/cad-core/src/native/worker.py'),path.join(staging,'cad-worker.py'));
   await cp(path.join(root,'vendor/cad-core/src/native/requirements.txt'),path.join(staging,'cad-requirements.txt'));
   await cp(path.join(root,'vendor/cad-core/src/native/geometry.py'),path.join(staging,'geometry.py'));
-  const extra=['cad-worker.py','geometry.py','cad-requirements.txt'];
+  const extra=['cad-worker.py','geometry.py','cad-requirements.txt',...(external?['cadcove.js','launcher.rs']:[])];
   if(options['--team-example']){await packageTeamExample(path.resolve(options['--team-example']),path.join(staging,'team-example.cpack'));extra.push('team-example.cpack');}
   const files = [];
   for (const name of [...names,...extra,'bridge-sources.json','cad-reference.json','training-example.json','native-build.json','cli-build.json','THIRD-PARTY-NOTICES.txt','dependency-inventory.json']) {

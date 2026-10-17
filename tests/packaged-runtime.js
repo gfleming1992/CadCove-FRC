@@ -24,6 +24,10 @@ try {
   // Deliberately do not inherit PATH, Bun, Cargo, native/JDK overrides, or the
   // source repository cwd. The executable must locate its adjacent runtime.
   const env = {HOME: root, USERPROFILE: root, TMPDIR: os.tmpdir(), ...(process.platform === 'win32' ? {SystemRoot: process.env.SystemRoot, TEMP: os.tmpdir()} : {})};
+  const external=manifest.files.some(f=>f.name==='cadcove.js');
+  // External runtime distributions require only the explicitly selected Bun;
+  // no source cwd, PATH, Cargo, Python or JDK is inherited by this CLI test.
+  if(external)env.CADCOVE_BUN=process.execPath;
   async function command(args, code = 0) {
     const p = Bun.spawn([executable, ...args], {cwd: workspace, env, stdout: 'pipe', stderr: 'pipe'});
     const [out, err, actual] = await Promise.all([new Response(p.stdout).text(), new Response(p.stderr).text(), p.exited]);
@@ -31,7 +35,7 @@ try {
     return JSON.parse(out);
   }
   const capabilities = await command(['capabilities']);
-  assert.equal(capabilities.distribution, 'standalone-runtime'); assert.equal(capabilities.version, manifest.version);
+  assert.equal(capabilities.distribution, external?'external-bun-runtime':'standalone-runtime'); assert.equal(capabilities.version, manifest.version);
   const inventory=JSON.parse(await readFile(path.join(installed.directory,'dependency-inventory.json'),'utf8'));
   assert.equal(inventory.schema,1);assert.equal(typeof inventory.releaseReady,'boolean');
   const nativeBuild=JSON.parse(await readFile(path.join(installed.directory,'native-build.json'),'utf8'));
@@ -44,7 +48,13 @@ try {
   assert.equal(nativeBuild.binary.sha256,manifest.files.find(f=>f.name==='instantcad-sim'+suffix).sha256);
   assert.ok(inventory.components.some(c=>c.id==='runtime:rust-std@'+nativeBuild.compiler.version));
   assert.doesNotMatch(JSON.stringify(inventory),/\/Users\/|\\Users\\/);
-  assert.match(await readFile(path.join(installed.directory,'THIRD-PARTY-NOTICES.txt'),'utf8'),/GNU LESSER GENERAL PUBLIC LICENSE/);
+  if(external){
+    assert.equal(inventory.profile,'external-bun');assert.equal(inventory.releaseReady,true);
+    assert.equal(inventory.components.some(c=>c.id.startsWith('runtime:bun')||c.id.startsWith('embedded:bun')),false);
+    assert.equal(cliBuild.script.sha256,manifest.files.find(f=>f.name==='cadcove.js').sha256);
+    const missing=Bun.spawn([executable,'capabilities'],{cwd:workspace,env:{...env,CADCOVE_BUN:path.join(root,'missing-bun')},stdout:'pipe',stderr:'pipe'});
+    assert.equal(await missing.exited,2);assert.match(await new Response(missing.stderr).text(),/CADCOVE_BUN/);
+  }else assert.match(await readFile(path.join(installed.directory,'THIRD-PARTY-NOTICES.txt'),'utf8'),/GNU LESSER GENERAL PUBLIC LICENSE/);
   await command(['init', '--workspace', workspace, '--id', 'fresh-team', '--cad-dir', 'design/robot', '--build-dir', 'generated/cad']);
   for(const file of ['AGENTS.md','CLAUDE.md','.github/copilot-instructions.md'])assert.match(await readFile(path.join(workspace,file),'utf8'),/\.cadcove\/AGENT\.md/);
   for(const skill of ['frc-workflow','frc-cad-mechanisms','frc-ctre-controls','frc-vision','frc-season-rules','frc-simulation-validation'])assert.match(await readFile(path.join(workspace,'.cadcove/skills',skill,'SKILL.md'),'utf8'),/^---\nname: /);
@@ -192,5 +202,5 @@ try {
   assert.ok(moved.state.motors['bench-motor'].rotor_turns>0);
   const offline = await installRuntime({manifest, cacheDirectory: path.join(root, 'cache'), fetchImpl: () => {throw Error('Unexpected network');}});
   assert.equal(offline.reused, true);
-  console.log(JSON.stringify({ok: true, target: manifest.target, version: manifest.version, standaloneCLI: true, nativeRuntime: true, nativeWorldValidation:true, physicsAuthoringExample:true, workspaceInitialization: true, seasonImportAndSearch:true, exampleExport:true, bridgeExport:true, offlineReuse: true, toolchainRequiredForTheseCommands: false, fullRobotLaunchTested: false}));
+  console.log(JSON.stringify({ok: true, target: manifest.target, version: manifest.version, standaloneCLI: !external, externalBun:external, nativeRuntime: true, nativeWorldValidation:true, physicsAuthoringExample:true, workspaceInitialization: true, seasonImportAndSearch:true, exampleExport:true, bridgeExport:true, offlineReuse: true, compilerRequiredForTheseCommands: false, fullRobotLaunchTested: false}));
 } finally { await rm(root, {recursive: true, force: true}); }

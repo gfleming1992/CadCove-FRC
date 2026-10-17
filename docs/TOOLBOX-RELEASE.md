@@ -38,13 +38,13 @@ CADCOVE_TEST_EDITOR_VERSION=1.105.1 bun scripts/verify-toolbox-source.js --outpu
 ```
 
 This exports only allowed source, performs a frozen dependency install, runs
-portable/native tests, builds native and standalone CLI executables, tests a
+portable/native tests, builds native physics and an external-Bun CLI launcher, tests a
 relocated offline runtime, builds a VSIX and installs it into an isolated editor
 profile. The editor checks CAD edits, colors, revision-matched previews, cache,
 runtime repair and example export. It records source revision and VSIX hash.
 `CADCOVE_TEST_SOFTWARE_GPU=1` uses SwiftShader for headless CI, not GPU performance
 qualification. Actual robot execution additionally needs WPILib/vendor fixtures.
-The workflow tests Linux, Windows and macOS; a defined workflow is not evidence
+The workflow tests Linux and macOS; Windows is deferred to the maintainer; a defined workflow is not evidence
 of completed runs on those platforms.
 
 The current local platform is macOS arm64. Earlier candidates passed stock and
@@ -52,26 +52,28 @@ WPILib 2026.2.1 installed-editor and actual vendor integration checks. Each new
 release must attach its own source/runtime/VSIX hashes and test scope; old
 candidate evidence does not qualify new binaries automatically.
 
-## Binary / Marketplace gates still required
+## GitHub binary candidate
 
-- Resolve the final Bun corresponding-source, embedded notices and rebuild/
-  replacement distribution review. See [licenses](../licenses/README.md),
-  [Bun rebuild](BUN-REBUILD.md). Native CadQuery/OCCT are installed separately.
-  `dependency-inventory.json` intentionally retains `releaseReady: false` until
-  this is closed; development packaging must not bypass it for a stable release.
-- Select the real repository URL and publisher account in the extension metadata.
-  `cadcove-dev` is a development identity, not an owned Marketplace publisher claim.
-- Rebuild the runtime and VSIX for each supported platform. Native packaging must
-  include current gameplay, field-conveyor and cargo-collision capabilities.
-- Publish the required notices/source materials beside each binary, retain hashes,
-  and run installed-extension tests for every advertised platform.
-- Verify a new robot workspace: all three agent entry files, CLI discovery,
-  Python CAD edit/preview, explicit robot integration, live controls and
-  a separate detailed profile. Document calibration and supported device limits.
+The default `external-bun` package ships JavaScript, our small Rust launcher and
+native physics. Bun 1.4.2 and Python/CadQuery are installed separately. Its locked
+Rust/npm notices and provenance are verified before packaging. The optional
+`--cli-mode standalone` continues to fail production packaging while its Bun
+source/notice review remains unresolved; do not bypass that gate.
 
-The checked packager refuses a production VSIX while licensing/publication
-metadata is unresolved. A locally tested development candidate is useful for
-review but is not represented as a fully cleared Marketplace release.
+1. Use the reviewed `gfleming1992` GitHub publisher identity, rebuild the runtime
+   and VSIX, then run relocated-runtime and installed-editor checks.
+2. Attach the VSIX, its exact qualification report, SHA-256 checksums and notices
+   to a prerelease tag at the tested source commit. Keep platform claims scoped
+   to the attached evidence. Include the source archive and original MIT license.
+3. Test agent initialization, CLI discovery, CAD edits/cache/capture, runtime
+   repair and the separate simulation profiles. Actual team/vendor execution is
+   recorded separately from the stock-editor CI test.
+4. Keep Windows unqualified and the announcement draft unpublished until the
+   maintainer's Windows check and actual-editor video recording are complete.
+
+Marketplace publication is separate: no publisher registration or Marketplace
+upload has been performed. Existing users should uninstall the old `cadcove-dev`
+extension before installing the GitHub candidate to avoid duplicate commands.
 
 ## Main robot example source
 

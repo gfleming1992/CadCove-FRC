@@ -22,7 +22,7 @@ bun install --frozen-lockfile
 bun scripts/verify-toolbox-source.js --output ..\CadCove-Windows-check --editor
 ```
 
-This builds a Windows native runtime, packages a local development VSIX, and
+This builds a Windows native runtime, packages a local candidate VSIX, and
 installs it into an isolated editor profile for checks. It does not publish a
 binary, change the team's robot project, or qualify hardware behavior. Inspect
 `artifacts/source-verification-report.json` and the exported checkout's
@@ -52,5 +52,6 @@ WPILib VS Code via **Extensions: Install from VSIX**. Configure
 
 Report OS/build, CPU/GPU/RAM, editor/WPILib versions, source commit, runtime/VSIX
 hashes, failures and logs. Keep generated endpoint credentials out of reports.
-CadCove's source is MIT; prebuilt binary redistribution retains the separate
-license gates documented in the system card.
+The package uses an externally installed Bun 1.4.2. If VS Code cannot find it,
+set `CADCOVE_BUN` to its absolute executable path and restart the editor.
+Windows qualification remains pending until these checks actually pass.

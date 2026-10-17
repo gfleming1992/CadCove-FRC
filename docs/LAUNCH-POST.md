@@ -26,7 +26,9 @@ The example is our Team 3310 robot on REBUILT: 1,958 CAD occurrences, including
 109 authored CadQuery designs and retained vendor STEP components. Robot and
 season packs are replaceable; FIRST field geometry is downloaded from FIRST.
 
-This is an early source release. Calibration and real robot validation still
+This is an early-access release. Platform packages and source are on
+[GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases); install
+Bun 1.4.2 and Python/CadQuery separately. Calibration and real robot validation still
 matter. It is not automatic engineering sign-off, and physics performance varies
 with hardware and contact load. Windows validation is the next maintainer check;
 please see the system card for platform evidence and current limitations.
@@ -35,4 +37,8 @@ The original code is MIT. Third-party dependencies and season/team assets retain
 their respective licenses. Feedback from teams on setup, useful mechanisms,
 vendor integration and simulation accuracy would be especially helpful.
 
-[Launch video — added to the release assets when capture verification is complete.]
+## Launch media
+
+The updated native-CadQuery film is pending capture verification. Add its final
+URL here before posting this announcement; do not substitute the earlier
+brepjs introduction.

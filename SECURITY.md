@@ -1,9 +1,11 @@
 # Security and execution boundary
 
-CadCove runs CAD JavaScript and the team's compiled robot program locally. Use
+CadCove runs CAD Python and the team's compiled robot program locally. Use
 trusted workspaces and review generated code. The extension disables untrusted
 and virtual workspaces. Its verified bundled runtime is selected by the extension,
-not by an arbitrary workspace download URL.
+not by an arbitrary workspace download URL. The CLI uses a separately installed,
+pinned Bun interpreter; `CADCOVE_BUN` selects an explicit executable. Review that
+configuration like any other local toolchain path.
 
 Simulation control/viewer services bind to loopback and use per-session credentials.
 Do not expose those APIs through a tunnel or commit generated session files.

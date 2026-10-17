@@ -1,5 +1,5 @@
 //! Small distribution launcher. Bun is installed by the user, never embedded.
-use std::{env, path::PathBuf, process::{Command, ExitCode}};
+use std::{env, path::PathBuf, process::Command};
 
 fn run() -> Result<i32, String> {
     let exe = env::current_exe().map_err(|e| e.to_string())?;
@@ -28,9 +28,10 @@ fn run() -> Result<i32, String> {
             .map_err(|e| format!("Install Bun 1.4.2 or set CADCOVE_BUN to its executable: {e}"))
     }
 }
-fn main() -> ExitCode {
+fn main() {
     match run() {
-        Ok(code) => ExitCode::from(code.clamp(0, 255) as u8),
-        Err(error) => { eprintln!("CadCove: {error}"); ExitCode::from(2) }
+        // Preserve Windows' full-width exit status, including NTSTATUS errors.
+        Ok(code) => std::process::exit(code),
+        Err(error) => { eprintln!("CadCove: {error}"); std::process::exit(2) }
     }
 }

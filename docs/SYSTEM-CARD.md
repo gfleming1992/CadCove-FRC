@@ -94,6 +94,20 @@ are redistributed. The optional standalone developer package still carries its
 unresolved redistribution gate. Packaged Rust/JavaScript dependency notices
 are included and checked.
 
+## Release-candidate distribution checks
+
+The external-Bun package passed 114 portable/native CAD contracts, relocated
+CLI/native-runtime checks, and installation into VS Code 1.105.1. The same local
+package passed with WPILib 2026.2.1 companions and the actual Java/Phoenix example:
+CAD edits/cache/captures, runtime repair, teleop control requests, live simulation
+rendering/capture and clean shutdown. See the [local external-runtime evidence](release-evidence/external-bun-macos-wpilib.json).
+
+The final GitHub prerelease attaches per-platform checksums, notices and test
+reports binding the downloaded VSIX to its qualification. CI uses software GPU
+rendering; full vendor/hardware checks have narrower scope and are identified
+separately. Windows and the updated launch film remain pending. Earlier native
+migration evidence below is retained with its own source and artifact identities.
+
 ## Validation and known gaps
 
 The local macOS arm64 qualification passed 113 portable/native CAD contract

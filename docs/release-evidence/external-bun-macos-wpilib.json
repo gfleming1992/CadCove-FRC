@@ -1,0 +1,280 @@
+{
+  "schema": 1,
+  "publicImplementationRevision": "21f8038ddb4c71917aa06a68390607b9a9e9d9c2",
+  "scope": "Local external-Bun package, stock editor with actual WPILib 2026.2.1 companions and Java/Phoenix fixture; not a Windows test or physics calibration",
+  "report": {
+    "ok": true,
+    "editorVersion": "1.105.1",
+    "companions": {
+      "editorVersion": "1.105.1",
+      "extensions": [
+        {
+          "name": "wpilibsuite.vscode-wpilib",
+          "version": "2026.2.1"
+        },
+        {
+          "name": "ms-vscode.cpptools",
+          "version": "1.28.3"
+        },
+        {
+          "name": "redhat.java",
+          "version": "1.38.0"
+        },
+        {
+          "name": "vscjava.vscode-java-debug",
+          "version": "0.58.2"
+        },
+        {
+          "name": "vscjava.vscode-java-dependency",
+          "version": "0.24.1"
+        }
+      ]
+    },
+    "wpilibActive": true,
+    "runtimeIdentity": "cadquery@2.6.1/ocp@7.8.1.1/native-mesh-v1/worker:8b460277defa8ece1cf2c2939ec48b7b5452fd78b489d235b55f82c43472f866",
+    "initialized": true,
+    "doctorFindsNative": true,
+    "initial": {
+      "entry": "models.py",
+      "phase": "ready",
+      "revision": "e3f39ebdf1efe75ea9426e95b0c70ca0ace955f78885ac87a9d4bf0b3f2c0df1",
+      "workerLoaded": true,
+      "parts": 2,
+      "gpuBytes": 49560,
+      "camera": {
+        "target": [
+          50,
+          40,
+          32.5
+        ],
+        "distance": 218.58069173731974,
+        "yaw": 1,
+        "pitch": 1
+      },
+      "upload": {
+        "uploadedBytes": 49560,
+        "reusedBatches": 0,
+        "rebuiltBatches": 2,
+        "drawCalls": 2
+      },
+      "source": "build",
+      "buildMs": 2577.5
+    },
+    "edited": {
+      "entry": "models.py",
+      "phase": "ready",
+      "revision": "00b52c85f0a53aadc61788f1a3cacf1caaa4e64a136420100e75aa66943c7a21",
+      "workerLoaded": true,
+      "parts": 2,
+      "gpuBytes": 49560,
+      "camera": {
+        "target": [
+          50,
+          40,
+          32.5
+        ],
+        "distance": 218.58069173731974,
+        "yaw": 1,
+        "pitch": 1
+      },
+      "upload": {
+        "uploadedBytes": 48552,
+        "reusedBatches": 1,
+        "rebuiltBatches": 1,
+        "drawCalls": 2
+      },
+      "source": "build",
+      "buildMs": 131.39999985694885
+    },
+    "cached": {
+      "entry": "models.py",
+      "phase": "ready",
+      "revision": "00b52c85f0a53aadc61788f1a3cacf1caaa4e64a136420100e75aa66943c7a21",
+      "workerLoaded": false,
+      "parts": 2,
+      "gpuBytes": 49560,
+      "camera": {
+        "target": [
+          70,
+          40,
+          32.5
+        ],
+        "distance": 264.6049547845527,
+        "yaw": 1,
+        "pitch": 1
+      },
+      "upload": {
+        "uploadedBytes": 49560,
+        "reusedBatches": 0,
+        "rebuiltBatches": 2,
+        "drawCalls": 2
+      },
+      "source": "disk-cache"
+    },
+    "failedBuildPreservesScene": true,
+    "preview": true,
+    "actualInstalledVSIX": true,
+    "runtimeRepair": {
+      "command": true,
+      "activeNativePreserved": true,
+      "healthyRepeatReused": true
+    },
+    "exampleExport": {
+      "fromInstalledRuntime": true,
+      "cadParts": 11,
+      "colored": true,
+      "revision": "81a91e7904a3148737e2b84b6f76d56a8fad3acec102b9fb81de7386992cb4d6",
+      "robotBuildRequired": true
+    },
+    "mcp": {
+      "stdio": true,
+      "tools": [
+        "cad_capture",
+        "open_robot_cad",
+        "workspace_context",
+        "open_cad_model",
+        "cad_status",
+        "start_simulation",
+        "stop_simulation",
+        "simulation_state",
+        "simulation_objects",
+        "check_project",
+        "capture_scene",
+        "set_camera"
+      ],
+      "openMilliseconds": 756,
+      "instances": 1958,
+      "capture": true,
+      "camera": true
+    },
+    "simulationView": {
+      "phase": "ready",
+      "error": "",
+      "runId": "9457f201-b874-4d12-9414-106178d9b873",
+      "worldHash": "1f0d265bd2588408e10cb585b8fdd25d9694dc85094df9e695c2d1b6f4a0a3a5",
+      "tick": 235,
+      "instances": 8209,
+      "prototypes": 872,
+      "gpuBytes": 82609712,
+      "frames": 2,
+      "inputOwner": "agent",
+      "camera": {
+        "target": [
+          1.5,
+          4,
+          0.265
+        ],
+        "distance": 4,
+        "yaw": 1,
+        "pitch": 1
+      },
+      "capture": {
+        "sha256": "32384da4f3f18f83d3f12cbe090301d2039bf4cfeb5a728bf499b9dba97b41e2",
+        "tick": 251,
+        "width": 640,
+        "height": 480
+      },
+      "cliCamera": true,
+      "viewOnly": true
+    },
+    "simulation": {
+      "launchedFromInstalledExtension": true,
+      "packagedCLI": true,
+      "runId": "9457f201-b874-4d12-9414-106178d9b873",
+      "tickBefore": 20,
+      "tickAfter": 55,
+      "controlMode": "teleop",
+      "cleanShutdown": true
+    },
+    "nativeCad": {
+      "first": {
+        "entry": "native.py",
+        "phase": "ready",
+        "revision": "986f477c285b8bc860bd6465eae830eadfe52a6063f51ea6127a0454840db38c",
+        "workerLoaded": true,
+        "parts": 1,
+        "gpuBytes": 1008,
+        "camera": {
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 76.47958253053365,
+          "yaw": 1,
+          "pitch": 1
+        },
+        "upload": {
+          "uploadedBytes": 1008,
+          "reusedBatches": 0,
+          "rebuiltBatches": 1,
+          "drawCalls": 1
+        },
+        "source": "build",
+        "buildMs": 1291.1999998092651
+      },
+      "edit": {
+        "entry": "native.py",
+        "phase": "ready",
+        "revision": "9b1eba201226ab1f2754d0409d690bee6806a951b57eee0f90adafe688cab37c",
+        "workerLoaded": true,
+        "parts": 1,
+        "gpuBytes": 1008,
+        "camera": {
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 76.47958253053365,
+          "yaw": 1,
+          "pitch": 1
+        },
+        "upload": {
+          "uploadedBytes": 1008,
+          "reusedBatches": 0,
+          "rebuiltBatches": 1,
+          "drawCalls": 1
+        },
+        "source": "build",
+        "buildMs": 60.39999985694885
+      },
+      "cached": {
+        "entry": "native.py",
+        "phase": "ready",
+        "revision": "9b1eba201226ab1f2754d0409d690bee6806a951b57eee0f90adafe688cab37c",
+        "workerLoaded": false,
+        "parts": 1,
+        "gpuBytes": 1008,
+        "camera": {
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "distance": 81.25259636498062,
+          "yaw": 1,
+          "pitch": 1
+        },
+        "upload": {
+          "uploadedBytes": 1008,
+          "reusedBatches": 0,
+          "rebuiltBatches": 1,
+          "drawCalls": 1
+        },
+        "source": "disk-cache"
+      },
+      "mcpOpen": true,
+      "mcpCapture": true,
+      "packagedCliFeedback": true,
+      "cameraPreserved": true
+    },
+    "qualification": {
+      "target": "darwin-arm64",
+      "requestedVersion": "1.105.1",
+      "softwareGPURequested": false,
+      "vsixSha256": "02df6e2cc17bb8b2cc11b4669c7a7f625aa89b3de0693e62459f20bea469dd37",
+      "vendorSDKTested": true
+    }
+  }
+}

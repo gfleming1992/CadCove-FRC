@@ -24,7 +24,8 @@ test('runtime notices include locked polyfills and reject changed inventory, pro
   const external=await dependencyNotices(temp,{...options,includeBunRuntime:false});
   expect(external.inventory.releaseReady).toBe(true);
   expect(external.inventory.unresolved).toEqual([]);
-  expect(external.inventory.components.some(c=>c.id.includes('bun'))).toBe(false);
+  expect(external.inventory.components.some(c=>/^(runtime|embedded):bun/.test(c.id))).toBe(false);
+  expect(external.inventory.components.some(c=>c.id.startsWith('generated:javascript-bundler'))).toBe(true);
   expect(external.inventory.components.some(c=>c.id.startsWith('runtime:rust-std'))).toBe(true);
   for(const [relative,mutate,error] of [
    ['bun-polyfills.json',text=>text+' ',/polyfill inventory changed/],

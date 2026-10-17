@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "sourceRevision": "3dfbb9f1f152cf5453d9ca127e83146e71631826",
+  "sourceRevision": "90c94858b56bd0bcb6e96a5ac7617da6ef96d6ea",
   "policy": "config/toolbox-source.json",
   "files": {
     ".gitattributes": {
@@ -56,8 +56,8 @@
       "sha256": "150136ed0202c8642102b90c42bb0a6c8a785c01b3169f41e4108dd92f2e8f2e"
     },
     "SECURITY.md": {
-      "bytes": 1453,
-      "sha256": "7a1ba16a3fa36d1f90f561104f26d54c38e049f9917ea5c2631fdaa6eb6c6324"
+      "bytes": 1619,
+      "sha256": "2e730f305269298e48b4d30ab8a96911046f65d493fbe8c1f0f0fef8fa070a1b"
     },
     "agent-skills/frc-cad-mechanisms/SKILL.md": {
       "bytes": 3399,
@@ -112,8 +112,8 @@
       "sha256": "32f689a15c09517562bdc76527c5d466f3636adc87bd95d32a7423d57e18d5c4"
     },
     "bin/launcher.rs": {
-      "bytes": 1765,
-      "sha256": "4d864de60fd2628d6e8242000c13afc0d431cf8fd420045ae1b2d728f2312e7a"
+      "bytes": 1809,
+      "sha256": "9d4d0273a2eace97680b260fcee27def7449db7926fb6d3e3f2d3a63818ea964"
     },
     "bridge/java/org/instantcad/frc/DeviceMath.java": {
       "bytes": 1771,
@@ -264,8 +264,8 @@
       "sha256": "bb363712b0cf32a4fd4318b990614a0dcd7c7f3acf5fca852059a2f7af6d6430"
     },
     "docs/AGENT-QUICKSTART.md": {
-      "bytes": 5479,
-      "sha256": "eaf177593fac890141d05f21646042822cc6eaf2f52d6be2ee13c52deca9099a"
+      "bytes": 5553,
+      "sha256": "ce7e8961271466b6d7ef7d830cafc8491aa3416ff50d7c41b3d38f3345abdf9a"
     },
     "docs/BUN-REBUILD.md": {
       "bytes": 12559,
@@ -308,8 +308,8 @@
       "sha256": "fb64b73056fece6db1c2c456fa868504503bf16cc9dbabf4318e9e00f35c0a99"
     },
     "docs/SYSTEM-CARD.md": {
-      "bytes": 7877,
-      "sha256": "a9769d3c9da5c45c819c105ef13acc2b4299b0047295feb24878543beeb47716"
+      "bytes": 8772,
+      "sha256": "4c74783c00024b85b35e59b34167f494472bf32e4f0818986789ed42d0d4fc83"
     },
     "docs/TOOLBOX-RELEASE.md": {
       "bytes": 6178,
@@ -318,6 +318,10 @@
     "docs/WINDOWS-CHECK.md": {
       "bytes": 3161,
       "sha256": "525dc736c1d71e15ab5dd6da8fa8b275315293771dafcaf22296385b77e98970"
+    },
+    "docs/release-evidence/external-bun-macos-wpilib.json": {
+      "bytes": 7153,
+      "sha256": "ad7d051b5f4b63fc1a39aec5cb7e226f3dbc2361e61f1cd518623f9bf34980a4"
     },
     "docs/release-evidence/linux-ci.json": {
       "bytes": 1431,
@@ -5760,8 +5764,8 @@
       "sha256": "220e7bebc02434cda8543563a29bf0a21f6a8f00737a2904c326ce760e7c0384"
     },
     "lib/dependency-notices.js": {
-      "bytes": 19808,
-      "sha256": "430eea78b1a1c7c7acad8428207c49a272574028913eddc887d17f77d30685b8"
+      "bytes": 20315,
+      "sha256": "47bffb84ccb5a58382956f36dd2a7071f5c637e1fcb66efadf2ff1440e05cc36"
     },
     "lib/example-bundle.js": {
       "bytes": 2471,
@@ -8212,8 +8216,8 @@
       "sha256": "91785d2580adb63e2ef58fd6a1b142dc459b21954cedd3896f6092a9da78a007"
     },
     "tests/dependency-notices.test.js": {
-      "bytes": 2997,
-      "sha256": "eb77d319d6f83034fc54daa3fccb5d814779ba3bd1401e4f93ee3a1b7335f0b9"
+      "bytes": 3122,
+      "sha256": "c002494996f38ac3e92c338992e0accb1d23e205e507e4eef046cf068581a85b"
     },
     "tests/device-adapters.js": {
       "bytes": 3576,

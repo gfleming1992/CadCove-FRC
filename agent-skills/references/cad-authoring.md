@@ -41,8 +41,3 @@ are interactive authoring feedback, not interchangeable benchmark inputs.
 CAD remains mm/Z-up; physics is metres/SI. Rebuild collision/bindings after
 geometry changes. See physics-authoring.md for team-owned Rapier worlds,
 accurate/gameplay profiles, source fingerprints, and calibration provenance.
-
-## Migration
-
-Legacy JavaScript CAD entries are no longer executed. Convert them explicitly to
-Python, verify dimensions/appearance, and update the configured entry point.

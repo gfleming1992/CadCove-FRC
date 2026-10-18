@@ -6,9 +6,9 @@ and use `cadcove cad-build`, `cad-session`, `cad-inspect`, `cad-export` and
 canvas in VS Code. See [the authoring workflow](agent-skills/references/cad-authoring.md)
 and [measured native performance](docs/NATIVE-CADQUERY-PROFILE.md).
 
-The bundled Team 3310 robot now uses `models.py`: all **109 authored designs**
+The bundled Team 3310 robot uses `models.py`: all **109 authored designs**
 are native CadQuery, with **320 retained STEP assets** and **1,958 occurrences**.
-The viewer remains WebGPU. See the [migration evidence](examples/team3310-rebuilt/source/native-migration-validation.json)
+The WebGPU viewer displays the assembly. See the [geometry validation](examples/team3310-rebuilt/source/native-migration-validation.json)
 and [rail STEP exchange limitation](examples/team3310-rebuilt/source/cad-assets/robot/native/README.md#known-rail-step-exchange-limitation).
 
 Part of **CadCove**: an MIT open-source monorepo for agent-assisted CAD,
@@ -63,8 +63,7 @@ AI chat box, API key, or cloud account requirement.
 
 Original CadCove code and its included generic CAD core are [MIT licensed](LICENSE).
 Third-party dependencies retain their own licenses; see [dependency notices](licenses/README.md).
-This is independent of the NativeCAD application: CAD uses local Python/CadQuery and native OCCT exclusively. It does not use NativeCAD's
-server, native OCCT worker, custom command language, API keys or services.
+CAD modeling runs locally with Python/CadQuery and native OCCT.
 The native Rust process runs Rapier physics independently of Python CAD modeling.
 
 **Development candidate — not a production release yet.** macOS arm64 has passed

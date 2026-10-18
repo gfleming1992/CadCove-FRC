@@ -62,8 +62,7 @@ them with retained vendor, unclassified and intentionally unconverted custom
 STEP components. All 1,958 occurrence IDs, transforms and colors remain stable.
 Edit `native/parts/p_*.py` and their helpers; `native/migration.json` maps asset
 IDs to Python modules. See [the robot authoring guide](source/cad-assets/robot/native/README.md).
-Executable legacy CAD sources have been removed. Historical shape measurements
-are retained under `native/evidence`.
+Shape validation measurements are retained under `native/evidence`.
 
 Use `cadcove cad-session` for warm build/inspect/export iterations. Open Python
 or STEP files through VS Code's **Open in CAD Canvas** command and request

@@ -12,7 +12,10 @@ exports.run=async function(){
  try{
   const extension=vscode.extensions.getExtension(process.env.CADCOVE_TEST_EXTENSION_ID??'gfleming1992.cadcove-toolbox');
   assert.ok(extension,'Packaged toolbox must be installed');
-  assert.ok(extension.extensionPath.includes('extensions'),'Use the installed VSIX, not the source checkout');
+  const samePath=(a,b)=>process.platform==='win32'?path.resolve(a).toLowerCase()===path.resolve(b).toLowerCase():path.resolve(a)===path.resolve(b);
+  const profile=process.env.CADCOVE_TEST_PROFILE;assert.ok(profile,'Use the isolated editor test launcher');
+  assert.ok(samePath(path.dirname(path.dirname(extension.extensionPath)),profile),'Installed extension must come from the isolated profile');
+  if(process.env.CADCOVE_PYTHON)assert.ok(samePath(vscode.workspace.getConfiguration('instantcad',vscode.Uri.file(folder)).get('pythonPath'),process.env.CADCOVE_PYTHON),'Editor must read the configured Python from the isolated profile');
   let companions;
   try{companions=JSON.parse(await fs.readFile(path.join(folder,'companion-expectations.json'),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
   if(companions){
@@ -21,7 +24,6 @@ exports.run=async function(){
    const wpilib=vscode.extensions.getExtension('wpilibsuite.vscode-wpilib');
    await wpilib.activate();assert.equal(wpilib.isActive,true,'WPILib activates alongside CadCove');
   }
-  if(process.env.CADCOVE_PYTHON)assert.equal(vscode.workspace.getConfiguration('instantcad',vscode.Uri.file(folder)).get('pythonPath'),process.env.CADCOVE_PYTHON,'The isolated editor must use the requested CadQuery interpreter');
   const buildProvenance=JSON.parse(await fs.readFile(path.join(extension.extensionPath,'build-provenance.json'),'utf8'));
   api=await extension.activate();
   const init=await api.initializeWorkspace();assert.equal(init.ok,true);
@@ -29,6 +31,7 @@ exports.run=async function(){
   const instructions=await fs.readFile(path.join(folder,'AGENTS.md'),'utf8');assert.match(instructions,/\.cadcove\/AGENT.md/);
   assert.match(await fs.readFile(path.join(folder,'.cadcove/skills/references/cadquery-api.md'),'utf8'),/CadQuery 2.6.1/);
   let runtime=await api.ensureRuntime();await fs.access(runtime);
+  assert.ok(!path.relative(path.join(profile,'user-data'),runtime).startsWith('..'),'Runtime storage must stay inside the isolated user-data directory');
   const {Client}=await import('@modelcontextprotocol/sdk/client/index.js');
   const {StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js');
   mcpClient=new Client({name:'installed-extension-test',version:'1'});
@@ -99,6 +102,7 @@ def build(ctx):
     assert.equal((await vscode.commands.executeCommand('cadcove.runtime.repair')).executable,runtime,'Healthy repeat repair reuses verified generation');
   }finally{native.stdin.end();if(native.exitCode===null)native.kill();}
   const report={ok:true,editorVersion:vscode.version,companions,wpilibActive:companions?true:undefined,extensionPath:extension.extensionPath,runtime,occt:buildProvenance.occt,runtimeIdentity:buildProvenance.runtimeIdentity,initialized:true,doctorFindsNative:true,initial,edited,cached,failedBuildPreservesScene:true,preview:true,actualInstalledVSIX:true,runtimeRepair:{command:true,oldRuntime,newRuntime:runtime,activeNativePreserved:true,healthyRepeatReused:true}};
+  report.profileIsolation={verified:true,portableData:process.env.VSCODE_PORTABLE??null,pythonPath:vscode.workspace.getConfiguration('instantcad',vscode.Uri.file(folder)).get('pythonPath')};
   // Exercise the example shipped inside this installed runtime, not source
   // checkout fixtures. Its CAD must actually compile in the editor's kernel.
   const sample=path.join(folder,'exported-example');
@@ -175,9 +179,25 @@ def build(ctx):
     }
     assert.ok(state?.runId,'Managed robot must become ready');assert.ok(!state.error,state.error);
     const packet=path.join(folder,'test-controls.json');await fs.writeFile(packet,JSON.stringify({mode:'teleop',controllers:[]}));
-    await execute(runtime,['sim-controls','--project',project,'--input',packet]);await delay(150);
-    const after=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
+    // A single packet has a one-second safety lease. Keep sending controls
+    // while observing state: cold Windows CLI startup can outlast that lease.
+    let refreshing=true,refreshError,packets=0,after;
+    const refresh=(async()=>{try{while(refreshing){await execute(runtime,['sim-controls','--project',project,'--input',packet]);packets++;await delay(100);}}catch(error){refreshError=error;}})();
+    try{
+      const until=Date.now()+20000;
+      while(Date.now()<until){
+        if(refreshError)throw refreshError;
+        after=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
+        if(after.controlMode==='teleop'&&after.state.tick>state.state.tick)break;
+        await delay(100);
+      }
+    }finally{refreshing=false;await refresh;}
+    if(refreshError)throw refreshError;
     assert.equal(after.runId,state.runId);assert.ok(after.state.tick>state.state.tick);assert.equal(after.controlMode,'teleop');
+    await delay(1200);
+    const expired=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
+    assert.equal(expired.controlMode,'disabled','Controls safely expire when the sender stops');
+    report.controlLease={packets,enabledWhileRefreshed:true,disabledAfterExpiry:true};
     if(teamExample){
       const start=after.state.bodies.chassis.position,startTime=after.state.time;
       let driven=after,distance=0,n=0;const driveDeadline=Date.now()+20000;

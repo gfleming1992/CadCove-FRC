@@ -4,7 +4,7 @@
 
 The **CadCove** publisher (`gfleming1992`) is registered. The current publisher UI
 does not expose a direct GitHub trusted-publishing policy. The workflow remains
-disabled until an available Microsoft authentication route is configured and
+disabled until Microsoft Entra workload identity federation is configured and
 verified; registration alone does not enable automatic uploads.
 
 Sign in to [Visual Studio Marketplace](https://marketplace.visualstudio.com/manage)
@@ -12,14 +12,27 @@ with the Microsoft account associated with `gfleming1992@gmail.com`. Create or u
 publisher **gfleming1992**, with display name **CadCove**. Keeping the publisher ID
 preserves the extension identity used by existing VSIX installations.
 
-Configure a **trusted publishing policy** for:
+Register the single-tenant application **CadCove GitHub Marketplace Publisher**
+in the owner's Microsoft Entra directory. No redirect URI, client secret,
+delegated Graph permissions, or Azure subscription roles are needed. Configure
+its federated credential for:
 
 - GitHub repository: `gfleming1992/CadCove-FRC`
-- Workflow: `.github/workflows/toolbox-source.yml`
 - Branch/ref: `refs/heads/main`
 - GitHub OIDC issuer: `https://token.actions.githubusercontent.com`
 - Subject: `repo:gfleming1992/CadCove-FRC:ref:refs/heads/main`
-- Audience: `marketplace.visualstudio.com`
+- Audience: `api://AzureADTokenExchange`
+
+Set GitHub repository variables `AZURE_TENANT_ID` and `AZURE_CLIENT_ID` to the
+directory and application IDs (these IDs are not secrets). Dispatch **Check
+Marketplace publishing identity** on main. It requests a short-lived token and
+prints only the Marketplace profile ID and display name. Add that profile ID
+to the CadCove publisher's Members tab with **Contributor** access.
+
+The Entra credential trusts this repository's main branch; it does not constrain
+the workflow filename. Keep main-branch workflow changes under maintainer review.
+The release workflow publishes only after the whole build matrix passes. The
+separate identity-check workflow is manual and does not upload packages.
 
 After the publisher and policy are ready, set the repository Actions variable
 `MARKETPLACE_PUBLISH_ENABLED` to `true`. It is deliberately disabled until then.
@@ -53,12 +66,11 @@ creation remains separate; this automation does not replace existing release ass
 
 ## Authentication
 
-Publishing obtains a short-lived GitHub OIDC token, exchanges it for a Marketplace
-session credential, and supplies it in memory to the pinned `@vscode/vsce` publisher.
-The token exchange uses the documented `FederatedToken` header and `7.2-preview.1`
-endpoint. That small adapter is needed because vsce 4.0.0's packaged OIDC exchange
-predates the current protocol; it can be removed when the pinned release supports it.
+Publishing obtains a short-lived GitHub OIDC token, exchanges it at the configured
+Entra tenant's OAuth endpoint for an Azure DevOps resource token, and supplies it
+in memory to the pinned `@vscode/vsce` publisher, as its Azure credential path does.
+The resource scope is `499b84ac-1321-427f-aa17-267ca6975798/.default`. Credentials
+are masked in GitHub logs and never written to artifacts or persistent storage.
 Authentication failure stops publication and never falls back to a saved credential.
 
-References: [Microsoft trusted publishing](https://github.com/microsoft/vscode-vsce#trusted-publishing)
-and [publishing extensions](https://code.visualstudio.com/api/working-with-extensions/publishing-extension).
+Reference: [Microsoft's publishing and Entra authentication guide](https://code.visualstudio.com/api/working-with-extensions/publishing-extension#secure-automated-publishing-to-visual-studio-marketplace).

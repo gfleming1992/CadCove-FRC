@@ -7,7 +7,7 @@ work on robot code and test changes in a local simulator. CadCove is MIT open
 source and includes Team 3310’s Amarillo robot as a complete example.
 
 [Watch the 60-second demo](https://youtu.be/5UMsJ54wpM8) ·
-[Download](https://github.com/gfleming1992/CadCove-FRC/releases) ·
+[Install from Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox) ·
 [Installation guide](docs/INSTALL.md)
 
 ## What you can do
@@ -28,7 +28,8 @@ account or API key.
 
 ## Get started
 
-1. Install the VSIX for your operating system and CPU from
+1. Install [CadCove FRC from Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox).
+   VS Code selects the package for your system. Offline VSIX packages are also in
    [Releases](https://github.com/gfleming1992/CadCove-FRC/releases).
 2. Install **Bun 1.4.2** and **Python 3.12 with the pinned CadQuery dependencies**.
    Follow the [installation guide](docs/INSTALL.md) to configure Python.

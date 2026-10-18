@@ -94,6 +94,7 @@
     "tests/SimVisionTest.java",
     "tests/StateDeltaTest.java",
     ".github/workflows/toolbox-source.yml",
+    ".github/workflows/marketplace-identity.yml",
     "scripts/verify-toolbox-source.js",
     "licenses/",
     "scripts/dependency-notices.js",

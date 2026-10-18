@@ -1,7 +1,9 @@
 # Install CadCove-FRC
 
-Download the VSIX for your operating system and CPU from
-[GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases).
+Install [CadCove FRC from Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox)
+or search for `gfleming1992.cadcove-toolbox` in VS Code's Extensions view.
+For offline installation, download the VSIX for your operating system and CPU
+from [GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases).
 Windows and macOS share one source tree; each OS/CPU needs its own native package.
 The Windows software workflow has been tested on Windows 11 with Intel graphics;
 Windows 10 has not been tested. Release attachments describe each package's
@@ -31,8 +33,9 @@ checks. Hosted CI graphics checks do not measure hardware performance.
 ## Open the extension
 
 1. Remove any older **cadcove-dev** development extension to avoid duplicate commands.
-2. Run **Extensions: Install from VSIX**, select the downloaded platform file, and
-   restart VS Code so it inherits prerequisite environment variables.
+2. Install **CadCove FRC** from Marketplace. If using an offline package, run
+   **Extensions: Install from VSIX** and select the downloaded platform file.
+   Restart VS Code so it inherits prerequisite environment variables.
 3. Open a trusted robot workspace. Run **CadCove: Initialize Team Workspace**.
 4. Open **CadCove: Open Toolbox Terminal**, then run `cadcove capabilities`.
 5. Start a new agent conversation. The generated `AGENTS.md`, `CLAUDE.md` and

@@ -122,6 +122,8 @@ jobs:
       id-token: write
     env:
       CADCOVE_EXTENSION_VERSION: ${{ needs.version.outputs.extension }}
+      AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:

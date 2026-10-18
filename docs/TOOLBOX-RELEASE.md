@@ -6,7 +6,7 @@ Use `release/native-cadquery-0.2` for Windows x64, macOS arm64 and macOS x64.
 All platforms build the same source and Team 3310 example; each produces its own
 native runtime and VSIX. Windows fixes from `fix/windows-native-rc` are merged
 here. Keep fixes on this shared branch rather than maintaining divergent OS forks.
-The verifier identifies new builds as `0.2.0-rc.2`; the published RC1 tag and
+The verifier identifies release builds as `0.2.0`; published tags and
 binaries remain immutable. Attach passing reports before publishing new binaries.
 
 ## Release scope
@@ -53,8 +53,9 @@ profile. The editor checks CAD edits, colors, revision-matched previews, cache,
 runtime repair and example export. It records source revision and VSIX hash.
 `CADCOVE_TEST_SOFTWARE_GPU=1` uses SwiftShader for headless CI, not GPU performance
 qualification. Actual robot execution additionally needs WPILib/vendor fixtures.
-The workflow tests Linux x64, macOS arm64, macOS Intel and Windows Server 2022
-x64 on main and the shared release branch. A configured workflow is not evidence
+The workflow builds and tests Linux x64, macOS arm64, macOS Intel and Windows
+Server 2022 x64 on main and the shared release branch. Hosted editor checks run
+on macOS/Linux; Windows editor checks use a separate GPU host. A configured workflow is not evidence
 of a passing run. Windows 10/11 manual robot/controller checks remain separate.
 
 The current local platform is macOS arm64. Earlier candidates passed stock and

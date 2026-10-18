@@ -1,10 +1,10 @@
 # Changelog
 
-## Unreleased — unified 0.2 RC2 candidate
+## 0.2.0 — unified native release
 
 - Merge Windows fixes into `release/native-cadquery-0.2`, shared with macOS.
-- Run the source/installed-editor workflow on Windows x64, macOS arm64/x64 and
-  Linux x64. Keep published RC1 artifacts unchanged; identify new builds as RC2.
+- Build Windows x64, macOS arm64/x64 and Linux x64 from one source tree.
+  Hosted editor checks cover macOS/Linux; Windows editor checks use a GPU host.
 - Apply bounded staging cleanup to the source Team 3310 setup path as well as
   packaged example creation. The Team 3310 example remains included.
 

@@ -14,24 +14,15 @@ and [rail STEP exchange limitation](examples/team3310-rebuilt/source/cad-assets/
 Part of **CadCove**: an MIT open-source monorepo for agent-assisted CAD,
 robot code, and local FRC simulation.
 
-**Release candidate:** platform VSIX downloads and source are published on the
-[GitHub Releases page](https://github.com/gfleming1992/CadCove-FRC/releases).
-Only platforms with attached passing qualification reports are advertised. The Team 3310 robot CAD, code and simulation bindings
-are included. Setup downloads REBUILT field geometry directly from FIRST and
-builds the robot with your installed WPILib toolchain.
+**Downloads:** install the VSIX for your operating system and CPU from
+[GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases).
+Windows and macOS use the same source and Team 3310 Amarillo example. Packages
+are built separately for Windows x64, macOS Apple Silicon, macOS Intel and Linux
+x64. See [installation](docs/INSTALL.md) and the release's platform reports.
 
-## Shared release source
-
-Windows x64, macOS Apple Silicon and macOS Intel use the same
-[`release/native-cadquery-0.2`](https://github.com/gfleming1992/CadCove-FRC/tree/release/native-cadquery-0.2)
-branch. It combines the Windows fixes with the macOS implementation and includes
-the same Team 3310 Amarillo example on every platform. Native executables and
-VSIX packages are built separately for each OS/architecture; do not install a
-macOS VSIX on Windows. The release workflow checks Windows Server 2022, macOS
-arm64/x64 and Linux x64 from this shared source. Passing reports qualify their
-specific host and scope; Windows 10/11 manual robot checks are tracked separately
-in [the Windows checklist](docs/WINDOWS-CHECK.md). Existing RC1 downloads are
-unchanged; subsequent candidate builds are identified as RC2.
+The Team 3310 CAD, code and simulation bindings are included in the repository.
+Example setup downloads REBUILT field geometry from FIRST and builds the robot
+with your installed WPILib toolchain.
 
 ## Agent workflow: files and CLI
 
@@ -66,15 +57,8 @@ Third-party dependencies retain their own licenses; see [dependency notices](lic
 CAD modeling runs locally with Python/CadQuery and native OCCT.
 The native Rust process runs Rapier physics independently of Python CAD modeling.
 
-**Development candidate — not a production release yet.** macOS arm64 has passed
-installed-extension CAD, native simulation, live viewing, agent capture and
-runtime-repair checks, including the WPILib 2026.2.1 editor stack. Linux and macOS
-CI have checked clean-source builds and installed stock-editor behavior. Windows
-fixes have been exercised on Windows 11 and merged into the shared release branch;
-full Windows robot/hardware qualification remains open; consult the release-specific reports. The original
-code is MIT; this does not relicense dependencies or team/season assets.
-See the [system card and test evidence](docs/SYSTEM-CARD.md) and
-[remaining release gates](docs/TOOLBOX-RELEASE.md).
+See the [system card](docs/SYSTEM-CARD.md) for the workflow, requirements and
+practical limits, and [release checks](docs/TOOLBOX-RELEASE.md) for contributors.
 
 ## Student workflow
 
@@ -197,12 +181,12 @@ interface, with explicit modeled noise and delay. Neither that model nor a
 successful simulation is a claim of hardware qualification. Detailed physics and
 faster gameplay approximations are declared separately in project metadata.
 
-## Build and verify a candidate
+## Build and verify from source
 
 Development needs Bun 1.4.2, Rust 1.91.1, Python 3.12 with the pinned
 CadQuery requirements, and the appropriate native build toolchain.
-[Windows verification instructions](docs/WINDOWS-CHECK.md) are provided for the
-maintainer; Windows is deliberately not qualified by this candidate.
+[Windows verification instructions](docs/WINDOWS-CHECK.md) cover the native
+toolchain and installed-editor checks.
 This source tree includes the pinned generic core; no sibling checkout or team
 robot submodule is needed for the toolbox build and asset-free test suite.
 
@@ -215,7 +199,7 @@ bun run test:toolbox
 bun scripts/build-native-runtime.js
 # Windows native output ends in .exe.
 bun scripts/package-runtime.js --native-binary target/distribution/release/instantcad-sim \
-  --output artifacts/runtime-candidate --version 0.2.0-rc.1 \
+  --output artifacts/runtime-candidate --version 0.2.0 \
   --base-url https://YOUR-RELEASE-HOST/RELEASE/TARGET
 bun tests/packaged-runtime.js artifacts/runtime-candidate
 bun scripts/build-toolbox-extension.js --runtime artifacts/runtime-candidate

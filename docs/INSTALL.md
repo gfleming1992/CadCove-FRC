@@ -1,15 +1,11 @@
-# Install the CadCove-FRC release candidate
+# Install CadCove-FRC
 
-Download the VSIX for your OS/CPU from
+Download the VSIX for your operating system and CPU from
 [GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases).
-Use the platform qualification report attached to that release. Windows is not
-qualified yet. A Linux CI pass uses software graphics and is not a GPU guarantee.
-
-For current Windows and macOS source, use the shared
-[`release/native-cadquery-0.2` branch](https://github.com/gfleming1992/CadCove-FRC/tree/release/native-cadquery-0.2).
-The branch includes the Windows fixes and Team 3310 example. Each OS/CPU needs
-its own native package. Existing RC1 binaries are unchanged; consult the exact
-candidate's reports before installing a newer platform build.
+Windows and macOS share one source tree; each OS/CPU needs its own native package.
+The Windows software workflow has been tested on Windows 11 with Intel graphics;
+Windows 10 has not been tested. Release attachments describe each package's
+checks. Hosted CI graphics checks do not measure hardware performance.
 
 ## Prerequisites
 

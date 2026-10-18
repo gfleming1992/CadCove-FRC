@@ -1,10 +1,12 @@
-# Maintainer Windows check — not yet qualified
+# Maintainer Windows checks
 
-The Windows fixes have been exercised on Windows 11 Home build 26200. Windows 10
-and the manual acceptance below remain unqualified. The shared release branch
-now includes Windows Server 2022 x64, macOS arm64/x64 and Linux x64 CI; consult
-the actual run reports for completion and scope. Require the exact candidate's qualification report and hashes; these
-instructions do not turn a macOS VSIX into a Windows package.
+The Windows 11 Home build 26200 report passes native CAD, stock VS Code and
+WPILib installed-editor checks, robot integration, simulation capture and shutdown.
+The host uses Intel Iris Xe graphics. Windows 10 and manual physical-controller
+acceptance remain separate checks. Refer to each release's report and VSIX hash.
+
+Hosted Windows Server CI checks native builds, CLI behavior and packaging; its
+runner has no usable WebGPU adapter. Installed-editor checks require a GPU host.
 
 ## Build from the source release
 

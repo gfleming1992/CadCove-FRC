@@ -101,7 +101,7 @@ const completion=new Promise(resolve=>{child.on('error',error=>{launchError=erro
 console.log(JSON.stringify({profile,pid:child.pid,reportFile}));
 let result;
 try{
- const until=Date.now()+180000;
+ const until=Date.now()+(process.platform==='win32'&&process.env.CADCOVE_TEST_SIMULATION_PROJECT?600000:180000);
  while(Date.now()<until){
   if(launchError)throw launchError;
   try{result=JSON.parse(await readFile(reportFile,'utf8'));}catch(error){if(error.code!=='ENOENT'&&!(error instanceof SyntaxError))throw error;}

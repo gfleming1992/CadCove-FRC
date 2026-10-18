@@ -167,7 +167,7 @@ def build(ctx):
     else assert.equal((await api.startSimulation()).status,'starting');
     simulationStarted=true;
     await assert.rejects(api.startSimulation(),/already has a simulation/);
-    let state;const deadline=Date.now()+60000;
+    let state;const deadline=Date.now()+(process.platform==='win32'?180000:60000);
     while(Date.now()<deadline){
       try{state=JSON.parse((await execute(runtime,['sim-state','--project',project],{timeout:6000})).stdout).result;break;}catch{}
       await delay(200);

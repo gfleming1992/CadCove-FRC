@@ -105,7 +105,7 @@ export function activate(context) {
     const relative=config.simulationProject??'robot.sim.json';relativePath(relative);
     return path.join(root,relative);
   }
-  async function doctor(resource){const root=workspace(resource);const report=await cli(['doctor','--project',await simulationProject(root)],root);output.appendLine(JSON.stringify(report,null,2));return report;}
+  async function doctor(resource){const root=workspace(resource);const report=await cli(['doctor','--project',await simulationProject(root)],root,process.platform==='win32'?120000:30000);output.appendLine(JSON.stringify(report,null,2));return report;}
   const views=simulationPanels(context,{cli,workspace,simulationProject});context.subscriptions.push({dispose:()=>views.closeAll()});
   async function startSimulation(resource){
     const root=workspace(resource);

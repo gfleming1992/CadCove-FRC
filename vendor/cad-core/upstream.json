@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "project": "instantcad-local",
-  "revision": "37d81650550511675bb130ce24ab321ce39e7431",
+  "revision": "b221160a43631290021f8bd36fa0db8c77c0145c",
   "policy": "Update upstream and regenerate; no downstream edits",
   "files": {
     "LICENSE": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6",
@@ -24,8 +24,8 @@
     "src/native/session.js": "3d873adfe5ca372bfc79cc78ea0c2ebdc5c4775502ff70dd66687e434685d8e0",
     "src/native/worker.py": "71d671cd16c140ad9a4ba2cf78bc8c4bca027e8b8eef16fa03a22348d3a952d6",
     "src/vscode-main.js": "fe2546b63292b54f27f54843bf07022124ff1d18d0105f6505b5dff5ac87496f",
-    "tests/native-cad.test.js": "f08a76edfa88234eb3442dab79198c68784f7d6720f3717f7610f68db56e947e",
+    "tests/native-cad.test.js": "e909be2b1b989aec4660b2ca13dbdfcaf7b683cd38914f29f65addd1db839f1f",
     "tests/native-session.test.js": "50d665c29aff71d7f334285068d53504c6f9a9a49afebd772495975706e7eb29",
-    "tests/vscode-host.test.js": "209d4aed68465c9713a4be1d32c66a5bf74942c6524a83ecb900138f3163301c"
+    "tests/vscode-host.test.js": "ae828ece44b4c15c5d9b20fd62ca3143cebe7e923093cb4784b34fa65ebf4562"
   }
 }

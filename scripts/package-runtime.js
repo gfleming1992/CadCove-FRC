@@ -51,7 +51,9 @@ try {
     launcherCompiler=parseRustCompiler(compilerText);
     launcherSource=await readFile(path.join(root,'bin/launcher.rs'));
     await writeFile(path.join(staging,'launcher.rs'),launcherSource);
-    const launchBuild=Bun.spawn([rustc,'--edition=2021','--crate-name','cadcove_launcher','-C','opt-level=s','-C','strip=symbols','--remap-path-prefix',root+'=/cadcove',path.join(root,'bin/launcher.rs'),'-o',path.join(staging,names[0])],{cwd:root,stdout:'inherit',stderr:'inherit'});
+    // Honor the same explicit linker used by Cargo for workspace-local SDKs.
+    const linker=process.env['CARGO_TARGET_'+launcherCompiler.host.toUpperCase().replaceAll('-','_')+'_LINKER'];
+    const launchBuild=Bun.spawn([rustc,'--edition=2021','--crate-name','cadcove_launcher','-C','opt-level=s','-C','strip=symbols',...(linker?['-C','linker='+linker]:[]),'--remap-path-prefix',root+'=/cadcove',path.join(root,'bin/launcher.rs'),'-o',path.join(staging,names[0])],{cwd:root,stdout:'inherit',stderr:'inherit'});
     if(await launchBuild.exited)throw Error('CLI launcher compilation failed');
   }
   const cliBytes=await readFile(path.join(staging,names[0]));

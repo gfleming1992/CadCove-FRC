@@ -1,6 +1,6 @@
 import {test, expect} from 'bun:test';
 import {createHash} from 'node:crypto';
-import {mkdtemp, readdir, readFile, writeFile, rm, stat} from 'node:fs/promises';
+import {mkdtemp, mkdir, readdir, readFile, writeFile, rm, stat} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import {installRuntime, validateRuntimeManifest} from '../lib/runtime-install.js';
@@ -50,6 +50,23 @@ test('tampered executable cache is not trusted from the saved manifest', () => f
   const input = manifest(), result = await installRuntime({manifest: input, cacheDirectory, fetchImpl: async () => new Response(payload)});
   await writeFile(path.join(result.directory, 'cadcove' + suffix), Buffer.alloc(payload.length));
   await expect(installRuntime({manifest: input, cacheDirectory, fetchImpl: () => {throw Error('No network');}})).rejects.toThrow('requires repair');
+}));
+
+test('a concurrent publisher with corrupt bytes is never accepted as a winning install', () => fixture(async cacheDirectory => {
+  const input = validateRuntimeManifest(manifest());
+  const digest = createHash('sha256').update(JSON.stringify(input)).digest('hex');
+  const winner = path.join(cacheDirectory, `${input.version}-${input.target}-${digest.slice(0, 24)}`);
+  let published = false;
+  await expect(installRuntime({manifest: input, cacheDirectory, fetchImpl: async () => {
+    if (!published) {
+      published = true;
+      await mkdir(winner);
+      for (const file of input.files) await writeFile(path.join(winner, file.name), Buffer.alloc(file.bytes), {mode: 0o755});
+    }
+    return new Response(payload);
+  }})).rejects.toThrow('checksum');
+  expect(await readdir(cacheDirectory)).toEqual([path.basename(winner)]);
+  expect(await readFile(path.join(winner, 'cadcove' + suffix))).toEqual(Buffer.alloc(payload.length));
 }));
 
 test('manifest rejects path traversal, incompatible platforms, missing executables, URLs and unsafe sizes', () => {

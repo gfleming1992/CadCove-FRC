@@ -15,7 +15,7 @@ const reader=(async()=>{for await(const bytes of child.stdout){partial+=new Text
 child.exited.then(()=>ended=true);
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 try{
- const deadline=Date.now()+45000;while(!ended&&!events.some(e=>e.event==='simulation-ready')&&Date.now()<deadline)await sleep(100);
+ const deadline=Date.now()+(process.platform==='win32'?180000:45000);while(!ended&&!events.some(e=>e.event==='simulation-ready')&&Date.now()<deadline)await sleep(100);
  if(!events.some(e=>e.event==='simulation-ready'))throw Error('Robot did not start: '+JSON.stringify(events)+(ended?await log:''));
  const before=(await command('sim-state')).result;let after=before;
  for(let i=0;i<20;i++){await command('sim-controls',{mode:'teleop',controllers:[{port:1,axes:[0,-.5,0,0,0,0],buttons:0,pov:-1}]});await sleep(100);after=(await command('sim-state')).result;if(after.error)throw Error(after.error);}

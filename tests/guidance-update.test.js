@@ -1,5 +1,5 @@
 import {test,expect} from 'bun:test';
-import {mkdtemp,readFile,writeFile,rm,mkdir,readdir,symlink} from 'node:fs/promises';
+import {mkdtemp,readFile,writeFile,rm,mkdir,readdir,symlink,rename} from 'node:fs/promises';
 import path from 'node:path';import os from 'node:os';
 import {initializeToolbox,updateToolboxGuidance} from '../lib/toolbox-project.js';
 import {guidanceState,guidanceStateFile,updateManagedGuidance} from '../lib/guidance-update.js';
@@ -26,9 +26,15 @@ test('refresh uses team CAD/build paths and preserves every project selection an
  const guide=await readFile(path.join(root,'.cadcove/AGENT.md'),'utf8');expect(guide).toContain('design/robot/');expect(guide).toContain('generated/cad/');
 }));
 test('symlink destinations, changed proposals and locks cannot overwrite team data',()=>fixture(async root=>{
- const f='.cadcove/AGENT.md',target=path.join(root,'external.md');await writeFile(target,'external');await rm(path.join(root,f));await symlink(target,path.join(root,f));
- await expect(updateToolboxGuidance({workspace:root})).rejects.toThrow('Unsafe guidance');expect(await readFile(target,'utf8')).toBe('external');
- await rm(path.join(root,f));await writeFile(path.join(root,f),'custom');const r=await updateToolboxGuidance({workspace:root});await writeFile(path.join(root,r.conflicts[0].proposal),'custom proposal');
+ const f='.cadcove/AGENT.md',metadata=path.join(root,'.cadcove');
+ const target=path.join(root,process.platform==='win32'?'external-cadcove/AGENT.md':'external.md');
+ if(process.platform==='win32'){
+  await rename(metadata,path.dirname(target));await writeFile(target,'external');await symlink(path.dirname(target),metadata,'junction');
+ }else{await writeFile(target,'external');await rm(path.join(root,f));await symlink(target,path.join(root,f));}
+ await expect(updateToolboxGuidance({workspace:root})).rejects.toThrow(process.platform==='win32'?'Unsafe initialization':'Unsafe guidance');expect(await readFile(target,'utf8')).toBe('external');
+ if(process.platform==='win32'){await rm(metadata,{recursive:true});await rename(path.dirname(target),metadata);}
+ else await rm(path.join(root,f));
+ await writeFile(path.join(root,f),'custom');const r=await updateToolboxGuidance({workspace:root});await writeFile(path.join(root,r.conflicts[0].proposal),'custom proposal');
  await expect(updateToolboxGuidance({workspace:root})).rejects.toThrow('proposal was modified');expect(await readFile(path.join(root,f),'utf8')).toBe('custom');
  await rm(path.join(root,r.conflicts[0].proposal));await writeFile(path.join(root,'.cadcove/guidance-update.lock'),JSON.stringify({pid:process.pid}));await expect(updateToolboxGuidance({workspace:root})).rejects.toThrow('lock exists');
 }));

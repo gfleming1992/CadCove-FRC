@@ -39,6 +39,11 @@ vendor integration and simulation accuracy would be especially helpful.
 
 ## Launch media
 
-The updated native-CadQuery film is pending capture verification. Add its final
-URL here before posting this announcement; do not substitute the earlier
-brepjs introduction.
+[Watch the one-minute native CadQuery launch film](https://github.com/gfleming1992/CadCove-FRC/releases/download/v0.2.0-rc.1/cadcove-frc-native-launch-60s.mp4).
+
+Actual VS Code captures show a native Python edit, interactive drivetrain
+inspection, and a recorded Codex Java-edit/test session. The second half uses
+the approved corrected intake/shooting montage with the original synthesized
+score. The design brief is staged; the code session and gameplay are independent
+takes. Cuts and playback speeds are documented in the release video provenance.
+Windows validation remains pending before posting this announcement.

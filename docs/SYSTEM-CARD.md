@@ -105,8 +105,10 @@ rendering/capture and clean shutdown. See the [local external-runtime evidence](
 The final GitHub prerelease attaches per-platform checksums, notices and test
 reports binding the downloaded VSIX to its qualification. CI uses software GPU
 rendering; full vendor/hardware checks have narrower scope and are identified
-separately. Windows and the updated launch film remain pending. Earlier native
-migration evidence below is retained with its own source and artifact identities.
+separately. Windows validation remains pending. The updated native-CadQuery
+launch film is attached to the prerelease with source/cut provenance and its
+own SHA-256 manifest; it is a demonstration, not additional qualification.
+Earlier native migration evidence below retains its source and artifact identities.
 
 ## Validation and known gaps
 

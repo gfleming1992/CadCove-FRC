@@ -69,7 +69,9 @@ source/notice review remains unresolved; do not bypass that gate.
    repair and the separate simulation profiles. Actual team/vendor execution is
    recorded separately from the stock-editor CI test.
 4. Keep Windows unqualified and the announcement draft unpublished until the
-   maintainer's Windows check and actual-editor video recording are complete.
+   maintainer's Windows check is complete. The actual-editor native CadQuery
+   launch video is recorded, reviewed and attached to `v0.2.0-rc.1` with its
+   own video provenance and SHA-256 manifest.
 
 Marketplace publication is separate: no publisher registration or Marketplace
 upload has been performed. Existing users should uninstall the old `cadcove-dev`

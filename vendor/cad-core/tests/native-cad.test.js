@@ -9,6 +9,14 @@ import {readSources,projectLayout} from '../extensions/vscode/src/project-files.
 import {snapshot} from '../src/core/revision.js';
 
 const python=process.env.CADCOVE_PYTHON;
+(python?test:test.skip)('native operation timeout reports the deadline and permits a fresh worker',async()=>{
+ const client=new NativeCadClient({python,worker:fileURLToPath(new URL('../src/native/worker.py',import.meta.url)),timeout:100});
+ try{
+  await expect(client.request({kind:'inspect',code:'import time\ntime.sleep(5)\nresult=1'})).rejects.toThrow('Native CAD build timed out');
+  client.timeout=5000;
+  expect(await client.request({kind:'inspect',code:'result=2'})).toBe(2);
+ }finally{client.dispose();}
+},90000);
 (python?test:test.skip)('native process builds, invalidates changed Python, preserves accepted output on errors, and restarts after cancel',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'cadcove-native-'));
  const client=new NativeCadClient({python,worker:fileURLToPath(new URL('../src/native/worker.py',import.meta.url))});

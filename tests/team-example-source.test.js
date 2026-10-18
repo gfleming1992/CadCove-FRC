@@ -1,10 +1,35 @@
 import {test,expect} from 'bun:test';
-import {readFile,readdir,lstat} from 'node:fs/promises';
+import {readFile,readdir,lstat,mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
+import os from 'node:os';
+import {publishDirectory} from '../lib/directory-publish.js';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 const root=path.resolve(import.meta.dir,'../examples/team3310-rebuilt'),source=path.join(root,'source');
 const json=async f=>JSON.parse(await readFile(path.join(root,f)));
 const hash=b=>createHash('sha256').update(b).digest('hex');
+
+test('example publication preserves existing outputs and the completed staging tree',async()=>{
+ const temp=await mkdtemp(path.join(os.tmpdir(),'cadcove-publish-'));
+ try{
+  const stage=path.join(temp,'stage'),output=path.join(temp,'output');await mkdir(stage);await mkdir(output);
+  await writeFile(path.join(stage,'model.py'),'new');await writeFile(path.join(output,'team.py'),'keep');
+  await expect(publishDirectory(stage,output)).rejects.toThrow('already exists');
+  expect(await readFile(path.join(stage,'model.py'),'utf8')).toBe('new');
+  expect(await readFile(path.join(output,'team.py'),'utf8')).toBe('keep');
+ }finally{await rm(temp,{recursive:true,force:true});}
+});
+
+test('example publication tolerates a departing process holding its working directory',async()=>{
+ const temp=await mkdtemp(path.join(os.tmpdir(),'cadcove-publish-'));
+ const stage=path.join(temp,'stage'),output=path.join(temp,'output');await mkdir(stage);await writeFile(path.join(stage,'model.py'),'complete');
+ const child=Bun.spawn([process.execPath,'-e',"process.stdout.write('ready');setTimeout(()=>process.exit(0),500)"],{cwd:stage,stdout:'pipe',stderr:'inherit'});
+ try{
+  const reader=child.stdout.getReader();await reader.read();reader.releaseLock();
+  await publishDirectory(stage,output,{timeout:5000});await child.exited;
+  expect(await readFile(path.join(output,'model.py'),'utf8')).toBe('complete');
+  await expect(lstat(stage)).rejects.toThrow();
+ }finally{child.kill();await child.exited;await rm(temp,{recursive:true,force:true});}
+});
 test('team example ships its CAD closure and robot colliders, with official-only field recipes',async()=>{
  const pin=await json('field-source.json'),scene=await json('source/scene-bindings.json'),world=await json('source/world.json');
  expect(new URL(pin.url).hostname).toBe('firstfrc.blob.core.windows.net');

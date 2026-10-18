@@ -16,6 +16,7 @@
     "lib/cad-reference.js",
     "lib/cli-build-provenance.js",
     "lib/dependency-notices.js",
+    "lib/directory-publish.js",
     "lib/example-bundle.js",
     "lib/example-create.js",
     "lib/team-example.js",

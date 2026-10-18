@@ -20,6 +20,10 @@ Cargo, for an explicitly configured workspace-local MSVC SDK and linker. The
 qualified compiler must still be Rust 1.91.1 with the MSVC host; a GNU build does
 not satisfy release provenance. SDKs and build tools are not shipped in the VSIX.
 Cold native-world validation and startup allow 120 seconds on Windows.
+Cold native CAD operations allow 15 minutes for full assemblies; a timed-out
+operation reports its deadline and the next request starts a fresh worker.
+Example publication retries temporary directory sharing locks for 30 seconds
+after Gradle exits, without replacing an existing output workspace.
 
 Record the actual OS version: a Windows 11 test run does not qualify Windows 10.
 Run the same candidate and installed-editor checks on Windows 10 before adding

@@ -5,13 +5,16 @@
 - Verify a concurrent install/repair winner before reusing it when Windows
   reports a sharing or rename permission error. Corrupt winners still fail.
 - Allow two minutes for Windows cold native-world startup and validation.
+- Allow 15 minutes for cold Windows CAD operations, retain the explicit timeout
+  error, and verify that a timed-out worker can restart. Retry transient Windows
+  locks when publishing a completed example after Gradle exits.
 - Honor Cargo's explicit platform linker when compiling the CLI launcher;
   support Windows Gradle batch launchers in the training verifier.
 - Correct native CAD test file URLs and use Windows junctions for redirected
   path boundary tests without requiring administrator privileges. Allow a
   bounded 60 seconds for filesystem-heavy portable tests.
 - Refresh the generic CAD test pin from a separate local Windows-fix repository
-  based on the release's exported core. Production CAD code is unchanged.
+  based on the release's exported core, including the bounded Windows deadline.
 
 These changes do not establish Windows 10, GPU, controller or robot-hardware
 qualification. Release attachments must report their actual host and scope.

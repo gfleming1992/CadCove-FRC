@@ -6,6 +6,7 @@ import {decodeScene} from '../vendor/cad-core/src/core/mesh.js';
 import {initializeToolbox} from '../lib/toolbox-project.js';
 import {readRobotProject,auditRobotProject} from '../lib/robot-project.js';
 import {javaExecutable} from '../lib/java-runtime.js';
+import {publishDirectory} from '../lib/directory-publish.js';
 const args=process.argv.slice(2),options={};
 while(args.length){const k=args.shift();if(k==='--skip-robot-build'){options[k]=true;continue;}if(!['--output','--field-step'].includes(k)||!args.length||options[k])throw Error('Usage: bun scripts/setup-team-example.js --output NEW_WORKSPACE [--field-step FILE] [--skip-robot-build]');options[k]=args.shift();}
 if(!options['--output'])throw Error('--output NEW_WORKSPACE is required');
@@ -69,6 +70,6 @@ try{
  }
  await writeFile(path.join(stage,'example-setup.json'),JSON.stringify({schema:1,example:'team3310-rebuilt',fieldUrl:pin.url,fieldSha256:pin.sha256,worldHash:scene.worldHash,robotBuilt:!options['--skip-robot-build'],platform:process.platform,architecture:process.arch,fieldColliderHashesChanged:[...mapped].filter(([a,b])=>a!==b).length,audit},null,2)+'\n');
  await writeFile(path.join(stage,'README.md'),'# Team 3310 Amarillo on REBUILT\n\nOpen this folder in VS Code with CadCove installed. Run **CadCove: Open Robot CAD** or **CadCove: Open Live Simulation**. Map controllers in WPILib Sim GUI (driver 1, operator 0) and enable Teleoperated.\n\nRobot code is under robot-code; editable CAD is under cad-assets/robot. FIRST field geometry was downloaded and rebuilt locally. Review calibration in robot.sim.json. This workspace is for simulation; its team number defaults to 0.\n');
- await rename(stage,output);
+ await publishDirectory(stage,output);
  console.log(JSON.stringify({ok:true,workspace:output,project:path.join(output,'robot.sim.json'),robotBuilt:!options['--skip-robot-build'],audit:true}));
 }finally{await rm(stage,{recursive:true,force:true});}

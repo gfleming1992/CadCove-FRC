@@ -9,7 +9,7 @@ import {readZip} from '@vscode/vsce/out/zip.js';
 const vsix=process.argv[2];if(!vsix)throw Error('Pass the VSIX to test');
 const root=path.resolve(import.meta.dir,'..');
 const profile=await mkdtemp(path.join(os.tmpdir(),'cadcove-vsix-test-'));
-const folders={user:path.join(profile,'user'),extensions:path.join(profile,'extensions'),workspace:path.join(profile,'team'),driver:path.join(profile,'test-driver')};
+const folders={user:path.join(profile,process.platform==='win32'?'user-data':'user'),extensions:path.join(profile,'extensions'),workspace:path.join(profile,'team'),driver:path.join(profile,'test-driver')};
 for(const folder of Object.values(folders))await mkdir(folder,{recursive:true});
 // Optional actual WPILib installer inputs. Keep all extension/profile changes
 // inside this test directory; never install into a student's working editor.
@@ -84,6 +84,9 @@ if(process.platform==='linux'&&process.env.CI==='true'&&process.env.CADCOVE_TEST
  }
 }
 const env={...process.env};
+// WPILib can use VS Code portable mode, which overrides --user-data-dir.
+// Redirect portable data too so settings and installs stay in this test profile.
+if(process.platform==='win32')env.VSCODE_PORTABLE=profile;
 for(const key of ['ELECTRON_RUN_AS_NODE','VSCODE_IPC_HOOK_CLI','NODE_OPTIONS','NODE_REPL_EXTERNAL_MODULE'])delete env[key];
 const archive=await readZip(path.resolve(vsix),name=>name==='extension/package.json');
 const manifest=JSON.parse(archive.get('extension/package.json'));
@@ -94,7 +97,7 @@ for(const companion of companions)await install(companion.file);
 await install(vsix);
 const reportFile=path.join(folders.workspace,'extension-test-report.json');
 const softwareGPU=process.env.CADCOVE_TEST_SOFTWARE_GPU==='1';
-const graphics=softwareGPU?['--enable-unsafe-webgpu','--use-webgpu-adapter=swiftshader','--use-angle=swiftshader','--enable-unsafe-swiftshader','--enable-features=Vulkan','--use-vulkan=swiftshader']:[];
+const graphics=softwareGPU?['--enable-unsafe-webgpu','--use-webgpu-adapter=swiftshader','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader',...(process.platform==='win32'?[]:['--enable-features=Vulkan','--use-vulkan=swiftshader'])]:[];
 const child=spawn(executable,[...args,...graphics,'--new-window',`--extensionDevelopmentPath=${folders.driver}`,`--extensionTestsPath=${path.join(root,'tests/toolbox-extension-runner.cjs')}`,'--skip-welcome','--skip-release-notes','--disable-workspace-trust','--disable-updates',folders.workspace],{env,stdio:'inherit',detached:process.platform!=='win32'});
 let launchError,exited=false;
 const completion=new Promise(resolve=>{child.on('error',error=>{launchError=error;exited=true;resolve();});child.on('exit',()=>{exited=true;resolve();});});

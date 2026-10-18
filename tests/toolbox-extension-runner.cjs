@@ -21,6 +21,7 @@ exports.run=async function(){
    const wpilib=vscode.extensions.getExtension('wpilibsuite.vscode-wpilib');
    await wpilib.activate();assert.equal(wpilib.isActive,true,'WPILib activates alongside CadCove');
   }
+  if(process.env.CADCOVE_PYTHON)assert.equal(vscode.workspace.getConfiguration('instantcad',vscode.Uri.file(folder)).get('pythonPath'),process.env.CADCOVE_PYTHON,'The isolated editor must use the requested CadQuery interpreter');
   const buildProvenance=JSON.parse(await fs.readFile(path.join(extension.extensionPath,'build-provenance.json'),'utf8'));
   api=await extension.activate();
   const init=await api.initializeWorkspace();assert.equal(init.ok,true);

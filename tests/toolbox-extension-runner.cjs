@@ -50,6 +50,15 @@ def build(ctx):
 `;
 
   await fs.writeFile(entry,code);
+  const helper=path.join(folder,'cad/helper.py');
+  await fs.writeFile(helper,'"""\nresult = example\n"""\ndef helper(): pass\n');
+  const waitMenu=async predicate=>{const until=Date.now()+10000;while(Date.now()<until){if(predicate(api.modelMenuEntries()))return;await delay(50);}throw Error('Explorer model index did not update');};
+  await waitMenu(paths=>paths.includes(entry));
+  assert.ok(!api.modelMenuEntries().includes(helper),'Helper and docstring are not model entries');
+  await fs.writeFile(helper,'result = None\n');
+  await waitMenu(paths=>paths.includes(helper));
+  await fs.unlink(helper);
+  await waitMenu(paths=>!paths.includes(helper));
   const waitFor=async predicate=>{const until=Date.now()+60000;while(Date.now()<until){const state=api.getDiagnostics()[0];if(predicate(state))return state;await delay(100);}throw Error('Timed out: '+JSON.stringify(api.getDiagnostics()));};
   await api.openModel();
   const initial=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');

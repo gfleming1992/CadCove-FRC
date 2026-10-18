@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Show the Explorer CAD preview action for Python model entry points and STEP
+  assets; hide it for helper modules. Detect entries locally without executing Python.
+
 ## 0.2.0 — unified native release
 
 - Merge Windows fixes into `release/native-cadquery-0.2`, shared with macOS.

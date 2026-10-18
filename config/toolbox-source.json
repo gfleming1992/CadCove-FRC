@@ -153,7 +153,8 @@
     "docs/LAUNCH-POST.md",
     "docs/WINDOWS-CHECK.md",
     "docs/release-evidence/",
-    "docs/INSTALL.md"
+    "docs/INSTALL.md",
+    "tests/model-menu.test.js"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

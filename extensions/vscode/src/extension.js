@@ -14,10 +14,12 @@ import {simulationPanels} from './simulation-panel.js';
 import {robotPanels} from './robot-panel.js';
 import {registerMcp} from './mcp.js';
 import {SimulationTasks} from './simulation-tasks.js';
+import {registerModelMenu} from './model-menu.js';
 const execute = promisify(execFile);
 let stopOwnedSimulations=async()=>{};
 
 export function activate(context) {
+  const modelMenu=registerModelMenu(vscode,context);
   const output=vscode.window.createOutputChannel('CadCove runtime');context.subscriptions.push(output);
   let runtime, installing;
   const cancellations=new Set();
@@ -184,6 +186,6 @@ export function activate(context) {
   if(vscode.workspace.isTrusted&&pending&&vscode.workspace.workspaceFolders?.some(f=>f.uri.fsPath===pending)){
     void context.globalState.update('cadcove.pendingTeamExample',undefined).then(()=>playTeamWorkspace(vscode.Uri.file(pending))).catch(error=>{output.appendLine(String(error.stack||error));void vscode.window.showErrorMessage('CadCove team example: '+error.message);});
   }
-  return {...cad,openRobotCAD:robots.open,robotDiagnostics:robots.diagnostics,startMcp:mcp.start,createTeamExample,playTeamWorkspace,ensureRuntime,repairRuntime,initializeWorkspace:initialize,doctor,projectSettings:settings,startSimulation,stopSimulation,openSimulation:views.open,simulationDiagnostics:views.diagnostics,closeSimulationViews:views.closeAll,captureSimulation:views.capture};
+  return {...cad,modelMenuEntries:modelMenu.entries,openRobotCAD:robots.open,robotDiagnostics:robots.diagnostics,startMcp:mcp.start,createTeamExample,playTeamWorkspace,ensureRuntime,repairRuntime,initializeWorkspace:initialize,doctor,projectSettings:settings,startSimulation,stopSimulation,openSimulation:views.open,simulationDiagnostics:views.diagnostics,closeSimulationViews:views.closeAll,captureSimulation:views.capture};
 }
 export async function deactivate(){deactivateCAD();await stopOwnedSimulations();}

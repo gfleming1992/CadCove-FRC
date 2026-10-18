@@ -2,7 +2,7 @@
   "name": "cadcove-toolbox",
   "displayName": "CadCove FRC",
   "description": "Local, agent-driven CAD and FRC simulation workspace tools.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "gfleming1992",
   "license": "MIT",
   "engines": {
@@ -26,7 +26,8 @@
     }
   },
   "activationEvents": [
-    "workspaceContains:.cadcove/project.json"
+    "workspaceContains:.cadcove/project.json",
+    "onStartupFinished"
   ],
   "contributes": {
     "commands": [
@@ -91,7 +92,7 @@
       "explorer/context": [
         {
           "command": "cadcove.open",
-          "when": "resourceExtname =~ /\\.(py|step|stp)$/i",
+          "when": "resourceScheme == file && !explorerResourceIsFolder && (resourceExtname =~ /\\.(step|stp)$/i || resourcePath in cadcove.modelEntryPaths)",
           "group": "navigation"
         }
       ]

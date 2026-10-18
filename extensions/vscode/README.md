@@ -1,164 +1,68 @@
-# CadCove FRC — release candidate
+# CadCove FRC
 
-## Agent tools start with the editor
+**CAD, robot code and physics simulation in VS Code/WPILib.**
 
-In a trusted CadCove workspace, the extension starts an authenticated local MCP
-server and advertises **CadCove** to VS Code's agent tool picker. Enable it there
-and approve the editor's normal tool-access prompt if asked. “Open robot CAD”
-uses `open_robot_cad` directly; it does not need a repository scan or simulation
-startup. `workspace_context`, `cad_status`, `capture_scene`, `set_camera`, and
-simulation tools provide structured feedback. Edit source with normal editor tools.
+Work with Codex, Claude, Copilot or your preferred coding agent to create parts,
+edit robot code and test it in a local simulator.
 
-For other local MCP-capable agents, configure a stdio server with command
-`cadcove`, arguments `["mcp", "--workspace", "/absolute/path/to/robot-project"]`.
-Use the CLI path from a new **CadCove: Open Toolbox Terminal** if it is not on
-PATH. Keep that workspace open in VS Code. The bridge reads a private generated
-endpoint descriptor under the configured build folder; never commit it or copy
-its token into agent prompts. A workspace reload requires reconnecting the agent
-MCP server. No remote service or AI API key is needed.
+[Watch the demo](https://youtu.be/5UMsJ54wpM8) ·
+[Setup guide](https://github.com/gfleming1992/CadCove-FRC/blob/main/docs/INSTALL.md) ·
+[Source code](https://github.com/gfleming1992/CadCove-FRC)
 
-Use **CadCove: Update Agent Guidance** once in existing projects, then start a
-new agent conversation so its discovery instructions are current. Team edits are
-preserved. Server availability alone cannot force an agent to use a tool; the
-workspace guidance directs simple open requests to the tool immediately.
+## Features
 
+- Editable Python/CadQuery models and STEP imports from Onshape/SolidWorks.
+- Interactive, colored WebGPU assemblies with pan, zoom and orbit.
+- Cached reopening and component updates that preserve your camera.
+- Agent tools for building, inspecting, capturing and exporting CAD.
+- Native Rust/Rapier simulation with Java/WPILib/Phoenix integration.
+- Live driving and more detailed simulation profiles.
 
-A single editor wrapper for the shared local CAD core and native simulation
-toolbox. Use your existing Codex, Claude Code, Copilot, or command-line agent; no AI account,
-API key, or embedded chat box is added by this extension.
+## Get started
 
-1. Install Bun 1.4.2 separately, restart VS Code, then open a trusted local WPILib
-   workspace. The launcher checks `CADCOVE_BUN` (absolute path), `~/.bun/bin/bun`,
-   then PATH. It does not download Bun. Python/CadQuery is also installed separately.
-2. Run **CadCove: Initialize Team Workspace**. This installs/verifies the bundled
-   platform runtime and creates agent instructions without replacing robot code.
-3. Open **CadCove: Open Toolbox Terminal** to use `cadcove help`. New editor
-   terminals also receive the runtime on PATH. An already-running agent may need
-   a new terminal or its session restarted to inherit the PATH addition.
-4. Start a new agent conversation. Initialization adds `AGENTS.md`, `CLAUDE.md`
-   and `.github/copilot-instructions.md`, each pointing at `.cadcove/AGENT.md`.
-   Existing team instructions are preserved. Ask the agent to read that guide and
-   author the Python entry configured in `.cadcove/project.json` (initially
-   `cad/models.py`). Install Python 3.12 with the pinned `cad-requirements.txt`
-   and set `instantcad.pythonPath` to that interpreter. Initialization installs
-   native CadQuery authoring, inspection and capture guidance. CAD can run before
-   Java/vendor dependencies and simulation integration are configured.
-5. Run **CadCove: Open in CAD Canvas**. Edits rebuild automatically. Orbit with left
-   drag, pan with right/middle or Shift-drag, zoom with the wheel, and press F to
-   fit. Build diagnostics and preview images are written under the configured
-   build directory's `cad-cache/<entry>/` folder.
+1. Install **Bun 1.4.2** and **Python 3.12** with the pinned CadQuery dependencies
+   in the [setup guide](https://github.com/gfleming1992/CadCove-FRC/blob/main/docs/INSTALL.md).
+2. Set **instantcad.pythonPath** to that Python environment's executable and
+   restart VS Code after installing dependencies.
+3. Open a trusted local project and run **CadCove: Initialize Team Workspace**.
+4. Start a new agent conversation. Setup creates guidance for Codex, Claude and
+   Copilot while preserving existing team instructions.
+5. Right-click a `.py`, `.step` or `.stp` file and select
+   **CadCove: Open in CAD Canvas**.
 
-Agents can use `cadcove cad-status --workspace .` and
-`cadcove cad-preview --workspace .` to get JSON feedback. These commands reject
-stale source revisions; preview lookup also checks the PNG digest before
-returning its path. The preview represents the last build, not subsequent camera
-movements.
+Orbit with left-drag, pan with right/middle or Shift-drag, zoom with the wheel,
+and press **F** to fit the model.
 
-For an integrated robot, **CadCove: Start Robot Simulation** runs the packaged
-CLI as a local editor task; **Stop Robot Simulation** shuts it down. Agents can
-also use `cadcove sim-run`, `sim-state`, `sim-objects`, `sim-controls`, and
-`sim-stop` with an explicit `--project` manifest. Read `.cadcove/AGENT.md` for
-bridge export, device integration, input leases, and calibration requirements.
-`simulationProject` in `.cadcove/project.json` may point to a subfolder manifest.
-Starting a task is not confirmation of readiness: wait for its ready event or
-query state. Then run **CadCove: Open Live Simulation**. The canvas shares the
-generic CAD renderer and retains CAD colors; live body poses come from native
-physics. Orbit/pan/zoom work as in the CAD view.
+Use **CadCove: Open Toolbox Terminal** for CLI tools. MCP tools are also available
+in a trusted, open workspace. CadCove requires no separate AI account or API key.
 
-Closing the extension fences new simulation starts, cancels pending runtime
-installation, and drains starts already waiting for editor task creation. Owned
-tasks are then stopped with the verified runtime selected for that launch.
-Shutdown does not require installing a replacement runtime or trusting a newly
-selected executable. Other applications and externally launched sessions are
-not part of this task ownership list.
+## Try Team 3310's Amarillo robot
 
-The simulation canvas is view-only, with only physics real-time percentage in
-its footer. Set `runtime.controlSource` to `"driverstation"` and
-`runtime.driverStation` to `"gui"` in `robot.sim.json`, then restart. Physical
-controllers and enable/disable belong to WPILib Sim GUI (or FRC Driver Station
-via the socket provider). Canvas focus never takes control away from Driver Station.
+The repository includes the robot's CAD, code and simulation bindings. Follow
+[the example setup](https://github.com/gfleming1992/CadCove-FRC/blob/main/examples/team3310-rebuilt/README.md)
+to download the REBUILT field and build the robot with your WPILib installation.
+The extension itself includes the tools and a small training fixture.
 
-Agents can use `sim-capture`, `sim-view` and `sim-viewer-state` for visual feedback.
-For automated controller trials, select `runtime.controlSource: "agent"` and
-restart; `sim-controls` retains its input lease. `sim-practice` no longer enables
-this canvas. Live Driver Station runs reject scripted control/match takeover.
+For an integrated project, run **CadCove: Start Robot Simulation** followed by
+**CadCove: Open Live Simulation**. Configure controllers and enable Teleoperated
+in WPILib Sim GUI. See
+[Driver Station setup](https://github.com/gfleming1992/CadCove-FRC/blob/main/docs/DRIVER-STATION.md).
 
-Set source/build directories and the entry in `.cadcove/project.json`; close and
-reopen the CAD panel after changing them. The canvas has no AI input or import
-wizard. Imports and robot-specific integration are authored through source files.
+## Project setup and updates
 
-## Agent guidance updates
+Configure CAD source/build folders and the Python entry in `.cadcove/project.json`.
+Run **CadCove: Update Agent Guidance** after upgrading. Use
+**CadCove: Check Project** for configuration diagnostics and
+**CadCove: Repair Runtime** to restore the bundled runtime.
 
-Run **CadCove: Update Agent Guidance** after upgrading. It adds missing discovery
-blocks (including Claude support for older workspaces), updates untouched generated
-guides, and writes review proposals for team-edited guidance. Read the runtime
-output for conflict paths, merge deliberately, then start a new agent conversation.
-The extension does not choose or configure an AI provider.
+Robot simulation requires WPILib and matching desktop vendor libraries. Review
+mechanism bindings and physical parameters for your robot; simulation complements
+physical testing. Python models and robot programs run with your local permissions,
+so only open trusted projects.
 
-For separate practice/detailed builds, use `cadcove sim-mode` (see `cadcove help`).
-A gameplay recipe must match the detailed world hash and declare its assumptions.
-Validate the new profile, stop the old session, and select the new manifest using
-`simulationProject` in `.cadcove/project.json` before starting again.
+[Agent quickstart](https://github.com/gfleming1992/CadCove-FRC/blob/main/docs/AGENT-QUICKSTART.md) ·
+[System card](https://github.com/gfleming1992/CadCove-FRC/blob/main/docs/SYSTEM-CARD.md) ·
+[Report an issue](https://github.com/gfleming1992/CadCove-FRC/issues)
 
-## Runtime recovery and updates
-
-Use **CadCove: Repair Runtime** from the Command Palette if runtime validation
-reports damaged or missing files. It verifies and, when needed, restores the
-exact pinned runtime from the installed platform extension; it works offline.
-The operation is cancellable and does not edit CAD, robot sources or project
-configuration. Errors are recorded in the **CadCove runtime** output channel.
-
-A repair publishes a fresh verified directory. Existing processes retain their
-original files; open a new toolbox terminal or restart an agent terminal to use
-the repaired CLI. A healthy repeat does not create another copy. Failed/cancelled
-repairs never become the selected runtime. Old generations are retained because
-terminals outside the extension may still use them. Do not manually clear the
-runtime cache while simulations or agent terminals are running.
-
-Update the extension to update its runtime. Each platform release pins its own
-file hashes, so neither a workspace nor a remote "latest" document can choose
-executables. A prior extension version can still verify and reuse its own cached
-runtime when rolled back. Runtime updates do not overwrite team-customized Java
-bridge sources: run `cadcove bridge-export --workspace . --review` for a separate
-versioned source copy and per-file comparison. Merge needed changes into the
-active `.cadcove/bridge`, preserve custom adapters, then rebuild the team's robot
-JAR and run integration checks. The review directory is not compiled by Gradle.
-
-This is an early-access GitHub VSIX, not a Marketplace publication. The publisher
-identifier `gfleming1992` matches the GitHub maintainer; it makes no claim that a
-Marketplace publisher is registered. Remove an older `cadcove-dev` extension
-before installing this version to avoid duplicate commands. Windows and broader
-vendor/hardware qualification remain open. Bun is an external prerequisite;
-this package contains no embedded Bun runtime.
-
-## Isolated installation checks
-
-Release engineering can run `scripts/test-toolbox-extension.js CANDIDATE.vsix`
-with `CADCOVE_TEST_EDITOR_VERSION=1.105.1` to download and test an exact stock
-editor version. Alternatively, set `VSCODE_EXECUTABLE` to a local stable editor's
-CLI or native executable. The runner uses a fresh user-data directory, extension
-directory and workspace, and closes only that owned editor process tree.
-
-`CADCOVE_TEST_SOFTWARE_GPU=1` explicitly requests SwiftShader for CI machines
-without a supported GPU. These flags apply only to the test editor. This is not
-evidence of hardware performance. The test installs the actual VSIX, checks
-initialization/CAD rebuilds/colors/previews/cache/repair/example export, and
-records the editor version and VSIX SHA-256 in its report. A missing adapter or
-failed build fails the test; it is not silently skipped. WPILib and actual robot
-execution can be added with the separate fixture variables documented in
-`docs/TOOLBOX-RELEASE.md`.
-
-## Play the team robot
-
-In the Team Robot edition, run **CadCove: Play Team Robot Example**. Choose a new
-workspace; the extension creates the real Team 3310 Amarillo/REBUILT example and
-opens live practice. Install the WPILib 2026 JDK first. Matching robot JAR and
-vendor libraries are included for the packaged platform. Map plugged-in controllers
-in WPILib Sim GUI, then enable Teleoperated there. The command reuses an existing
-team-example workspace. The generic source build can include a reviewed local
-content pack via `package-runtime.js --team-example EXPORTED_WORKSPACE`; the pack
-is not part of the generic MIT source export or a cleared public asset release.
-
-### STEP previews
-
-Right-click `.step`, `.stp`, or `.py` files and select **CadCove: Open in CAD Canvas**. STEP files are imported directly without adding generated source to your CAD source folder. Preview caches update when the selected STEP changes.
+Original CadCove code is MIT licensed. Dependencies and robot/season assets retain
+their own terms. [License details](https://github.com/gfleming1992/CadCove-FRC/blob/main/licenses/README.md).

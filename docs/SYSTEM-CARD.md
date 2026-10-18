@@ -1,159 +1,89 @@
 # CadCove-FRC — system card
 
-Release candidate: native CadQuery edition, October 2026.
+## What it does
 
-## What it is
+CadCove-FRC brings CAD, robot code and physics simulation into VS Code and
+WPILib VS Code. Teams keep their models, code and simulation settings in one
+repository and work with their existing coding agent, such as Codex, Claude or
+Copilot. CadCove is local and MIT open source; it requires no CadCove account or
+AI API key.
 
-An MIT-licensed, local, agent-friendly CAD + robot-code + simulation workspace
-for VS Code and WPILib VS Code. Teams keep editable geometry, robot code, physics
-configuration, and build artifacts together in their repository. Their existing
-coding agent operates through files, a structured CLI, and optional MCP tools.
-CadCove contains no hosted AI model, API key requirement, or embedded AI chat UI.
+## How it works
 
-## Architecture
+| Component | What it does |
+| --- | --- |
+| Python / CadQuery / native OCCT | Builds editable parts and assemblies, imports STEP, checks geometry and exports models |
+| WebGPU viewer | Displays colored CAD inside VS Code with pan, zoom, orbit and image capture |
+| Java / WPILib / Phoenix 6 integration | Connects the team's robot program to simulated motors and sensors |
+| Native Rust / Rapier | Simulates motion, contacts, mechanisms and field interactions on the local CPU |
+| Agent tools | Build, inspect, capture and test through files and a CLI; MCP is also available |
 
-| Layer | Implementation | Responsibility |
-| --- | --- | --- |
-| CAD source | Python / CadQuery 2.6.1 | Parametric parts, assemblies, vendor STEP imports |
-| Geometry | Native OCCT 7.8.1.1 via OCP | BREP modeling, validation, tessellation, STEP exchange |
-| Viewer | Shared WebGPU renderer in VS Code webview | Colored meshes, pan/zoom/orbit, focused captures |
-| Agent interface | Local CLI, files, optional MCP | Build, inspect exact geometry, capture, export, simulation queries |
-| Robot program | Java / WPILib with supported Phoenix 6 adapters | Actual team control code and simulated device state |
-| Physics | Native Rust / Rapier | Rigid bodies, contacts, mechanisms and season interactions |
-| Season/example data | Separate source packs and manifests | Swappable robot, field, rules knowledge and calibration |
+CAD modeling and physics run on your computer. The VS Code webview displays
+the scene. Robot and season configurations are replaceable.
 
-Python/CadQuery runs locally on the user's machine. The VS Code webview renders
-the resulting meshes with WebGPU.
+## Typical workflow
 
-## Agent feedback loop
+1. Install the extension and dependencies using the [installation guide](INSTALL.md).
+2. Initialize a team workspace to add guidance for your coding agent.
+3. Ask the agent to create or edit a Python model, or import existing STEP parts.
+4. Open the model in the CAD canvas. The agent can inspect dimensions, check
+   geometry and capture views to review its work.
+5. Connect the robot code, motors, sensors and mechanisms to the simulation.
+6. Test changes through live driving or automated runs, then review the results.
 
-1. Read team instructions, design requirements, CAD source and season references.
-2. Edit ordinary Python or robot code.
-3. Build and examine actual exceptions, validity, bounds, volumes and timings.
-4. Run exact geometric assertions; capture focused views from the WebGPU canvas.
-5. Repair, repeat and accept only revision-matched results.
-6. Rebuild/review simulation bindings and calibration after CAD changes; run robot
-   code with structured state/object queries, controller inputs and scene captures.
+Edits reuse cached components and preserve the camera. Cached models can reopen
+without rebuilding their geometry. If a build fails, the viewer keeps the last
+successful scene and reports the error.
 
-This is inspired by execution-and-visual-feedback CAD workflows, including
-BenchCAD. We have not measured a BenchCAD score and do not claim benchmark parity.
-Agents author ordinary Python using the CadQuery and OCP APIs.
+See the [agent quickstart](AGENT-QUICKSTART.md) and
+[robot integration guide](ROBOT-PROJECTS.md) for details.
 
-## Cache and editing behavior
+## Included example
 
-Sources are fingerprinted with their configured entry and native worker identity.
-Warm workers cache reusable BREP components and tessellations. Dependency-aware
-components reuse unchanged prototypes; assembly occurrences keep stable IDs and
-colors. The viewer preserves camera state when accepting a rebuilt scene. Failed
-builds retain the last accepted scene but report an error rather than claiming
-that retained geometry is current. Valid saved mesh caches can open without
-starting the CAD worker. Generated artifacts belong under the configured build
-folder and can be regenerated.
+The main example is **Team 3310's Amarillo robot**, with editable CadQuery parts,
+vendor STEP components, robot code and simulation bindings. Setup downloads the
+REBUILT field from FIRST. The robot and field can be replaced for your own team
+and season. See [example setup](../examples/team3310-rebuilt/README.md).
 
-## Example and fidelity
+## Simulation modes and practical limits
 
-The included Team 3310 Amarillo example has 1,958 occurrences: 109 authored
-CadQuery part designs and 320 retained vendor or unclassified STEP prototypes.
-The REBUILT field is downloaded directly from FIRST using a pinned checksum;
-its 6,186 occurrences are reconstructed locally with placement and appearance.
-The native field importer preserves 431 prototypes, 51 multicolor occurrences,
-and a 33-color palette.
+- **Gameplay:** prioritizes responsive driving with simplified contact behavior.
+- **Detailed simulation:** retains more contact detail and may run slower than
+  real time. The viewer shows how quickly the simulation is advancing.
 
-The example includes robot code, mechanism mappings and reviewed collision
-approximations. A STEP assembly alone cannot reliably infer motor IDs, wiring,
-ratios, material density, inertia, friction or control semantics. Teams and agents
-must supply or review those inputs. Unknown calibration remains explicit.
+CAD alone does not specify motor IDs, gearing, mass, friction or control behavior.
+Teams must review those settings and calibrate them against their robot. Supported
+WPILib/Phoenix devices have adapters; other devices may need integration work.
+Simulated Limelight observations are approximations.
 
-## Simulation modes and limits
+Performance depends on your CPU, scene complexity and the number of active
+contacts. Simulation helps test ideas and code; physical robot testing and safety
+checks are still required. The edited launch video is a demonstration, not a
+real-time performance measurement.
 
-Gameplay mode prioritizes interactive driving using documented simplifications.
-The more detailed mode retains more contact fidelity and can run slower than
-wall clock. Both use native CPU physics; neither is a substitute for physical
-robot testing, hardware safety checks or competition inspection. Timing depends
-on the CPU, active contacts, mechanisms, timestep and ball activity. A smooth
-WebGPU view does not prove the physics is keeping up; the viewer exposes pace.
+Two example rails have known STEP export/reimport limitations, and one imported
+field pin has unresolved solid validity. Check exported geometry before using it
+for manufacturing. See [geometry notes](../examples/team3310-rebuilt/source/cad-assets/robot/native/README.md)
+and the [validation report](../examples/team3310-rebuilt/source/native-migration-validation.json).
 
-The bridge targets documented Java/WPILib/Phoenix interfaces. It does not promise
-universal support for every vendor device or every team's program without work.
-Limelight observations are simulated approximations, not photoreal sensor truth.
+## Requirements, privacy and licensing
 
-## Trust, privacy and licensing
+Use the package for your operating system and CPU architecture. Python/CadQuery
+and Bun are installed separately; running robot code also requires WPILib and
+matching vendor dependencies. Exact versions and setup are in the
+[installation guide](INSTALL.md). Consult the
+[release notes](https://github.com/gfleming1992/CadCove-FRC/releases) for each
+package's tested platforms and known issues.
 
-Only open trusted workspaces: CAD Python and robot programs execute with the
-user's permissions. Local process authentication protects editor tool endpoints;
-this is not a hostile-code sandbox. The user's chosen AI agent may send source
-or captures to its provider under that agent's configuration. CadCove itself
-requires no remote AI service. Keep generated endpoint tokens and private season
-manual imports out of version control.
+Only open trusted projects: Python CAD and robot programs execute with your user
+permissions. Your chosen AI agent may send code or captures to its provider under
+its own settings. Keep credentials and private season materials out of Git.
 
-Original CadCove code is MIT. Dependencies, team assets and FIRST content retain
-their own terms. Native Python packages are installed separately. Release packages use a small Rust CLI launcher and bundled JavaScript. Bun 1.4.2
-is installed separately; no Bun binary, JavaScriptCore or Bun embedded libraries
-are redistributed. The optional standalone developer package still carries its
-unresolved redistribution gate. Packaged Rust/JavaScript dependency notices
-are included and checked.
+Original CadCove code is MIT licensed. Dependencies, team assets and FIRST content
+retain their own terms; see [license details](../licenses/README.md).
 
-## Release-candidate distribution checks
+## Engineering details
 
-The external-Bun package passed 114 portable/native CAD contracts, relocated
-CLI/native-runtime checks, and installation into VS Code 1.105.1. The same local
-package passed with WPILib 2026.2.1 companions and the actual Java/Phoenix example:
-CAD edits/cache/captures, runtime repair, teleop control requests, live simulation
-rendering/capture and clean shutdown. See the [local external-runtime evidence](release-evidence/external-bun-macos-wpilib.json).
-
-The final GitHub prerelease attaches per-platform checksums, notices and test
-reports binding the downloaded VSIX to its qualification. CI uses software GPU
-rendering; full vendor/hardware checks have narrower scope and are identified
-separately. Windows validation remains pending. The updated native-CadQuery
-launch film is attached to the prerelease with source/cut provenance and its
-own SHA-256 manifest; it is a demonstration, not additional qualification.
-Earlier native migration evidence below retains its source and artifact identities.
-
-## Shared release source and Windows fixes
-
-`release/native-cadquery-0.2` combines the Windows fixes with current macOS source.
-Windows 11 Home build 26200 was used to exercise the fixes for sharing locks,
-long paths, cold builds and process cleanup. The source-build workflow covers
-Windows Server 2022 x64, macOS arm64/x64 and Linux x64. Its reports bind checks to
-specific commits and VSIX hashes. These checks do not qualify Windows 10 or
-replace full team-robot/controller acceptance on Windows. RC1 artifacts below
-retain their original identities; new builds use the RC2 candidate identity.
-
-## Validation and known gaps
-
-The local macOS arm64 qualification passed 113 portable/native CAD contract
-tests and 62 default Rust tests. The separate CAD contact-witness test passed
-with its local geometry fixture. The clean exported source installed its VSIX
-into stock VS Code 1.105.1 and exercised native modeling, cache reopening, error
-recovery, captures and runtime repair. The WPILib 2026.2.1 companion stack also
-passed with the full packaged robot, 1,958-part cached CAD view, real Java/Phoenix
-controls, simulation rendering/capture, and clean shutdown. Evidence:
-[clean source](release-evidence/macos-source.json),
-[full installed example](release-evidence/macos-wpilib.json).
-
-The training example independently built with GradleRIO 2026.2.1 and Phoenix
-26.1.3 and passed its CLI robot/season integration contract. The field's 6,186
-occurrence placements matched the prior importer to within 1.2e-16 in matrix
-entries; the 51 multicolor occurrences and 33-color palette were retained.
-These are functional checks, not a hardware-accuracy or real-time guarantee.
-
-GitHub CI passed clean-source builds, native tests, relocated runtime tests and
-installed stock-editor checks on macOS and Linux:
-[CI run](https://github.com/gfleming1992/CadCove-FRC/actions/runs/39075403389),
-[Linux evidence](release-evidence/linux-ci.json),
-[macOS CI evidence](release-evidence/macos-ci.json). CI uses software GPU rendering;
-it does not measure hardware GPU performance or run the full vendor team program. Windows was untested for that RC1 candidate. See the shared-release status above
-and [Windows acceptance checklist](WINDOWS-CHECK.md) for subsequent work.
-A package build alone is not platform qualification.
-
-Native migration evidence lives in
-[the geometry report](../examples/team3310-rebuilt/source/native-migration-validation.json).
-Two rails have known STEP round-trip validity limitations despite valid native
-BREPs; see [the native model notes](../examples/team3310-rebuilt/source/cad-assets/robot/native/README.md).
-One imported field quick-release pin has unresolved BREP validity after repair;
-it remains an imported mesh and is not evidence of a manufacturing-ready solid.
-
-The launch film uses actual editor and simulation captures, edited and retimed.
-Camera cuts and faster playback are presentation edits, not runtime performance
-measurements or a single continuous match. Music is an original synthesized
-score. No commercial music is redistributed with the release.
+For contributors: [release checks](TOOLBOX-RELEASE.md),
+[test reports](release-evidence/), and
+[CAD performance measurements](NATIVE-CADQUERY-PROFILE.md).

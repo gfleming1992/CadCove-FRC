@@ -67,6 +67,5 @@ out of shared screenshots or issue reports as appropriate.
 
 ## Scope
 
-This is a GitHub prerelease, not a Marketplace listing or hardware certification.
 The original code is MIT; dependencies and team/season content retain their terms.
 See the [system card](SYSTEM-CARD.md) for modeling, simulation and validation limits.

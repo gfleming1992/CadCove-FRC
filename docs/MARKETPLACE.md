@@ -2,6 +2,11 @@
 
 ## One-time account connection
 
+The **CadCove** publisher (`gfleming1992`) is registered. The current publisher UI
+does not expose a direct GitHub trusted-publishing policy. The workflow remains
+disabled until an available Microsoft authentication route is configured and
+verified; registration alone does not enable automatic uploads.
+
 Sign in to [Visual Studio Marketplace](https://marketplace.visualstudio.com/manage)
 with the Microsoft account associated with `gfleming1992@gmail.com`. Create or use
 publisher **gfleming1992**, with display name **CadCove**. Keeping the publisher ID

@@ -2,10 +2,10 @@
 
 ## One-time account connection
 
-The **CadCove** publisher (`gfleming1992`) is registered. The current publisher UI
-does not expose a direct GitHub trusted-publishing policy. The workflow remains
-disabled until Microsoft Entra workload identity federation is configured and
-verified; registration alone does not enable automatic uploads.
+The **CadCove** publisher (`gfleming1992`) is live. GitHub authentication through
+Microsoft Entra workload identity federation has been verified, its identity has
+publisher **Contributor** access, and automatic publication is enabled. The steps
+below document how to recreate that connection.
 
 Sign in to [Visual Studio Marketplace](https://marketplace.visualstudio.com/manage)
 with the Microsoft account associated with `gfleming1992@gmail.com`. Create or use
@@ -20,8 +20,12 @@ its federated credential for:
 - GitHub repository: `gfleming1992/CadCove-FRC`
 - Branch/ref: `refs/heads/main`
 - GitHub OIDC issuer: `https://token.actions.githubusercontent.com`
-- Subject: `repo:gfleming1992/CadCove-FRC:ref:refs/heads/main`
+- Subject: `repo:gfleming1992@7612360/CadCove-FRC@1405824070:ref:refs/heads/main`
 - Audience: `api://AzureADTokenExchange`
+
+This repository uses GitHub's immutable subject format, including the owner and
+repository IDs. Inspect `gh api repos/gfleming1992/CadCove-FRC/actions/oidc/customization/sub`
+before recreating the trust; a name-only subject will not match its tokens.
 
 Set GitHub repository variables `AZURE_TENANT_ID` and `AZURE_CLIENT_ID` to the
 directory and application IDs (these IDs are not secrets). Dispatch **Check
@@ -35,7 +39,7 @@ The release workflow publishes only after the whole build matrix passes. The
 separate identity-check workflow is manual and does not upload packages.
 
 After the publisher and policy are ready, set the repository Actions variable
-`MARKETPLACE_PUBLISH_ENABLED` to `true`. It is deliberately disabled until then.
+`MARKETPLACE_PUBLISH_ENABLED` to `true`. Set it to `false` to pause automatic uploads.
 No Microsoft password, PAT, or other long-lived publishing secret is stored in GitHub.
 Account verification, publisher terms and permission grants require the owner's
 participation. A Microsoft account alone does not create a Marketplace publisher.

@@ -179,9 +179,25 @@ def build(ctx):
     }
     assert.ok(state?.runId,'Managed robot must become ready');assert.ok(!state.error,state.error);
     const packet=path.join(folder,'test-controls.json');await fs.writeFile(packet,JSON.stringify({mode:'teleop',controllers:[]}));
-    await execute(runtime,['sim-controls','--project',project,'--input',packet]);await delay(150);
-    const after=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
+    // A single packet has a one-second safety lease. Keep sending controls
+    // while observing state: cold Windows CLI startup can outlast that lease.
+    let refreshing=true,refreshError,packets=0,after;
+    const refresh=(async()=>{try{while(refreshing){await execute(runtime,['sim-controls','--project',project,'--input',packet]);packets++;await delay(100);}}catch(error){refreshError=error;}})();
+    try{
+      const until=Date.now()+20000;
+      while(Date.now()<until){
+        if(refreshError)throw refreshError;
+        after=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
+        if(after.controlMode==='teleop'&&after.state.tick>state.state.tick)break;
+        await delay(100);
+      }
+    }finally{refreshing=false;await refresh;}
+    if(refreshError)throw refreshError;
     assert.equal(after.runId,state.runId);assert.ok(after.state.tick>state.state.tick);assert.equal(after.controlMode,'teleop');
+    await delay(1200);
+    const expired=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;
+    assert.equal(expired.controlMode,'disabled','Controls safely expire when the sender stops');
+    report.controlLease={packets,enabledWhileRefreshed:true,disabledAfterExpiry:true};
     if(teamExample){
       const start=after.state.bodies.chassis.position,startTime=after.state.time;
       let driven=after,distance=0,n=0;const driveDeadline=Date.now()+20000;

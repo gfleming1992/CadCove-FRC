@@ -5,6 +5,9 @@
 - Isolate WPILib portable-editor tests with an explicit portable data root;
   verify the installed extension, Python setting and runtime storage all use
   that profile. Portable VS Code otherwise ignores the test user-data argument.
+- Refresh leased controls during the installed-editor state check, and verify
+  the robot disables after the sender stops. Windows process startup must not
+  be mistaken for a persistent controller connection.
 
 - Verify a concurrent install/repair winner before reusing it when Windows
   reports a sharing or rename permission error. Corrupt winners still fail.

@@ -1,7 +1,9 @@
 # Install CadCove-FRC
 
 Install [CadCove FRC from Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox)
-or search for `gfleming1992.cadcove-toolbox` in VS Code's Extensions view.
+or search **CadCove FRC** (publisher **CadCove**) in VS Code's Extensions view.
+The exact extension ID is `gfleming1992.cadcove-toolbox`. VS Code selects the
+package for Windows x64, Linux x64, macOS Intel or macOS Apple Silicon.
 For offline installation, download the VSIX for your operating system and CPU
 from [GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases).
 Windows and macOS share one source tree; each OS/CPU needs its own native package.
@@ -48,6 +50,17 @@ then PATH. It checks the pinned Bun version before running the CLI. Set
 `CADCOVE_BUN` before launching VS Code if Bun lives elsewhere. A missing interpreter
 does not trigger a download. Runtime repair restores CadCove's files, not Bun.
 Rust is needed to build from source, not to use the downloaded native package.
+
+## Updates
+
+Marketplace installations update through VS Code's normal extension updater.
+Leave auto-update enabled, or use **Check for Extension Updates** in the Extensions
+view. Reload the editor if prompted, then run **CadCove: Update Agent Guidance**
+in each robot workspace and start a new agent conversation.
+
+Offline VSIX users can install newer platform packages from GitHub Releases.
+Marketplace and GitHub release version numbers may differ; their publication
+cadences are separate.
 
 ## Use the actual team example
 

@@ -86,9 +86,11 @@ source/notice review remains unresolved; do not bypass that gate.
    own video provenance and SHA-256 manifest.
 
 Marketplace updates use the [gated GitHub publishing workflow](MARKETPLACE.md).
-The publisher account and trusted publishing policy must be connected before
-automatic uploads are enabled. Existing users should uninstall the old `cadcove-dev`
-extension before installing the GitHub candidate to avoid duplicate commands.
+The publisher is connected and automatic uploads are enabled: pushes to `main`
+publish the exact packages only after all four platform jobs pass. Users install
+from [Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox)
+and receive updates through VS Code. Existing users should uninstall the old
+`cadcove-dev` extension to avoid duplicate commands.
 
 ## Main robot example source
 

@@ -4,6 +4,9 @@ I've been building CadCove-FRC to bring robot design, code, and simulation into
 one local VS Code / WPILib workspace. The idea is to let a team's existing coding
 agent work across the whole loop, with files and measurable feedback.
 
+**Now available on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox).**
+Search **CadCove FRC** (publisher **CadCove**) in VS Code or WPILib VS Code.
+
 **[Source and setup](https://github.com/gfleming1992/CadCove-FRC)** ·
 **[Technical system card](SYSTEM-CARD.md)**
 
@@ -26,14 +29,21 @@ The example is our Team 3310 robot on REBUILT: 1,958 CAD occurrences, including
 109 authored CadQuery designs and retained vendor STEP components. Robot and
 season packs are replaceable; FIRST field geometry is downloaded from FIRST.
 
-This is an early-access release. Platform packages and source are on
-[GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases); install
-Bun 1.4.2 and Python/CadQuery separately. Calibration and real robot validation still
-matter. It is not automatic engineering sign-off, and physics performance varies
-with hardware and contact load. Windows fixes have been merged into the shared
-`release/native-cadquery-0.2` branch; full Windows robot/controller acceptance
-remains open. All platforms include the same Team 3310 Amarillo example;
-please see the system card for platform evidence and current limitations.
+## Try it
+
+1. Install **CadCove FRC** from Marketplace. Packages are available for Windows x64,
+   Linux x64 and macOS Intel/Apple Silicon; VS Code selects the matching package.
+2. Follow the [installation guide](INSTALL.md) for Bun 1.4.2 and Python/CadQuery.
+   Running robot code also requires the matching WPILib/vendor toolchain.
+3. Open your robot project, run **CadCove: Initialize Team Workspace**, then start
+   a new conversation with your coding agent.
+4. Try the [Team 3310 Amarillo example](../examples/team3310-rebuilt/README.md),
+   or author a Python model and open it with **CadCove: Open in CAD Canvas**.
+
+Updates arrive through VS Code's normal extension updater. Offline VSIX packages
+and source remain available on [GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases).
+Calibration and real robot validation still matter; physics performance varies
+with hardware and contact load. See the system card for practical limitations.
 
 The original code is MIT. Third-party dependencies and season/team assets retain
 their respective licenses. Feedback from teams on setup, useful mechanisms,

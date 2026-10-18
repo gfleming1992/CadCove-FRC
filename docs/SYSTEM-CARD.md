@@ -23,7 +23,8 @@ the scene. Robot and season configurations are replaceable.
 
 ## Typical workflow
 
-1. Install the extension and dependencies using the [installation guide](INSTALL.md).
+1. Install [CadCove FRC from Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox)
+   and set up dependencies using the [installation guide](INSTALL.md).
 2. Initialize a team workspace to add guidance for your coding agent.
 3. Ask the agent to create or edit a Python model, or import existing STEP parts.
 4. Open the model in the CAD canvas. The agent can inspect dimensions, check

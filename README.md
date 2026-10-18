@@ -29,7 +29,9 @@ account or API key.
 ## Get started
 
 1. Install [CadCove FRC from Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox).
-   VS Code selects the package for your system. Offline VSIX packages are also in
+   Or search **CadCove FRC** (publisher **CadCove**) in the Extensions view.
+   VS Code selects the package for Windows x64, Linux x64, or macOS Intel/Apple Silicon.
+   Offline VSIX packages are also in
    [Releases](https://github.com/gfleming1992/CadCove-FRC/releases).
 2. Install **Bun 1.4.2** and **Python 3.12 with the pinned CadQuery dependencies**.
    Follow the [installation guide](docs/INSTALL.md) to configure Python.
@@ -71,6 +73,8 @@ robot. Simulation complements physical testing.
 
 Use **CadCove: Update Agent Guidance** after an upgrade to refresh the agent
 instructions while preserving team customizations.
+Marketplace installations receive new versions through VS Code's extension
+updates; leave auto-update enabled or use **Check for Extension Updates**.
 
 ## Documentation
 

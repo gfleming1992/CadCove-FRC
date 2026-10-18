@@ -11,9 +11,9 @@ inspection requires an editor window or an MCP tool registration.
 
 ## Install once per robot workspace
 
-1. Follow [installation](INSTALL.md): install Bun 1.4.2 and Python/CadQuery, then
-   the VSIX matching the local machine in VS Code or WPILib VS Code.
-   Current local qualification is macOS arm64; check release evidence for other platforms.
+1. Install [CadCove FRC from Marketplace](https://marketplace.visualstudio.com/items?itemName=gfleming1992.cadcove-toolbox)
+   in VS Code or WPILib VS Code. Follow [installation](INSTALL.md) to set up
+   Bun 1.4.2 and Python/CadQuery. VS Code selects the native package for your system.
 2. Open the **robot repository root** as a trusted local workspace. CAD may be a
    subfolder; the source/build folders are configured in `.cadcove/project.json`.
 3. Run **CadCove: Initialize Team Workspace**. It creates shared local guidance,

@@ -1,12 +1,23 @@
 import {test,expect} from 'bun:test';
 import {readFile,readdir,lstat,mkdtemp,mkdir,writeFile,rm} from 'node:fs/promises';
 import os from 'node:os';
-import {publishDirectory} from '../lib/directory-publish.js';
+import {publishDirectory,removeStagingDirectory} from '../lib/directory-publish.js';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 const root=path.resolve(import.meta.dir,'../examples/team3310-rebuilt'),source=path.join(root,'source');
 const json=async f=>JSON.parse(await readFile(path.join(root,f)));
 const hash=b=>createHash('sha256').update(b).digest('hex');
+
+test('example cleanup waits for a temporary Windows working-directory lock',async()=>{
+ const temp=await mkdtemp(path.join(os.tmpdir(),'cadcove-cleanup-'));
+ const child=Bun.spawn([process.execPath,'-e',"process.stdout.write('ready');setTimeout(()=>process.exit(0),700)"],{cwd:temp,stdout:'pipe',stderr:'inherit'});
+ try{
+  const reader=child.stdout.getReader();await reader.read();reader.releaseLock();
+  if(process.platform==='win32')await expect(removeStagingDirectory(temp,{timeout:0})).rejects.toThrow();
+  await removeStagingDirectory(temp,{timeout:5000});await child.exited;
+  await expect(lstat(temp)).rejects.toThrow();
+ }finally{child.kill();await child.exited;await rm(temp,{recursive:true,force:true});}
+});
 
 test('example publication preserves existing outputs and the completed staging tree',async()=>{
  const temp=await mkdtemp(path.join(os.tmpdir(),'cadcove-publish-'));

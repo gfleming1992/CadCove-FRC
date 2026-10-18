@@ -1,8 +1,9 @@
 # Maintainer Windows check — not yet qualified
 
-This candidate has **not been tested on Windows 10 or Windows 11**. CI currently
-runs macOS and Linux only. These instructions are the handoff for the maintainer's
-Windows laptop; they do not turn a macOS VSIX into a Windows package.
+The Windows fixes have been exercised on Windows 11 Home build 26200. Windows 10
+and the manual acceptance below remain unqualified. CI currently runs macOS and
+Linux only. Require the exact candidate's qualification report and hashes; these
+instructions do not turn a macOS VSIX into a Windows package.
 
 ## Build from the source release
 

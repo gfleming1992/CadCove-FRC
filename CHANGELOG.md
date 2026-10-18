@@ -14,6 +14,8 @@
   orphaned Bun/robot processes when the packaged executable is terminated.
 - Keep the downloaded Windows test editor in a short temporary cache path to
   avoid installation failures from deeply nested checkout paths.
+- Retry temporary Windows locks during private example staging cleanup, so a
+  successfully copied example does not report failure while an editor scans it.
 - Correct native CAD test file URLs and use Windows junctions for redirected
   path boundary tests without requiring administrator privileges. Allow a
   bounded 60 seconds for filesystem-heavy portable tests.

@@ -57,6 +57,18 @@ export function registerModelMenu(vscode,context) {
     if(entries.delete(key(uri)))publish();
     void drain();
   }
+  async function created(uri){
+    if(/\.py$/i.test(uri.fsPath)){update(uri);return;}
+    const folder=vscode.workspace.getWorkspaceFolder(uri);
+    if(uri.scheme!=='file'||!folder||/(?:^|[\\/])(?:\.git|\.venv|venv|node_modules|__pycache__|target|\.instantcad)(?:[\\/]|$)/.test(uri.fsPath.slice(folder.uri.fsPath.length)))return;
+    // A directory created by an external tool can arrive as one event on
+    // macOS, without separate events for the files already inside it.
+    try{
+      if(!((await vscode.workspace.fs.stat(uri)).type&2)||disposed)return;
+      const files=await vscode.workspace.findFiles(new vscode.RelativePattern(uri,PYTHON),EXCLUDE);
+      for(const file of files)update(file);
+    }catch{/* Directory was removed before it could be indexed. */}
+  }
   async function scan(){
     const version=++revision;
     pending.clear();entries.clear();publish();
@@ -67,11 +79,22 @@ export function registerModelMenu(vscode,context) {
       void drain();
     }catch{/* A removed workspace may cancel its search. */}
   }
-  const watcher=vscode.workspace.createFileSystemWatcher(PYTHON);
-  context.subscriptions.push(watcher,watcher.onDidCreate(update),watcher.onDidChange(update),watcher.onDidDelete(remove),
+  let watchers=[];
+  function watchFolders(){
+    for(const watcher of watchers)watcher.dispose();watchers=[];
+    for(const folder of vscode.workspace.workspaceFolders??[]){
+      const watcher=vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(folder,'**/*'));
+      watchers.push(watcher,watcher.onDidCreate(created),watcher.onDidChange(update),watcher.onDidDelete(uri=>{
+        for(const file of entries)if(file.startsWith(uri.fsPath+'/')||file.startsWith(uri.fsPath+'\\'))remove({fsPath:file});
+        remove(uri);
+      }));
+    }
+  }
+  watchFolders();
+  context.subscriptions.push(
     vscode.workspace.onDidSaveTextDocument(document=>update(document.uri)),
-    vscode.workspace.onDidChangeWorkspaceFolders(()=>void scan()),
-    {dispose(){disposed=true;revision++;clearTimeout(publishTimer);pending.clear();entries.clear();}});
+    vscode.workspace.onDidChangeWorkspaceFolders(()=>{watchFolders();void scan();}),
+    {dispose(){disposed=true;revision++;for(const watcher of watchers)watcher.dispose();clearTimeout(publishTimer);pending.clear();entries.clear();}});
   void scan();
   return {entries:()=>[...entries]};
 }

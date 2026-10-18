@@ -8,7 +8,9 @@ import {downloadAndUnzipVSCode} from '@vscode/test-electron';
 import {readZip} from '@vscode/vsce/out/zip.js';
 const vsix=process.argv[2];if(!vsix)throw Error('Pass the VSIX to test');
 const root=path.resolve(import.meta.dir,'..');
-const profile=await mkdtemp(path.join(os.tmpdir(),'cadcove-vsix-test-'));
+// macOS aliases /var to /private/var. Give Electron and filesystem watchers
+// the same physical workspace path rather than two spellings of the temp root.
+const profile=await mkdtemp(path.join(await realpath(os.tmpdir()),'cadcove-vsix-test-'));
 const folders={user:path.join(profile,'user-data'),extensions:path.join(profile,'extensions'),workspace:path.join(profile,'team'),driver:path.join(profile,'test-driver')};
 for(const folder of Object.values(folders))await mkdir(folder,{recursive:true});
 // Optional actual WPILib installer inputs. Keep all extension/profile changes

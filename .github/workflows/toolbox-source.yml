@@ -8,9 +8,24 @@ permissions:
   contents: read
 concurrency:
   group: toolbox-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Do not interrupt a Marketplace upload halfway through its platform set.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
+  version:
+    runs-on: ubuntu-24.04
+    outputs:
+      extension: ${{ steps.version.outputs.extension }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.2
+      - id: version
+        run: echo "extension=$(bun scripts/marketplace-artifacts.js version)" >> "$GITHUB_OUTPUT"
   source-build:
+    needs: version
     strategy:
       fail-fast: false
       matrix:
@@ -18,6 +33,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
     env:
+      CADCOVE_EXTENSION_VERSION: ${{ needs.version.outputs.extension }}
       CARGO_BUILD_JOBS: 4
       CADCOVE_TEST_EDITOR_VERSION: 1.105.1
       # Hosted runners have no guaranteed hardware GPU. This validates editor
@@ -86,6 +102,39 @@ jobs:
             ${{ runner.temp }}/cadcove-source/artifacts/runtime-source-check/cli-build.json
           if-no-files-found: error
           retention-days: 14
-      # This gate does not publish binaries or upload team fixtures. WPILib's
+      # Build jobs do not publish packages or upload team fixtures. WPILib's
       # companion extensions, vendor SDKs, licensing and hardware performance
       # qualification remain separate from this installed stock-editor check.
+
+  marketplace:
+    name: Publish tested Marketplace packages
+    needs: [version, source-build]
+    if: >-
+      github.repository == 'gfleming1992/CadCove-FRC' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      vars.MARKETPLACE_PUBLISH_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      CADCOVE_EXTENSION_VERSION: ${{ needs.version.outputs.extension }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6
+        with:
+          bun-version: 1.4.2
+      - run: bun install --frozen-lockfile
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: toolbox-*
+          path: artifacts/marketplace
+      - name: Validate complete platform set and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bun scripts/publish-marketplace.js artifacts/marketplace

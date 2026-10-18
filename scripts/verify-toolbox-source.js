@@ -7,6 +7,9 @@ const args=process.argv.slice(2);if(![2,3].includes(args.length)||args[0]!=='--o
 const testEditor=args[2]==='--editor';
 if(testEditor&&!/^\d+\.\d+\.\d+$/.test(process.env.CADCOVE_TEST_EDITOR_VERSION??''))throw Error('--editor requires an exact CADCOVE_TEST_EDITOR_VERSION');
 const root=path.resolve(import.meta.dir,'..'),output=path.resolve(args[1]);
+const extension=JSON.parse(await readFile(path.join(root,'extensions/vscode/package.json'),'utf8'));
+const version=process.env.CADCOVE_EXTENSION_VERSION??extension.version;
+if(!/^\d+\.\d+\.\d+$/.test(version))throw Error('Invalid release version');
 const steps=[];
 async function run(name,command,cwd=output){
  const start=performance.now();console.log('Source verification: '+name);
@@ -22,7 +25,7 @@ try{
  await run('native contracts',['cargo','test','--locked','--release','-p','instantcad-sim','--features','composite-compact','--target-dir','target/distribution']);
  await run('baseline native release',[process.execPath,'scripts/build-native-runtime.js']);
  const executable='instantcad-sim'+(process.platform==='win32'?'.exe':'');
- await run('external Bun runtime packaging',[process.execPath,'scripts/package-runtime.js','--native-binary','target/distribution/release/'+executable,'--output','artifacts/runtime-source-check','--version','0.2.0','--base-url','https://github.com/gfleming1992/CadCove-FRC/releases/download/v0.2.0']);
+ await run('external Bun runtime packaging',[process.execPath,'scripts/package-runtime.js','--native-binary','target/distribution/release/'+executable,'--output','artifacts/runtime-source-check','--version',version,'--base-url',`https://github.com/gfleming1992/CadCove-FRC/releases/download/v${version}`]);
  await run('relocated offline runtime',[process.execPath,'tests/packaged-runtime.js','artifacts/runtime-source-check']);
  await run('extension build',[process.execPath,'scripts/build-toolbox-extension.js','--runtime','artifacts/runtime-source-check']);
  await run('verified release candidate VSIX',[process.execPath,'scripts/package-toolbox-extension.js','--extension','build/toolbox-extension-'+process.platform+'-'+process.arch,'--output','artifacts/cadcove-source-check.vsix']);

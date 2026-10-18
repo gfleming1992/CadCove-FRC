@@ -154,7 +154,11 @@
     "docs/WINDOWS-CHECK.md",
     "docs/release-evidence/",
     "docs/INSTALL.md",
-    "tests/model-menu.test.js"
+    "tests/model-menu.test.js",
+    "scripts/marketplace-artifacts.js",
+    "scripts/publish-marketplace.js",
+    "tests/marketplace-publish.test.js",
+    "docs/MARKETPLACE.md"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

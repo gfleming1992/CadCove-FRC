@@ -85,8 +85,9 @@ source/notice review remains unresolved; do not bypass that gate.
    launch video is recorded, reviewed and attached to `v0.2.0-rc.1` with its
    own video provenance and SHA-256 manifest.
 
-Marketplace publication is separate: no publisher registration or Marketplace
-upload has been performed. Existing users should uninstall the old `cadcove-dev`
+Marketplace updates use the [gated GitHub publishing workflow](MARKETPLACE.md).
+The publisher account and trusted publishing policy must be connected before
+automatic uploads are enabled. Existing users should uninstall the old `cadcove-dev`
 extension before installing the GitHub candidate to avoid duplicate commands.
 
 ## Main robot example source

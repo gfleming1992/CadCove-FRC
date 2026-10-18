@@ -19,10 +19,11 @@ test('Explorer index follows disk saves, external changes, deletions and disposa
  const uri=fsPath=>({scheme:'file',fsPath});let published=[],releaseRead;
  const events={};const subscribe=name=>fn=>{events[name]=fn;return {dispose(){delete events[name];}};};
  const context={subscriptions:[]};
- const vscode={commands:{executeCommand:async(name,key,value)=>{expect(name).toBe('setContext');expect(key).toBe('cadcove.modelEntryPaths');published=value;}},workspace:{
+ const vscode={RelativePattern:class{constructor(base,pattern){this.base=base;this.pattern=pattern;}},commands:{executeCommand:async(name,key,value)=>{expect(name).toBe('setContext');expect(key).toBe('cadcove.modelEntryPaths');published=value;}},workspace:{
   getWorkspaceFolder:u=>u.fsPath.startsWith('/robot/')?{uri:uri('/robot')}:undefined,
+  workspaceFolders:[{uri:uri('/robot')}],
   findFiles:async()=>[...files.keys()].map(uri),
-  fs:{stat:async u=>({size:files.get(u.fsPath)?.length??0}),readFile:async u=>{const text=files.get(u.fsPath);if(releaseRead)await new Promise(r=>{releaseRead.resolve=r;});if(text===undefined)throw Error('gone');return Buffer.from(text);}},
+  fs:{stat:async u=>({type:files.has(u.fsPath)?1:2,size:files.get(u.fsPath)?.length??0}),readFile:async u=>{const text=files.get(u.fsPath);if(releaseRead)await new Promise(r=>{releaseRead.resolve=r;});if(text===undefined)throw Error('gone');return Buffer.from(text);}},
   createFileSystemWatcher:()=>({dispose(){},onDidCreate:subscribe('create'),onDidChange:subscribe('change'),onDidDelete:subscribe('delete')}),
   onDidSaveTextDocument:subscribe('save'),onDidChangeWorkspaceFolders:subscribe('folders')
  }};
@@ -36,6 +37,10 @@ test('Explorer index follows disk saves, external changes, deletions and disposa
   await until(()=>!published.includes('/robot/helper.py'));
   files.set('/robot/.venv/fake.py','def build(ctx): pass');events.create(uri('/robot/.venv/fake.py'));
   expect(menu.entries()).not.toContain('/robot/.venv/fake.py');
+  files.set('/robot/new/part.py','def build(ctx): pass');await events.create(uri('/robot/new'));
+  await until(()=>published.includes('/robot/new/part.py'));
+  files.delete('/robot/new/part.py');events.delete(uri('/robot/new'));
+  await until(()=>!published.includes('/robot/new/part.py'));
   releaseRead={};events.change(uri('/robot/a.py'));await until(()=>releaseRead.resolve);
   files.delete('/robot/a.py');events.delete(uri('/robot/a.py'));releaseRead.resolve();releaseRead=undefined;
   await until(()=>!published.includes('/robot/a.py'));expect(menu.entries()).toEqual([]);

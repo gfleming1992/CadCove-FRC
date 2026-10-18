@@ -24,6 +24,10 @@ const cliRecord=JSON.parse(await readFile(path.join(runtime,'cli-build.json'),'u
 const cliBuild=validateCliBuild(cliRecord,await readFile(path.join(runtime,cliName)),await readFile(path.join(root,'bun.lock')),{target,version:manifest.version,...(cliRecord.schema===2?{script:await readFile(path.join(runtime,'cadcove.js')),launcherSource:await readFile(path.join(runtime,'launcher.rs'))}:{})});
 await rm(out,{recursive:true,force:true});await mkdir(media,{recursive:true});
 for(const name of ['package.json','README.md'])await copyFile(path.join(root,'extensions/vscode',name),path.join(out,name));
+if(process.env.CADCOVE_EXTENSION_VERSION){
+ const version=process.env.CADCOVE_EXTENSION_VERSION;if(!/^\d+\.\d+\.\d+$/.test(version))throw Error('Invalid CADCOVE_EXTENSION_VERSION');
+ const file=path.join(out,'package.json'),extension=JSON.parse(await readFile(file,'utf8'));extension.version=version;await writeFile(file,JSON.stringify(extension,null,2)+'\n');
+}
 await copyFile(path.join(root,'LICENSE'),path.join(out,'LICENSE.txt'));
 await writeFile(path.join(out,'.vscodeignore'),'*.vsix\n');
 const viewer=await Bun.build({entrypoints:[path.join(core,'src/vscode-main.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'main.js'});

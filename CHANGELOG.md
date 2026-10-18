@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Prepare automatic Marketplace publishing after all platform CI checks pass,
+  with per-run patch versions and short-lived GitHub authentication.
+
 - Show the Explorer CAD preview action for Python model entry points and STEP
   assets; hide it for helper modules. Detect entries locally without executing Python.
 

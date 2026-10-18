@@ -52,7 +52,7 @@ def build(ctx):
   await fs.writeFile(entry,code);
   const helper=path.join(folder,'cad/helper.py');
   await fs.writeFile(helper,'"""\nresult = example\n"""\ndef helper(): pass\n');
-  const waitMenu=async predicate=>{const until=Date.now()+10000;while(Date.now()<until){if(predicate(api.modelMenuEntries()))return;await delay(50);}throw Error('Explorer model index did not update');};
+  const waitMenu=async predicate=>{const until=Date.now()+10000;while(Date.now()<until){if(predicate(api.modelMenuEntries()))return;await delay(50);}throw Error('Explorer model index did not update: '+JSON.stringify({folder,entries:api.modelMenuEntries(),files:(await vscode.workspace.findFiles('**/*.py')).map(uri=>uri.fsPath)}));};
   await waitMenu(paths=>paths.includes(entry));
   assert.ok(!api.modelMenuEntries().includes(helper),'Helper and docstring are not model entries');
   await fs.writeFile(helper,'result = None\n');

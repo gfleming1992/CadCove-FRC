@@ -12,7 +12,10 @@ exports.run=async function(){
  try{
   const extension=vscode.extensions.getExtension(process.env.CADCOVE_TEST_EXTENSION_ID??'gfleming1992.cadcove-toolbox');
   assert.ok(extension,'Packaged toolbox must be installed');
-  assert.ok(extension.extensionPath.includes('extensions'),'Use the installed VSIX, not the source checkout');
+  const samePath=(a,b)=>process.platform==='win32'?path.resolve(a).toLowerCase()===path.resolve(b).toLowerCase():path.resolve(a)===path.resolve(b);
+  const profile=process.env.CADCOVE_TEST_PROFILE;assert.ok(profile,'Use the isolated editor test launcher');
+  assert.ok(samePath(path.dirname(path.dirname(extension.extensionPath)),profile),'Installed extension must come from the isolated profile');
+  if(process.env.CADCOVE_PYTHON)assert.ok(samePath(vscode.workspace.getConfiguration('instantcad',vscode.Uri.file(folder)).get('pythonPath'),process.env.CADCOVE_PYTHON),'Editor must read the configured Python from the isolated profile');
   let companions;
   try{companions=JSON.parse(await fs.readFile(path.join(folder,'companion-expectations.json'),'utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
   if(companions){
@@ -28,6 +31,7 @@ exports.run=async function(){
   const instructions=await fs.readFile(path.join(folder,'AGENTS.md'),'utf8');assert.match(instructions,/\.cadcove\/AGENT.md/);
   assert.match(await fs.readFile(path.join(folder,'.cadcove/skills/references/cadquery-api.md'),'utf8'),/CadQuery 2.6.1/);
   let runtime=await api.ensureRuntime();await fs.access(runtime);
+  assert.ok(!path.relative(path.join(profile,'user-data'),runtime).startsWith('..'),'Runtime storage must stay inside the isolated user-data directory');
   const {Client}=await import('@modelcontextprotocol/sdk/client/index.js');
   const {StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js');
   mcpClient=new Client({name:'installed-extension-test',version:'1'});
@@ -98,6 +102,7 @@ def build(ctx):
     assert.equal((await vscode.commands.executeCommand('cadcove.runtime.repair')).executable,runtime,'Healthy repeat repair reuses verified generation');
   }finally{native.stdin.end();if(native.exitCode===null)native.kill();}
   const report={ok:true,editorVersion:vscode.version,companions,wpilibActive:companions?true:undefined,extensionPath:extension.extensionPath,runtime,occt:buildProvenance.occt,runtimeIdentity:buildProvenance.runtimeIdentity,initialized:true,doctorFindsNative:true,initial,edited,cached,failedBuildPreservesScene:true,preview:true,actualInstalledVSIX:true,runtimeRepair:{command:true,oldRuntime,newRuntime:runtime,activeNativePreserved:true,healthyRepeatReused:true}};
+  report.profileIsolation={verified:true,portableData:process.env.VSCODE_PORTABLE??null,pythonPath:vscode.workspace.getConfiguration('instantcad',vscode.Uri.file(folder)).get('pythonPath')};
   // Exercise the example shipped inside this installed runtime, not source
   // checkout fixtures. Its CAD must actually compile in the editor's kernel.
   const sample=path.join(folder,'exported-example');

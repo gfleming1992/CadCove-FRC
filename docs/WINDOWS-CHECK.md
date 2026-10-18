@@ -53,6 +53,12 @@ The resulting local VSIX is under
 WPILib VS Code via **Extensions: Install from VSIX**. Configure
 `instantcad.pythonPath` to the Python executable above.
 
+The qualification launcher sets `VSCODE_PORTABLE` to its temporary profile on
+Windows. WPILib's portable editor otherwise ignores `--user-data-dir` and uses
+its adjacent `data` folder, including that folder's Python settings. The test
+asserts the actual interpreter, extension location and runtime storage before
+building CAD; a Python setting written to an unused profile is not sufficient.
+
 ## Manual acceptance
 
 - Initialize a new team workspace; confirm existing code/instructions are kept.

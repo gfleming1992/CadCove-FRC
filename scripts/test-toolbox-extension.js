@@ -9,7 +9,7 @@ import {readZip} from '@vscode/vsce/out/zip.js';
 const vsix=process.argv[2];if(!vsix)throw Error('Pass the VSIX to test');
 const root=path.resolve(import.meta.dir,'..');
 const profile=await mkdtemp(path.join(os.tmpdir(),'cadcove-vsix-test-'));
-const folders={user:path.join(profile,'user'),extensions:path.join(profile,'extensions'),workspace:path.join(profile,'team'),driver:path.join(profile,'test-driver')};
+const folders={user:path.join(profile,'user-data'),extensions:path.join(profile,'extensions'),workspace:path.join(profile,'team'),driver:path.join(profile,'test-driver')};
 for(const folder of Object.values(folders))await mkdir(folder,{recursive:true});
 // Optional actual WPILib installer inputs. Keep all extension/profile changes
 // inside this test directory; never install into a student's working editor.
@@ -84,7 +84,13 @@ if(process.platform==='linux'&&process.env.CI==='true'&&process.env.CADCOVE_TEST
  }
 }
 const env={...process.env};
-for(const key of ['ELECTRON_RUN_AS_NODE','VSCODE_IPC_HOOK_CLI','NODE_OPTIONS','NODE_REPL_EXTERNAL_MODULE'])delete env[key];
+for(const key of ['ELECTRON_RUN_AS_NODE','VSCODE_IPC_HOOK_CLI','VSCODE_DEV','NODE_OPTIONS','NODE_REPL_EXTERNAL_MODULE'])delete env[key];
+// WPILib's Windows editor is portable: its adjacent data directory overrides
+// --user-data-dir and --extensions-dir. Explicitly move portable data into this
+// test profile for both the installer CLI and the actual extension host.
+if(process.platform==='win32')env.VSCODE_PORTABLE=profile;
+else delete env.VSCODE_PORTABLE;
+env.CADCOVE_TEST_PROFILE=profile;
 const archive=await readZip(path.resolve(vsix),name=>name==='extension/package.json');
 const manifest=JSON.parse(archive.get('extension/package.json'));
 env.CADCOVE_TEST_EXTENSION_ID=manifest.publisher+'.'+manifest.name;

@@ -2,6 +2,10 @@
 
 ## Unreleased — Windows candidate
 
+- Isolate WPILib portable-editor tests with an explicit portable data root;
+  verify the installed extension, Python setting and runtime storage all use
+  that profile. Portable VS Code otherwise ignores the test user-data argument.
+
 - Verify a concurrent install/repair winner before reusing it when Windows
   reports a sharing or rename permission error. Corrupt winners still fail.
 - Allow two minutes for Windows cold native-world startup and validation.

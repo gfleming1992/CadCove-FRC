@@ -60,7 +60,7 @@ const requestedVersion=process.env.CADCOVE_TEST_EDITOR_VERSION;
 if(requestedVersion&&!/^\d+\.\d+\.\d+$/.test(requestedVersion))throw Error('Pin an exact CADCOVE_TEST_EDITOR_VERSION, not stable/latest');
 if(requestedVersion&&process.env.VSCODE_EXECUTABLE)throw Error('Select a downloaded editor version or a local VSCODE_EXECUTABLE, not both');
 let executable=requestedVersion
- ?await downloadAndUnzipVSCode({version:requestedVersion,cachePath:path.join(root,'build/editor-test-cache'),timeout:60000})
+ ?await downloadAndUnzipVSCode({version:requestedVersion,cachePath:process.platform==='win32'?path.join(os.tmpdir(),'cadcove-editor-cache'):path.join(root,'build/editor-test-cache'),timeout:60000})
  :(process.env.VSCODE_EXECUTABLE??(process.platform==='darwin'?'/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code':'code'));
 executable=await realpath(path.isAbsolute(executable)?executable:Bun.which(executable)??executable);
 // Use the actual Electron executable on every platform. In particular, passing

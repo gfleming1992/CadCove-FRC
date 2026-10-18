@@ -49,3 +49,82 @@ successful controller/physics test. Report untested platforms honestly.
 
 Public source is exported from a committed tree. Do not push development history
 containing private fixtures; initialize the reviewed export as the public repo.
+
+## Build and verify from source
+
+Development needs Bun 1.4.2, Rust 1.91.1, Python 3.12 with the pinned
+CadQuery requirements, and the appropriate native build toolchain.
+[Windows verification instructions](docs/WINDOWS-CHECK.md) cover the native
+toolchain and installed-editor checks.
+This source tree includes the pinned generic core; no sibling checkout or team
+robot submodule is needed for the toolbox build and asset-free test suite.
+
+```sh
+python3.12 -m venv .venv-cadquery
+.venv-cadquery/bin/python -m pip install -r vendor/cad-core/src/native/requirements.txt
+export CADCOVE_PYTHON="$PWD/.venv-cadquery/bin/python"
+bun install --frozen-lockfile
+bun run test:toolbox
+bun scripts/build-native-runtime.js
+# Windows native output ends in .exe.
+bun scripts/package-runtime.js --native-binary target/distribution/release/instantcad-sim \
+  --output artifacts/runtime-candidate --version 0.2.0 \
+  --base-url https://YOUR-RELEASE-HOST/RELEASE/TARGET
+bun tests/packaged-runtime.js artifacts/runtime-candidate
+bun scripts/build-toolbox-extension.js --runtime artifacts/runtime-candidate
+```
+
+Package the staged extension with the checked packager (substitute its platform
+and architecture):
+
+```sh
+bun scripts/package-toolbox-extension.js \
+  --extension build/toolbox-extension-darwin-arm64 \
+  --output artifacts/cadcove-toolbox.vsix
+```
+
+This verifies required VSIX contents, runtime provenance and distribution notices.
+The default external-Bun package does not redistribute Bun. The optional
+`--cli-mode standalone` embeds Bun and remains blocked for public distribution
+until its separate source/notice review is complete. A package build does not
+replace installed-platform qualification. See `extensions/vscode/README.md` for runtime repair and terminal PATH
+behavior. Exported Java source updates are reviewed explicitly and never replace
+team customizations automatically.
+
+The public-source CI also installs the generated VSIX into a separate editor
+profile and exercises CAD builds, edits, cache reuse, preview feedback, runtime
+repair and the bundled example. To run that gate locally from a committed tree:
+
+```sh
+CADCOVE_TEST_EDITOR_VERSION=1.105.1 \
+  bun scripts/verify-toolbox-source.js --output /path/to/new-source-check --editor
+```
+
+It downloads the pinned stock editor using Microsoft's test helper. CI uses
+`CADCOVE_TEST_SOFTWARE_GPU=1` for SwiftShader and Xvfb on Linux; this checks
+functionality, not hardware rendering speed. Reports bind results to the source
+revision and VSIX hash. WPILib companion extensions and actual vendor robot
+execution remain separate qualification runs.
+
+## Contributing and publishing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development, tests and agent guidance,
+[SECURITY.md](SECURITY.md) for the local execution boundary, and
+[release checklist](docs/TOOLBOX-RELEASE.md) for source versus binary release gates.
+GitHub source publication and Marketplace publication are separate steps.
+
+## Public source boundary
+
+`config/toolbox-source.json` defines the source distribution. From a committed
+checkout, `bun scripts/export-toolbox-source.js --output NEW_DIRECTORY` exports
+only approved tracked files, with per-file hashes and source revision. It omits
+unapproved team fixtures, FIRST field geometry/manuals, recordings, profiles, local credentials, development assets,
+benchmark experiments and repository history. The development checkout keeps
+those fixtures separately for engineering evidence; they are not required to
+build the exported toolbox. This export is a reviewable candidate, not a license
+or publication assertion.
+
+The library list is explicit: adding a new shipped module also requires updating
+the source policy. Team-specific field/shooter extraction and profiling helpers
+are outside that list. Run the fresh-source verifier after changing this boundary
+so a working development checkout cannot hide a missing release dependency.

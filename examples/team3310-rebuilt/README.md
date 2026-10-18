@@ -25,7 +25,7 @@ Setup performs these steps:
 2. Download the pinned official REBUILT STEP from FIRST (35.7 MB), verifying its
    size and SHA-256. Later runs reuse the verified download.
 3. Rebuild the 6,186 field occurrences, surface colors and collision buffers with
-   the pinned OCCT-WASM kernel. The first run takes several minutes.
+   native OCCT through the pinned Python/CadQuery environment. The first run takes several minutes.
 4. Audit CAD identities, intake axes, collision hashes and world/view consistency.
 5. Resolve WPILib/CTRE dependencies through Gradle and compile `robot.jar` plus
    desktop native libraries for the current machine. No Mac libraries are copied

@@ -5,6 +5,12 @@ Download the VSIX for your OS/CPU from
 Use the platform qualification report attached to that release. Windows is not
 qualified yet. A Linux CI pass uses software graphics and is not a GPU guarantee.
 
+For current Windows and macOS source, use the shared
+[`release/native-cadquery-0.2` branch](https://github.com/gfleming1992/CadCove-FRC/tree/release/native-cadquery-0.2).
+The branch includes the Windows fixes and Team 3310 example. Each OS/CPU needs
+its own native package. Existing RC1 binaries are unchanged; consult the exact
+candidate's reports before installing a newer platform build.
+
 ## Prerequisites
 
 - VS Code 1.100 or newer, or the WPILib 2026 editor. The pinned automated editor

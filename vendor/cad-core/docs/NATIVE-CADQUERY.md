@@ -20,6 +20,10 @@ On Windows, use `py -3.12 -m venv .venv-cadquery` and
 `instantcad.pythonPath` setting to the **absolute executable path**. The
 extension ships the worker and requirements, not Python or its binary packages.
 Dependencies are installed explicitly; opening CAD never installs software.
+Native operations have a bounded 15-minute deadline on Windows for cold, full
+assemblies (five minutes elsewhere). A timeout reports that cause explicitly
+and a subsequent request starts a fresh worker; explicit caller budgets still
+apply. These limits are not performance guarantees.
 Only macOS arm64 execution has been tested so far.
 
 Set `instantcad.entryPoint` to `model.py` (or right-click a `.py` file and choose

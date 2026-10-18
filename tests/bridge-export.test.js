@@ -1,5 +1,5 @@
 import {test,expect,afterEach} from 'bun:test';
-import {mkdtemp,rm,readFile,writeFile,mkdir,symlink,access} from 'node:fs/promises';
+import {mkdtemp,rm,readFile,writeFile,mkdir,symlink,access,rename} from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import {exportBridge} from '../lib/bridge-export.js';
@@ -14,7 +14,7 @@ test('export is complete, idempotent, and refuses to replace robot customization
  await writeFile(file,'// team customization');await expect(exportBridge(workspace)).rejects.toThrow('Refusing to overwrite');expect(await readFile(file,'utf8')).toBe('// team customization');
 });
 test('symlinked metadata cannot export into another workspace',async()=>{
- const workspace=await root(),outside=await root();await symlink(outside,path.join(workspace,'.cadcove'),'dir');await expect(exportBridge(workspace)).rejects.toThrow('symlinks');await expect(access(path.join(outside,'bridge'))).rejects.toThrow();
+ const workspace=await root(),outside=await root();await symlink(outside,path.join(workspace,'.cadcove'),process.platform==='win32'?'junction':'dir');await expect(exportBridge(workspace)).rejects.toThrow('symlinks');await expect(access(path.join(outside,'bridge'))).rejects.toThrow();
 });
 test('preflight conflict does not partially populate missing bridge files',async()=>{
  const workspace=await root(),directory=path.join(workspace,'.cadcove/bridge');await mkdir(directory,{recursive:true});await writeFile(path.join(directory,'instantcad.gradle'),'custom');await expect(exportBridge(workspace)).rejects.toThrow('Refusing to overwrite');await expect(access(path.join(directory,'java'))).rejects.toThrow();
@@ -44,8 +44,13 @@ test('review refuses edited proposals and symlinked source/destination paths bef
  await expect(exportBridge(workspace,{review:true})).rejects.toThrow('review copy was edited');
  expect(await readFile(path.join(review.directory,changed),'utf8')).toBe('review notes');
  const outside=await root();await rm(path.join(workspace,'.cadcove/bridge-updates'),{recursive:true});
- await rm(path.join(original.directory,changed));await symlink(path.join(outside,'source.java'),path.join(original.directory,changed));
+ const changedPath=path.join(original.directory,changed),parent=path.dirname(changedPath);
+ if(process.platform==='win32'){
+  await rename(parent,parent+'-saved');await symlink(outside,parent,'junction');
+ }else{await rm(changedPath);await symlink(path.join(outside,'source.java'),changedPath);}
  await expect(exportBridge(workspace,{review:true})).rejects.toThrow('symlinks');await expect(access(path.join(workspace,'.cadcove/bridge-updates'))).rejects.toThrow();
- await rm(path.join(original.directory,changed));await symlink(outside,path.join(workspace,'.cadcove/bridge-updates'),'dir');
+ if(process.platform==='win32'){await rm(parent,{recursive:true});await rename(parent+'-saved',parent);}
+ else await rm(changedPath);
+ await symlink(outside,path.join(workspace,'.cadcove/bridge-updates'),process.platform==='win32'?'junction':'dir');
  await expect(exportBridge(workspace,{review:true})).rejects.toThrow('symlinks');await expect(access(path.join(outside,review.bundleSha256))).rejects.toThrow();
 });

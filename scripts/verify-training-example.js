@@ -22,7 +22,9 @@ await run('initialize agent workspace',[cli,'init','--workspace',output,'--id','
 await run('export packaged bridge',[cli,'bridge-export','--workspace',output],output);
 await mkdir(path.join(output,'vendordeps'),{recursive:true});await writeFile(path.join(output,'vendordeps/Phoenix6.json'),descriptor);
 const configFile=path.join(output,'.cadcove/project.json'),config=JSON.parse(await readFile(configFile,'utf8'));config.simulationProject='training-profile.json';await writeFile(configFile,JSON.stringify(config,null,2)+'\n');
-await run('build independent WPILib robot',[options['--gradle'],'--no-daemon','jar','extractReleaseNative'],output);
+const gradle=process.platform==='win32'&&/\.(bat|cmd)$/i.test(options['--gradle'])
+ ?['cmd.exe','/d','/c',options['--gradle']]:[options['--gradle']];
+await run('build independent WPILib robot',[...gradle,'--no-daemon','jar','extractReleaseNative'],output);
 await run('public CLI robot and season contract',[process.execPath,'tests/training-robot.js','--project',path.join(output,'training-profile.json'),'--runtime',options['--runtime']],root);
 const result=JSON.parse(await readFile(path.join(output,'build/cadcove/qualification/result.json'),'utf8'));
 const report={schema:1,ok:result.ok,steps,toolboxRuntime:JSON.parse(await readFile(path.join(options['--runtime'],'manifest.json'),'utf8')).version,vendorDescriptorSha256:createHash('sha256').update(descriptor).digest('hex'),vendorVersion:vendor.version,gradleRIO:'2026.2.1',teamRobotOrCADCopied:false,installedEditorTested:false,hardwareQualified:false};

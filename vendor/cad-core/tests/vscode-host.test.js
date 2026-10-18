@@ -10,11 +10,15 @@ test('editor file boundary rejects traversal and symlinks outside its project',a
  const temp=await mkdtemp(path.join(tmpdir(),'instantcad-boundary-')),root=path.join(temp,'project');await mkdir(root);
  try{
   await writeFile(path.join(temp,'outside.py'),'secret');await writeFile(path.join(root,'models.py'),'export default()=>1');
-  await symlink(path.join(temp,'outside.py'),path.join(root,'linked.py'));
+  // Junctions exercise the same escaped-file boundary without administrator
+  // privileges on Windows. POSIX keeps coverage of direct file symlinks.
+  const linked=process.platform==='win32'?'linked/outside.py':'linked.py';
+  if(process.platform==='win32')await symlink(temp,path.join(root,'linked'),'junction');
+  else await symlink(path.join(temp,'outside.py'),path.join(root,'linked.py'));
   await expect(inside(root,'../outside.py')).rejects.toThrow();
-  await expect(inside(root,'linked.py')).rejects.toThrow('leaves');
+  await expect(inside(root,linked)).rejects.toThrow('leaves');
   expect(Object.keys(await readSources(root))).toEqual(['models.py']);
-  await symlink(temp,path.join(root,'.instantcad'));
+  await symlink(temp,path.join(root,'.instantcad'),process.platform==='win32'?'junction':'dir');
   await expect(inside(root,'.instantcad/scene.bin',{create:true})).rejects.toThrow('leaves');
   expect(artifactPath('robot/models.py','scene.bin')).toBe('robot/.instantcad/entries/models.py/scene.bin');
   expect(artifactPath('robot/assembly.py','scene.bin')).toBe('robot/.instantcad/entries/assembly.py/scene.bin');
@@ -33,9 +37,11 @@ test('direct STEP preview hashes only the selected asset and leaves source untou
   const b=await snapshot(await readStepSource(root,'parts/BOX.STP'),entry);expect(a.revision).not.toBe(b.revision);
   expect(await Bun.file(path.join(root,entry)).exists()).toBe(false);
   await expect(readStepSource(root,'../escape.step')).rejects.toThrow();
-  await symlink(path.join(root,'../'+path.basename(root)+'.step'),path.join(root,'parts/link.step'));
+  const linked=process.platform==='win32'?'parts/external/'+path.basename(root)+'.step':'parts/link.step';
+  if(process.platform==='win32')await symlink(path.dirname(root),path.join(root,'parts/external'),'junction');
+  else await symlink(root+'.step',path.join(root,'parts/link.step'));
   await writeFile(root+'.step','outside');
-  await expect(readStepSource(root,'parts/link.step')).rejects.toThrow('leaves');
+  await expect(readStepSource(root,linked)).rejects.toThrow('leaves');
  }finally{await rm(root+'.step',{force:true});await rm(root,{recursive:true,force:true});}
 });
 

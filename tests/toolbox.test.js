@@ -69,7 +69,7 @@ test('initialization rejects escaping, overlapping, reserved and symlinked outpu
   }
   const outside = await mkdtemp(path.join(os.tmpdir(), 'cadcove-external-'));
   try {
-    await symlink(outside, path.join(root, '.github'));
+    await symlink(outside, path.join(root, '.github'), process.platform === 'win32' ? 'junction' : 'dir');
     await expect(initializeToolbox({workspace: root})).rejects.toThrow(/Unsafe .* path/);
     expect(await readdir(outside)).toEqual([]);
     expect(await readdir(root)).toEqual(['.github']);

@@ -54,8 +54,11 @@ test('source inputs resolve against explicit asset root and reject escaping or m
  for(const record of [{schema:1,files:[]},{schema:1,files:[{file:'../profile.json',sha256:'a'.repeat(64)}]},{schema:1,files:[{file:'model.js',sha256:'bad'}]},{schema:1,files:[{file:'model.js',sha256:hash('original')},{file:'MODEL.js',sha256:hash('original')}]}]){
   f.scene.sourceInputs=record;await f.write('out/scene-bindings.json',f.scene);expect((await auditRobotProject(await f.load())).canLoad).toBe(false);
  }
- await writeFile(path.join(f.root,'outside.js'),'outside');await symlink(path.join(f.root,'outside.js'),path.join(f.root,'inputs/link.js'),'file');
- f.scene.sourceInputs={schema:1,files:[{file:'link.js',sha256:hash('outside')}]};await f.write('out/scene-bindings.json',f.scene);
+ await writeFile(path.join(f.root,'outside.js'),'outside');
+ const linked=process.platform==='win32'?'linked/outside.js':'link.js';
+ if(process.platform==='win32')await symlink(f.root,path.join(f.root,'inputs/linked'),'junction');
+ else await symlink(path.join(f.root,'outside.js'),path.join(f.root,'inputs/link.js'),'file');
+ f.scene.sourceInputs={schema:1,files:[{file:linked,sha256:hash('outside')}]};await f.write('out/scene-bindings.json',f.scene);
  expect((await auditRobotProject(await f.load())).canLoad).toBe(false);
 }));
 test('stale compiled world, changed CAD and unbound motors/parts are load errors',async()=>fixture(async f=>{

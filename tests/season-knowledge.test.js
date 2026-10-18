@@ -49,7 +49,7 @@ test('ranks substantive pages, matches whole rule IDs, and makes every result re
  for(const options of [{limit:0},{limit:21},{limit:1.2},{offset:-1},{offset:'1e2'},{offset:''}])await expect(searchSeasonKnowledge({directory,query:'bumper',...options})).rejects.toThrow('must be an integer');
 }));
 test('does not follow output symlinks or overwrite a conflicting ignore policy',()=>fixture(async o=>{
- const external=path.join(o.workspace,'outside');await mkdir(external);await mkdir(path.join(o.workspace,'.cadcove'));await symlink(external,path.join(o.workspace,'.cadcove/knowledge'),'dir');
+ const external=path.join(o.workspace,'outside');await mkdir(external);await mkdir(path.join(o.workspace,'.cadcove'));await symlink(external,path.join(o.workspace,'.cadcove/knowledge'),process.platform==='win32'?'junction':'dir');
  await expect(importSeasonKnowledge(o)).rejects.toThrow('symlinks');expect(await readdir(external)).toEqual([]);
  await rm(path.join(o.workspace,'.cadcove/knowledge'));await mkdir(path.join(o.workspace,'.cadcove/knowledge'));await writeFile(path.join(o.workspace,'.cadcove/knowledge/.gitignore'),'custom');await expect(importSeasonKnowledge(o)).rejects.toThrow('ignore policy');
 }));

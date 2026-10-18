@@ -2,15 +2,24 @@ import {test,expect} from 'bun:test';
 import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {NativeCadClient,nativeRuntimeIdentity} from '../src/native/client.js';
 import {decodeScene} from '../src/core/mesh.js';
 import {readSources,projectLayout} from '../extensions/vscode/src/project-files.js';
 import {snapshot} from '../src/core/revision.js';
 
 const python=process.env.CADCOVE_PYTHON;
+(python?test:test.skip)('native operation timeout reports the deadline and permits a fresh worker',async()=>{
+ const client=new NativeCadClient({python,worker:fileURLToPath(new URL('../src/native/worker.py',import.meta.url)),timeout:100});
+ try{
+  await expect(client.request({kind:'inspect',code:'import time\ntime.sleep(5)\nresult=1'})).rejects.toThrow('Native CAD build timed out');
+  client.timeout=5000;
+  expect(await client.request({kind:'inspect',code:'result=2'})).toBe(2);
+ }finally{client.dispose();}
+},90000);
 (python?test:test.skip)('native process builds, invalidates changed Python, preserves accepted output on errors, and restarts after cancel',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'cadcove-native-'));
- const client=new NativeCadClient({python,worker:new URL('../src/native/worker.py',import.meta.url).pathname});
+ const client=new NativeCadClient({python,worker:fileURLToPath(new URL('../src/native/worker.py',import.meta.url))});
  const model=`import cadquery as cq\nfrom dimensions import width\ndef build(ctx):\n    print('Model stdout stays out of the protocol')\n    shape=ctx.component('box',lambda:cq.Workplane('XY').box(width,4,5))\n    return [{'id':'box','color':'#ff0000','shape':shape}]\n`;
  const build=async()=>{
   const files=await readSources(root,undefined,{native:true});
@@ -40,7 +49,7 @@ const python=process.env.CADCOVE_PYTHON;
 
 (python?test:test.skip)('native assembly reuses prototype meshes with rigid placements and exact inspection',async()=>{
  const root=await mkdtemp(path.join(tmpdir(),'cadcove-native-instances-'));
- const client=new NativeCadClient({python,worker:new URL('../src/native/worker.py',import.meta.url).pathname});
+ const client=new NativeCadClient({python,worker:fileURLToPath(new URL('../src/native/worker.py',import.meta.url))});
  const model=`import cadquery as cq\ndef build(ctx):\n    s=ctx.component('stock',lambda:cq.Workplane('XY').box(2,4,6))\n    return [{'id':'a','shape':s},{'id':'b','shape':s,'transform':[0,-1,0,10,1,0,0,20,0,0,1,30]}]\n`;
  const build=async()=>{const files=await readSources(root,undefined,{native:true});return client.request({kind:'build',root,entry:'models.py',files,revision:'test',output:path.join(root,'scene.bin')});};
  try{
@@ -60,7 +69,7 @@ const python=process.env.CADCOVE_PYTHON;
 (python?test:test.skip)('native direct STEP preview preserves assembly placements and colors',async()=>{
  const {readStepSource,stepEntry}=await import('../extensions/vscode/src/step-source.js');
  const root=await mkdtemp(path.join(tmpdir(),'cadcove-step-colors-'));
- const client=new NativeCadClient({python,worker:new URL('../src/native/worker.py',import.meta.url).pathname});
+ const client=new NativeCadClient({python,worker:fileURLToPath(new URL('../src/native/worker.py',import.meta.url))});
  try{
   const script=`import cadquery as cq\na=cq.Assembly(name='fixture')\na.add(cq.Workplane('XY').box(2,4,6),name='red',color=cq.Color(1,0,0))\na.add(cq.Workplane('XY').box(2,4,6),name='blue',color=cq.Color(0,0,1),loc=cq.Location(cq.Vector(10,20,30)))\na.save('fixture.step')\n`;
   const child=Bun.spawn([python,'-B','-c',script],{cwd:root,stdout:'pipe',stderr:'pipe'});await new Response(child.stdout).text();const stderr=await new Response(child.stderr).text();expect(await child.exited,stderr).toBe(0);

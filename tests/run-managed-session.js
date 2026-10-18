@@ -57,10 +57,16 @@ try{
     await assert.rejects(access(path.join(build,'.cadcove-session-lock')));
    }else{
     await until(()=>text.includes('simulation-ready')||terminal);assert.equal(terminal,false,text+'\n'+error);
-    session=JSON.parse(await readFile(sessionFile(owned),'utf8'));assert.equal(session.launcherPid,p.pid);
+    session=JSON.parse(await readFile(sessionFile(owned),'utf8'));
+    // Windows' external-Bun executable is a wrapper; Java's direct parent is
+    // Bun. Both must stop when the user terminates the packaged executable.
+    if(runtime&&process.platform==='win32'){
+      assert.notEqual(session.launcherPid,p.pid);assert.equal(process.kill(session.launcherPid,0),true);
+    }else assert.equal(session.launcherPid,p.pid);
     assert.equal(process.kill(session.pid,0),true);
     p.kill('SIGKILL');await p.exited;
     await until(()=>{try{process.kill(session.pid,0);return false;}catch(e){if(e.code==='ESRCH')return true;throw e;}});
+    if(runtime&&process.platform==='win32')await until(()=>{try{process.kill(session.launcherPid,0);return false;}catch(e){if(e.code==='ESRCH')return true;throw e;}});
     const recovery=await command(['sim-recover','--project',file]);assert.equal(recovery.code,0,recovery.text+'\n'+recovery.error);assert.equal(JSON.parse(recovery.text).recovered,true);
     await assert.rejects(access(path.join(build,'.cadcove-session-lock')));await assert.rejects(access(sessionFile(owned)));
    }

@@ -8,7 +8,9 @@ export const nativeIdentityFor=worker=>nativeRuntimeIdentity+'/worker:'+createHa
 
 // One bounded, serialized process per open model; no Python on cached opens.
 export class NativeCadClient {
-  constructor({python,worker,onLog=()=>{},timeout=300000}){Object.assign(this,{python,worker,onLog,timeout});this.serial=0;this.pending=new Map();}
+  // Full STEP-heavy assemblies can exceed five minutes on Windows laptops.
+  // Keep an explicit deadline; callers can still supply a shorter budget.
+  constructor({python,worker,onLog=()=>{},timeout=process.platform==='win32'?900000:300000}){Object.assign(this,{python,worker,onLog,timeout});this.serial=0;this.pending=new Map();}
   start(){
     if(this.ready)return this.ready;
     const identity=nativeIdentityFor(this.worker);
@@ -41,7 +43,7 @@ export class NativeCadClient {
     if(this.pending.size)throw Error('A native CAD operation is already running');
     const id=++this.serial;
     const result=await new Promise((resolve,reject)=>{
-      const timer=setTimeout(()=>{this.dispose();reject(Error('Native CAD build timed out'));},this.timeout);
+      const timer=setTimeout(()=>{this.pending.delete(id);reject(Error('Native CAD build timed out'));this.dispose();},this.timeout);
       this.pending.set(id,{resolve,reject,timer});
       this.child.stdin.write(JSON.stringify({...body,id})+'\n',error=>{if(error){this.pending.delete(id);clearTimeout(timer);reject(error);}});
     });

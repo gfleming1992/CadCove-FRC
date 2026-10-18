@@ -1,8 +1,9 @@
 # Maintainer Windows check — not yet qualified
 
-This candidate has **not been tested on Windows 10 or Windows 11**. CI currently
-runs macOS and Linux only. These instructions are the handoff for the maintainer's
-Windows laptop; they do not turn a macOS VSIX into a Windows package.
+The Windows fixes have been exercised on Windows 11 Home build 26200. Windows 10
+and the manual acceptance below remain unqualified. CI currently runs macOS and
+Linux only. Require the exact candidate's qualification report and hashes; these
+instructions do not turn a macOS VSIX into a Windows package.
 
 ## Build from the source release
 
@@ -10,6 +11,24 @@ Install Git, Python 3.12, Bun 1.4.2, and Rust 1.91.1 with the MSVC target and it
 Visual Studio C++ build tools. For robot simulation, install the team's WPILib
 2026 toolchain and the desktop libraries resolved by its vendor descriptors.
 Use a trusted, short local path and a fresh PowerShell session.
+Enable Git long paths for the checkout (`git config core.longpaths true`) when
+using a deeply nested directory. Source tests use directory junctions on Windows
+to verify redirected-file boundaries without Developer Mode; POSIX also tests
+direct file symlinks. The test command allows 60 seconds per portable contract.
+
+The CLI launcher honors `CARGO_TARGET_X86_64_PC_WINDOWS_MSVC_LINKER`, matching
+Cargo, for an explicitly configured workspace-local MSVC SDK and linker. The
+qualified compiler must still be Rust 1.91.1 with the MSVC host; a GNU build does
+not satisfy release provenance. SDKs and build tools are not shipped in the VSIX.
+Cold native-world validation and startup allow 120 seconds on Windows.
+Cold native CAD operations allow 15 minutes for full assemblies; a timed-out
+operation reports its deadline and the next request starts a fresh worker.
+Example publication retries temporary directory sharing locks for 30 seconds
+after Gradle exits, without replacing an existing output workspace.
+
+Record the actual OS version: a Windows 11 test run does not qualify Windows 10.
+Run the same candidate and installed-editor checks on Windows 10 before adding
+that OS to an announcement's supported-platform list.
 
 ```powershell
 git clone https://github.com/gfleming1992/CadCove-FRC.git

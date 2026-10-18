@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased — Windows candidate
+
+- Verify a concurrent install/repair winner before reusing it when Windows
+  reports a sharing or rename permission error. Corrupt winners still fail.
+- Allow two minutes for Windows cold native-world startup and validation.
+- Allow 15 minutes for cold Windows CAD operations, retain the explicit timeout
+  error, and verify that a timed-out worker can restart. Retry transient Windows
+  locks when publishing a completed example after Gradle exits.
+- Honor Cargo's explicit platform linker when compiling the CLI launcher;
+  support Windows Gradle batch launchers in the training verifier.
+- Keep the Windows launcher and all descendants in a kernel job, preventing
+  orphaned Bun/robot processes when the packaged executable is terminated.
+- Keep the downloaded Windows test editor in a short temporary cache path to
+  avoid installation failures from deeply nested checkout paths.
+- Retry temporary Windows locks during private example staging cleanup, so a
+  successfully copied example does not report failure while an editor scans it.
+- Correct native CAD test file URLs and use Windows junctions for redirected
+  path boundary tests without requiring administrator privileges. Allow a
+  bounded 60 seconds for filesystem-heavy portable tests.
+- Refresh the generic CAD test pin from a separate local Windows-fix repository
+  based on the release's exported core, including the bounded Windows deadline.
+
+These changes do not establish Windows 10, GPU, controller or robot-hardware
+qualification. Release attachments must report their actual host and scope.
+
 ## 0.2.0-rc.1 — native CadQuery preview
 
 - Native Python/CadQuery is the only CAD authoring backend; removed brepjs and

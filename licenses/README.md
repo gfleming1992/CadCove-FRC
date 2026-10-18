@@ -3,7 +3,7 @@
 Original CadCove code is MIT licensed under the repository's `LICENSE`, including
 the independently maintained CAD/viewer core (whose license is retained under
 `vendor/cad-core/LICENSE`). This does not relicense any third-party dependency,
-team robot assets, FIRST field/manual content, or the separate NativeCAD app.
+team robot assets or FIRST field/manual content.
 
 `bun scripts/dependency-notices.js --output build/dependency-review` creates
 `THIRD-PARTY-NOTICES.txt` and `dependency-inventory.json`. Runtime packaging
@@ -58,8 +58,7 @@ its version/source and recording the new SHA-256; builds reject changed bytes.
 The Parry license restored into the vendored crate comes from its package VCS
 revision. Source-export policy includes this directory and the vendored license.
 
-The browser OCCT/WASM runtime and its build tooling have been removed. Native
-CadQuery/OCP dependencies are installed separately rather than bundled.
+Native CadQuery/OCP dependencies are installed separately rather than bundled.
 
 Bun `1.4.2` corresponds to upstream commit
 `744846f844374847c902b5e7fd59b4342a51ef99`. Its upstream LICENSE.md lists additional

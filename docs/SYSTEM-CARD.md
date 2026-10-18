@@ -22,9 +22,8 @@ CadCove contains no hosted AI model, API key requirement, or embedded AI chat UI
 | Physics | Native Rust / Rapier | Rigid bodies, contacts, mechanisms and season interactions |
 | Season/example data | Separate source packs and manifests | Swappable robot, field, rules knowledge and calibration |
 
-There is no brepjs or browser OCCT kernel in this edition. Python executes on the
-local host, not in the webview. This project is independent of NativeCAD and its
-server and custom CAD language.
+Python/CadQuery runs locally on the user's machine. The VS Code webview renders
+the resulting meshes with WebGPU.
 
 ## Agent feedback loop
 
@@ -38,7 +37,7 @@ server and custom CAD language.
 
 This is inspired by execution-and-visual-feedback CAD workflows, including
 BenchCAD. We have not measured a BenchCAD score and do not claim benchmark parity.
-Agents are not forced into a small custom CAD command language.
+Agents author ordinary Python using the CadQuery and OCP APIs.
 
 ## Cache and editing behavior
 
@@ -58,7 +57,7 @@ CadQuery part designs and 320 retained vendor or unclassified STEP prototypes.
 The REBUILT field is downloaded directly from FIRST using a pinned checksum;
 its 6,186 occurrences are reconstructed locally with placement and appearance.
 The native field importer preserves 431 prototypes, 51 multicolor occurrences,
-and the 33-color palette of the earlier importer.
+and a 33-color palette.
 
 The example includes robot code, mechanism mappings and reviewed collision
 approximations. A STEP assembly alone cannot reliably infer motor IDs, wiring,

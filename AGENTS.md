@@ -4,9 +4,8 @@ Read `README.md` and `CONTRIBUTING.md` before changing this toolbox. The install
 student workflow is documented in `docs/AGENT-QUICKSTART.md`; do not run team
 workspace initialization over this tool's source repository.
 
-Keep the generic CAD core independent of FRC and of NativeCAD. Preserve hash pins,
+Keep the generic CAD core independent of FRC. Preserve hash pins,
 team source and agent customizations. New CAD defaults to native Python/CadQuery via the CLI and shared editor viewer;
-legacy JavaScript CAD entries must be migrated explicitly to Python;
 physics is native Rust; robot integration uses actual WPILib/vendor interfaces.
 
 Use `bun run test:toolbox` for portable contracts. Use the native tests for physics

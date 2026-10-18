@@ -1,15 +1,13 @@
 # Native CadQuery authoring
 
 Read `.cadcove/project.json` first. A `.py` entry uses native CadQuery in the
-local editor host. JavaScript CAD entries are no longer supported; migrate them
-explicitly and validate the resulting geometry.
-The native viewer uses the same mm/Z-up scene IDs, colors and WebGPU controls.
+local editor host. Models use millimetres and Z-up coordinates, stable scene IDs,
+explicit colors and interactive WebGPU viewing.
 
 The host requires a trusted workspace and a Python 3.12 environment containing
 `cadquery==2.6.1` and `cadquery-ocp==7.8.1.1.post1`. Set VS Code's
 `instantcad.pythonPath` to its absolute Python executable. Dependencies are not
-automatically installed. No AI API, NativeCAD server, or custom command language
-is involved. Python code has the user's permissions; this is not a sandbox.
+automatically installed. Python code has the user's permissions; this is not a sandbox.
 
 Models define `def build(ctx)` (preferred for IDs/colors/caching), or assign `result` to a conventional CadQuery object. Build functions return a CadQuery Shape, Workplane, Assembly,
 or a list of `{id, name, color, shape}` dictionaries. Use unique stable occurrence
@@ -79,8 +77,8 @@ which CAD authoring backend is selected.
 The full example opens `cad-assets/robot/models.py`. Its 109 authored designs
 live in `native/parts/p_*.py`, with stable asset-to-module mappings in
 `native/migration.json`. Follow helper imports for dimensions, profiles and
-controlled surface patches. Historical geometry measurements are retained under
-`native/evidence`; executable legacy CAD sources have been removed. Vendor and
+controlled surface patches. Geometry measurements are retained under
+`native/evidence`. Vendor and
 unclassified components remain STEP and are reused by reference. Keep occurrence
 IDs and placement when changing a part so simulation bindings can be reviewed
 against the same mechanisms. See the robot's `native/README.md` before edits.

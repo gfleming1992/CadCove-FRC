@@ -64,8 +64,7 @@ select a file in the desired robot folder before invoking extension commands.
 Build and inspect from the CLI without opening the editor. Right-click the Python
 or STEP file and choose **CadCove: Open in CAD Canvas** for interactive viewing
 and `cad-capture`. New projects execute ordinary Python with native CadQuery/OCCT;
-the WebGPU canvas is a VS Code webview. Legacy JavaScript CAD entries must be
-migrated explicitly. CAD runs without Java/vendor integration.
+the WebGPU canvas is a VS Code webview. CAD runs without Java/vendor integration.
 
 ## Connect code and run
 

@@ -11,7 +11,7 @@ do not assume the project license grants redistribution rights to them.
   Make generic changes upstream, repin with `scripts/vendor-cad-core.js`, and
   verify the manifest. Keep FRC dependencies outside that core.
 - `lib`, `bin` and `extensions/vscode` provide portable agent tools and the editor
-  wrapper. No hosted AI API, model account or proprietary NativeCAD dependency.
+  wrapper. Teams use their existing coding agent with these local tools.
 - `crates/sim-core` supplies native physics; `bridge/java` integrates actual team
   robot code. Device and season contracts remain explicit and replaceable.
 - `agent-skills` holds reusable task guidance, not one team's geometry/constants.

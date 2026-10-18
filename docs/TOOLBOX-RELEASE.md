@@ -3,7 +3,7 @@
 ## Release scope
 
 Original CadCove code is MIT licensed. The generic CAD core is independently
-vendored with hashes; no NativeCAD implementation, service or secret is required.
+vendored with hashes and uses local Python/CadQuery for modeling.
 Third-party libraries retain their licenses. Source publication, binary release,
 and Marketplace publication are separate actions.
 

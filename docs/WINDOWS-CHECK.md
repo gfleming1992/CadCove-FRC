@@ -1,8 +1,9 @@
 # Maintainer Windows check — not yet qualified
 
 The Windows fixes have been exercised on Windows 11 Home build 26200. Windows 10
-and the manual acceptance below remain unqualified. CI currently runs macOS and
-Linux only. Require the exact candidate's qualification report and hashes; these
+and the manual acceptance below remain unqualified. The shared release branch
+now includes Windows Server 2022 x64, macOS arm64/x64 and Linux x64 CI; consult
+the actual run reports for completion and scope. Require the exact candidate's qualification report and hashes; these
 instructions do not turn a macOS VSIX into a Windows package.
 
 ## Build from the source release
@@ -31,7 +32,7 @@ Run the same candidate and installed-editor checks on Windows 10 before adding
 that OS to an announcement's supported-platform list.
 
 ```powershell
-git clone https://github.com/gfleming1992/CadCove-FRC.git
+git clone --branch release/native-cadquery-0.2 https://github.com/gfleming1992/CadCove-FRC.git
 cd CadCove-FRC
 py -3.12 -m venv .venv-cadquery
 .\.venv-cadquery\Scripts\python.exe -m pip install -r vendor/cad-core/src/native/requirements.txt

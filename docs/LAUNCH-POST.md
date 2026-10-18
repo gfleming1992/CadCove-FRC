@@ -30,7 +30,9 @@ This is an early-access release. Platform packages and source are on
 [GitHub Releases](https://github.com/gfleming1992/CadCove-FRC/releases); install
 Bun 1.4.2 and Python/CadQuery separately. Calibration and real robot validation still
 matter. It is not automatic engineering sign-off, and physics performance varies
-with hardware and contact load. Windows validation is the next maintainer check;
+with hardware and contact load. Windows fixes have been merged into the shared
+`release/native-cadquery-0.2` branch; full Windows robot/controller acceptance
+remains open. All platforms include the same Team 3310 Amarillo example;
 please see the system card for platform evidence and current limitations.
 
 The original code is MIT. Third-party dependencies and season/team assets retain
@@ -39,11 +41,12 @@ vendor integration and simulation accuracy would be especially helpful.
 
 ## Launch media
 
-[Watch the one-minute native CadQuery launch film](https://github.com/gfleming1992/CadCove-FRC/releases/download/v0.2.0-rc.1/cadcove-frc-native-launch-60s.mp4).
+https://youtu.be/5UMsJ54wpM8
 
 Actual VS Code captures show a native Python edit, interactive drivetrain
 inspection, and a recorded Codex Java-edit/test session. The second half uses
 the approved corrected intake/shooting montage with the original synthesized
 score. The design brief is staged; the code session and gameplay are independent
 takes. Cuts and playback speeds are documented in the release video provenance.
-Windows validation remains pending before posting this announcement.
+Published on [Chief Delphi](https://www.chiefdelphi.com/t/introducing-cadcove-frc-open-source-cad-code-and-simulation-in-vs-code/525377).
+Update platform status only from the corresponding test reports.

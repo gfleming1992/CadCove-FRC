@@ -20,6 +20,19 @@ Only platforms with attached passing qualification reports are advertised. The T
 are included. Setup downloads REBUILT field geometry directly from FIRST and
 builds the robot with your installed WPILib toolchain.
 
+## Shared release source
+
+Windows x64, macOS Apple Silicon and macOS Intel use the same
+[`release/native-cadquery-0.2`](https://github.com/gfleming1992/CadCove-FRC/tree/release/native-cadquery-0.2)
+branch. It combines the Windows fixes with the macOS implementation and includes
+the same Team 3310 Amarillo example on every platform. Native executables and
+VSIX packages are built separately for each OS/architecture; do not install a
+macOS VSIX on Windows. The release workflow checks Windows Server 2022, macOS
+arm64/x64 and Linux x64 from this shared source. Passing reports qualify their
+specific host and scope; Windows 10/11 manual robot checks are tracked separately
+in [the Windows checklist](docs/WINDOWS-CHECK.md). Existing RC1 downloads are
+unchanged; subsequent candidate builds are identified as RC2.
+
 ## Agent workflow: files and CLI
 
 Use **CadCove: Open Toolbox Terminal** for the packaged CLI. New projects select
@@ -57,8 +70,9 @@ The native Rust process runs Rapier physics independently of Python CAD modeling
 **Development candidate — not a production release yet.** macOS arm64 has passed
 installed-extension CAD, native simulation, live viewing, agent capture and
 runtime-repair checks, including the WPILib 2026.2.1 editor stack. Linux and macOS
-CI check clean-source builds and installed stock-editor behavior. Windows testing
-and hardware qualification remain open; consult the release-specific reports. The original
+CI have checked clean-source builds and installed stock-editor behavior. Windows
+fixes have been exercised on Windows 11 and merged into the shared release branch;
+full Windows robot/hardware qualification remains open; consult the release-specific reports. The original
 code is MIT; this does not relicense dependencies or team/season assets.
 See the [system card and test evidence](docs/SYSTEM-CARD.md) and
 [remaining release gates](docs/TOOLBOX-RELEASE.md).

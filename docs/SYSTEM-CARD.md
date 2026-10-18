@@ -110,6 +110,16 @@ launch film is attached to the prerelease with source/cut provenance and its
 own SHA-256 manifest; it is a demonstration, not additional qualification.
 Earlier native migration evidence below retains its source and artifact identities.
 
+## Shared release source and Windows fixes
+
+`release/native-cadquery-0.2` combines the Windows fixes with current macOS source.
+Windows 11 Home build 26200 was used to exercise the fixes for sharing locks,
+long paths, cold builds and process cleanup. The source-build workflow covers
+Windows Server 2022 x64, macOS arm64/x64 and Linux x64. Its reports bind checks to
+specific commits and VSIX hashes. These checks do not qualify Windows 10 or
+replace full team-robot/controller acceptance on Windows. RC1 artifacts below
+retain their original identities; new builds use the RC2 candidate identity.
+
 ## Validation and known gaps
 
 The local macOS arm64 qualification passed 113 portable/native CAD contract
@@ -133,8 +143,8 @@ installed stock-editor checks on macOS and Linux:
 [CI run](https://github.com/gfleming1992/CadCove-FRC/actions/runs/39075403389),
 [Linux evidence](release-evidence/linux-ci.json),
 [macOS CI evidence](release-evidence/macos-ci.json). CI uses software GPU rendering;
-it does not measure hardware GPU performance or run the full vendor team program. Windows is intentionally untested for this candidate; the
-maintainer will perform the Windows check after downloading the source release.
+it does not measure hardware GPU performance or run the full vendor team program. Windows was untested for that RC1 candidate. See the shared-release status above
+and [Windows acceptance checklist](WINDOWS-CHECK.md) for subsequent work.
 A package build alone is not platform qualification.
 
 Native migration evidence lives in

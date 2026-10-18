@@ -2,7 +2,7 @@ name: Toolbox source and platform build
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, release/native-cadquery-0.2]
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, macos-14]
+        os: [ubuntu-24.04, macos-14, macos-15-intel, windows-2022]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
     env:
@@ -25,6 +25,9 @@ jobs:
       CADCOVE_TEST_SOFTWARE_GPU: '1'
       CADCOVE_TEST_PREPARE_SANDBOX: '1'
     steps:
+      - name: Allow long Windows checkout paths
+        if: runner.os == 'Windows'
+        run: git config --global core.longpaths true
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
@@ -49,7 +52,7 @@ jobs:
       - name: Build public source and test the installed editor (Linux)
         if: runner.os == 'Linux'
         run: xvfb-run -a bun scripts/verify-toolbox-source.js --output "${{ runner.temp }}/cadcove-source" --editor
-      - name: Build public source and test the installed editor (macOS)
+      - name: Build public source and test the installed editor (macOS and Windows)
         if: runner.os != 'Linux'
         run: bun scripts/verify-toolbox-source.js --output "${{ runner.temp }}/cadcove-source" --editor
       - name: Preserve source and build qualification reports

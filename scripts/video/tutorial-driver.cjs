@@ -8,6 +8,9 @@ exports.run=async()=>{
  const log=await fs.open(path.join(out,'ffmpeg.log'),'w');
  const recorder=spawn('ffmpeg',['-y','-hide_banner','-f','x11grab','-video_size','1920x1080','-framerate','30','-i',process.env.DISPLAY,'-c:v','libx264','-preset','ultrafast','-crf','20','-threads','2','-pix_fmt','yuv420p',path.join(out,'vscode-raw.mp4')],{stdio:['pipe',log.fd,log.fd]});
  let api,cli,simProject;
+ const mouse=async(...args)=>execute('xdotool',args.map(String),{timeout:15000});
+ const drag=async(button,dx,dy,steps=40)=>{await mouse('mousemove',1050,500,'mousedown',button);try{for(let n=1;n<=steps;n++){await mouse('mousemove',Math.round(1050+dx*n/steps),Math.round(500+dy*n/steps));await delay(32);}}finally{await mouse('mouseup',button);}};
+ const tour=async()=>{await drag(1,170,35,40);await delay(250);await drag(3,100,-35,26);await delay(250);await mouse('click','--repeat',3,'--delay',140,4);await delay(250);await drag(1,-120,-20,36);await delay(300);};
  const show=async file=>{const uri=vscode.Uri.file(file);await vscode.window.showTextDocument(uri,{preview:false});await vscode.commands.executeCommand('revealInExplorer',uri);};
  const command=async(args)=>{const {stdout}=await execute(cli,args,{cwd:workspace,env:process.env,timeout:180000,maxBuffer:4e6});return JSON.parse(stdout);};
  try{
@@ -23,18 +26,18 @@ exports.run=async()=>{
    await vscode.commands.executeCommand('cadcove.open',vscode.Uri.file(file));
    async function ready(previous){let state;const end=Date.now()+120000;while(Date.now()<end){state=api.getDiagnostics().find(s=>s.entry===entry);if(state?.phase==='error')throw Error(JSON.stringify(state));if(state?.phase==='ready'&&(!previous||state.revision!==previous))return state;await delay(300);}throw Error('CAD not ready '+JSON.stringify(state));}
    const before=await ready();report.before=before;mark('before-ready');
-   const first=await api.request(workspace,entry,'capture',{view:'iso',width:1280,height:960});await fs.writeFile(path.join(out,'before.png'),Buffer.from(first.image.split(',')[1],'base64'));await delay(5000);
+   const first=await api.request(workspace,entry,'capture',{view:'iso',width:1280,height:960});await fs.writeFile(path.join(out,'before.png'),Buffer.from(first.image.split(',')[1],'base64'));await vscode.commands.executeCommand('workbench.action.closeSidebar');mark('opening-orbit');await drag(1,85,18,38);await drag(1,-85,-18,38);await delay(1000);
    const baseline=path.join(workspace,'corner-before.py');await fs.writeFile(baseline,old);
    const updated=old.replace("'holeScale': 1,", "'holeScale': 12 / 9.652,  # 12 mm bore; preserve stock and mounting features\n    ");assert.notEqual(updated,old);
    await fs.writeFile(file,updated);mark('edit-saved');
-   await vscode.commands.executeCommand('vscode.diff',vscode.Uri.file(baseline),vscode.Uri.file(file),'AI edit: 12 mm bore');await delay(8000);mark('diff');
+   await vscode.commands.executeCommand('vscode.diff',vscode.Uri.file(baseline),vscode.Uri.file(file),'AI edit: 12 mm bore');await vscode.commands.executeCommand('workbench.action.closeSidebar');await delay(8000);mark('diff');
    await vscode.commands.executeCommand('cadcove.open',vscode.Uri.file(file));await delay(4000);const after=await ready();report.after=after;
    const checks=path.join(workspace,'checks.py');await fs.writeFile(checks,"shape = parts[0]['shape']\nradii = [e.radius() for e in shape.Edges() if e.geomType() == 'CIRCLE']\nassert shape.isValid(), 'OCCT invalid solid'\nassert len(shape.Solids()) == 1, 'Expected one solid'\nassert any(abs(r - 6.0) < 1e-5 for r in radii), '12 mm bore missing'\nresult = {'valid': True, 'solids': 1, 'boreDiameterMm': 12, 'volumeMm3': shape.Volume()}\n");
    const inputs=path.join(workspace,'checks.jsonl');await fs.writeFile(inputs,JSON.stringify({op:'build'})+'\n'+JSON.stringify({op:'inspect',code:await fs.readFile(checks,'utf8')})+'\n');
    const check=await new Promise((resolve,reject)=>{const child=spawn(cli,['cad-session','--workspace',workspace,'--entry',entry],{cwd:workspace,env:process.env});let stdout='',stderr='';child.stdout.on('data',s=>stdout+=s);child.stderr.on('data',s=>stderr+=s);child.on('error',reject);child.on('exit',code=>{try{const lines=stdout.trim().split('\n').map(JSON.parse);if(code||lines.some(x=>!x.ok))throw Error(stderr+' '+stdout);resolve(lines.at(-1));}catch(e){reject(e);}});fs.readFile(inputs).then(bytes=>child.stdin.end(bytes));});assert.ok(check.ok);report.evidence.push(check);mark('validated');
    const terminal=vscode.window.createTerminal({name:'CadCove geometry checks',cwd:workspace});terminal.show();terminal.sendText(`"${cli}" cad-session --workspace . --entry ${entry} < checks.jsonl`);await delay(22000);mark('terminal-check');
    await vscode.commands.executeCommand('workbench.action.closePanel');await vscode.commands.executeCommand('cadcove.open',vscode.Uri.file(file));
-   const capture=await api.request(workspace,entry,'capture',{view:'iso',width:1280,height:960});await fs.writeFile(path.join(out,'after.png'),Buffer.from(capture.image.split(',')[1],'base64'));mark('after-ready');await delay(8000);
+   const capture=await api.request(workspace,entry,'capture',{view:'iso',width:1280,height:960});await fs.writeFile(path.join(out,'after.png'),Buffer.from(capture.image.split(',')[1],'base64'));mark('after-ready');await vscode.commands.executeCommand('workbench.action.closeSidebar');mark('orbit-pan-zoom');await tour();await delay(2500);
    report.entry=entry;
   }else{
    simProject=path.join(workspace,'robot.sim.json');const profile=JSON.parse(await fs.readFile(simProject));

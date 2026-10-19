@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [simulation]
+        mode: [edit]
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     env:
@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y xvfb openbox ffmpeg libgtk-3-0 libnss3 libgbm1 libasound2t64 openjdk-17-jdk
+          sudo apt-get install -y xvfb openbox xdotool ffmpeg libgtk-3-0 libnss3 libgbm1 libasound2t64 openjdk-17-jdk
           bun install --frozen-lockfile
           python -m pip install -r vendor/cad-core/src/native/requirements.txt
           echo "CADCOVE_PYTHON=$(python -c 'import sys;print(sys.executable)')" >> "$GITHUB_ENV"

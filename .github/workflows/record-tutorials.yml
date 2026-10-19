@@ -41,7 +41,13 @@ jobs:
         run: gh run download 39322759678 -n toolbox-candidate-ubuntu-24.04 -D artifacts/qualified
       - name: Prepare real Team 3310 simulation
         if: matrix.mode == 'simulation'
-        run: bun run example:team --output build/Amarillo-REBUILT
+        run: |
+          python - <<'PYSETUP'
+          from pathlib import Path
+          p=Path('examples/team3310-rebuilt/source/robot-code/settings.gradle')
+          p.write_text(p.read_text().replace('mavenLocal()', 'mavenLocal()\n        mavenCentral()'))
+          PYSETUP
+          bun run example:team --output build/Amarillo-REBUILT
       - name: Record editor workflow
         run: xvfb-run -a -s '-screen 0 1920x1080x24 -ac' bun scripts/video/record-tutorials.js
       - name: Save footage and evidence

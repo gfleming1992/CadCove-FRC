@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [demo/cloud-quickstart-recording]
-    paths: [.github/workflows/record-quickstart.yml, scripts/video/**]
+    paths: [.github/workflows/record-quickstart.yml, scripts/video/record-cloud.js, scripts/video/record-driver.cjs]
 permissions:
   contents: read
   actions: read

@@ -159,7 +159,11 @@
     "scripts/marketplace-artifacts.js",
     "scripts/publish-marketplace.js",
     "tests/marketplace-publish.test.js",
-    "docs/MARKETPLACE.md"
+    "docs/MARKETPLACE.md",
+    "lib/custom-simulator.js",
+    "docs/CUSTOM-SIMULATOR.md",
+    "examples/custom-mechanism/",
+    "tests/custom-simulator.test.js"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

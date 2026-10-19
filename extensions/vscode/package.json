@@ -86,6 +86,10 @@
       {
         "command": "cadcove.mcp.start",
         "title": "CadCove: Start MCP Server"
+      },
+      {
+        "command": "cadcove.simulation.buildCustom",
+        "title": "CadCove: Build Custom Simulator"
       }
     ],
     "menus": {

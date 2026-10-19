@@ -167,6 +167,26 @@ export function activate(context) {
     await closing;
   };
   const command=(id,fn)=>context.subscriptions.push(vscode.commands.registerCommand(id,async(...args)=>{try{return await fn(...args);}catch(error){output.appendLine(String(error.stack||error));await vscode.window.showErrorMessage(error.message);}}));
+  command('cadcove.simulation.buildCustom',async resource=>{
+    const root=workspace(resource),projectFile=await simulationProject(root);
+    const profile=JSON.parse(await fs.readFile(projectFile,'utf8'));
+    if(!profile.runtime?.customSimulator){
+      const choice=await vscode.window.showInformationMessage('This project uses the bundled simulator. Configure runtime.customSimulator to build team-owned Rust mechanisms.', 'Setup guide');
+      if(choice)await vscode.env.openExternal(vscode.Uri.parse('https://github.com/gfleming1992/CadCove-FRC/blob/main/docs/CUSTOM-SIMULATOR.md'));
+      return;
+    }
+    try{await execute('cargo',['--version'],{timeout:10000,windowsHide:true});}
+    catch{
+      const choice=await vscode.window.showWarningMessage('Building a custom simulator needs Rust/Cargo and your platform’s native build tools. Install them, then restart VS Code.', 'Install Rust');
+      if(choice)await vscode.env.openExternal(vscode.Uri.parse('https://www.rust-lang.org/tools/install'));
+      return;
+    }
+    const executable=await ensureRuntime();
+    const task=new vscode.Task({type:'cadcove-custom-simulator'},vscode.workspace.getWorkspaceFolder(vscode.Uri.file(root)),
+      'Build custom simulator','CadCove',new vscode.ProcessExecution(executable,['sim-build','--project',projectFile],{cwd:root}),['$rustc']);
+    task.presentationOptions={reveal:vscode.TaskRevealKind.Always};
+    return vscode.tasks.executeTask(task);
+  });
   command('cadcove.robot.open',robots.open);
   command('cadcove.mcp.start',async()=>{await mcp.start();return {ok:true};});
   command('cadcove.initialize',initialize);

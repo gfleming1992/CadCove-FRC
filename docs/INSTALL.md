@@ -85,3 +85,9 @@ out of shared screenshots or issue reports as appropriate.
 
 The original code is MIT; dependencies and team/season content retain their terms.
 See the [system card](SYSTEM-CARD.md) for modeling, simulation and validation limits.
+
+## Optional custom physics
+
+The bundled simulator needs no Rust installation. Teams adding custom force models
+can follow [Custom robot physics](CUSTOM-SIMULATOR.md) and use **CadCove: Build
+Custom Simulator**. That command prompts for Rust setup when Cargo is missing.

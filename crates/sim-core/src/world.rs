@@ -43,6 +43,8 @@ fn all_groups() -> u32 {
 }
 #[derive(Clone, Deserialize, Serialize)]
 pub struct WorldSpec {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub mechanisms: Vec<crate::mechanism::Spec>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub gameplay: Option<GameplaySpec>,
     /// Experimental contact algorithm selection is part of the pinned world,
@@ -327,6 +329,7 @@ pub struct ColliderInspection {
     pub convex_pieces: Option<usize>,
 }
 pub struct World {
+    mechanisms: Vec<crate::mechanism::Instance>,
     pub spec: WorldSpec,
     pub tick: u64,
     pub bodies: RigidBodySet,
@@ -360,6 +363,9 @@ pub struct World {
 }
 impl World {
     pub fn new(spec: WorldSpec) -> Result<Self> {
+        Self::with_mechanisms(spec, &Default::default())
+    }
+    pub fn with_mechanisms(spec: WorldSpec, registry: &crate::mechanism::Registry) -> Result<Self> {
         ensure!(
             spec.dt.is_finite() && spec.dt > 0.0 && spec.dt <= 0.02,
             "dt must be in (0,0.02]"
@@ -382,6 +388,7 @@ impl World {
             && (0.05..=0.6).contains(&spec.soft_contact_max_angle_rad),
             "soft_contact_max_angle_rad must be in 0.05..0.6");
         let mut s = Self {
+            mechanisms: Vec::new(),
             spec: spec.clone(),
             tick: 0,
             bodies: RigidBodySet::new(),
@@ -752,6 +759,7 @@ impl World {
         s.validate_compliance()?;
         s.validate_gameplay()?;
         s.update_transmission_states();
+        s.mechanisms = crate::mechanism::instantiate(&spec, registry)?;
         Ok(s)
     }
     fn update_transmission_states(&mut self) {
@@ -1167,6 +1175,8 @@ impl World {
             self.physics_substeps = self.contact_substeps(input)?.max(minimum_substeps);
             let dt = self.spec.dt / self.physics_substeps as f32;
             for _substep in 0..self.physics_substeps {
+                crate::mechanism::apply(&mut self.mechanisms, &mut self.bodies, &self.body_ids, input,
+                    dt, self.tick as f64 * self.spec.dt as f64 + _substep as f64 * dt as f64)?;
                 // Motors use constraints/impulses, not persistent user forces.
                 // Touching every body here needlessly invalidates the engine's
                 // incremental body/joint bookkeeping, including sleeping fuel.

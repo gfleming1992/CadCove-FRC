@@ -58,13 +58,13 @@ test('installed mode builder relocates references, pins recipes and keeps detail
   await put('inputs/model.js','original');await put('compiled/world.json',original);
   await put('compiled/scene-bindings.json',{schema:1,start:[0,0,0],fieldOrigin:[0,0,0],worldHash:digest,sourceHash:'robot',fieldSourceHash:'field',robot:{},field:{},sourceInputs:{schema:1,files:[{file:'inputs/model.js',sha256:hash('original')}]}});
   for(const dir of ['cad','field']){await put(dir+'/assembly.json',{sourceHash:dir==='cad'?'robot':'field'});await put(dir+'/instances.json',[]);}
-  const profile={schema:1,id:'example',name:'Example',cad:{robot:'cad',field:'field'},build:'compiled',runtime:{adapter:'wpilib-java-phoenix6',project:'code',jar:'code/robot.jar',nativeLibraries:'code/jni'},calibration:[]};
+  const profile={schema:1,id:'example',name:'Example',cad:{robot:'cad',field:'field'},build:'compiled',runtime:{adapter:'wpilib-java-phoenix6',project:'code',jar:'code/robot.jar',nativeLibraries:'code/jni',customSimulator:{sourceDirectory:'rust-source',package:'team-sim',binary:'team-sim'}},calibration:[]};
   await put('robot.sim.json',profile);
   const project=path.join(root,'robot.sim.json'),detailed=path.join(root,'modes/detailed'),practice=path.join(root,'modes/practice');
   const accurate=await createPhysicsMode({project,mode:'accurate',output:detailed});
   expect(await readFile(path.join(detailed,'world.json'),'utf8')).toBe(original);
   expect((await auditRobotProject(await readRobotProject(accurate.project))).canLoad).toBe(true);
-  const moved=JSON.parse(await readFile(accurate.project));expect(moved.runtime.assetRoot).toBe('../..');expect(moved.runtime.jar).toBe('../../code/robot.jar');
+  const moved=JSON.parse(await readFile(accurate.project));expect(moved.runtime.assetRoot).toBe('../..');expect(moved.runtime.jar).toBe('../../code/robot.jar');expect(moved.runtime.customSimulator.sourceDirectory).toBe('../../rust-source');
   const recipeFile=path.join(root,'practice.json');
   const recipe={sourceWorldHash:digest,description:'Solver trial',evidence:'Uncalibrated',settings:{solver_iterations:4}};
   await put('practice.json',recipe);

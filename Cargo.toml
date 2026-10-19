@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/sim-core"]
+members = ["crates/sim-core", "examples/custom-mechanism"]
 resolver = "2"
 exclude = ["vendor/rapier3d", "vendor/glamx", "vendor/parry3d", "experiments/soft-fuel"]
 

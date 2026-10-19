@@ -15,7 +15,10 @@ import {createExample} from '../lib/example-create.js';
 import {validateSimulation} from '../lib/simulation-validation.js';
 import {createPhysicsMode} from '../lib/physics-modes.js';
 
+import {buildCustomSimulator} from '../lib/custom-simulator.js';
+
 const optionsByCommand = {
+  'sim-build': ['project'],
   'cad-build': ['workspace','entry','python'],
   'cad-session': ['workspace','entry','python'],
   'cad-inspect': ['workspace','entry','python','script'],
@@ -77,6 +80,7 @@ async function run() {
     'example-create': 'cadcove example-create --workspace NEW_DIRECTORY [--example team3310-rebuilt|training-robot] (default: ready-to-play team robot; requires Team Robot edition and WPILib JDK)',
     'season-import': 'cadcove season-import --workspace PATH --pack SEASON_JSON --pdf LOCAL_PDF --revision LABEL [--kind manual|updates] [--pages EXTRACTED_PAGES_JSON]',
     'season-search': 'cadcove season-search --directory IMPORTED_DIRECTORY --query TEXT [--offset 0] [--limit 8] (limit 1–20; follow nextOffset for more matches)',
+    'sim-build': 'cadcove sim-build --project PATH (build the explicitly selected project Rust simulator)',
     doctor: 'cadcove doctor --project PATH/robot.sim.json',
     audit: 'cadcove audit --project PATH/robot.sim.json',
     'sim-validate': 'cadcove sim-validate --project PATH (temporary native world load at tick zero; no robot program or live session)',
@@ -119,6 +123,12 @@ async function run() {
   }
   if (!options.project) throw Error('--project is required; the toolbox never selects another team’s example implicitly');
   const project = await readRobotProject(options.project);
+  if(command==='sim-build'){
+    const controller=new AbortController(),stop=()=>controller.abort();
+    process.on('SIGINT',stop);process.on('SIGTERM',stop);
+    try{return await buildCustomSimulator(project,{signal:controller.signal});}
+    finally{process.off('SIGINT',stop);process.off('SIGTERM',stop);}
+  }
   if(command==='sim-validate'){const result=await validateSimulation(project);process.exitCode=result.ok?0:1;return result;}
   if(['sim-capture','sim-view','sim-viewer-state','sim-practice'].includes(command)){
     if(['sim-view','sim-practice'].includes(command)&&!options.options)throw Error('--options JSON_FILE is required');
@@ -145,10 +155,10 @@ async function run() {
   }
   const audit = await auditRobotProject(project);
   if (command === 'audit') { process.exitCode = audit.canLoad ? 0 : 1; return {schema: 1, command, ok: audit.canLoad, ...audit}; }
-  const binary = nativeExecutable();
+  const binary = nativeExecutable(project);
   let java,javaError;try{java=await javaExecutable(project);}catch(error){javaError=error.message;}
   const checks = await Promise.all([
-    ['native-engine', binary, true, 'Install/build the native simulator for this platform; set INSTANTCAD_SIM_BINARY if needed.'],
+    ['native-engine', binary, true, project.profile.runtime.customSimulator ? 'Run CadCove: Build Custom Simulator or cadcove sim-build --project '+project.profilePath : 'Install/build the native simulator for this platform; set INSTANTCAD_SIM_BINARY if needed.'],
     ['jdk', java??'', true, javaError||'Select the WPILib JDK with INSTANTCAD_JDK or runtime.jdk.'],
     ['robot-program', project.runtime.jar, false, 'Build this team’s simulation JAR and set runtime.jar to its actual output.'],
   ].map(async ([id, file, executable, remedy]) => ({id, path: file, ok: await regularFile(file, executable), remedy})));

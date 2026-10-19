@@ -199,3 +199,12 @@ there is an error, not a valid body-relative transform.
 Season observers, optics/AprilTags, Phoenix mappings, gameplay approximations
 and material calibration are separate contracts. Passing this example or
 `sim-validate` does not validate those layers or establish real-robot fidelity.
+
+## Custom force models
+
+The bundled engine handles the world data above. For unsupported force behavior,
+use a team-owned Rust executable registering the `mechanism::Mechanism` interface.
+See `docs/CUSTOM-SIMULATOR.md` in the matching release and its
+`examples/custom-mechanism` crate. Keep this separate from season scoring.
+Select `runtime.customSimulator` in robot.sim.json and run `cadcove sim-build`
+explicitly. Rebuild/restart after source changes; preserve calibration evidence.

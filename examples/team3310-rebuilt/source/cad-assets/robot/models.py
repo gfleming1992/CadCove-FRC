@@ -20,7 +20,11 @@ def prototypes(ctx):
     if migration['pending'] or len(migration['converted'])!=migration['expectedAuthoredParts']:
         raise ValueError('Native robot migration is incomplete; refusing an implicit STEP fallback')
     builders={p['id']:p for p in migration['converted']}
-    common=['models.py','native/migration.json']+[p for p in ctx.files if p.startswith('native/') and not p.startswith('native/parts/') and p.endswith(('.py','.json'))]
+    # Per-part profiles must not invalidate every other authored component.
+    # Shared helper data remains common; each direct profile belongs to its asset.
+    profiles={key:'native/data/'+key+'.json' for key in builders if 'native/data/'+key+'.json' in ctx.files}
+    owned_profiles=set(profiles.values())
+    common=['models.py','native/migration.json']+[p for p in ctx.files if p.startswith('native/') and not p.startswith('native/parts/') and p not in owned_profiles and p.endswith(('.py','.json'))]
     prototypes={}
     for node in nodes:
         key=node['asset']
@@ -30,6 +34,7 @@ def prototypes(ctx):
             module='native.parts.'+builders[key]['module']
             factory=importlib.import_module(module).make
             dependencies=[*common,'native/parts/'+builders[key]['module']+'.py']
+            if key in profiles:dependencies.append(profiles[key])
             prototypes[key]=ctx.component(key,factory,dependencies=dependencies)
         else:
             prototypes[key]=ctx.component(key,lambda a=asset:ctx.import_step(a['file'],a['sha256']),dependencies=['models.py',asset['file']],inputs={'sha256':asset['sha256']})

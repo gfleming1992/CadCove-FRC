@@ -41323,7 +41323,7 @@
       },
       {
         "file": "cad-assets/robot/models.py",
-        "sha256": "87f8514801f4942c73cb65040ba03432d8dfb029ea8036cac3feea2e19fdc2f5"
+        "sha256": "a3f4fc61a558a0e75e5dda9ed22922c62f8cde16e078e8565804aa110b08097b"
       },
       {
         "file": "cad-assets/robot/native/backlash.py",

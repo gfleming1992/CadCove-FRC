@@ -37,9 +37,10 @@ export function createVSCodeHost(config) {
     nativeInspect:code=>request('native-inspect',{code}),
     nativeCancel:()=>{nativeLoaded=false;return request('native-cancel');},
     readSources:()=>request('sources'),
-    async cache(){
+    commitNativeScene:revision=>request('native-commit',{revision}),
+    async cache(revision){
       const result=await request('cache');
-      if(!result)return null;
+      if(!result||(revision&&result.revision!==revision)||result.runtime!==config.runtime)return null;
       const response=await fetch(result.url);if(!response.ok)return null;
       return {...result,bytes:await response.arrayBuffer()};
     },

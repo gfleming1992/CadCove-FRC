@@ -1,7 +1,7 @@
 import {SOURCE_LIMITS, checkSourceBudget} from '../../../src/core/source-limits.js';
 import fs from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
-import {createHash} from 'node:crypto';
+import {createHash,randomBytes} from 'node:crypto';
 import path from 'node:path';
 const skipped=new Set(['node_modules','dist','.git','.instantcad']);
 export function relativePath(value) {
@@ -71,4 +71,20 @@ export async function cacheFile(layout,entry,name,{create=false}={}) {
   return layout.buildRoot
     ? inside(layout.workspaceRoot,path.posix.join(layout.buildDirectory,entry.replace(/\.js$/,''),name),{create})
     : inside(layout.sourceRoot,artifactPath(entry,name),{create});
+}
+
+// Publish the worker's existing binary without a webview/base64 round trip.
+// Only the extension supplies artifact; never accept a webview-selected path.
+export async function commitNativeScene(layout,entry,artifact,revision,runtime){
+  const binary=await cacheFile(layout,entry,'scene.bin',{create:true});
+  const meta=await cacheFile(layout,entry,'scene.json',{create:true});
+  const digest=createHash('sha256');
+  for await(const chunk of createReadStream(artifact))digest.update(chunk);
+  const meshHash=digest.digest('hex'),tmp=meta+'.'+randomBytes(8).toString('hex')+'.tmp';
+  try{
+    await fs.writeFile(tmp,JSON.stringify({revision,meshHash,runtime}),{flag:'wx'});
+    await fs.rename(artifact,binary);
+    await fs.rename(tmp,meta);
+  }finally{await fs.rm(tmp,{force:true});}
+  return {revision,meshHash,runtime};
 }

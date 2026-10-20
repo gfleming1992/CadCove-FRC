@@ -2,7 +2,6 @@ import {currentCachedScene} from './core/scene-cache.js';
 import {captureScene} from './core/scene-capture.js';
 import {Viewer} from './core/viewer.js';
 import {snapshot,hash} from './core/revision.js';
-import {decodeScene,encodeScene} from './core/mesh.js';
 import {createVSCodeHost} from './hosts/vscode.js';
 const config=globalThis.INSTANTCAD_HOST,host=createVSCodeHost(config),identity=config.runtime;
 // Embedding products can keep the canvas free of authoring controls. This
@@ -20,9 +19,7 @@ async function execute(revision, current) {
   return host.nativeBuild(revision);
 }
 async function save(scene) {
-  const binary=encodeScene(scene),meshHash=await hash(binary);
-  await host.writeArtifact('scene.bin',binary);
-  await host.writeArtifact('scene.json',JSON.stringify({revision:head,meshHash,runtime:identity}));
+  await host.commitNativeScene(head);
   await saveFeedback(scene);
 }
 async function saveFeedback(scene) {
@@ -35,7 +32,7 @@ async function saveFeedback(scene) {
   await host.writeArtifact('status.json',JSON.stringify({ok:true,revision:head,runtime:identity,parts:scene.parts.map(({id,name,color,metrics})=>({id,name,color,metrics})),timings:scene.timings,preview},null,2));
 }
 async function restoreCached(current) {
-  const cached=await host.cache();
+  const cached=await host.cache(current.revision);
   const scene=await currentCachedScene(cached,current.revision,identity);
   if(!scene||(await source()).revision!==current.revision)return false;
   viewer.setScene(scene,!head);viewer.render();
@@ -119,7 +116,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){viewer.re
   try{
     await viewer.init();
     const current=await source();
-    const cached=await host.cache();
+    const cached=await host.cache(current.revision);
     const cachedScene=await currentCachedScene(cached,current.revision,identity);
     if(cachedScene&&cached.revision===current.revision){
       viewer.setScene(cachedScene,true);head=cached.revision;

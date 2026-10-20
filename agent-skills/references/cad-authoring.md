@@ -41,3 +41,17 @@ are interactive authoring feedback, not interchangeable benchmark inputs.
 CAD remains mm/Z-up; physics is metres/SI. Rebuild collision/bindings after
 geometry changes. See physics-authoring.md for team-owned Rapier worlds,
 accurate/gameplay profiles, source fingerprints, and calibration provenance.
+
+## Fast edits in an open canvas
+
+The editor keeps a native worker warm and rebuilds on source saves. Do not start
+an additional cold `cad-build` for every edit while that canvas is building;
+wait for its revision-matched `cad-status`, then capture it. Use `cad-session`
+for warm headless iterations when no editor build is running.
+
+Declare every component's actual dependencies with `ctx.component`. Keep each
+part's profile JSON in its own dependency list; putting every profile in a
+shared list invalidates the whole authored assembly on a single-part edit.
+Include shared helper code/data and explicit parameter inputs. Never omit a
+real dependency just to improve cache hits. Check `timings.components` for hits
+and misses and `timings.client` for frame/upload costs before optimizing.

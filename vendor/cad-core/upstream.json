@@ -1,13 +1,13 @@
 {
   "schema": 1,
   "project": "instantcad-local",
-  "revision": "98f43f4c5040be64b72f6b1e10aa4d759eea841a",
+  "revision": "7808636ab7c276807caae6448b2a2f825e8ad5fe",
   "policy": "Update upstream and regenerate; no downstream edits",
   "files": {
     "LICENSE": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6",
     "docs/NATIVE-CADQUERY.md": "0ad0f2aba9f4f4617d364904d6c636de303257db9efd3da3044698bf0c94be0e",
-    "extensions/vscode/src/extension.js": "36596b767e1a21dacc1e2026855a6ca140a4b5c0e40a8e394c9009e21d8ab5b6",
-    "extensions/vscode/src/project-files.js": "f614994f6f3799a89a396597a7bb75bbfba984ed895863ca28e1e01c4735998f",
+    "extensions/vscode/src/extension.js": "8b872e063d9293b2b73359ddaf5ef69b2caf7866389dd5cb9b3f4f6075db5d44",
+    "extensions/vscode/src/project-files.js": "102a88e82b8b999de7dd2495e8ae2f35ac460452aa43a472c530aa307777c807",
     "extensions/vscode/src/step-source.js": "0fe88df4c91e59d995c2691aaee1ecff984a1a7baa706820c8f31b251cd541ac",
     "index.html": "fcad867ac158d07305548ab75c0b10665b7475006d135e65160d09055fcaaab3",
     "src/core/assembly-capture.js": "4c1d765ad7c1c5ed6d2d02e3b2ccc458c1f5188b3ccf69a020c9162486c90671",
@@ -18,15 +18,15 @@
     "src/core/scene-capture.js": "759697908092eb815861145dbebd65d4a41433abb02acee7ae10d07ce657ca07",
     "src/core/source-limits.js": "156ef65c49fa50ccdfd168d268d08aae0a8b0d750234bc8fbb1408ed1f6b1937",
     "src/core/viewer.js": "d311faeea3ee12482f833e39fe5c41ff0fdc058cc7aa166d1a432cffb1de407b",
-    "src/hosts/vscode.js": "64a4c443640e7bd24e5ebf44682b95a647988a24a41ebb13e2735bb9cdfdf9f1",
+    "src/hosts/vscode.js": "e628ca2f01d70f3764fc34614c7c3abf745ae45e94f1afd7d4f6aad18292558d",
     "src/native/client.js": "9c27334ab7f7b61c35e26fd7eb88913bbf50c0ff4ea6f8f90f38db8e951d8d5b",
     "src/native/geometry.py": "252178b10b44c4e3e319f085fe378e5e98d1d40bae4905482177429d9120a790",
     "src/native/requirements.txt": "8365d8c2f92c2561701887d9312d4a53d424a8bbb5e22c883137711723355fac",
     "src/native/session.js": "3d873adfe5ca372bfc79cc78ea0c2ebdc5c4775502ff70dd66687e434685d8e0",
     "src/native/worker.py": "71d671cd16c140ad9a4ba2cf78bc8c4bca027e8b8eef16fa03a22348d3a952d6",
-    "src/vscode-main.js": "4201ad557773896732580fa938b14ea91fa07c509aa3fac05462f11fd9caacec",
+    "src/vscode-main.js": "d4ee10277ca8be3e3e84d29e22e549abf7f9072a3667afa30ceba104433940e9",
     "tests/native-cad.test.js": "2459341a1afd314e2a846c1e209399f93da4bd885436d27140976af98136be30",
     "tests/native-session.test.js": "f049e2deff55d1f85d33fe256d61fee14143832391ed44ddc35881c4b459f825",
-    "tests/vscode-host.test.js": "eb8ecfbb99b7f0dbf17b78a98088a631ef8e66b0d3c4885d5153b638132214d6"
+    "tests/vscode-host.test.js": "c66bbe1a59e299984759ba2ff72612e9c2d3d5e98bb0b43b25be6753da2dc046"
   }
 }

@@ -99,3 +99,21 @@ test('external scene adoption rejects stale, corrupt, and wrong-runtime builds',
  const corrupt=new Uint8Array([1,2,3]).buffer;
  expect(await currentCachedScene({...cached,bytes:corrupt,meshHash:await hash(corrupt)},'current','native')).toBeNull();
 });
+
+test('native cache commit promotes exact worker bytes with revision and digest',async()=>{
+ const {commitNativeScene}=await import('../extensions/vscode/src/project-files.js');
+ const {readFile,readdir}=await import('node:fs/promises');
+ const {createHash}=await import('node:crypto');
+ const root=await mkdtemp(path.join(tmpdir(),'native-commit-'));
+ try{
+  await mkdir(path.join(root,'cad'));const layout=await projectLayout(root,{sourceDirectory:'cad',buildDirectory:'build/cad'});
+  const dest=await cacheFile(layout,'models.py','scene.bin',{create:true});await mkdir(path.dirname(dest),{recursive:true});
+  const artifact=path.join(path.dirname(dest),'native-scene.bin'),bytes=Buffer.from('worker output');await writeFile(artifact,bytes);
+  const result=await commitNativeScene(layout,'models.py',artifact,'revision-1','runtime-1');
+  expect(await readFile(dest)).toEqual(bytes);expect(result).toEqual({revision:'revision-1',runtime:'runtime-1',meshHash:createHash('sha256').update(bytes).digest('hex')});
+  expect(JSON.parse(await readFile(await cacheFile(layout,'models.py','scene.json'),'utf8'))).toEqual(result);
+  expect((await readdir(path.dirname(dest))).sort()).toEqual(['scene.bin','scene.json']);
+  await expect(commitNativeScene(layout,'models.py',artifact,'revision-2','runtime-1')).rejects.toThrow();
+  expect(JSON.parse(await readFile(await cacheFile(layout,'models.py','scene.json'),'utf8'))).toEqual(result);
+ }finally{await rm(root,{recursive:true,force:true});}
+});

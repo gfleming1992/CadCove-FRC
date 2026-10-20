@@ -4,7 +4,7 @@ import path from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {NativeCadClient,nativeIdentityFor,resolveNativePython} from '../../../src/native/client.js';
 import {snapshot} from '../../../src/core/revision.js';
-import {readSources,inside,relativePath,projectLayout,cacheFile} from './project-files.js';
+import {readSources,inside,relativePath,projectLayout,cacheFile,commitNativeScene} from './project-files.js';
 import {isStepFile,stepEntry,readStepSource} from './step-source.js';
 const panels=new Map();
 let output;
@@ -55,7 +55,7 @@ export function activate(context,options={}) {
     const nativeRuntimeIdentity=nativeIdentityFor(path.join(media,'native','worker.py'));
     const config={runtime:nativeRuntimeIdentity,entry,project:path.basename(root),minimalUI:!!options.minimalUI};
     const nativeClient=new NativeCadClient({python:resolveNativePython({explicit:options.pythonPath,environment:process.env.CADCOVE_PYTHON,project:projectSettings?.pythonPath,editor:configuration?.get('pythonPath'),root:layout.workspaceRoot}),worker:path.join(media,'native','worker.py'),onLog:text=>output.appendLine(text)});
-    let nativeArtifact;
+    let nativeArtifact,nativeArtifactRevision;
     const cleanup=async(token)=>{const write=state.writes.get(token);if(write){state.writes.delete(token);await write.handle.close().catch(()=>{});await fs.unlink(write.tmp).catch(()=>{});}};
     async function handle(method,args) {
       if(!vscode.workspace.isTrusted||state.disposed)throw Error('CAD project access is unavailable');
@@ -67,11 +67,18 @@ export function activate(context,options={}) {
           if(source.revision!==args.revision)throw Error('Source changed before native build');
           const file=await cacheFile(layout,entry,'profile.json',{create:true});
           const binary=path.join(path.dirname(file),'native-scene.bin');
-          nativeArtifact=binary;
+          nativeArtifact=binary;nativeArtifactRevision=undefined;
           await fs.mkdir(path.dirname(binary),{recursive:true});
           const result=await nativeClient.request({kind:'build',root,entry,stepAsset:step?relative:undefined,files:source.files,revision:source.revision,output:binary});
           if((await snapshot(await sources(),entry,nativeRuntimeIdentity)).revision!==source.revision)throw Error('Source changed during native build');
+          nativeArtifactRevision=source.revision;
           return {...result,url:assetUri(binary)};
+        }
+        case 'native-commit':{
+          if(!nativeArtifact||nativeArtifactRevision!==args.revision)throw Error('No native artifact for this revision');
+          if((await snapshot(await sources(),entry,nativeRuntimeIdentity)).revision!==args.revision)throw Error('Source changed before cache commit');
+          const result=await commitNativeScene(layout,entry,nativeArtifact,args.revision,nativeRuntimeIdentity);
+          nativeArtifact=undefined;nativeArtifactRevision=undefined;return result;
         }
         case 'native-inspect':if(!nativeClient)throw Error('Not a native model');return nativeClient.request({kind:'inspect',code:args.code});
         case 'native-cancel':nativeClient?.dispose();return true;

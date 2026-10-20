@@ -139,3 +139,36 @@ test('native migration evidence distinguishes shape validation from STEP exchang
  expect(report.vendorValidity.every(p=>p.valid)).toBe(true);
  expect(JSON.stringify(report.bracketsRailsShroud)).toContain('STEP');
 });
+
+test('robot component dependencies isolate profiles while retaining shared helper inputs',async()=>{
+ const python=process.env.CADCOVE_PYTHON??'python3';
+ const code=`import ast,json,types,sys
+from pathlib import Path
+root=Path(sys.argv[1])
+tree=ast.parse((root/'models.py').read_text())
+function=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='prototypes')
+namespace={'ROOT':root,'json':json,'importlib':types.SimpleNamespace(import_module=lambda name:types.SimpleNamespace(make=lambda:None))}
+exec(compile(ast.Module(body=[function],type_ignores=[]),'models.py','exec'),namespace)
+class Context:
+    files={str(p.relative_to(root)):p.read_text() for p in (root/'native').rglob('*') if p.suffix in ('.py','.json')}
+    files['models.py']=(root/'models.py').read_text()
+    def __init__(self):self.deps={}
+    def component(self,name,factory,dependencies,**kwargs):self.deps[name]=set(dependencies);return None
+ctx=Context();namespace['prototypes'](ctx)
+builders=json.loads((root/'native/migration.json').read_text())['converted']
+profiles={p['id']:'native/data/'+p['id']+'.json' for p in builders if (root/'native/data'/(p['id']+'.json')).exists()}
+for key,profile in profiles.items():
+    affected=[name for name,deps in ctx.deps.items() if profile in deps]
+    assert affected==[key],(profile,affected)
+for p in builders:
+    deps=ctx.deps[p['id']]
+    assert 'native/manufacturing.py' in deps
+    assert 'native/data/drive-spacer.json' in deps
+    assert 'native/parts/'+p['module']+'.py' in deps
+    assert 'native/migration.json' in deps and 'models.py' in deps
+print(json.dumps({'profiles':len(profiles),'components':len(ctx.deps)}))
+`;
+ const child=Bun.spawn([python,'-c',code,path.join(source,'cad-assets/robot')],{stdout:'pipe',stderr:'pipe'});
+ const [out,err,status]=await Promise.all([new Response(child.stdout).text(),new Response(child.stderr).text(),child.exited]);
+ expect(err).toBe('');expect(status).toBe(0);const result=JSON.parse(out);expect(result.components).toBe(429);expect(result.profiles).toBeGreaterThan(50);
+});

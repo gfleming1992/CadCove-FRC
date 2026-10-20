@@ -5,7 +5,12 @@
 Agents use the CLI and filesystem. Start with `.cadcove/AGENT.md`, then the
 native CadQuery authoring reference. Run `cadcove cad-build`, inspect with
 `cad-inspect --script checks.py`, and keep `cad-session` warm for iterations.
-Right-click a Python/STEP file to open the model in VS Code. Use `cad-capture`
+Use `open_robot_cad` if exposed by the chat, otherwise run
+`cadcove cad-open --workspace .` to open the robot in VS Code.
+The extension starts its authenticated local server automatically in a trusted
+CadCove workspace. Missing chat tools indicate agent discovery, not a stopped
+server; do not require a manual start or tool registration for the CLI route.
+Right-clicking a Python/STEP file also opens the model. Use `cad-capture`
 for focused images from that WebGPU canvas. Neither CAD build nor exact
 inspection requires an editor window or an MCP tool registration.
 
@@ -100,7 +105,8 @@ cadcove guidance-update --workspace . --dry-run
 cadcove guidance-update --workspace .
 ```
 
-Missing discovery blocks are appended; existing blocks are not replaced. Edited
+Missing discovery blocks are appended; exact older generated blocks are upgraded.
+Customized blocks and surrounding team instructions are preserved. Edited
 or deliberately deleted generated guidance yields review proposals and exit 1.
 Merge team knowledge, inspect reported conflicts, and start a new agent session.
 Bridge source upgrades are separate: `cadcove bridge-export --workspace . --review`.

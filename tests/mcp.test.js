@@ -18,3 +18,19 @@ test('real MCP discovery/call, validation, trust revocation and local authentica
   trusted=false;await expect(client.listTools()).rejects.toThrow();
  }finally{await client.close();await server.close();}
 });
+
+test('cad-open CLI uses the running editor without chat tool registration and reports failures',async()=>{
+ const {mkdtemp,mkdir,writeFile,rm}=await import('node:fs/promises');
+ const {tmpdir}=await import('node:os');const path=await import('node:path');
+ const root=await mkdtemp(path.join(tmpdir(),'cadcove-open-'));let fail=false,calls=0;
+ const server=await startMcpServer({tools:[{name:'open_robot_cad',description:'Open robot',schema:{workspace:z.string()},run:args=>{expect(args.workspace).toBe(root);calls++;if(fail)throw Error('CAD entry is missing');return {ok:true,kind:'cadquery'};}}]});
+ try{
+  await mkdir(path.join(root,'.cadcove'));await mkdir(path.join(root,'build'));
+  await writeFile(path.join(root,'.cadcove/project.json'),JSON.stringify({buildDirectory:'build'}));
+  await writeFile(path.join(root,'build/cadcove-mcp.json'),JSON.stringify({schema:1,workspace:root,endpoint:server.url,token:server.token}));
+  const cli=path.resolve(import.meta.dir,'../bin/cadcove.js');
+  const run=async()=>{const p=Bun.spawn([process.execPath,cli,'cad-open','--workspace',root],{stdout:'pipe',stderr:'pipe'});const [out,err,code]=await Promise.all([new Response(p.stdout).text(),new Response(p.stderr).text(),p.exited]);expect(err).toBe('');return {code,result:JSON.parse(out)};};
+  const opened=await run();expect(opened.code).toBe(0);expect(opened.result).toMatchObject({ok:true,command:'cad-open',workspace:root,kind:'cadquery'});
+  fail=true;const failed=await run();expect(failed.code).toBe(2);expect(failed.result.ok).toBe(false);expect(failed.result.error.message).toBe('CAD entry is missing');expect(calls).toBe(2);
+ }finally{await server.close();await rm(root,{recursive:true,force:true});}
+});

@@ -61,3 +61,13 @@ test('MCP-first upgrade replaces only the original owned discovery block',()=>fi
  const upgraded=await readFile(path.join(root,'AGENTS.md'),'utf8');expect(upgraded).toStartWith('Team instructions\n');expect(upgraded).toContain('open_robot_cad');expect(upgraded).toContain('do not read package.json');
  expect(await readFile(path.join(root,'CLAUDE.md'),'utf8')).toBe(custom);
 }));
+
+
+test('missing chat tool guidance upgrades exact generated blocks and preserves customized ones',()=>fixture(async root=>{
+ const start='<!-- cadcove:instructions:start -->',end='<!-- cadcove:instructions:end -->';
+ const previous=`${start}\nCadCove MCP is the first interface for CAD/simulation requests. For "open robot CAD", call \`open_robot_cad\` immediately; do not read package.json, scan the repository, or start physics first. The VS Code extension starts the local MCP server automatically. If tools are absent, run **CadCove: Start MCP Server** and enable CadCove in your agent tool picker; other MCP hosts use \`cadcove mcp --workspace WORKSPACE_PATH\` as a stdio server. Call \`workspace_context\` for configuration. For authoring/integration, then read \`.cadcove/AGENT.md\` and its focused skills.\n${end}\n`;
+ await writeFile(path.join(root,'AGENTS.md'),'Team preface\n'+previous+'Team suffix\n');
+ const custom=previous.replace('If tools are absent','Team override: if tools are absent');await writeFile(path.join(root,'CLAUDE.md'),custom);
+ const dry=await updateToolboxGuidance({workspace:root,dryRun:true});expect(dry.updated).toContain('AGENTS.md');expect(await readFile(path.join(root,'AGENTS.md'),'utf8')).toContain('Start MCP Server');
+ await updateToolboxGuidance({workspace:root});const updated=await readFile(path.join(root,'AGENTS.md'),'utf8');expect(updated).toStartWith('Team preface\n');expect(updated).toEndWith('Team suffix\n');expect(updated).toContain('cadcove cad-open');expect(updated).toContain('Missing chat tools do not mean the server is stopped');expect(updated).not.toContain('Start MCP Server');expect(await readFile(path.join(root,'CLAUDE.md'),'utf8')).toBe(custom);
+}));

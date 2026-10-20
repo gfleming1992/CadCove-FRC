@@ -24,6 +24,7 @@ const optionsByCommand = {
   'cad-inspect': ['workspace','entry','python','script'],
   'cad-export': ['workspace','entry','python','output'],
   'cad-capture': ['workspace','entry','view','ids','output'],
+  'cad-open': ['workspace'],
   mcp: ['workspace'],
   init: ['workspace', 'name', 'id', 'cad-dir', 'build-dir', 'dry-run'],
   'guidance-update': ['workspace','dry-run'],
@@ -66,6 +67,7 @@ async function run() {
   const {command, options} = parse(process.argv.slice(2));
   if(['cad-build','cad-session','cad-inspect','cad-export'].includes(command)){const {cadCommand}=await import('../lib/cad-command.js');return cadCommand(command,options);}
   if(command==='cad-capture'){const {captureCad}=await import('../lib/cad-capture.js');return captureCad(options);}
+  if(command==='cad-open'){const {openRobotCad}=await import('../lib/mcp-proxy.js');const result=await openRobotCad(options.workspace??process.cwd());if(result.ok===false)process.exitCode=1;return result;}
   if (command === 'mcp') {const {runMcpProxy}=await import('../lib/mcp-proxy.js');await runMcpProxy(options.workspace??process.cwd());return;}
   if (command === 'help') return {schema: 1, ok: true, commands: {
     'cad-build': 'cadcove cad-build --workspace PATH [--entry models.py] [--python PYTHON]',
@@ -73,6 +75,7 @@ async function run() {
     'cad-inspect': 'cadcove cad-inspect --workspace PATH --script CHECKS.py (build then exact BREP inspection; assign result)',
     'cad-export': 'cadcove cad-export --workspace PATH --output model.step',
     'cad-capture': 'cadcove cad-capture --workspace PATH [--entry models.py] [--view iso|front|right|top] [--ids ID,ID] --output frame.png (open VS Code canvas required)',
+    'cad-open': 'cadcove cad-open --workspace PATH (open robot in the running VS Code canvas; no agent MCP registration required)',
     mcp: 'cadcove mcp --workspace PATH (stdio bridge to the automatic VS Code MCP server)',
     init: 'cadcove init --workspace PATH [--name NAME] [--id ID] [--cad-dir cad] [--build-dir build/cadcove] [--dry-run]',
     'guidance-update': 'cadcove guidance-update --workspace PATH [--dry-run] (preserves edited guidance and writes reviewable proposals)',

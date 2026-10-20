@@ -3,10 +3,11 @@ import {chromium} from 'playwright';
 
 // Exercise real pointer capture and browser defaults without loading a CAD kernel.
 const server = Bun.serve({port:0, fetch(request) {
+  if (new URL(request.url).pathname === '/scene-capture.js') return new Response(Bun.file(new URL('../src/core/scene-capture.js', import.meta.url)));
   if (new URL(request.url).pathname === '/viewer.js') return new Response(Bun.file(new URL('../src/core/viewer.js', import.meta.url)));
   return new Response(`<style>body{margin:0}canvas{width:800px;height:600px}</style><canvas tabindex="0"></canvas><script type="module">import {Viewer} from '/viewer.js';window.viewer=new Viewer(document.querySelector('canvas'));</script>`, {headers:{'content-type':'text/html'}});
 }});
-const browser = await chromium.launch({headless:true, ...(process.platform === 'darwin' ? {executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'} : {})});
+const browser = await chromium.launch({headless:true, args:['--enable-unsafe-webgpu','--use-angle=metal'], ...(process.platform === 'darwin' ? {executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'} : {})});
 try {
   const page = await browser.newPage();
   await page.goto(`http://localhost:${server.port}`);
@@ -60,7 +61,19 @@ try {
   await page.evaluate(() => viewer.canvas.dispatchEvent(new PointerEvent('lostpointercapture',{pointerId:1})));
   await drag('middle');
   assert.equal(await strokes(),2,'drawing works after capture loss');
-  console.log('PASS: multiple strokes, camera isolation, right pan, orbit/zoom/resize clearing, Escape, outside release');
+  const captureResult = await page.evaluate(async () => {
+    const {Viewer} = await import('/viewer.js');
+    const {captureScene} = await import('/scene-capture.js');
+    const canvas = document.createElement('canvas');
+    document.body.append(canvas);
+    const v = await new Viewer(canvas).init();
+    v.setScene({parts:[{id:'triangle',color:'#ffffff',positions:new Float32Array([0,0,0,1,0,0,0,1,0]),normals:new Float32Array([0,0,1,0,0,1,0,0,1]),indices:new Uint32Array([0,1,2])}]},true);
+    const before=JSON.stringify(v.camera);
+    const result=await captureScene(v,{width:128,height:128});
+    return {png:result.image.startsWith('data:image/png;base64,'),unchanged:before===JSON.stringify(v.camera)};
+  });
+  assert.deepEqual(captureResult,{png:true,unchanged:true},'offscreen capture must work without a DOM canvas style');
+  console.log('PASS: offscreen capture,  multiple strokes, camera isolation, right pan, orbit/zoom/resize clearing, Escape, outside release');
 } finally {
   await browser.close();
   server.stop(true);

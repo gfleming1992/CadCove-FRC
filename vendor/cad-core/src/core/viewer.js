@@ -345,7 +345,7 @@ export class Viewer {
     this.markerOverlay?.replaceChildren();
     this.markerStroke = null;
     this.markerCamera = null;
-    this.canvas.style.cursor = "";
+    if (this.canvas.style) this.canvas.style.cursor = "";
   }
   installControls() {
     const c = this.canvas;

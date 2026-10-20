@@ -124,3 +124,16 @@ Preview `metrics.volume` uses OCCT fixed quadrature, identified by
 `parts[i]["shape"].Volume(1e-7)` in `cad-inspect`; adaptive integration can be
 expensive across hundreds of imported components. Solid validity remains checked
 before any preview is accepted.
+
+## Interpreter errors and external builds
+
+The editor and CLI use the same interpreter resolver: explicit caller override,
+`CADCOVE_PYTHON`, embedding project `pythonPath`, editor `instantcad.pythonPath`,
+then `python3`. Project-relative executable paths resolve from the workspace.
+Configure the environment containing the pinned requirements; startup errors
+include the executable and a bounded stderr tail instead of only an exit code.
+
+An open viewer watches its scene metadata as well as source files. A completed
+external CLI build is adopted only after source/runtime/hash validation; this
+can recover an editor Python failure without rerunning Python or moving the
+camera. Incomplete, corrupt or stale scenes cannot replace the current model.

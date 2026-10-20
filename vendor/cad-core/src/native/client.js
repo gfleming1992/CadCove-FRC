@@ -6,6 +6,13 @@ import {createHash} from 'node:crypto';
 export const nativeRuntimeIdentity='cadquery@2.6.1/ocp@7.8.1.1/native-mesh-v1';
 export const nativeIdentityFor=worker=>nativeRuntimeIdentity+'/worker:'+createHash('sha256').update(readFileSync(worker)).update(readFileSync(path.join(path.dirname(worker),'geometry.py'))).digest('hex');
 
+// Use the same precedence in the CLI and editor; project paths may be relative.
+export function resolveNativePython({explicit,environment,project,editor,root=process.cwd()}={}) {
+  const value=[explicit,environment,project,editor].find(v=>typeof v==='string'&&v.trim());
+  if(!value)return 'python3';
+  return value===project&&!path.isAbsolute(value)&&/[\\/]/.test(value)?path.resolve(root,value):value;
+}
+
 // One bounded, serialized process per open model; no Python on cached opens.
 export class NativeCadClient {
   // Full STEP-heavy assemblies can exceed five minutes on Windows laptops.
@@ -16,12 +23,16 @@ export class NativeCadClient {
     const identity=nativeIdentityFor(this.worker);
     this.ready=new Promise((resolve,reject)=>{
       const child=this.child=spawn(this.python,['-u','-B',this.worker],{stdio:['pipe','pipe','pipe'],windowsHide:true});
-      let ready=false;
+      let ready=false,stderr="";
       const timer=setTimeout(()=>{reject(Error('Native CAD startup timed out'));this.dispose();},30000);
       const fail=error=>{clearTimeout(timer);reject(error);if(this.child!==child)return;for(const task of this.pending.values()){clearTimeout(task.timer);task.reject(error);}this.pending.clear();this.child=undefined;this.ready=undefined;};
       child.once('error',error=>fail(Error(`Cannot start CadQuery Python: ${error.message}. Configure instantcad.pythonPath and install src/native/requirements.txt.`)));
-      child.once('exit',(code,signal)=>fail(Error(`Native CAD process exited (${signal??code})`)));
-      child.stderr.on('data',chunk=>this.onLog(String(chunk).slice(0,16000)));
+      child.once('close',(code,signal)=>{
+        const detail=stderr.trim();
+        const hint=!ready?' Configure the CAD Python interpreter and install the pinned CadQuery requirements in that environment.':'';
+        fail(Error(`Native CAD process exited (${signal??code}); Python: ${this.python}.${hint}${detail?'\n'+detail:''}`));
+      });
+      child.stderr.on('data',chunk=>{const text=String(chunk);stderr=(stderr+text).slice(-8000);this.onLog(text.slice(0,16000));});
       createInterface({input:child.stdout}).on('line',line=>{
         try{
           const message=JSON.parse(line);

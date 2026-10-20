@@ -76,6 +76,19 @@ instructions while preserving team customizations.
 Marketplace installations receive new versions through VS Code's extension
 updates; leave auto-update enabled or use **Check for Extension Updates**.
 
+## CAD Python and CLI builds
+
+Configure `.cadcove/project.json` with `pythonPath` pointing to the environment
+containing the pinned CadQuery dependencies. The CLI and editor use the same
+precedence: explicit caller override, `CADCOVE_PYTHON`, project `pythonPath`,
+editor `instantcad.pythonPath` (when applicable), then `python3`. Project-relative
+paths such as `.venv-cadquery/bin/python` resolve from the workspace root.
+Startup errors show the selected executable and Python stderr.
+
+The open CAD canvas watches completed CLI builds. It loads a new scene only
+when its source revision, runtime and mesh hash match, preserving your camera.
+This lets a successful CLI build recover a viewer error without reopening the tab.
+
 ## Documentation
 
 - [System card: how it works and practical limits](docs/SYSTEM-CARD.md)

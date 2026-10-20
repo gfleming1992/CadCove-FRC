@@ -29,6 +29,14 @@ if(process.env.CADCOVE_TEST_WPILIB_CONFIG){
  await mkdir(path.join(folders.user,'User'),{recursive:true});
  await writeFile(path.join(folders.user,'User/settings.json'),JSON.stringify({'update.mode':'none','extensions.autoUpdate':false,'extensions.autoCheckUpdates':false}));
 }
+// Qualification must exercise the installed candidate, never a Marketplace
+// auto-update that replaces it midway through the assertions.
+{
+ const file=path.join(folders.user,'User/settings.json');await mkdir(path.dirname(file),{recursive:true});
+ const settings=await readFile(file,'utf8').then(JSON.parse,()=>({}));
+ Object.assign(settings,{'update.mode':'none','extensions.autoUpdate':false,'extensions.autoCheckUpdates':false});
+ await writeFile(file,JSON.stringify(settings));
+}
 if(process.env.CADCOVE_PYTHON){
  const file=path.join(folders.user,'User/settings.json');await mkdir(path.dirname(file),{recursive:true});
  const settings=await readFile(file,'utf8').then(JSON.parse,()=>({}));settings['instantcad.pythonPath']=process.env.CADCOVE_PYTHON;await writeFile(file,JSON.stringify(settings));

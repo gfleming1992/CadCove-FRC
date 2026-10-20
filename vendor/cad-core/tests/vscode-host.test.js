@@ -85,3 +85,17 @@ test('native editor accepts large assemblies and enforce the same bounded source
   await expect(readSources(root)).rejects.toThrow('exceeds 1 MB');
  }finally{await rm(root,{recursive:true,force:true});}
 });
+
+import {currentCachedScene} from '../src/core/scene-cache.js';
+import {encodeScene} from '../src/core/mesh.js';
+import {hash} from '../src/core/revision.js';
+test('external scene adoption rejects stale, corrupt, and wrong-runtime builds',async()=>{
+ const bytes=encodeScene({parts:[{id:'triangle',name:'Triangle',color:'#112233',positions:new Float32Array([0,0,0,1,0,0,0,1,0]),normals:new Float32Array([0,0,1,0,0,1,0,0,1]),indices:new Uint32Array([0,1,2])}]});
+ const cached={revision:'current',runtime:'native',meshHash:await hash(bytes),bytes};
+ expect((await currentCachedScene(cached,'current','native')).parts).toHaveLength(1);
+ expect(await currentCachedScene(cached,'newer','native')).toBeNull();
+ expect(await currentCachedScene(cached,'current','other-runtime')).toBeNull();
+ expect(await currentCachedScene({...cached,meshHash:'invalid'},'current','native')).toBeNull();
+ const corrupt=new Uint8Array([1,2,3]).buffer;
+ expect(await currentCachedScene({...cached,bytes:corrupt,meshHash:await hash(corrupt)},'current','native')).toBeNull();
+});

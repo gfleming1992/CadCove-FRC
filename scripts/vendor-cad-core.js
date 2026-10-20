@@ -16,7 +16,7 @@ const all=(await git(['ls-tree','-r','--name-only',revision])).toString().trim()
 const selected=all.filter(f=>f.startsWith('src/native/')||[
  'LICENSE','index.html','src/vscode-main.js','src/hosts/vscode.js',
  'src/core/viewer.js','src/core/assembly-viewer.js','src/core/assembly-capture.js',
- 'src/core/scene-capture.js','src/core/mesh.js','src/core/revision.js','src/core/source-limits.js',
+ 'src/core/scene-cache.js','src/core/scene-capture.js','src/core/mesh.js','src/core/revision.js','src/core/source-limits.js',
  'extensions/vscode/src/extension.js','extensions/vscode/src/project-files.js','extensions/vscode/src/step-source.js',
  'tests/vscode-host.test.js','tests/native-cad.test.js','tests/native-session.test.js','docs/NATIVE-CADQUERY.md'
 ].includes(f));

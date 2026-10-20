@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomBytes} from 'node:crypto';
-import {NativeCadClient,nativeIdentityFor} from '../../../src/native/client.js';
+import {NativeCadClient,nativeIdentityFor,resolveNativePython} from '../../../src/native/client.js';
 import {snapshot} from '../../../src/core/revision.js';
 import {readSources,inside,relativePath,projectLayout,cacheFile} from './project-files.js';
 import {isStepFile,stepEntry,readStepSource} from './step-source.js';
@@ -20,12 +20,13 @@ export function activate(context,options={}) {
       const choice=await vscode.window.showWorkspaceFolderPick();if(!choice)return;workspace=choice;
     }
     const configuration=workspace?vscode.workspace.getConfiguration('instantcad',workspace.uri):undefined;
-    let layout;
+    let layout,projectSettings;
     if(workspace){
       if(workspace.uri.scheme!=='file')throw Error('InstantCAD currently requires a local filesystem workspace.');
-      layout=await projectLayout(workspace.uri.fsPath,options.projectSettings?await options.projectSettings(workspace.uri.fsPath):configuration?{
+      projectSettings=options.projectSettings?await options.projectSettings(workspace.uri.fsPath):undefined;
+      layout=await projectLayout(workspace.uri.fsPath,projectSettings??(configuration?{
         sourceDirectory:configuration.get('sourceDirectory'),buildDirectory:configuration.get('buildDirectory'),entryPoint:configuration.get('entryPoint'),
-      }:{});
+      }:{}));
     }
     if(!resource&&active?.scheme==='file'&&(/\.py$/.test(active.fsPath)||isStepFile(active.fsPath))&&(!layout||active.fsPath.startsWith(layout.sourceRoot+path.sep)))resource=active;
     if(!resource&&layout)resource=vscode.Uri.file(path.join(layout.sourceRoot,layout.entryPoint));
@@ -53,7 +54,7 @@ export function activate(context,options={}) {
     const manifest=JSON.parse(await fs.readFile(path.join(media,'manifest.json'),'utf8'));
     const nativeRuntimeIdentity=nativeIdentityFor(path.join(media,'native','worker.py'));
     const config={runtime:nativeRuntimeIdentity,entry,project:path.basename(root),minimalUI:!!options.minimalUI};
-    const nativeClient=new NativeCadClient({python:options.pythonPath??configuration?.get('pythonPath')??'python3',worker:path.join(media,'native','worker.py'),onLog:text=>output.appendLine(text)});
+    const nativeClient=new NativeCadClient({python:resolveNativePython({explicit:options.pythonPath,environment:process.env.CADCOVE_PYTHON,project:projectSettings?.pythonPath,editor:configuration?.get('pythonPath'),root:layout.workspaceRoot}),worker:path.join(media,'native','worker.py'),onLog:text=>output.appendLine(text)});
     let nativeArtifact;
     const cleanup=async(token)=>{const write=state.writes.get(token);if(write){state.writes.delete(token);await write.handle.close().catch(()=>{});await fs.unlink(write.tmp).catch(()=>{});}};
     async function handle(method,args) {
@@ -138,8 +139,15 @@ export function activate(context,options={}) {
       clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);
     };
     watcher.onDidChange(changed);watcher.onDidCreate(changed);watcher.onDidDelete(changed);
+    // Source and generated artifacts have separate watchers: a CLI build may
+    // finish after an editor failure without changing the source a second time.
+    const cacheMeta=await cacheFile(layout,entry,'scene.json',{create:true});
+    const cacheWatcher=vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(path.dirname(cacheMeta)),'scene.json'));
+    const cacheChanged=()=>{clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);};
+    cacheWatcher.onDidChange(cacheChanged);cacheWatcher.onDidCreate(cacheChanged);
+
     const configurationListener=vscode.workspace.onDidChangeConfiguration(event=>{if(event.affectsConfiguration('instantcad',workspace?.uri)){void panel.webview.postMessage({event:'configuration-changed'});}});
-    panel.onDidDispose(()=>{for(const task of state.pending.values()){clearTimeout(task.timer);task.reject(Error('CAD panel closed'));}state.pending.clear();nativeClient?.dispose();if(nativeArtifact)void fs.unlink(nativeArtifact).catch(()=>{});configurationListener.dispose();state.disposed=true;clearTimeout(debounce);watcher.dispose();messages.dispose();for(const token of state.writes.keys())void cleanup(token);panels.delete(resource.toString());});
+    panel.onDidDispose(()=>{for(const task of state.pending.values()){clearTimeout(task.timer);task.reject(Error('CAD panel closed'));}state.pending.clear();nativeClient?.dispose();if(nativeArtifact)void fs.unlink(nativeArtifact).catch(()=>{});configurationListener.dispose();state.disposed=true;clearTimeout(debounce);watcher.dispose();cacheWatcher.dispose();messages.dispose();for(const token of state.writes.keys())void cleanup(token);panels.delete(resource.toString());});
     panel.onDidChangeViewState(()=>{if(panel.visible)void panel.webview.postMessage({event:'source-changed'});});
     const nonce=randomBytes(16).toString('base64');
     const csp=`default-src 'none'; img-src ${panel.webview.cspSource} data: blob:; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}' ${panel.webview.cspSource}; connect-src ${panel.webview.cspSource};`;

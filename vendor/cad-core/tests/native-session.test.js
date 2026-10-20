@@ -35,3 +35,28 @@ const python=process.env.CADCOVE_PYTHON;
   await expect(session.build()).rejects.toThrow('Asset leaves');
  }finally{session.dispose();await fs.rm(root,{recursive:true,force:true});}
 },30000);
+
+import {NativeCadClient,resolveNativePython} from '../src/native/client.js';
+test('CLI and editor share Python precedence and project-relative paths',()=>{
+ expect(resolveNativePython({explicit:'override',environment:'env',project:'project',editor:'editor'})).toBe('override');
+ expect(resolveNativePython({environment:'env',project:'project',editor:'editor'})).toBe('env');
+ const projectRoot=path.join(os.tmpdir(),'cad-project');
+ expect(resolveNativePython({project:'.venv/bin/python',editor:'editor',root:projectRoot})).toBe(path.join(projectRoot,'.venv/bin/python'));
+ expect(resolveNativePython({editor:'editor'})).toBe('editor');
+ expect(resolveNativePython()).toBe('python3');
+});
+(python?test:test.skip)('startup errors include bounded Python stderr and executable',async()=>{
+ const root=await fs.mkdtemp(path.join(os.tmpdir(),'cad-startup-error-'));
+ await fs.writeFile(path.join(root,'geometry.py'),'');
+ const worker=path.join(root,'worker.py');
+ await fs.writeFile(worker,"import sys\nsys.stderr.write('x' * 12000 + '\\nModuleNotFoundError: No module named cadquery\\n')\nsys.exit(1)\n");
+ const client=new NativeCadClient({python,worker});
+ try {
+  let error;try{await client.request({kind:'build'});}catch(e){error=e;}
+  expect(error.message).toContain('No module named cadquery');
+  expect(error.message).toContain(python);
+  expect(error.message.length).toBeLessThan(9000);
+  // A failed process can be retried; it must not leave a resolved ready promise.
+  await expect(client.request({kind:'build'})).rejects.toThrow('No module named cadquery');
+ }finally{client.dispose();await fs.rm(root,{recursive:true,force:true});}
+},15000);

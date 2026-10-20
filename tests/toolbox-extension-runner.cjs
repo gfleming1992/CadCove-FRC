@@ -49,6 +49,13 @@ def build(ctx):
     return [dict(id='base',name='Base',color='#dd4400',shape=plate),dict(id='upright',name='Upright',color='#4488ff',shape=cq.Workplane('XY').box(5,20,60,centered=False).translate((10,10,5)))]
 `;
 
+  const testPython=process.env.CADCOVE_PYTHON;
+  if(testPython){
+   initialConfig.pythonPath=testPython;
+   await fs.writeFile(initialConfigFile,JSON.stringify(initialConfig));
+   delete process.env.CADCOVE_PYTHON;
+   await vscode.workspace.getConfiguration('instantcad').update('pythonPath','missing-cad-python',vscode.ConfigurationTarget.Workspace);
+  }
   await fs.writeFile(entry,code);
   const helper=path.join(folder,'cad/helper.py');
   await fs.writeFile(helper,'"""\nresult = example\n"""\ndef helper(): pass\n');
@@ -90,6 +97,25 @@ def build(ctx):
   const cached=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');
   assert.equal(cached.phase,'ready',JSON.stringify(cached));assert.equal(cached.source,'disk-cache');assert.equal(cached.workerLoaded,false);
   assert.equal((await query('cad-status')).ok,true,'Validated cache clears stale CLI feedback without loading the worker');
+  let externalBuildRecovery;
+  if(testPython){
+   api.closeAll();await delay(300);
+   await fs.writeFile(initialConfigFile,JSON.stringify({...initialConfig,pythonPath:'missing-cad-python'}));
+   await api.openModel();await waitFor(s=>s?.phase==='ready');
+   const oldCamera=api.getDiagnostics()[0].camera;
+   await fs.writeFile(entry,code.replace('100,80,5','160,80,5'));
+   const interpreterFailure=await waitFor(s=>s?.phase==='error');
+   assert.match(interpreterFailure.error,/Cannot start CadQuery Python/);
+   const cliBuild=JSON.parse((await execute(runtime,['cad-build','--workspace',folder,'--python',testPython],{maxBuffer:4*1024*1024})).stdout);
+   assert.equal(cliBuild.ok,true);
+   const recovered=await waitFor(s=>s?.phase==='ready'&&s.revision===cliBuild.revision);
+   assert.equal(recovered.source,'disk-cache','Open viewer adopts an external CLI build without restarting Python');
+   assert.deepEqual(recovered.camera,oldCamera,'External build preserves the current camera');
+   assert.equal((await query('cad-status')).ok,true);
+   externalBuildRecovery={interpreterFailure:true,revision:recovered.revision,source:recovered.source,cameraPreserved:true};
+   await fs.writeFile(initialConfigFile,JSON.stringify(initialConfig));
+   process.env.CADCOVE_PYTHON=testPython;
+  }
   // Exercise the installed command while an old native process remains alive.
   // Damage only this isolated test profile's bridge bundle, never a user runtime.
   const oldRuntime=runtime,oldDirectory=path.dirname(runtime),bundle=path.join(oldDirectory,'bridge-sources.json');
@@ -110,7 +136,7 @@ def build(ctx):
     assert.equal(currentBundle.schema,1);
     assert.equal((await vscode.commands.executeCommand('cadcove.runtime.repair')).executable,runtime,'Healthy repeat repair reuses verified generation');
   }finally{native.stdin.end();if(native.exitCode===null)native.kill();}
-  const report={ok:true,editorVersion:vscode.version,companions,wpilibActive:companions?true:undefined,extensionPath:extension.extensionPath,runtime,occt:buildProvenance.occt,runtimeIdentity:buildProvenance.runtimeIdentity,initialized:true,doctorFindsNative:true,initial,edited,cached,failedBuildPreservesScene:true,preview:true,actualInstalledVSIX:true,runtimeRepair:{command:true,oldRuntime,newRuntime:runtime,activeNativePreserved:true,healthyRepeatReused:true}};
+  const report={ok:true,externalBuildRecovery,editorVersion:vscode.version,companions,wpilibActive:companions?true:undefined,extensionPath:extension.extensionPath,runtime,occt:buildProvenance.occt,runtimeIdentity:buildProvenance.runtimeIdentity,initialized:true,doctorFindsNative:true,initial,edited,cached,failedBuildPreservesScene:true,preview:true,actualInstalledVSIX:true,runtimeRepair:{command:true,oldRuntime,newRuntime:runtime,activeNativePreserved:true,healthyRepeatReused:true}};
   report.profileIsolation={verified:true,portableData:process.env.VSCODE_PORTABLE??null,pythonPath:vscode.workspace.getConfiguration('instantcad',vscode.Uri.file(folder)).get('pythonPath')};
   // Exercise the example shipped inside this installed runtime, not source
   // checkout fixtures. Its CAD must actually compile in the editor's kernel.

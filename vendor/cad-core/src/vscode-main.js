@@ -1,3 +1,4 @@
+import {currentCachedScene} from './core/scene-cache.js';
 import {captureScene} from './core/scene-capture.js';
 import {Viewer} from './core/viewer.js';
 import {snapshot,hash} from './core/revision.js';
@@ -33,6 +34,18 @@ async function saveFeedback(scene) {
   // preview during a rebuild. The digest also detects interrupted replacements.
   await host.writeArtifact('status.json',JSON.stringify({ok:true,revision:head,runtime:identity,parts:scene.parts.map(({id,name,color,metrics})=>({id,name,color,metrics})),timings:scene.timings,preview},null,2));
 }
+async function restoreCached(current) {
+  const cached=await host.cache();
+  const scene=await currentCachedScene(cached,current.revision,identity);
+  if(!scene||(await source()).revision!==current.revision)return false;
+  viewer.setScene(scene,!head);viewer.render();
+  await viewer.device.queue.onSubmittedWorkDone();
+  head=current.revision;workerRevision=undefined;
+  host.saveState({entry:config.entry,camera:viewer.camera});
+  await saveFeedback(scene);feedbackDirty=false;
+  message(`${scene.parts.length} parts loaded from the validated disk build`);
+  await report('ready',{source:'disk-cache'});return true;
+}
 async function build() {
   if(building){dirty=true;return;}
   building=true;button.disabled=true;stop.hidden=false;dirty=false;
@@ -47,6 +60,7 @@ async function build() {
       feedbackDirty=false;message(`${viewer.scene.parts.length} parts rendering locally`);
       await report('ready',{source:'restored'});return;
     }
+    if(await restoreCached(current))return;
     message('Building local CAD in the editor…');await report('building');
     const scene=await execute(current.revision,current);workerRevision=current.revision;
     if((await source()).revision!==current.revision){dirty=true;throw Error('Source changed during build; rebuilding the latest files.');}
@@ -59,6 +73,7 @@ async function build() {
     message(`${scene.parts.length} parts rendering locally · ${((performance.now()-started)/1000).toFixed(2)} s build`);
     await save(scene);feedbackDirty=false;await report('ready',{source:'build',buildMs:performance.now()-started});
   }catch(error){
+    try{if(await restoreCached(await source()))return;}catch{/* Preserve the original build error. */}
     feedbackDirty=true;message(error.message,true);await report('error',{error:error.message});
     await host.writeArtifact('status.json',JSON.stringify({ok:false,error:error.message,revision:head??null,runtime:identity})).catch(()=>{});
   }finally{
@@ -105,7 +120,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden){viewer.re
     await viewer.init();
     const current=await source();
     const cached=await host.cache();
-    const cachedScene=cached && await hash(cached.bytes)===cached.meshHash ? decodeScene(cached.bytes) : null;
+    const cachedScene=await currentCachedScene(cached,current.revision,identity);
     if(cachedScene&&cached.revision===current.revision){
       viewer.setScene(cachedScene,true);head=cached.revision;
       const state=host.state();if(state?.entry===config.entry&&state.camera)viewer.camera=state.camera;

@@ -49,6 +49,12 @@ async function build() {
   const started=performance.now();
   try{
     const current=await source();
+    // Our cache commit triggers the filesystem watcher too. Do not reload and
+    // re-save the same scene (or discard its timing evidence) on that event.
+    if(current.revision===head&&!feedbackDirty&&viewer.scene){
+      message(`${viewer.scene.parts.length} parts rendering locally`);
+      await report('ready',{source:'unchanged'});return;
+    }
     if(current.revision===head&&feedbackDirty&&viewer.scene){
       // The user restored the last accepted source after a failed edit. Reuse
       // its geometry but commit fresh feedback instead of leaving the old error.

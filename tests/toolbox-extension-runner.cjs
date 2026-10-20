@@ -275,7 +275,7 @@ def build(ctx):
     const project=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(project,'utf8');
     const config=JSON.parse(saved);config.entryPoint='native.py';
     const nativeEntry=path.join(folder,config.sourceDirectory,'native.py');
-    const source=`import cadquery as cq\ndef build(ctx):\n    return [{'id':'native-part','color':'#e64b36','shape':ctx.component('part',lambda:cq.Workplane('XY').box(30,40,5))}]\n`;
+    const source=`import cadquery as cq\ndef build(ctx):\n    return [{'id':'native-part','color':'#e64b36','shape':ctx.component('part',lambda:cq.Workplane('XY').box(30,40,5),dependencies=['native.py'])}]\n`;
     const preferences=vscode.workspace.getConfiguration('instantcad',vscode.workspace.workspaceFolders[0].uri);
     try{
       await preferences.update('pythonPath',process.env.CADCOVE_PYTHON,vscode.ConfigurationTarget.WorkspaceFolder);
@@ -300,7 +300,18 @@ def build(ctx):
       assert.ok(['disk-cache','unchanged'].includes(cachedNative.source),JSON.stringify(cachedNative));
       assert.equal(cachedNative.revision,edit.revision);assert.equal(cachedNative.parts,edit.parts);
       assert.ok(cachedNative.gpuBytes>0);assert.equal(cachedNative.workerLoaded,false);
-      report.nativeCad={first,edit,cached:cachedNative,mcpOpen:true,mcpCapture:true,packagedCliFeedback:true,cameraPreserved:true};
+      api.closeAll();await delay(200);
+      await preferences.update('pythonPath',testPython,vscode.ConfigurationTarget.WorkspaceFolder);
+      await mcpCall('open_robot_cad');
+      await waitFor(s=>s?.phase==='ready');
+      // New source revision, unchanged component: a fresh worker must use BREP
+      // and mesh from disk, rather than merely display the old scene cache.
+      await fs.writeFile(path.join(folder,config.sourceDirectory,'cache-probe.json'),'{}');
+      const diskEdit=await waitFor(s=>s?.phase==='ready'&&s.revision!==edit.revision);
+      const diskFeedback=await query('cad-status');
+      assert.equal(diskFeedback.timings.components.diskHits,1);
+      assert.equal(diskFeedback.timings.components.misses,0);
+      report.nativeCad={first,edit,cached:cachedNative,diskEdit,diskComponents:diskFeedback.timings.components,mcpOpen:true,mcpCapture:true,packagedCliFeedback:true,cameraPreserved:true};
     }finally{api.closeAll();await fs.writeFile(project,saved);}
   }
   await fs.writeFile(reportFile,JSON.stringify(report,null,2));api.closeAll();

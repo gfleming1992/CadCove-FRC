@@ -16,6 +16,7 @@ import struct
 import sys
 import time
 import traceback
+import tempfile
 from collections import OrderedDict
 
 START = time.perf_counter()
@@ -26,7 +27,8 @@ import cadquery as cq
 import OCP
 import numpy as np
 from geometry import mesh, encode
-from OCP.BRep import BRep_Tool
+from OCP.BRep import BRep_Tool, BRep_Builder
+from OCP.TopoDS import TopoDS_Shape
 from OCP.StdPrs import StdPrs_ToolTriangulatedShape
 from OCP.TopAbs import TopAbs_REVERSED
 from OCP.TopLoc import TopLoc_Location
@@ -88,7 +90,14 @@ class Context:
         self.file_hashes = {p: hashlib.sha256(v.encode()).hexdigest() for p,v in self.files.items()}
         self.pending = {}
         self.keys = {}
-        self.hits = self.misses = 0
+        self.hits = self.misses = self.disk_hits = 0
+        self.disk_dir = Path(request["output"]).resolve().parent / "components"
+        try:
+            if self.disk_dir.is_symlink():
+                raise ValueError("Component cache directory is a symlink")
+            self.disk_dir.mkdir(parents=True, exist_ok=True)
+        except (OSError, ValueError):
+            self.disk_dir = None
 
     def path(self, relative):
         target = (self.root / relative).resolve()
@@ -113,6 +122,10 @@ class Context:
             raise ValueError(f"Untracked component dependencies: {missing}")
         key = digest([IDENTITY, name, [(p, self.file_hashes[p]) for p in dependencies], inputs])
         item = self.pending.get(key) or self.cache.get(key)
+        if item is None:
+            item = self.load_component(key)
+            if item is not None:
+                self.disk_hits += 1
         if item:
             self.hits += 1
         else:
@@ -130,7 +143,108 @@ class Context:
         self.keys[id(shape)] = (key, hashlib.sha256(brep_bytes(shape)).digest())
         return shape
 
+    def load_component(self, key):
+        if self.disk_dir is None:
+            return None
+        file = self.disk_dir / (key + ".bin")
+        try:
+            if file.is_symlink() or file.stat().st_size > 256 * 1024 * 1024:
+                return None
+            raw = file.read_bytes()
+            if raw[:4] != b"ICC1" or len(raw) < 8:
+                return None
+            size = struct.unpack("<I", raw[4:8])[0]
+            if size > 65536 or size > len(raw) - 8:
+                return None
+            header = json.loads(raw[8:8+size])
+            payload = raw[8+size:]
+            if header["key"] != key or header["runtime"] != IDENTITY or hashlib.sha256(json.dumps({k:v for k,v in header.items() if k != "sha256"}, sort_keys=True, separators=(",", ":")).encode() + payload).hexdigest() != header["sha256"]:
+                return None
+            length = header["brep"]
+            if type(length) is not int or not 0 < length <= len(payload):
+                return None
+            wrapped = TopoDS_Shape()
+            BRepTools.Read_s(wrapped, io.BytesIO(payload[:length]), BRep_Builder())
+            shape = cq.Shape.cast(wrapped)
+            if not shape.isValid():
+                return None
+            item = {"shape": shape, "bytes": length * 4, "persisted": True}
+            lengths = header["mesh"]
+            if lengths is not None:
+                if not isinstance(lengths, list) or len(lengths) != 3 or any(type(n) is not int or n <= 0 or n % 3 for n in lengths):
+                    return None
+                if lengths[0] != lengths[1] or length + sum(lengths) * 4 != len(payload):
+                    return None
+                arrays = []
+                for count, dtype in zip(lengths, ("<f4", "<f4", "<u4")):
+                    arrays.append(np.frombuffer(payload, dtype=dtype, count=count, offset=length).copy())
+                    length += count * 4
+                if not np.isfinite(arrays[0]).all() or not np.isfinite(arrays[1]).all() or int(arrays[2].max()) >= lengths[0] // 3:
+                    return None
+                metrics = header["metrics"]
+                if metrics["valid"] is not True or not np.isfinite(metrics["volume"]) or metrics["volume"] < 0:
+                    return None
+                bounds = np.asarray([metrics["bounds"]["min"], metrics["bounds"]["max"]])
+                if bounds.shape != (2, 3) or not np.isfinite(bounds).all() or np.any(bounds[0] > bounds[1]):
+                    return None
+                if metrics["triangles"] != lengths[2] // 3:
+                    return None
+                item.update(mesh=tuple(arrays), metrics=metrics)
+                item["bytes"] += sum(a.nbytes for a in arrays)
+            elif length != len(payload):
+                return None
+            return item
+        except Exception:
+            # A missing, interrupted, obsolete or corrupt cache is a cache miss.
+            # Geometry is rebuilt from the authoritative source, never hidden.
+            return None
+
+    def save_component(self, key, item):
+        if self.disk_dir is None or item.get("persisted"):
+            return
+        tmp = None
+        try:
+            data = brep_bytes(item["shape"])
+            arrays = item.get("mesh")
+            payload = data + (b"".join(a.tobytes() for a in arrays) if arrays is not None else b"")
+            if len(payload) > 256 * 1024 * 1024 - 65544:
+                return
+            metadata = {"key": key, "runtime": IDENTITY, "brep": len(data),
+                        "mesh": [len(a) for a in arrays] if arrays is not None else None,
+                        "metrics": item.get("metrics")}
+            checksum = hashlib.sha256(json.dumps(metadata, sort_keys=True, separators=(",", ":"), allow_nan=False).encode() + payload).hexdigest()
+            header = json.dumps({**metadata, "sha256": checksum}, allow_nan=False).encode()
+            with tempfile.NamedTemporaryFile(dir=self.disk_dir, suffix=".tmp", delete=False) as stream:
+                tmp = Path(stream.name)
+                stream.write(b"ICC1" + struct.pack("<I", len(header)) + header + payload)
+            os.replace(tmp, self.disk_dir / (key + ".bin"))
+            item["persisted"] = True
+        except OSError as error:
+            print("Component cache write skipped:", error, file=sys.stderr)
+        finally:
+            if tmp is not None:
+                try:
+                    tmp.unlink(missing_ok=True)
+                except OSError:
+                    pass
+
     def commit(self):
+        for key, item in self.pending.items():
+            self.save_component(key, item)
+        # Disk storage is expendable and bounded. Keep recent entries first;
+        # atomic replacement lets other workers read without a shared lock.
+        if self.disk_dir is not None:
+            try:
+                entries = [(p.stat().st_mtime, p.stat().st_size, p) for p in self.disk_dir.iterdir()
+                           if re.fullmatch(r"[0-9a-f]{64}\.bin", p.name) and not p.is_symlink()]
+                total = sum(size for _, size, _ in entries)
+                for _, size, file in sorted(entries):
+                    if total <= 2 * 1024 * 1024 * 1024:
+                        break
+                    file.unlink(missing_ok=True)
+                    total -= size
+            except OSError:
+                pass
         # Retain only dependencies used by the accepted revision, then apply cap.
         self.cache = OrderedDict(self.pending)
         self.bytes = sum(v["bytes"] for v in self.cache.values())
@@ -287,7 +401,7 @@ def build(request):
         "modelBuildMs": build_ms, "validationMs": validation_ms, "tessellationMs": tessellation_ms,
         "metricsMs": metrics_ms, "encodeMs": encode_ms,
         "totalMs": (time.perf_counter()-t)*1000, "cpuMs": (time.process_time()-cpu)*1000,
-        "components": {"hits": ctx.hits, "misses": ctx.misses, "budgetedBytes": ctx.bytes, "workingSetBudgetedBytes": ctx.requested_bytes, "retained": len(ctx.cache), "limitBytes": 640*1024*1024},
+        "components": {"hits": ctx.hits, "diskHits": ctx.disk_hits, "misses": ctx.misses, "budgetedBytes": ctx.bytes, "workingSetBudgetedBytes": ctx.requested_bytes, "retained": len(ctx.cache), "limitBytes": 640*1024*1024},
         "uniquePrototypes": len(prototypes), "sceneBytes": os.path.getsize(request["output"])}}
 
 

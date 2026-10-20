@@ -60,3 +60,29 @@ test('CLI and editor share Python precedence and project-relative paths',()=>{
   await expect(client.request({kind:'build'})).rejects.toThrow('No module named cadquery');
  }finally{client.dispose();await fs.rm(root,{recursive:true,force:true});}
 },15000);
+
+(python?test:test.skip)('component BREP, mesh and metrics survive worker restart; changed and corrupt entries rebuild',async()=>{
+ const root=await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(),'cad-persistent-components-')));
+ const worker=path.resolve(import.meta.dir,'../src/native/worker.py');
+ const layout=await projectLayout(root,{buildDirectory:'build',entryPoint:'models.py'});
+ const model=`import cadquery as cq\nfrom pathlib import Path\ndef build(ctx):\n    def make(name):\n        with open(ctx.build_dir / 'calls.txt','a') as f: f.write(name+'\\n')\n        return cq.Workplane('XY').box(float(ctx.files[name+'.json']),2,3)\n    return [dict(id=n,shape=ctx.component(n,lambda n=n:make(n),dependencies=['models.py',n+'.json'])) for n in ['a','b']]\n`;
+ await fs.writeFile(path.join(root,'models.py'),model);await fs.writeFile(path.join(root,'a.json'),'10');await fs.writeFile(path.join(root,'b.json'),'20');
+ let session;
+ const fresh=()=>{session?.dispose();session=new NativeCadSession({layout,python,worker});return session;};
+ try{
+  const first=await fresh().build();expect(first.timings.components).toMatchObject({hits:0,misses:2,diskHits:0});
+  const calls=path.join(root,'build/models.py/calls.txt');expect((await fs.readFile(calls,'utf8')).trim().split('\n')).toEqual(['a','b']);
+  const second=await fresh().build();expect(second.timings.components).toMatchObject({hits:2,misses:0,diskHits:2});
+  expect(second.parts.map(p=>p.metrics.volume)).toEqual(first.parts.map(p=>p.metrics.volume));
+  expect((await session.inspect('result=[p["shape"].isValid() for p in parts]')).result).toEqual([true,true]);
+  await fs.writeFile(path.join(root,'a.json'),'12');
+  const changed=await fresh().build();expect(changed.timings.components).toMatchObject({hits:1,misses:1,diskHits:1});expect(changed.parts[0].metrics.volume).toBeCloseTo(72);
+  const cache=path.join(root,'build/models.py/components');
+  for(const file of await fs.readdir(cache))if(file.endsWith('.bin')){const raw=await fs.readFile(path.join(cache,file));raw[raw.length-1]^=1;await fs.writeFile(path.join(cache,file),raw);}
+  const repaired=await fresh().build();expect(repaired.timings.components).toMatchObject({hits:0,misses:2,diskHits:0});expect(repaired.parts[0].metrics.volume).toBeCloseTo(72);
+  const reused=await fresh().build();expect(reused.timings.components).toMatchObject({hits:2,misses:0,diskHits:2});
+  // Valid JSON with tampered metrics must be rejected as well as corrupt BREP bytes.
+  for(const file of await fs.readdir(cache))if(file.endsWith('.bin')){const raw=await fs.readFile(path.join(cache,file));const length=raw.readUInt32LE(4);const h=JSON.parse(raw.subarray(8,8+length));h.metrics.volume+=1;const header=Buffer.from(JSON.stringify(h));const prefix=Buffer.alloc(8);prefix.write('ICC1');prefix.writeUInt32LE(header.length,4);await fs.writeFile(path.join(cache,file),Buffer.concat([prefix,header,raw.subarray(8+length)]));}
+  expect((await fresh().build()).timings.components.misses).toBe(2);
+ }finally{session?.dispose();await fs.rm(root,{recursive:true,force:true});}
+},30000);

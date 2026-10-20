@@ -55,3 +55,10 @@ shared list invalidates the whole authored assembly on a single-part edit.
 Include shared helper code/data and explicit parameter inputs. Never omit a
 real dependency just to improve cache hits. Check `timings.components` for hits
 and misses and `timings.client` for frame/upload costs before optimizing.
+
+The native component cache also persists beside the scene under `components/`.
+After a worker/editor restart, unchanged components can load their exact BREP,
+mesh and metrics from disk. `timings.components.diskHits` reports that reuse.
+Cache keys include the native runtime, source dependencies and explicit inputs;
+a runtime upgrade needs one new population build. Corrupt cache entries rebuild
+from source automatically. Generated component files must stay out of Git.

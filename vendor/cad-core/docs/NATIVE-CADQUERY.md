@@ -61,7 +61,7 @@ cached builds. STEP hashing cost is part of source scanning; a large source pack
 still needs profiling before switching its default backend.
 
 `ctx.component(name, factory, dependencies=None, inputs=None)` caches exact
-geometry and meshes in the warm process. By default every tracked source is a
+geometry and meshes in the warm process and on disk beside the scene cache. By default every tracked source is a
 dependency. Narrow that list only when it includes **all transitive source and
 asset dependencies**, and put changing arguments in `inputs`. For example:
 
@@ -72,9 +72,19 @@ shape = ctx.component("rail", lambda: make_rail(length),
 
 The cache returns copies and checks BREP signatures before reusing meshes, so
 mutating a returned shape cannot corrupt the canonical component cache. Failed
-builds do not replace the accepted scene. Unused cache entries are dropped after
+builds do not replace the accepted scene. Unused memory entries are dropped after
 successful builds, with a 640 MiB accounting cap based on BREP/mesh sizes. This
 is **not** an RSS limit: OCCT, Python and the accepted scene also consume memory.
+
+The per-entry `components/` directory retains exact BREP, tessellations and
+measurements across worker/editor restarts. Each key includes the runtime,
+component name, dependency hashes and inputs. The file checksum covers metadata
+and geometry; invalid, missing or obsolete files are rebuilt from source.
+Writes are atomic, individual entries are capped at 256 MiB, and disk storage
+is pruned to 2 GiB per entry. Deleting this generated directory is safe; the next
+edit rebuilds its missing components. No pickle or executable cache is used.
+`timings.components.diskHits` distinguishes disk reuse from warm-memory hits.
+A runtime upgrade needs one rebuild to populate the new runtime's cache.
 
 ## Runtime and trust
 

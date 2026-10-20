@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "project": "instantcad-local",
-  "revision": "a119af08a44b23a7b58a83d24542e4ce5741b39d",
+  "revision": "4e8a0b951995608fb9eaccb9225f9131dd141782",
   "policy": "Update upstream and regenerate; no downstream edits",
   "files": {
     "LICENSE": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6",
@@ -17,7 +17,7 @@
     "src/core/scene-cache.js": "e23f76df33c93a2c1dee3fc55e1e2d6b9ba6ec9807e195153c66ff7d9251538b",
     "src/core/scene-capture.js": "759697908092eb815861145dbebd65d4a41433abb02acee7ae10d07ce657ca07",
     "src/core/source-limits.js": "156ef65c49fa50ccdfd168d268d08aae0a8b0d750234bc8fbb1408ed1f6b1937",
-    "src/core/viewer.js": "d311faeea3ee12482f833e39fe5c41ff0fdc058cc7aa166d1a432cffb1de407b",
+    "src/core/viewer.js": "09d48a74c240867dfa31ebd25e923f46d510eadf528fa046aa2340828f7e6b4c",
     "src/hosts/vscode.js": "e628ca2f01d70f3764fc34614c7c3abf745ae45e94f1afd7d4f6aad18292558d",
     "src/native/client.js": "9c27334ab7f7b61c35e26fd7eb88913bbf50c0ff4ea6f8f90f38db8e951d8d5b",
     "src/native/geometry.py": "252178b10b44c4e3e319f085fe378e5e98d1d40bae4905482177429d9120a790",
@@ -27,6 +27,7 @@
     "src/vscode-main.js": "3a7748428388ce7c203d8bcd4b656ba546a063876aa7ae05460e0985793fdf37",
     "tests/native-cad.test.js": "2459341a1afd314e2a846c1e209399f93da4bd885436d27140976af98136be30",
     "tests/native-session.test.js": "48cd78e7a0dd72a0e5b5aa8d9332e43e5d53bab2ac20c84b488cb039ab1b2e94",
+    "tests/viewer-marker-browser.js": "aef954c43bde57c41c267fd43ea3cf1bca4f6056c42cd140f54e6c4031fb8ee0",
     "tests/vscode-host.test.js": "c66bbe1a59e299984759ba2ff72612e9c2d3d5e98bb0b43b25be6753da2dc046"
   }
 }

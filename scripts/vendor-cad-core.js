@@ -18,7 +18,7 @@ const selected=all.filter(f=>f.startsWith('src/native/')||[
  'src/core/viewer.js','src/core/assembly-viewer.js','src/core/assembly-capture.js',
  'src/core/scene-cache.js','src/core/scene-capture.js','src/core/mesh.js','src/core/revision.js','src/core/source-limits.js',
  'extensions/vscode/src/extension.js','extensions/vscode/src/project-files.js','extensions/vscode/src/step-source.js',
- 'tests/vscode-host.test.js','tests/native-cad.test.js','tests/native-session.test.js','docs/NATIVE-CADQUERY.md'
+ 'tests/viewer-marker-browser.js','tests/vscode-host.test.js','tests/native-cad.test.js','tests/native-session.test.js','docs/NATIVE-CADQUERY.md'
 ].includes(f));
 const files={};
 for(const file of selected){const bytes=await git(['show',`${revision}:${file}`]);const out=path.join(target,file);await mkdir(path.dirname(out),{recursive:true});await writeFile(out,bytes);files[file]=createHash('sha256').update(bytes).digest('hex');}

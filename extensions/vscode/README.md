@@ -66,3 +66,11 @@ so only open trusted projects.
 
 Original CadCove code is MIT licensed. Dependencies and robot/season assets retain
 their own terms. [License details](https://github.com/gfleming1992/CadCove-FRC/blob/main/licenses/README.md).
+
+### Canvas marker
+
+Drag the middle mouse button to draw red marker strokes. Multiple strokes stay
+visible together until you orbit, pan, zoom, fit, resize, or replace the model.
+Right drag still pans; left drag orbits. Press Escape to clear marks manually.
+Marks are temporary screen-space notes; they do not modify geometry or appear
+in CAD exports or cached previews.

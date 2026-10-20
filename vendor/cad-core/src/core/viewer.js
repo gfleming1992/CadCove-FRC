@@ -88,6 +88,7 @@ export class Viewer {
     return this;
   }
   resize() {
+    this.clearMarkers();
     if (!this.device) return;
     const ratio = Math.min(devicePixelRatio || 1, 2),
       w = Math.max(1, Math.round(this.canvas.clientWidth * ratio)),
@@ -165,6 +166,7 @@ export class Viewer {
     this.gpuBytes=next.reduce((n,b)=>n+(b?.bytes??0),0);
     this.lastUpload={uploadedBytes,reusedBatches,rebuiltBatches:created.length,drawCalls:next.filter(Boolean).length};
     this.scene=scene;
+    this.clearMarkers();
     // Never copy an earlier camera snapshot here: input can continue while the
     // worker builds. Keep the latest live rotation, pan, and zoom verbatim.
     if(fit)this.fit();
@@ -263,6 +265,7 @@ export class Viewer {
     return multiply(p, v);
   }
   request() {
+    if (this.markerCamera && this.markerCamera !== JSON.stringify(this.camera)) this.clearMarkers();
     if (this.pending || !this.device) return;
     this.pending = true;
     requestAnimationFrame(() => {
@@ -322,12 +325,48 @@ export class Viewer {
       Math.max(this.radius * 0.015, this.camera.distance * factor),
     );
   }
+  markerPoint(e) {
+    const r = this.canvas.getBoundingClientRect();
+    if (!this.markerOverlay) {
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("aria-hidden", "true");
+      svg.dataset.cadMarker = "";
+      svg.style.cssText = "position:fixed;pointer-events:none;overflow:hidden;z-index:1";
+      this.canvas.after(svg);
+      this.markerOverlay = svg;
+    }
+    Object.assign(this.markerOverlay.style, {
+      left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`,
+    });
+    this.markerOverlay.setAttribute("viewBox", `0 0 ${r.width} ${r.height}`);
+    return `${e.clientX - r.left},${e.clientY - r.top}`;
+  }
+  clearMarkers() {
+    this.markerOverlay?.replaceChildren();
+    this.markerStroke = null;
+    this.markerCamera = null;
+    this.canvas.style.cursor = "";
+  }
   installControls() {
     const c = this.canvas;
     c.addEventListener("contextmenu", (e) => e.preventDefault());
+    c.addEventListener("auxclick", (e) => { if (e.button === 1) e.preventDefault(); });
     c.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
       c.focus();
       c.setPointerCapture(e.pointerId);
+      if (e.button === 1 && e.pointerType !== "touch") {
+        if (this.markerStroke || this.pointers.size) return;
+        if (this.markerOverlay?.childElementCount >= 1000) this.clearMarkers();
+        this.markerCamera = JSON.stringify(this.camera);
+        const point = this.markerPoint(e);
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+        for (const [key, value] of Object.entries({fill:"none",stroke:"#ff3030","stroke-width":"4","stroke-linecap":"round","stroke-linejoin":"round",points:`${point} ${point}`})) line.setAttribute(key, value);
+        this.markerOverlay.append(line);
+        this.markerStroke = { pointerId: e.pointerId, line, count: 2 };
+        c.style.cursor = "crosshair";
+        return;
+      }
       this.pointers.set(e.pointerId, {
         x: e.clientX,
         y: e.clientY,
@@ -335,6 +374,15 @@ export class Viewer {
       });
     });
     c.addEventListener("pointermove", (e) => {
+      if (this.markerStroke?.pointerId === e.pointerId) {
+        e.preventDefault();
+        const line = this.markerStroke.line;
+        for (const sample of e.getCoalescedEvents?.().length ? e.getCoalescedEvents() : [e]) {
+          if (this.markerStroke.count++ >= 10000) break;
+          line.setAttribute("points", `${line.getAttribute("points")} ${this.markerPoint(sample)}`);
+        }
+        return;
+      }
       const old = this.pointers.get(e.pointerId);
       if (!old) return;
       const previous = [...this.pointers.values()].map((p) => ({ ...p }));
@@ -365,7 +413,13 @@ export class Viewer {
       this.request();
     });
     for (const event of ["pointerup", "pointercancel", "lostpointercapture"])
-      c.addEventListener(event, (e) => this.pointers.delete(e.pointerId));
+      c.addEventListener(event, (e) => {
+        this.pointers.delete(e.pointerId);
+        if (this.markerStroke?.pointerId === e.pointerId) {
+          this.markerStroke = null;
+          c.style.cursor = "";
+        }
+      });
     c.addEventListener(
       "wheel",
       (e) => {
@@ -378,8 +432,12 @@ export class Viewer {
       },
       { passive: false },
     );
-    c.addEventListener("dblclick", () => this.fit());
+    c.addEventListener("dblclick", (e) => { if (e.button === 0) this.fit(); });
     c.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        this.clearMarkers();
+      }
       if (e.key.toLowerCase() === "f") {
         e.preventDefault();
         this.fit();

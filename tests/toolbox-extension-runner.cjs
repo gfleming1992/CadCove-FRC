@@ -57,6 +57,7 @@ def build(ctx):
    await vscode.workspace.getConfiguration('instantcad').update('pythonPath','missing-cad-python',vscode.ConfigurationTarget.Workspace);
   }
   await fs.writeFile(entry,code);
+  await fs.writeFile(path.join(folder,'cad/mechanism.json'),JSON.stringify({schema:1,units:'mm-deg',bodies:[{id:'frame',fixed:true,origin:[0,0,0],parts:['base']},{id:'arm',fixed:false,origin:[10,10,5],parts:['upright']}],joints:[{id:'arm-axis',type:'revolute',parent:'frame',child:'arm',origin:[10,10,5],axis:[0,0,1],limitsDeg:[-180,180]}],relations:[]}));
   const helper=path.join(folder,'cad/helper.py');
   await fs.writeFile(helper,'"""\nresult = example\n"""\ndef helper(): pass\n');
   const waitMenu=async predicate=>{const until=Date.now()+10000;while(Date.now()<until){if(predicate(api.modelMenuEntries()))return;await delay(50);}throw Error('Explorer model index did not update: '+JSON.stringify({folder,entries:api.modelMenuEntries(),files:(await vscode.workspace.findFiles('**/*.py')).map(uri=>uri.fsPath)}));};
@@ -82,6 +83,18 @@ def build(ctx):
   assert.equal(status.runtime,buildProvenance.runtimeIdentity,'Scene feedback uses the installed kernel identity');
   assert.ok((await fs.stat(path.join(cache,'preview.png'))).size>1000);
   const query=async name=>JSON.parse((await execute(runtime,[name,'--workspace',folder])).stdout);
+  const motion=async args=>JSON.parse((await mcpCall('cad_motion',args)).content[0].text);
+  assert.equal((await motion({action:'list'})).joints[0].id,'arm-axis');
+  assert.deepEqual(JSON.parse((await mcpCall('cad_selection')).content[0].text).selectedIds,[]);
+  const trajectory={units:'deg-s',tracks:[{target:'upright',endPosition:30,segments:[{seconds:.1,acceleration:3000},{seconds:.1,acceleration:-3000}]}]};
+  const playing=await motion({action:'play',trajectory});assert.ok(playing.playback.id);
+  await motion({action:'pause'});const sought=await motion({action:'seek',seconds:.1});assert.equal(sought.angles['arm-axis'],15);
+  await motion({action:'resume'});await delay(400);
+  const completed=await motion({action:'state'});assert.equal(completed.playback.status,'completed');assert.equal(completed.angles['arm-axis'],30);
+  assert.equal((await motion({action:'move',part:'arm-axis',degrees:15})).angles['arm-axis'],45);
+  await motion({action:'reset'});assert.equal(api.getDiagnostics()[0].revision,initial.revision);
+  const motionReport={playbackId:playing.playback.id,completed:true,seekDegrees:15,noSourceRebuild:true};
+
   assert.equal((await query('cad-status')).sourceRevision,initial.revision);
   const preview=await query('cad-preview');assert.equal(preview.ok,true);assert.equal(preview.acceptedRevision,initial.revision);assert.equal(preview.image,path.join(cache,'preview.png'));
   await fs.writeFile(entry,code.replace('100,80,5','140,80,5'));
@@ -136,7 +149,7 @@ def build(ctx):
     assert.equal(currentBundle.schema,1);
     assert.equal((await vscode.commands.executeCommand('cadcove.runtime.repair')).executable,runtime,'Healthy repeat repair reuses verified generation');
   }finally{native.stdin.end();if(native.exitCode===null)native.kill();}
-  const report={ok:true,externalBuildRecovery,editorVersion:vscode.version,companions,wpilibActive:companions?true:undefined,extensionPath:extension.extensionPath,runtime,occt:buildProvenance.occt,runtimeIdentity:buildProvenance.runtimeIdentity,initialized:true,doctorFindsNative:true,initial,edited,cached,failedBuildPreservesScene:true,preview:true,actualInstalledVSIX:true,runtimeRepair:{command:true,oldRuntime,newRuntime:runtime,activeNativePreserved:true,healthyRepeatReused:true}};
+  const report={motion:motionReport,ok:true,externalBuildRecovery,editorVersion:vscode.version,companions,wpilibActive:companions?true:undefined,extensionPath:extension.extensionPath,runtime,occt:buildProvenance.occt,runtimeIdentity:buildProvenance.runtimeIdentity,initialized:true,doctorFindsNative:true,initial,edited,cached,failedBuildPreservesScene:true,preview:true,actualInstalledVSIX:true,runtimeRepair:{command:true,oldRuntime,newRuntime:runtime,activeNativePreserved:true,healthyRepeatReused:true}};
   report.profileIsolation={verified:true,portableData:process.env.VSCODE_PORTABLE??null,pythonPath:vscode.workspace.getConfiguration('instantcad',vscode.Uri.file(folder)).get('pythonPath')};
   // Exercise the example shipped inside this installed runtime, not source
   // checkout fixtures. Its CAD must actually compile in the editor's kernel.

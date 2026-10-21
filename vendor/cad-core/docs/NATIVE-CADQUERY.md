@@ -147,3 +147,21 @@ An open viewer watches its scene metadata as well as source files. A completed
 external CLI build is adopted only after source/runtime/hash validation; this
 can recover an editor Python failure without rerunning Python or moving the
 camera. Incomplete, corrupt or stale scenes cannot replace the current model.
+
+## Shared rotary mechanism metadata
+
+A `mechanism.json` beside the Python entry describes fixed-base revolute joints,
+rigid groups of occurrence IDs, and gear/belt/chain tooth-count relations. The
+shared `core/mechanism.js` validates IDs, unit axes, bind angles, directed acyclic
+relations and joint limits. `MechanismMotion` moves cached assembly instances;
+it does not alter the authored BREP or mesh cache. Motor IDs resolve to their
+shaft joint. Body origins and joint origins are world-space millimetres, axes
+are unit world vectors, and angular coordinates are degrees. Relations use
+`follower = direction * driverTeeth / followerTeeth * driver + phaseDeg`.
+Bind angles must satisfy that equation. Initial tooth alignment is authored in
+geometry; phase is a joint-coordinate offset, not automatic tooth alignment.
+
+This first contract rejects floating/nested mechanisms and closed relation loops.
+It does not infer teeth, simulate tooth contact, or deform belts and chain links.
+The embedding application's simulation exporter supplies domain-specific physics
+conversion; the generic CAD core has no FRC or physics-engine dependency.

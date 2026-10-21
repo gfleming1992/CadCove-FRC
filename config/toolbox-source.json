@@ -163,7 +163,11 @@
     "lib/custom-simulator.js",
     "docs/CUSTOM-SIMULATOR.md",
     "examples/custom-mechanism/",
-    "tests/custom-simulator.test.js"
+    "tests/custom-simulator.test.js",
+    "lib/cad-motion.js",
+    "lib/mechanism-export.js",
+    "tests/mechanism-export.test.js",
+    "examples/rotary-mechanism/"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

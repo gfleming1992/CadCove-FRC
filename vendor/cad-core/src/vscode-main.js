@@ -1,6 +1,9 @@
 import {currentCachedScene} from './core/scene-cache.js';
 import {captureScene} from './core/scene-capture.js';
-import {Viewer} from './core/viewer.js';
+import {AssemblyViewer} from './core/assembly-viewer.js';
+import {installSelection} from './core/selection.js';
+import {resolveJoint} from './core/mechanism.js';
+import {MechanismMotion} from './core/mechanism-motion.js';
 import {snapshot,hash} from './core/revision.js';
 import {createVSCodeHost} from './hosts/vscode.js';
 const config=globalThis.INSTANTCAD_HOST,host=createVSCodeHost(config),identity=config.runtime;
@@ -8,10 +11,12 @@ const config=globalThis.INSTANTCAD_HOST,host=createVSCodeHost(config),identity=c
 // changes presentation only; disk-driven builds and feedback stay identical.
 if(config.minimalUI){document.querySelector('header').style.display='none';}
 const canvas=document.querySelector('#canvas'),status=document.querySelector('#status'),button=document.querySelector('#build'),stop=document.querySelector('#stop');
-const viewer=new Viewer(canvas);
+const viewer=new AssemblyViewer(canvas),motion=new MechanismMotion(viewer);
 let head,workerRevision,building=false,dirty=false,disposed=false,initialized=false,feedbackDirty=false,timer;
 const message=(text,error=false)=>{status.textContent=text;status.dataset.error=String(error);};
 const report=(phase,extra={})=>host.report({phase,revision:head??null,workerLoaded:host.nativeLoaded,parts:viewer.scene?.parts.length??0,gpuBytes:viewer.gpuBytes??0,camera:viewer.camera,upload:viewer.lastUpload,...extra}).catch(()=>{});
+const selectionBadge=document.createElement('div');selectionBadge.style.cssText='position:fixed;bottom:12px;left:12px;max-width:80vw;padding:7px 10px;background:#16212ee8;color:#ffe17a;border-radius:6px;font:12px system-ui;pointer-events:none;z-index:5';selectionBadge.hidden=true;document.body.append(selectionBadge);
+const selection=installSelection(viewer,state=>{selectionBadge.hidden=!state.selectedIds.length;selectionBadge.textContent=state.parts.map(p=>p.name+' · '+p.id).join(' | ');});
 const source=async()=>snapshot(await host.readSources(),config.entry,identity);
 async function execute(revision, current) {
   current??=await source();
@@ -106,17 +111,42 @@ inspect.onclick=()=>{
   };
 };
 host.onAgentRequest(async(method,args)=>{
- if(method!=='capture')throw Error('Unknown source viewer request');
+ if(!['capture','motion','selection'].includes(method))throw Error('Unknown source viewer request');
  if(building||!initialized||!head)throw Error('CAD is still building');
  if((await source()).revision!==head)await refresh();
  if(building||feedbackDirty||(await source()).revision!==head)throw Error('CAD source has not built successfully');
- const revision=head,frame=await captureScene(viewer,args);
+ if(method==='selection')return {ok:true,revision:head,...selection.state()};
+ if(method==='motion'){
+   const current=await source(),file=config.entry.replace(/[^/]+$/, '')+'mechanism.json';
+   if(!current.files[file])throw Error('Add mechanism.json beside this CAD entry');
+   const mechanism=JSON.parse(current.files[file]);
+   if(mechanism.sourceStep){
+     const {file:stepFile,sha256}=mechanism.sourceStep;
+     if(typeof stepFile!=='string'||!/^([a-f0-9]{64})$/.test(sha256)||current.files[stepFile]!=='sha256:'+sha256)throw Error('STEP kinematics source changed or is missing; regenerate the motion projection');
+   }
+   motion.load(mechanism);
+   let result;
+   if(args.action==='list')result={joints:motion.model.joints,bodies:motion.model.bodies,relations:motion.model.relations,motors:motion.model.motors??[]};
+   else if(args.action==='play')result=motion.play(args.trajectory);
+   else if(args.action==='pause')result=motion.pause();
+   else if(args.action==='resume')result=motion.resume();
+   else if(args.action==='seek')result=motion.seek(args.seconds);
+   else if(args.action==='rotate')result=motion.rotate(args.part,args.degrees);
+   else if(args.action==='move') {const joint=resolveJoint(motion.model,args.part);result=motion.rotate(joint,motion.angles[joint]+args.degrees);}
+   else if(args.action==='animate')result=motion.animate(args.part,args.rpm,args.seconds);
+   else if(args.action==='stop')result=motion.stop();
+   else if(args.action==='reset')result=motion.reset();
+   else if(args.action==='state')result=motion.state();
+   else throw Error('Unknown motion action');
+   return {ok:true,revision:head,...result};
+ }
+ const revision=head,frame=viewer.draws?await viewer.captureView(args):await captureScene(viewer,args);
  if(head!==revision||(await source()).revision!==revision)throw Error('Scene changed during capture');
  return {...frame,revision};
 });
 window.addEventListener('cad-configuration-changed',()=>message('CAD folder settings changed. Close and reopen this model to use the new folders.'));
 host.watch(()=>{clearTimeout(timer);timer=setTimeout(()=>refresh(),100);});
-window.addEventListener('beforeunload',()=>{disposed=true;clearTimeout(timer);void host.nativeCancel();host.dispose();});
+window.addEventListener('beforeunload',()=>{disposed=true;motion.stop();clearTimeout(timer);void host.nativeCancel();host.dispose();});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){viewer.request();void refresh();}});
 (async()=>{
   try{

@@ -1,0 +1,501 @@
+{
+  "schema": 1,
+  "units": "mm-deg",
+  "bodies": [
+    {
+      "id": "chassis",
+      "origin": [
+        65,
+        45,
+        -8
+      ],
+      "fixed": true,
+      "parts": [
+        "base"
+      ],
+      "geometry": [
+        {
+          "id": "base",
+          "kind": "box",
+          "size": [
+            250,
+            180,
+            8
+          ],
+          "color": "#343c49"
+        }
+      ],
+      "physics": {
+        "massKg": 2,
+        "centerOfMassMm": [
+          0,
+          0,
+          0
+        ],
+        "principalInertiaKgMm2": [
+          1000,
+          1000,
+          1000
+        ],
+        "friction": 0.3,
+        "provenance": "Estimated teaching values; cylinder mass model and collision envelope, not measured hardware",
+        "colliders": [
+          {
+            "kind": "box",
+            "halfMm": [
+              125,
+              90,
+              4
+            ],
+            "centerMm": [
+              0,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "motor-shaft",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "fixed": false,
+      "parts": [
+        "input-shaft",
+        "input-gear"
+      ],
+      "geometry": [
+        {
+          "id": "input-shaft",
+          "kind": "shaft",
+          "radius": 3.9,
+          "height": 58,
+          "color": "#d4d8df"
+        },
+        {
+          "id": "input-gear",
+          "kind": "gear",
+          "teeth": 20,
+          "radius": 20,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            3
+          ],
+          "color": "#ed7b33",
+          "phaseDeg": 0
+        }
+      ],
+      "physics": {
+        "massKg": 0.25,
+        "centerOfMassMm": [
+          0,
+          0,
+          25
+        ],
+        "principalInertiaKgMm2": [
+          108.0625,
+          108.0625,
+          66.125
+        ],
+        "friction": 0.3,
+        "provenance": "Estimated teaching values; cylinder mass model and collision envelope, not measured hardware",
+        "colliders": [
+          {
+            "kind": "cylinder",
+            "radiusMm": 17.5,
+            "halfHeightMm": 30.0,
+            "centerMm": [
+              0,
+              0,
+              25
+            ],
+            "rotationRad": [
+              1.5707963267948966,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "gear-output",
+      "origin": [
+        60,
+        0,
+        0
+      ],
+      "fixed": false,
+      "parts": [
+        "gear-output-shaft",
+        "output-gear",
+        "drive-pulley"
+      ],
+      "geometry": [
+        {
+          "id": "gear-output-shaft",
+          "kind": "shaft",
+          "radius": 3.9,
+          "height": 58,
+          "color": "#d4d8df"
+        },
+        {
+          "id": "output-gear",
+          "kind": "gear",
+          "teeth": 40,
+          "radius": 40,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            3
+          ],
+          "color": "#3d92db",
+          "phaseDeg": 4.5
+        },
+        {
+          "id": "drive-pulley",
+          "kind": "pulley",
+          "teeth": 20,
+          "radius": 15.915494309189533,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            23
+          ],
+          "color": "#e2be48",
+          "phaseDeg": 0
+        }
+      ],
+      "physics": {
+        "massKg": 0.25,
+        "centerOfMassMm": [
+          0,
+          0,
+          25
+        ],
+        "principalInertiaKgMm2": [
+          190.5625,
+          190.5625,
+          231.125
+        ],
+        "friction": 0.3,
+        "provenance": "Estimated teaching values; cylinder mass model and collision envelope, not measured hardware",
+        "colliders": [
+          {
+            "kind": "cylinder",
+            "radiusMm": 37.5,
+            "halfHeightMm": 30.0,
+            "centerMm": [
+              0,
+              0,
+              25
+            ],
+            "rotationRad": [
+              1.5707963267948966,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "belt-output",
+      "origin": [
+        60,
+        110,
+        0
+      ],
+      "fixed": false,
+      "parts": [
+        "belt-output-shaft",
+        "driven-pulley",
+        "drive-sprocket"
+      ],
+      "geometry": [
+        {
+          "id": "belt-output-shaft",
+          "kind": "shaft",
+          "radius": 3.9,
+          "height": 58,
+          "color": "#d4d8df"
+        },
+        {
+          "id": "driven-pulley",
+          "kind": "pulley",
+          "teeth": 40,
+          "radius": 31.830988618379067,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            23
+          ],
+          "color": "#e2be48",
+          "phaseDeg": 0
+        },
+        {
+          "id": "drive-sprocket",
+          "kind": "sprocket",
+          "teeth": 16,
+          "radius": 16.170142218136565,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            43
+          ],
+          "color": "#8cbf81",
+          "phaseDeg": 0
+        }
+      ],
+      "physics": {
+        "massKg": 0.25,
+        "centerOfMassMm": [
+          0,
+          0,
+          25
+        ],
+        "principalInertiaKgMm2": [
+          150.82486050835325,
+          150.82486050835325,
+          151.6497210167065
+        ],
+        "friction": 0.3,
+        "provenance": "Estimated teaching values; cylinder mass model and collision envelope, not measured hardware",
+        "colliders": [
+          {
+            "kind": "cylinder",
+            "radiusMm": 29.330988618379067,
+            "halfHeightMm": 30.0,
+            "centerMm": [
+              0,
+              0,
+              25
+            ],
+            "rotationRad": [
+              1.5707963267948966,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "chain-output",
+      "origin": [
+        170,
+        110,
+        0
+      ],
+      "fixed": false,
+      "parts": [
+        "chain-output-shaft",
+        "driven-sprocket"
+      ],
+      "geometry": [
+        {
+          "id": "chain-output-shaft",
+          "kind": "shaft",
+          "radius": 3.9,
+          "height": 58,
+          "color": "#d4d8df"
+        },
+        {
+          "id": "driven-sprocket",
+          "kind": "sprocket",
+          "teeth": 32,
+          "radius": 32.34028443627313,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            43
+          ],
+          "color": "#8cbf81",
+          "phaseDeg": 0
+        }
+      ],
+      "physics": {
+        "massKg": 0.25,
+        "centerOfMassMm": [
+          0,
+          0,
+          25
+        ],
+        "principalInertiaKgMm2": [
+          153.05848150229306,
+          153.05848150229306,
+          156.1169630045861
+        ],
+        "friction": 0.3,
+        "provenance": "Estimated teaching values; cylinder mass model and collision envelope, not measured hardware",
+        "colliders": [
+          {
+            "kind": "cylinder",
+            "radiusMm": 29.84028443627313,
+            "halfHeightMm": 30.0,
+            "centerMm": [
+              0,
+              0,
+              25
+            ],
+            "rotationRad": [
+              1.5707963267948966,
+              0,
+              0
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "joints": [
+    {
+      "id": "motor-shaft-axis",
+      "type": "revolute",
+      "parent": "chassis",
+      "child": "motor-shaft",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "bindAngleDeg": 0,
+      "damping": 0.001
+    },
+    {
+      "id": "gear-output-axis",
+      "type": "revolute",
+      "parent": "chassis",
+      "child": "gear-output",
+      "origin": [
+        60,
+        0,
+        0
+      ],
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "bindAngleDeg": 0,
+      "damping": 0.001
+    },
+    {
+      "id": "belt-output-axis",
+      "type": "revolute",
+      "parent": "chassis",
+      "child": "belt-output",
+      "origin": [
+        60,
+        110,
+        0
+      ],
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "bindAngleDeg": 0,
+      "damping": 0.001
+    },
+    {
+      "id": "chain-output-axis",
+      "type": "revolute",
+      "parent": "chassis",
+      "child": "chain-output",
+      "origin": [
+        170,
+        110,
+        0
+      ],
+      "axis": [
+        0,
+        0,
+        1
+      ],
+      "bindAngleDeg": 0,
+      "damping": 0.001
+    }
+  ],
+  "relations": [
+    {
+      "id": "gears",
+      "type": "gear",
+      "driver": "motor-shaft-axis",
+      "follower": "gear-output-axis",
+      "driverTeeth": 20,
+      "followerTeeth": 40,
+      "direction": -1,
+      "phaseDeg": 0,
+      "physics": {
+        "stiffness": 20,
+        "damping": 0.2,
+        "maxEffort": 2
+      }
+    },
+    {
+      "id": "timing-belt",
+      "type": "belt",
+      "driver": "gear-output-axis",
+      "follower": "belt-output-axis",
+      "driverTeeth": 20,
+      "followerTeeth": 40,
+      "direction": 1,
+      "phaseDeg": 0,
+      "physics": {
+        "stiffness": 20,
+        "damping": 0.2,
+        "maxEffort": 2
+      }
+    },
+    {
+      "id": "chain",
+      "type": "chain",
+      "driver": "belt-output-axis",
+      "follower": "chain-output-axis",
+      "driverTeeth": 16,
+      "followerTeeth": 32,
+      "direction": 1,
+      "phaseDeg": 0,
+      "physics": {
+        "stiffness": 20,
+        "damping": 0.2,
+        "maxEffort": 2
+      }
+    }
+  ],
+  "motors": [
+    {
+      "id": "demo-motor",
+      "joint": "motor-shaft-axis",
+      "physics": {
+        "rotorPerUnit": 1,
+        "efficiency": 1,
+        "resistance": 1,
+        "torqueConstant": 0.05,
+        "velocityConstant": 20,
+        "currentLimit": 2
+      }
+    }
+  ],
+  "notes": [
+    "Synthetic motor constants and compliant transmissions for software testing only.",
+    "Belt/chain relations couple shaft angles; flexible belt and chain links are not modeled."
+  ]
+}

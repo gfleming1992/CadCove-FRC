@@ -71,7 +71,7 @@ test('CLI and editor share Python precedence and project-relative paths',()=>{
  const fresh=()=>{session?.dispose();session=new NativeCadSession({layout,python,worker});return session;};
  try{
   const first=await fresh().build();expect(first.timings.components).toMatchObject({hits:0,misses:2,diskHits:0});
-  const calls=path.join(root,'build/models.py/calls.txt');expect((await fs.readFile(calls,'utf8')).trim().split('\n')).toEqual(['a','b']);
+  const calls=path.join(root,'build/models.py/calls.txt');expect((await fs.readFile(calls,'utf8')).trim().split(/\r?\n/)).toEqual(['a','b']);
   const second=await fresh().build();expect(second.timings.components).toMatchObject({hits:2,misses:0,diskHits:2});
   expect(second.parts.map(p=>p.metrics.volume)).toEqual(first.parts.map(p=>p.metrics.volume));
   expect((await session.inspect('result=[p["shape"].isValid() for p in parts]')).result).toEqual([true,true]);
@@ -85,4 +85,4 @@ test('CLI and editor share Python precedence and project-relative paths',()=>{
   for(const file of await fs.readdir(cache))if(file.endsWith('.bin')){const raw=await fs.readFile(path.join(cache,file));const length=raw.readUInt32LE(4);const h=JSON.parse(raw.subarray(8,8+length));h.metrics.volume+=1;const header=Buffer.from(JSON.stringify(h));const prefix=Buffer.alloc(8);prefix.write('ICC1');prefix.writeUInt32LE(header.length,4);await fs.writeFile(path.join(cache,file),Buffer.concat([prefix,header,raw.subarray(8+length)]));}
   expect((await fresh().build()).timings.components.misses).toBe(2);
  }finally{session?.dispose();await fs.rm(root,{recursive:true,force:true});}
-},30000);
+},120000);

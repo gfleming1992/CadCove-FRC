@@ -10,6 +10,7 @@ export async function captureAssembly(viewer,{ids,transforms={},camera,view='iso
  if(!Array.isArray(selected)||!selected.length||new Set(selected).size!==selected.length)throw Error('Expected unique nonempty capture IDs');
  const indices=selected.map(id=>{const i=viewer.instanceLookup.get(id);if(i===undefined)throw Error('Unknown capture instance '+id);return i;}).sort((a,b)=>a-b);
  const placements=viewer.placements.slice();
+ for(const [id,color] of viewer.selectionOriginalColors??[]){const i=viewer.instanceLookup.get(id);if(i!==undefined)placements.set([...color,1],i*20+16);}
  for(const [id,m]of Object.entries(transforms)){
   const i=viewer.instanceLookup.get(id);if(i===undefined)throw Error('Unknown transform instance '+id);
   for(let r=0;r<4;r++)for(let c=0;c<4;c++)placements[i*20+c*4+r]=r===3?(c===3?1:0):m[r*4+c];

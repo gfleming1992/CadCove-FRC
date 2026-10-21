@@ -62,3 +62,70 @@ mesh and metrics from disk. `timings.components.diskHits` reports that reuse.
 Cache keys include the native runtime, source dependencies and explicit inputs;
 a runtime upgrade needs one new population build. Corrupt cache entries rebuild
 from source automatically. Generated component files must stay out of Git.
+
+## Inspect mechanism motion
+
+For CAD rotation/animation use `cad-rotate`, `cad-animate`, `cad-motion-stop`,
+`cad-motion-reset`, and `cad-motion-state` with `--workspace`, optional `--entry`,
+and an explicit part/joint/body/motor ID. The entry must have an adjacent
+`mechanism.json`; axes, rigid groups and gear/belt/chain ratios are authored there.
+Never infer an ambiguous shaft axis or tooth ratio silently. Rotation uses
+absolute degrees; animation uses RPM and a bounded duration. These commands move
+cached meshes without geometry rebuilds and never command real hardware.
+`mechanism-export` reuses that metadata for native physics bodies, joints, motors,
+transmissions and occurrence bindings; missing physical inputs fail explicitly.
+See `examples/rotary-mechanism/README.md` in the source distribution for the schema
+and the complete gear/pulley/chain/motor-shaft example.
+
+## Selecting a part in the canvas
+
+Click a part for a yellow display highlight; Ctrl/Cmd-click toggles additional
+parts. Empty-space click or Escape clears selection. Dragging still orbits/pans,
+and middle-drag draws red markup. Read exact selected occurrence IDs and names
+with `cadcove cad-selection --workspace .` (or MCP `cad_selection`) before acting
+on requests such as “this belt”. Selection is transient and does not change CAD
+source, mesh caches, or export colors. IDs survive a rebuild only while present.
+
+## Explicit motion timelines (experimental)
+
+Selection provides context, not authorization or a restriction on targets. Use
+`cad-selection` for occurrence IDs and `cad-mechanisms` to discover defined
+joints, rigid bodies, relations and motors. `cad-rotate --part ID --degrees N`
+sets an absolute joint coordinate; `cad-move` adds a relative angle. These are
+instantaneous temporary viewer poses, not physical motor commands.
+
+`cad-motion-play --workspace PATH --input trajectory.json` submits one atomic
+batch and returns a playback ID immediately. All tracks share the canvas clock.
+The current prototype reads `mechanism.json`; standard STEP integration is still
+experimental and this JSON is not a substitute for interoperable STEP entities.
+Example: rotate 90 degrees in four seconds, starting from rest at zero:
+
+```json
+{"units":"deg-s","tracks":[{"target":"shaft","endPosition":90,"segments":[
+  {"seconds":1,"acceleration":30},
+  {"seconds":2,"acceleration":0},
+  {"seconds":1,"acceleration":-30}
+]}]}
+```
+
+Angles use degrees, time seconds, velocity degrees/second, acceleration
+degrees/second² and jerk degrees/second³. Each segment has constant `jerk`
+(default zero); omitted acceleration continues the preceding segment's ending
+acceleration. Initial track `velocity` and `acceleration` default to zero;
+position starts at the current displayed joint coordinate. `startSeconds` delays
+a track at rest. Optional `endPosition` checks the calculated endpoint.
+
+Tracks must finish at rest; completed tracks hold position. Reversals are
+explicit segments with signed acceleration, not ambiguous easing names. Integer
+`repeat` repeats a batch only if every track returns to its starting position.
+Total playback is at most 300 seconds. Coupled joints follow the mechanism's
+ratios; two tracks driving the same coupled group are rejected. Position limits
+are checked at segment endpoints and interior extrema before playback starts.
+
+Use `cad-motion-pause`, `cad-motion-resume`, `cad-motion-seek --seconds N`,
+`cad-motion-stop`, `cad-motion-reset`, and `cad-motion-state`. Seek pauses at an
+absolute timeline position. Stop holds the displayed pose; reset restores the
+CAD bind pose and discards playback. A new play command replaces the preceding
+batch only after validation. A geometry reload invalidates playback. No geometry
+rebuild is required for motion. This is kinematic visualization, not collision
+checking or a claim that real motors can achieve the requested trajectory.

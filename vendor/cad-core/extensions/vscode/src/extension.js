@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import fs from 'node:fs/promises';
+import {watchFile,unwatchFile} from 'node:fs';
 import path from 'node:path';
 import {randomBytes} from 'node:crypto';
 import {NativeCadClient,nativeIdentityFor,resolveNativePython} from '../../../src/native/client.js';
@@ -152,9 +153,13 @@ export function activate(context,options={}) {
     const cacheWatcher=vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(path.dirname(cacheMeta)),'scene.json'));
     const cacheChanged=()=>{clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);};
     cacheWatcher.onDidChange(cacheChanged);cacheWatcher.onDidCreate(cacheChanged);
+    // Build folders can be excluded from VS Code's recursive watcher (notably
+    // on Linux). Observe the one atomic commit marker independently as well.
+    const cachePoll=(current,previous)=>{if(current.mtimeMs!==previous.mtimeMs||current.size!==previous.size)cacheChanged();};
+    watchFile(cacheMeta,{persistent:false,interval:1000},cachePoll);
 
     const configurationListener=vscode.workspace.onDidChangeConfiguration(event=>{if(event.affectsConfiguration('instantcad',workspace?.uri)){void panel.webview.postMessage({event:'configuration-changed'});}});
-    panel.onDidDispose(()=>{for(const task of state.pending.values()){clearTimeout(task.timer);task.reject(Error('CAD panel closed'));}state.pending.clear();nativeClient?.dispose();if(nativeArtifact)void fs.unlink(nativeArtifact).catch(()=>{});configurationListener.dispose();state.disposed=true;clearTimeout(debounce);watcher.dispose();cacheWatcher.dispose();messages.dispose();for(const token of state.writes.keys())void cleanup(token);panels.delete(resource.toString());});
+    panel.onDidDispose(()=>{for(const task of state.pending.values()){clearTimeout(task.timer);task.reject(Error('CAD panel closed'));}state.pending.clear();nativeClient?.dispose();if(nativeArtifact)void fs.unlink(nativeArtifact).catch(()=>{});configurationListener.dispose();state.disposed=true;clearTimeout(debounce);watcher.dispose();cacheWatcher.dispose();unwatchFile(cacheMeta,cachePoll);messages.dispose();for(const token of state.writes.keys())void cleanup(token);panels.delete(resource.toString());});
     panel.onDidChangeViewState(()=>{if(panel.visible)void panel.webview.postMessage({event:'source-changed'});});
     const nonce=randomBytes(16).toString('base64');
     const csp=`default-src 'none'; img-src ${panel.webview.cspSource} data: blob:; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}' ${panel.webview.cspSource}; connect-src ${panel.webview.cspSource};`;

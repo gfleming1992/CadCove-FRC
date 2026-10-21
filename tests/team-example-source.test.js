@@ -150,7 +150,7 @@ function=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name==
 namespace={'ROOT':root,'json':json,'importlib':types.SimpleNamespace(import_module=lambda name:types.SimpleNamespace(make=lambda:None))}
 exec(compile(ast.Module(body=[function],type_ignores=[]),'models.py','exec'),namespace)
 class Context:
-    files={str(p.relative_to(root)):p.read_text() for p in (root/'native').rglob('*') if p.suffix in ('.py','.json')}
+    files={p.relative_to(root).as_posix():p.read_text() for p in (root/'native').rglob('*') if p.suffix in ('.py','.json')}
     files['models.py']=(root/'models.py').read_text()
     def __init__(self):self.deps={}
     def component(self,name,factory,dependencies,**kwargs):self.deps[name]=set(dependencies);return None

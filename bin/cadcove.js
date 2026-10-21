@@ -25,6 +25,19 @@ const optionsByCommand = {
   'cad-export': ['workspace','entry','python','output'],
   'cad-capture': ['workspace','entry','view','ids','output'],
   'cad-open': ['workspace'],
+  'cad-motion-play': ['workspace','entry','input'],
+  'cad-motion-pause': ['workspace','entry'],
+  'cad-motion-resume': ['workspace','entry'],
+  'cad-motion-seek': ['workspace','entry','seconds'],
+  'cad-mechanisms': ['workspace','entry'],
+  'cad-move': ['workspace','entry','part','degrees'],
+  'cad-rotate': ['workspace','entry','part','degrees'],
+  'cad-animate': ['workspace','entry','part','rpm','seconds'],
+  'cad-motion-stop': ['workspace','entry'],
+  'cad-motion-reset': ['workspace','entry'],
+  'cad-motion-state': ['workspace','entry'],
+  'cad-selection': ['workspace','entry'],
+  'mechanism-export': ['workspace','entry','output'],
   mcp: ['workspace'],
   init: ['workspace', 'name', 'id', 'cad-dir', 'build-dir', 'dry-run'],
   'guidance-update': ['workspace','dry-run'],
@@ -66,10 +79,25 @@ async function regularFile(file, executable = false) {
 async function run() {
   const {command, options} = parse(process.argv.slice(2));
   if(['cad-build','cad-session','cad-inspect','cad-export'].includes(command)){const {cadCommand}=await import('../lib/cad-command.js');return cadCommand(command,options);}
+  if(['cad-motion-play','cad-motion-pause','cad-motion-resume','cad-motion-seek','cad-mechanisms','cad-move','cad-selection','cad-rotate','cad-animate','cad-motion-stop','cad-motion-reset','cad-motion-state'].includes(command)){const {cadMotion}=await import('../lib/cad-motion.js');return cadMotion(command,options);}
+  if(command==='mechanism-export'){const {exportMechanism}=await import('../lib/mechanism-export.js');return exportMechanism(options);}
   if(command==='cad-capture'){const {captureCad}=await import('../lib/cad-capture.js');return captureCad(options);}
   if(command==='cad-open'){const {openRobotCad}=await import('../lib/mcp-proxy.js');const result=await openRobotCad(options.workspace??process.cwd());if(result.ok===false)process.exitCode=1;return result;}
   if (command === 'mcp') {const {runMcpProxy}=await import('../lib/mcp-proxy.js');await runMcpProxy(options.workspace??process.cwd());return;}
   if (command === 'help') return {schema: 1, ok: true, commands: {
+    'cad-rotate': 'cadcove cad-rotate --workspace PATH [--entry models.py] --part ID --degrees ANGLE (absolute joint angle; temporary pose)',
+    'cad-animate': 'cadcove cad-animate --workspace PATH [--entry models.py] --part ID --rpm RPM [--seconds 10] (temporary motion, max 300 seconds)',
+    'cad-motion-stop': 'cadcove cad-motion-stop --workspace PATH [--entry models.py]',
+    'cad-motion-reset': 'cadcove cad-motion-reset --workspace PATH [--entry models.py]',
+    'cad-motion-play': 'cadcove cad-motion-play --workspace PATH --input trajectory.json',
+    'cad-motion-pause': 'cadcove cad-motion-pause --workspace PATH',
+    'cad-motion-resume': 'cadcove cad-motion-resume --workspace PATH',
+    'cad-motion-seek': 'cadcove cad-motion-seek --workspace PATH --seconds SECONDS',
+    'cad-mechanisms': 'cadcove cad-mechanisms --workspace PATH',
+    'cad-move': 'cadcove cad-move --workspace PATH --part ID --degrees DELTA',
+    'cad-selection': 'cadcove cad-selection --workspace PATH [--entry models.py]',
+    'cad-motion-state': 'cadcove cad-motion-state --workspace PATH [--entry models.py]',
+    'mechanism-export': 'cadcove mechanism-export --workspace PATH [--entry models.py] --output NEW_DIRECTORY (validated world and occurrence bindings)',
     'cad-build': 'cadcove cad-build --workspace PATH [--entry models.py] [--python PYTHON]',
     'cad-session': 'cadcove cad-session --workspace PATH [--entry models.py] [--python PYTHON] (warm JSONL build/inspect/export; stdin EOF stops worker)',
     'cad-inspect': 'cadcove cad-inspect --workspace PATH --script CHECKS.py (build then exact BREP inspection; assign result)',

@@ -117,3 +117,30 @@ test('native cache commit promotes exact worker bytes with revision and digest',
   expect(JSON.parse(await readFile(await cacheFile(layout,'models.py','scene.json'),'utf8'))).toEqual(result);
  }finally{await rm(root,{recursive:true,force:true});}
 });
+
+test('motion metadata changes do not invalidate geometry, but CAD inputs and STEP pins do',async()=>{
+ const files={'robot/models.py':'build geometry','robot/mechanism.json':'{}','dimensions.json':'{"length":20}','robot/joints.step':'sha256:first'};
+ const first=await snapshot(files,'robot/models.py');
+ const update=await snapshot({...files,'robot/mechanism.json':'{"joints":[]}'},'robot/models.py');
+ expect(update.revision).toBe(first.revision);
+ expect(update.files['robot/mechanism.json']).not.toBe(first.files['robot/mechanism.json']);
+ for(const name of ['robot/models.py','dimensions.json','robot/joints.step'])expect((await snapshot({...files,[name]:'changed'},'robot/models.py')).revision).not.toBe(first.revision);
+ // A different entry's metadata remains an ordinary tracked input.
+ expect((await snapshot({...files,'other/mechanism.json':'{}'},'robot/models.py')).revision).not.toBe(first.revision);
+});
+
+test('source cache observes edits, replacements, deletion and new files without losing STEP hashes',async()=>{
+ const root=await mkdtemp(path.join(tmpdir(),'instantcad-source-cache-')),cache=new Map();
+ try{
+  await writeFile(path.join(root,'models.py'),'first');await writeFile(path.join(root,'part.step'),'AAAA');
+  const first=await readSources(root,undefined,{cache});
+  expect(await readSources(root,undefined,{cache})).toEqual(first);
+  await writeFile(path.join(root,'part.step'),'BBBB');await writeFile(path.join(root,'models.py'),'other');
+  const changed=await readSources(root,undefined,{cache});
+  expect(changed['part.step']).not.toBe(first['part.step']);expect(changed['models.py']).toBe('other');
+  await rm(path.join(root,'part.step'));await writeFile(path.join(root,'dimensions.json'),'{}');
+  const removed=await readSources(root,undefined,{cache});expect(removed['part.step']).toBeUndefined();expect(removed['dimensions.json']).toBe('{}');expect(cache.has(path.join(root,'part.step'))).toBe(false);
+  await rm(path.join(root,'models.py'));await writeFile(path.join(root,'models.py'),'third');
+  expect((await readSources(root,undefined,{cache}))['models.py']).toBe('third');
+ }finally{await rm(root,{recursive:true,force:true});}
+});

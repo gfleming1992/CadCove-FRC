@@ -2,7 +2,7 @@
   "name": "cadcove-toolbox",
   "displayName": "CadCove FRC",
   "description": "Local, agent-driven CAD and FRC simulation workspace tools.",
-  "version": "0.2.1",
+  "version": "0.2.38",
   "publisher": "gfleming1992",
   "license": "MIT",
   "engines": {

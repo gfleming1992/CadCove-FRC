@@ -14,6 +14,9 @@
     "lib/cad-feedback.js",
     "lib/cad-project.js",
     "lib/cad-reference.js",
+    "lib/design-command.js",
+    "lib/analysis-command.js",
+    "tests/design-command.test.js",
     "lib/cli-build-provenance.js",
     "lib/dependency-notices.js",
     "lib/directory-publish.js",
@@ -167,7 +170,17 @@
     "lib/cad-motion.js",
     "lib/mechanism-export.js",
     "tests/mechanism-export.test.js",
-    "examples/rotary-mechanism/"
+    "examples/rotary-mechanism/",
+    "lib/cad-highlights.js",
+    "lib/cad-view.js",
+    "lib/mechanism-session.js",
+    "lib/mechanism-preview.js",
+    "web/editor-mechanism.js",
+    "tests/mechanism-session.test.js",
+    "lib/canvas-router.js",
+    "tests/canvas-router.test.js",
+    "lib/mate-command.js",
+    "tests/mate-command.test.js"
   ],
   "exclude": [
     "bridge/java/org/instantcad/frc/ShotTuning.java"

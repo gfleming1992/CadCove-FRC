@@ -4,13 +4,14 @@ import {mkdir, rm, readFile, writeFile, copyFile, cp, realpath} from 'node:fs/pr
 import * as esbuild from 'esbuild';
 import {validateRuntimeManifest} from '../lib/runtime-install.js';
 import {validateCliBuild} from '../lib/cli-build-provenance.js';
+import {nativeIdentityFor} from '../vendor/cad-core/src/native/client.js';
 const args=process.argv.slice(2);
 if(args.length!==2||args[0]!=='--runtime')throw Error('Usage: bun scripts/build-toolbox-extension.js --runtime PACKAGED_RUNTIME_DIRECTORY');
 const root=path.resolve(import.meta.dir,'..'),core=path.join(root,'vendor/cad-core');
 const target=`${process.platform}-${process.arch}`,out=path.join(root,'build','toolbox-extension-'+target),media=path.join(out,'media');
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const runtimeDirectory=args[1];
-const runtimeIdentity='cadquery@2.6.1/ocp@7.8.1.1/native-mesh-v1/worker:'+hash(Buffer.concat([await readFile(path.join(core,'src/native/worker.py')),await readFile(path.join(core,'src/native/geometry.py'))]));
+const runtimeIdentity=nativeIdentityFor(path.join(core,'src/native/worker.py'));
 const pin=JSON.parse(await readFile(path.join(core,'upstream.json'),'utf8'));
 for(const [file,expected] of Object.entries(pin.files)){
  const bytes=await readFile(path.join(core,file));
@@ -36,6 +37,8 @@ await cp(path.join(core,'src/native'),path.join(media,'native'),{recursive:true}
 await copyFile(path.join(core,'index.html'),path.join(media,'index.html'));
 const simulation=await Bun.build({entrypoints:[path.join(root,'web/editor-simulation.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'simulation.js'});
 if(!simulation.success)throw Error(simulation.logs.join('\n'));
+const mechanism=await Bun.build({entrypoints:[path.join(root,'web/editor-mechanism.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'mechanism.js'});
+if(!mechanism.success)throw Error(mechanism.logs.join('\n'));
 const robot=await Bun.build({entrypoints:[path.join(root,'web/editor-robot.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'robot.js'});
 if(!robot.success)throw Error(robot.logs.join('\n'));
 await writeFile(path.join(media,'manifest.json'),JSON.stringify({main:'main.js'}));

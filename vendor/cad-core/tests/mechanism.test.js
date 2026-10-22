@@ -54,3 +54,45 @@ test('constant jerk integration preserves velocity and acceleration between segm
  expect(trajectorySamples(plan,1)[0]).toMatchObject({position:10,velocity:30,acceleration:60});
  expect(evaluateTrajectory(m,plan,4).angles['a-axis']).toBeCloseTo(120);
 });
+
+test('live mechanism additions preserve existing pose and remove stale transforms without replacing geometry',async()=>{
+ const {MechanismMotion}=await import('../src/core/mechanism-motion.js');
+ const value=model(),parts=value.bodies.flatMap(b=>b.parts).map(id=>({id}));parts.push({id:'extra'});
+ let transforms;
+ const scene={parts},viewer={scene,draws:[],clearMarkers(){},setTransforms(v){transforms=v;},setScene(){throw Error('must not replace geometry');}};
+ const motion=new MechanismMotion(viewer).load(value),joint=value.joints[0].id;
+ motion.rotate(joint,20);const before=motion.angles[joint];
+ const added=structuredClone(value);added.bodies.push({id:'extra-body',fixed:false,origin:[0,0,0],parts:['extra']});added.joints.push({id:'extra-axis',type:'revolute',parent:value.joints[0].parent,child:'extra-body',origin:[0,0,0],axis:[0,0,1]});
+ motion.load(added);expect(motion.angles[joint]).toBe(before);expect(viewer.scene).toBe(scene);
+ motion.rotate('extra-axis',45);expect(transforms.extra[0]).toBeCloseTo(Math.SQRT1_2);
+ motion.load(value);expect(transforms.extra).toEqual([1,0,0,0,0,1,0,0,0,0,1,0]);expect(motion.angles[joint]).toBe(before);
+ const bad=structuredClone(value);bad.joints[0].axis=[0,0,0];expect(()=>motion.load(bad)).toThrow();expect(motion.angles[joint]).toBe(before);
+});
+
+const nested=()=>({schema:1,units:'mm-deg',bodies:[{id:'frame',fixed:true,origin:[0,0,0],parts:['frame']},{id:'module',fixed:false,origin:[10,0,0],parts:['fork']},{id:'wheel',fixed:false,origin:[12,0,0],parts:['tire']}],joints:[{id:'spin',type:'revolute',parent:'module',child:'wheel',origin:[12,0,0],axis:[0,1,0],bindAngleDeg:10},{id:'steer',type:'revolute',parent:'frame',child:'module',origin:[10,0,0],axis:[0,0,1],bindAngleDeg:20}],relations:[]});
+const point=(m,p)=>[0,1,2].map(r=>m[r*4+3]+p.reduce((sum,x,k)=>sum+m[r*4+k]*x,0));
+const near=(actual,expected)=>actual.forEach((x,i)=>expect(x).toBeCloseTo(expected[i],8));
+test('nested wheel spin follows steering around an offset pivot, independent of joint order',()=>{
+ const m=validateMechanism(nested());
+ const bind=mechanismPose(m,'steer',20);near(point(bind.transforms.tire,[13,0,0]),[13,0,0]);
+ const steer=mechanismPose(m,'steer',110);near(point(steer.transforms.tire,[13,0,0]),[10,3,0]);
+ const both=mechanismPose(m,'spin',100,steer.angles);
+ near(point(both.transforms.tire,[13,0,0]),[10,2,-1]);
+ near(point(both.transforms.tire,[12,1,0]),[9,2,0]); // axle rotates with module
+ near(point(both.transforms.fork,[13,0,0]),[10,3,0]); // child spin cannot move parent
+ const reversed=validateMechanism({...nested(),joints:nested().joints.reverse()});
+ near(point(mechanismPose(reversed,'spin',100,steer.angles).transforms.tire,[13,0,0]),[10,2,-1]);
+ const back=mechanismPose(m,'steer',20,both.angles);near(point(back.transforms.tire,[13,0,0]),[12,0,-1]);
+});
+test('body hierarchy rejects cycles, self parents and unknown parents',()=>{
+ for(const parent of ['wheel','module','missing']){const m=nested();m.joints[1].parent=parent;expect(()=>validateMechanism(m)).toThrow();}
+});
+
+test('three-level assembly and simultaneous parent/child tracks compose without geometry changes',()=>{
+ const input=nested();input.bodies.push({id:'tool',fixed:false,origin:[13,0,0],parts:['tool']});input.joints.unshift({id:'tool-axis',type:'revolute',parent:'wheel',child:'tool',origin:[13,0,0],axis:[1,0,0],bindAngleDeg:0});
+ const m=validateMechanism(input),initial={steer:20,spin:10,'tool-axis':0};
+ const plan=compileTrajectory(m,{units:'deg-s',tracks:['steer','spin','tool-axis'].map(target=>({target,segments:[{seconds:1,acceleration:90},{seconds:1,acceleration:-90}]}))},initial);
+ const pose=evaluateTrajectory(m,plan,2);
+ near(point(pose.transforms.tool,[13,1,0]),[10,3,-1]);
+ expect(pose.angles).toEqual({steer:110,spin:100,'tool-axis':90});
+});

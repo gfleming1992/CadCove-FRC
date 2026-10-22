@@ -20,9 +20,15 @@ try{
   m.play(trajectory);const id=m.state().playback.id;m.pause();m.seek(.1);
   const midpoint=m.angles['a-axis'];m.resume();await new Promise(r=>setTimeout(r,180));
   const playback=m.state();m.reset();
-  return {midpoint,playback,id,rotated,ended,sameBuffer,stayed,reset:m.angles,png:frame.image.startsWith('data:image/png;base64,'),sameScene:scene===v.scene,unchanged:parts.every((p,i)=>p.positions.every((x,k)=>x===positions[i][k]))};
+  const reset={...m.angles};
+  const nested={schema:1,units:'mm-deg',bodies:[{id:'base',fixed:true,origin:[0,0,0],parts:['frame']},{id:'module',fixed:false,origin:[20,0,0],parts:['a']},{id:'wheel',fixed:false,origin:[40,0,0],parts:['b']}],joints:[{id:'steer',parent:'base',child:'module',type:'revolute',origin:[20,0,0],axis:[0,0,1]},{id:'spin',parent:'module',child:'wheel',type:'revolute',origin:[40,0,0],axis:[0,1,0]}],relations:[]};
+  m.load(nested);const nestedBuffer=v.assemblyVertices;
+  m.play({units:'deg-s',tracks:['steer','spin'].map(target=>({target,segments:[{seconds:.1,acceleration:9000},{seconds:.1,acceleration:-9000}]}))});
+  await new Promise(r=>setTimeout(r,300));
+  const nestedCompleted=m.state().playback.status==='completed'&&Math.abs(m.angles.steer-90)<1e-8&&Math.abs(m.angles.spin-90)<1e-8&&v.assemblyVertices===nestedBuffer;
+  return {nestedCompleted,midpoint,playback,id,rotated,ended,sameBuffer,stayed,reset,png:frame.image.startsWith('data:image/png;base64,'),sameScene:scene===v.scene,unchanged:parts.every((p,i)=>p.positions.every((x,k)=>x===positions[i][k]))};
  });
  assert.equal(result.midpoint,15);assert.equal(result.playback.playback.id,result.id);assert.equal(result.playback.playback.status,'completed');assert.equal(result.playback.angles['a-axis'],30);
- assert.deepEqual(result.rotated,{'a-axis':90,'b-axis':-45});assert.equal(result.ended.running,false);assert.ok(Math.abs(result.ended.angles['a-axis']-162)<1e-5);assert.deepEqual(result.reset,{'a-axis':0,'b-axis':0});for(const k of ['sameBuffer','stayed','png','sameScene','unchanged'])assert.equal(result[k],true,k);
+ assert.deepEqual(result.rotated,{'a-axis':90,'b-axis':-45});assert.equal(result.ended.running,false);assert.ok(Math.abs(result.ended.angles['a-axis']-162)<1e-5);assert.deepEqual(result.reset,{'a-axis':0,'b-axis':0});for(const k of ['nestedCompleted','sameBuffer','stayed','png','sameScene','unchanged'])assert.equal(result[k],true,k);
  console.log('PASS: GPU pose-only rotation/animation, gear coupling, stop/reset, capture, unchanged source meshes');
 }finally{await browser.close();server.stop(true);}

@@ -4,7 +4,8 @@ import {readFileSync} from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 export const nativeRuntimeIdentity='cadquery@2.6.1/ocp@7.8.1.1/native-mesh-v1';
-export const nativeIdentityFor=worker=>nativeRuntimeIdentity+'/worker:'+createHash('sha256').update(readFileSync(worker)).update(readFileSync(path.join(path.dirname(worker),'geometry.py'))).digest('hex');
+export const nativeIdentityFor=worker=>nativeRuntimeIdentity+'/worker:'+createHash('sha256').update(Buffer.concat(
+ [worker,...['geometry.py','sketch_solver.py','cad_references.py'].map(name=>path.join(path.dirname(worker),name))].map(file=>readFileSync(file)))).digest('hex');
 
 // Use the same precedence in the CLI and editor; project paths may be relative.
 export function resolveNativePython({explicit,environment,project,editor,root=process.cwd()}={}) {

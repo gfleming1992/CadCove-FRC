@@ -57,7 +57,10 @@ match. Native source revisions track `.py`, `.json`, `.step`, `.stp` and `.brep`
 files in that folder (excluding the build directory and hidden directories).
 Other generated/external dependencies are not tracked: put authored numeric data
 in Python/JSON, and do not depend on environment/time/network for deterministic
-cached builds. STEP hashing cost is part of source scanning; a large source pack
+cached builds. On Windows, source bytes are re-read rather than trusting a
+timestamp-only digest cache: rapid same-size edits can retain identical file
+metadata. This preserves geometry and mesh cache reuse by content hash.
+STEP hashing cost is part of source scanning; a large source pack
 still needs profiling before switching its default backend.
 
 `ctx.component(name, factory, dependencies=None, inputs=None)` caches exact
@@ -165,3 +168,113 @@ This first contract rejects floating/nested mechanisms and closed relation loops
 It does not infer teeth, simulate tooth contact, or deform belts and chain links.
 The embedding application's simulation exporter supplies domain-specific physics
 conversion; the generic CAD core has no FRC or physics-engine dependency.
+
+### Live mechanism metadata
+
+`mechanism.json` beside an entry is reserved for viewer motion definitions. It is
+validated against the loaded part IDs independently of geometry. Editing this
+file does not change the geometry revision or rebuild/upload meshes; the next
+motion command loads it, stops any previous playback, and preserves unchanged
+joint poses. Removed bindings return to their assembled positions. Invalid
+metadata or a stale STEP source pin rejects the motion command.
+
+Do not use this reserved file as an input to Python geometry. Put dimensions and
+other CAD inputs in a separate JSON file (for example `dimensions.json`), which
+remains part of the geometry revision. STEP assets remain content-hash tracked.
+Editor source reads reuse file bytes only while file identity, size, modification
+and change times match; new, changed and deleted files are checked each request.
+
+### Hierarchical mechanisms
+
+A moving body's joint may reference another moving body as its parent. Each
+moving body has exactly one incoming joint, and every chain must end at a fixed
+body. Cycles, missing parents and duplicate part ownership are rejected. Joints
+can appear in any order. Gear/belt/chain relationships constrain joint angles;
+the body tree separately determines which transforms those angles inherit.
+
+For schema 1, part geometry, joint `origin` and unit `axis` are all expressed in
+the **assembled CAD coordinate frame**, in mm; `bindAngleDeg` is the joint
+coordinate at that pose. The viewer composes parent delta times child delta.
+Do not pass a simulation's parent-local axis directly: first transform it through
+the parent's assembled orientation and convert metres to mm. In particular,
+imported swerve modules may already be steered even if simulation starts at zero.
+Verify each rotational axis against the actual shaft/bore/cylindrical geometry.
+Assign stationary housings to the parent and rotating parts to the child; an
+unsplit bearing model cannot represent inner and outer race motion separately.
+
+These rules apply to any assembly, including turret/hood, arm/wrist and
+steering/wheel trees. No robot-specific identifiers are needed by the renderer.
+Simultaneous parent and child motion uses independent tracks on the same clock.
+The playback projection remains distinct from authoritative STEP kinematics;
+import/export adapters must preserve frames and provenance rather than infer
+mechanical intent from part names alone.
+
+### Shared canvas controls and belt surfaces
+
+`src/core/canvas-commands.js` implements the shared selection, highlighting,
+visibility, reveal, camera and mechanism command contract. Hosts adapt their
+render scale with `unitsPerMm`; public camera distances/pan use millimetres,
+camera angles radians, joint angles degrees and trajectory time seconds.
+Capability queries report the available commands; field/physics capabilities
+belong to the embedding host. They do not change the generic CAD core.
+
+An optional `mechanism.json` `beltSurfaces` array animates the existing belt
+mesh. Each item supplies `id`, `part` (the belt occurrence), `body` (its rigid
+parent), `relation` (a belt/chain ratio), `pitchMm`, `direction` (+1/-1),
+`widthAxis`, and two `pulleys` with assembled `centerMm` and `pitchRadiusMm`.
+Optional `toothCount` validates path length within 0.5 mm. Radius must match
+relation teeth times pitch divided by two pi. Both pulley joints must share
+that parent; centers can shift along their axles to the belt's width plane.
+The current path implementation supports open two-pulley loops, including
+unequal radii. Crossed belts and idler routes are rejected/not represented.
+
+The renderer refines long travel-direction triangles once, then moves existing
+vertices and normals around the pitch path using the driver's absolute angle.
+Only the belt's GPU vertex ranges change per frame. Parent transforms carry the
+belt with nested assemblies. Selection and captures use the deformed surface;
+reset restores its original shape. Source CAD, disk mesh caches and exports
+remain unchanged. This is presentation deformation, not elastic belt physics,
+tooth-contact simulation, or manufacturing geometry.
+
+## Experimental mechanism discovery
+
+`src/native/discovery.py` exposes `discover(parts, cache_dir=..., ids=[...])`
+for native inspection occurrence records, and `review(report, decisions)`.
+This first pass measures analytic cylindrical axes and proposes nearby coaxial
+surface pairs. It does not infer rigid groups, sliders, tooth ratios, limits,
+actuation, one-way latches, or contact-driven deployment. A shared axis does not
+prove a joint. Renders and component specifications supply additional evidence.
+No proposal or confirmation automatically changes CAD or starts animation.
+
+Analytic features are cached by unmeshed BREP content and analyzer/runtime
+version. Top-level placements are separated; transformations baked into geometry
+conservatively invalidate its feature entry. Pair checks use both geometry hashes,
+placements and tolerances. Changed evidence makes prior confirmations stale.
+Unchanged occurrences share cached features, including across Python restarts.
+This cache does not tessellate shapes. Broad-phase bounds and coaxial checks are
+not exact collision/clearance checks. Select subsystems to bound ambiguous results.
+
+A decision names `candidateId`, `evidenceHash`, `decision` (`confirm`/`reject`),
+and a nonempty `reason`. Confirmation also supplies `jointType` (`fixed`,
+`revolute`, `cylindrical`) and `evidenceIndex` to select a measured axis. The
+ledger is provenance for later authoring, not a new kinematic exchange standard
+or a general constraint solver. Preserve authored/STEP kinematics separately;
+never replace them with geometric guesses. An imported or authored shape goes
+through the same evidence path, but known authored mechanical intent need not
+be inferred again.
+
+### Agent-controlled transparency
+
+The shared CAD and field canvas command `opacity` changes only presentation.
+Use `{"action":"set","scope":"only","ids":["part-id"],"value":0.25}`
+to make specified parts 25% opaque, or `scope:"except"` to fade everything
+except those parts. `names` accepts exact case-insensitive CAD names; omitted
+targets use the current selection. `scope:"all"` targets all parts.
+`{"action":"reset","scope":"all"}` restores opacity; `action:"state"`
+reports non-default values. Values run from 0 (invisible) to 1 (opaque).
+Hide/show remains independent. Invalid targets/values fail atomically.
+Motion and selection preserve opacity, while a new scene or Escape resets it.
+Headless assembly captures preserve opacity while neutralizing highlight colors.
+Rendering sorts translucent occurrences back-to-front; intersecting translucent
+surfaces may exhibit object-sorting artifacts. This is a visual inspection aid,
+not geometric sectioning or a clearance check.

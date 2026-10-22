@@ -1,0 +1,171 @@
+{
+  "bodies": [
+    {
+      "origin": [
+        65,
+        45,
+        -8
+      ],
+      "geometry": [
+        {
+          "id": "base",
+          "kind": "box",
+          "size": [
+            250,
+            180,
+            8
+          ],
+          "color": "#343c49"
+        }
+      ]
+    },
+    {
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "geometry": [
+        {
+          "id": "input-shaft",
+          "kind": "shaft",
+          "radius": 3.9,
+          "height": 58,
+          "color": "#d4d8df"
+        },
+        {
+          "id": "input-gear",
+          "kind": "gear",
+          "teeth": 20,
+          "radius": 20,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            3
+          ],
+          "color": "#ed7b33",
+          "phaseDeg": 0
+        }
+      ]
+    },
+    {
+      "origin": [
+        60,
+        0,
+        0
+      ],
+      "geometry": [
+        {
+          "id": "gear-output-shaft",
+          "kind": "shaft",
+          "radius": 3.9,
+          "height": 58,
+          "color": "#d4d8df"
+        },
+        {
+          "id": "output-gear",
+          "kind": "gear",
+          "teeth": 40,
+          "radius": 40,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            3
+          ],
+          "color": "#3d92db",
+          "phaseDeg": 4.5
+        },
+        {
+          "id": "drive-pulley",
+          "kind": "pulley",
+          "teeth": 20,
+          "radius": 15.915494309189533,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            23
+          ],
+          "color": "#e2be48",
+          "phaseDeg": 0
+        }
+      ]
+    },
+    {
+      "origin": [
+        60,
+        110,
+        0
+      ],
+      "geometry": [
+        {
+          "id": "belt-output-shaft",
+          "kind": "shaft",
+          "radius": 3.9,
+          "height": 58,
+          "color": "#d4d8df"
+        },
+        {
+          "id": "driven-pulley",
+          "kind": "pulley",
+          "teeth": 40,
+          "radius": 31.830988618379067,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            23
+          ],
+          "color": "#e2be48",
+          "phaseDeg": 0
+        },
+        {
+          "id": "drive-sprocket",
+          "kind": "sprocket",
+          "teeth": 16,
+          "radius": 16.170142218136565,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            43
+          ],
+          "color": "#8cbf81",
+          "phaseDeg": 0
+        }
+      ]
+    },
+    {
+      "origin": [
+        170,
+        110,
+        0
+      ],
+      "geometry": [
+        {
+          "id": "chain-output-shaft",
+          "kind": "shaft",
+          "radius": 3.9,
+          "height": 58,
+          "color": "#d4d8df"
+        },
+        {
+          "id": "driven-sprocket",
+          "kind": "sprocket",
+          "teeth": 32,
+          "radius": 32.34028443627313,
+          "thickness": 8,
+          "offset": [
+            0,
+            0,
+            43
+          ],
+          "color": "#8cbf81",
+          "phaseDeg": 0
+        }
+      ]
+    }
+  ]
+}

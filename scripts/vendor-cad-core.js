@@ -14,8 +14,15 @@ async function git(args) {
 }
 const all=(await git(['ls-tree','-r','--name-only',revision])).toString().trim().split('\n');
 const selected=all.filter(f=>f.startsWith('src/native/')||[
+ 'tests/step-kinematics-native.py','tests/step-kinematics.test.js',
+ 'src/core/mechanism-solver.js','tests/mechanism-solver.test.js','tests/fea-native.py','tests/fea.test.js',
+ 'tests/sketch-native.py','tests/sketch.test.js','docs/DESIGN-SERVICES.md',
+ 'src/core/solved-motion.js','tests/solved-motion.test.js','tests/ondsel-browser.js',
+ 'tests/ondsel-native.py','tests/ondsel.test.js','docs/ASSEMBLY-SOLVER.md',
+ 'tests/discovery-native.py','tests/discovery.test.js',
  'LICENSE','index.html','src/vscode-main.js','src/hosts/vscode.js',
  'src/core/selection.js','tests/selection.test.js','tests/selection-browser.js',
+ 'src/core/belt-motion.js','src/core/canvas-commands.js','tests/belt-motion.test.js','tests/belt-browser.js',
  'src/core/mechanism.js','src/core/mechanism-motion.js','tests/mechanism.test.js','tests/mechanism-browser.js',
  'src/core/viewer.js','src/core/assembly-viewer.js','src/core/assembly-capture.js',
  'src/core/scene-cache.js','src/core/scene-capture.js','src/core/mesh.js','src/core/revision.js','src/core/source-limits.js',

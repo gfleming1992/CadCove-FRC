@@ -67,7 +67,7 @@ def build(ctx):
   await waitMenu(paths=>paths.includes(helper));
   await fs.unlink(helper);
   await waitMenu(paths=>!paths.includes(helper));
-  const waitFor=async predicate=>{const until=Date.now()+60000;while(Date.now()<until){const state=api.getDiagnostics()[0];if(predicate(state))return state;await delay(100);}throw Error('Timed out: '+JSON.stringify(api.getDiagnostics()));};
+  const waitFor=async(predicate,timeout=60000)=>{const until=Date.now()+timeout;while(Date.now()<until){const state=api.getDiagnostics()[0];if(predicate(state))return state;await delay(100);}throw Error('Timed out: '+JSON.stringify(api.getDiagnostics()));};
   await api.openModel();
   const initial=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');
   assert.equal(initial.phase,'ready',JSON.stringify(initial));assert.equal(initial.parts,2);assert.equal(initial.source,'build');
@@ -92,8 +92,19 @@ def build(ctx):
   await motion({action:'resume'});await delay(400);
   const completed=await motion({action:'state'});assert.equal(completed.playback.status,'completed');assert.equal(completed.angles['arm-axis'],30);
   assert.equal((await motion({action:'move',part:'arm-axis',degrees:15})).angles['arm-axis'],45);
+  const mechanismFile=path.join(folder,'cad/mechanism.json');
+  const definition=JSON.parse(await fs.readFile(mechanismFile,'utf8'));
+  const sceneBefore=await fs.stat(path.join(cache,'scene.bin'));
+  definition.motors=[{id:'new-motor',joint:'arm-axis'}];
+  await fs.writeFile(mechanismFile,JSON.stringify(definition));await delay(300);
+  const updateStart=Date.now();
+  assert.equal((await motion({action:'move',part:'new-motor',degrees:5})).angles['arm-axis'],50);
+  const metadataCommandMs=Date.now()-updateStart;
+  assert.equal(api.getDiagnostics()[0].revision,initial.revision);
+  assert.equal((await fs.stat(path.join(cache,'scene.bin'))).mtimeMs,sceneBefore.mtimeMs,'metadata must not rewrite geometry cache');
+  assert.equal((await query('cad-status')).sourceRevision,initial.revision);
   await motion({action:'reset'});assert.equal(api.getDiagnostics()[0].revision,initial.revision);
-  const motionReport={playbackId:playing.playback.id,completed:true,seekDegrees:15,noSourceRebuild:true};
+  const motionReport={playbackId:playing.playback.id,completed:true,seekDegrees:15,noSourceRebuild:true,metadataHotReload:true,metadataCommandMs};
 
   assert.equal((await query('cad-status')).sourceRevision,initial.revision);
   const preview=await query('cad-preview');assert.equal(preview.ok,true);assert.equal(preview.acceptedRevision,initial.revision);assert.equal(preview.image,path.join(cache,'preview.png'));
@@ -326,6 +337,181 @@ def build(ctx):
       assert.equal(diskFeedback.timings.components.misses,0);
       report.nativeCad={first,edit,cached:cachedNative,diskEdit,diskComponents:diskFeedback.timings.components,mcpOpen:true,mcpCapture:true,packagedCliFeedback:true,cameraPreserved:true};
     }finally{api.closeAll();await fs.writeFile(project,saved);}
+  }
+  if(process.env.CADCOVE_TEST_MOTION_WORKSPACE){
+    // Copy local fixtures; never edit the student's live assembly or its cache.
+    const original=process.env.CADCOVE_TEST_MOTION_WORKSPACE;
+    const originalConfig=JSON.parse(await fs.readFile(path.join(original,'.cadcove/project.json'),'utf8'));
+    const project=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(project);
+    api.closeAll();await delay(200);
+    try{
+      await fs.cp(path.join(original,originalConfig.sourceDirectory),path.join(folder,'motion-cad'),{recursive:true});
+      await fs.cp(path.join(original,originalConfig.buildDirectory,'cad-cache',originalConfig.entryPoint),path.join(folder,'motion-build','cad-cache',originalConfig.entryPoint),{recursive:true});
+      await fs.writeFile(project,JSON.stringify({...originalConfig,sourceDirectory:'motion-cad',buildDirectory:'motion-build',pythonPath:testPython}));
+      await api.openModel(vscode.Uri.file(path.join(folder,'motion-cad',originalConfig.entryPoint)));
+      // A new native worker fingerprint invalidates old component certificates.
+      // Match the native full-assembly build budget; motion itself is timed below.
+      const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error',process.platform==='win32'?900000:300000);assert.equal(ready.phase,'ready',JSON.stringify(ready));
+      const manifest=path.join(folder,'motion-cad',path.dirname(originalConfig.entryPoint),'mechanism.json');
+      const definition=JSON.parse(await fs.readFile(manifest,'utf8')),joint=definition.joints[0];
+      const sceneFile=path.join(folder,'motion-build','cad-cache',originalConfig.entryPoint,'scene.bin'),before=await fs.stat(sceneFile);
+      const angle=joint.bindAngleDeg??0;
+      await motion({action:'rotate',part:joint.id,degrees:angle+10});
+      definition.motors??=[];definition.motors.push({id:'test-live-motor',joint:joint.id});
+      await fs.writeFile(manifest,JSON.stringify(definition));await delay(300);
+      const start=Date.now();
+      const result=await motion({action:'animate',part:'test-live-motor',rpm:1,seconds:.3});
+      const commandMs=Date.now()-start;assert.equal(result.running,true);
+      await delay(600);const ended=await motion({action:'state'});
+      assert.equal(ended.running,false);assert.ok(Math.abs(ended.angles[joint.id]-(angle+11.8))<1e-6);
+      assert.equal(api.getDiagnostics()[0].revision,ready.revision);
+      assert.equal((await fs.stat(sceneFile)).mtimeMs,before.mtimeMs);
+      await motion({action:'reset'});
+      report.fullAssemblyMotion={parts:ready.parts,commandMs,metadataHotReload:true,posePreserved:true,noGeometryCacheWrite:true,completed:true};
+      if(process.env.CADCOVE_MATE_SOLVER){
+        // Exercise the installed agent CLI, not a precomputed/relabelled solution.
+        const canvas=async(options,target)=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action:'motion',options,target}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
+        const drives=[['axis/22',5],['axis/27',-5],['axis/24',90],['axis/29',90],['axis/23',-2],['axis/28',-2],['steer/0',15],['drive/1',90]].map(([joint,velocity])=>({joint,velocity}));
+        const input=path.join(folder,'agent-motion.json');await fs.writeFile(input,JSON.stringify({duration:2,samplePeriod:.05,drives}));
+        const timings={};
+        for(const target of ['cad','field']){
+          if(target==='field')await mcpCall('open_mechanism_preview',{field:false});
+          await canvas({action:'rotate',part:'axis/22',degrees:40},target);
+          const prior=await canvas({action:'state'},target),output=path.join(folder,'agent-'+target+'-solution.json'),started=Date.now();
+          const called=await execute(runtime,['cad-mates','--action','animate','--workspace',folder,'--target',target,'--input',input,'--output',output,'--solver',process.env.CADCOVE_MATE_SOLVER,'--python',testPython],{timeout:90000,maxBuffer:8*1024*1024});
+          const result=JSON.parse(called.stdout);timings[target]=Date.now()-started;
+          assert.equal(result.ok,true);assert.equal(result.noGeometryBuild,true);assert.equal(result.solver,'OndselSolver');
+          assert.equal(result.playback.running,true);
+          await canvas({action:'pause'},target);
+          const solution=JSON.parse(await fs.readFile(output,'utf8')),last=solution.frames.at(-1);
+          assert.equal(solution.sourceRevision,ready.revision);
+          assert.ok(Math.abs(solution.frames[0].angles['axis/22']-40)<1e-6);
+          const actual=await canvas({action:'seek',seconds:last.time},target);
+          for(const d of drives)assert.ok(Math.abs(actual.angles[d.joint]-(prior.angles[d.joint]+2*d.velocity))<1e-6,d.joint);
+          assert.ok(Math.abs(actual.angles['flywheel/left/secondary/axis']-2*actual.angles['axis/24'])<1e-6);
+          assert.ok(Math.abs(actual.angles['axis/12']-prior.angles['axis/12'])<1e-6,'Unresolved intake stays at its current pose');
+          await canvas({action:'reset'},target);
+        }
+        api.closeMechanismPreviews();
+        assert.equal((await fs.stat(sceneFile)).mtimeMs,before.mtimeMs);
+        report.fullAssemblyAgentSolve={parts:ready.parts,solver:'OndselSolver',cad:true,field:true,posedStart:true,shooters:true,hoods:true,turrets:true,steeringAndSpin:true,intakeHeld:true,noGeometryCacheWrite:true,commandMs:timings};
+      }
+      if(process.env.CADCOVE_TEST_ROBOT_SOLUTION){
+        const solution=JSON.parse(await fs.readFile(process.env.CADCOVE_TEST_ROBOT_SOLUTION,'utf8'));solution.sourceRevision=ready.revision;
+        const solutionFile='robot-solved-motion.json';await fs.writeFile(path.join(folder,solutionFile),JSON.stringify(solution));
+        const canvas=async(options,target)=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action:'motion',options,target}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
+        for(const target of ['cad','field']){
+          if(target==='field')await mcpCall('open_mechanism_preview',{field:false});
+          await canvas({action:'play-solved',solutionFile},target);await canvas({action:'pause'},target);
+          const last=solution.frames.at(-1),actual=await canvas({action:'seek',seconds:last.time},target);
+          for(const [joint,value] of Object.entries(last.angles))assert.ok(Math.abs(actual.angles[joint]-value)<1e-6,joint);
+          await canvas({action:'reset'},target);
+        }
+        api.closeMechanismPreviews();
+        assert.equal((await fs.stat(sceneFile)).mtimeMs,before.mtimeMs);
+        report.fullAssemblySolved={parts:ready.parts,frames:solution.frames.length,bodies:solution.bodies.length,cad:true,fieldPreview:true,posedStart:solution.bodies.some(b=>b.bindPose),noGeometryCacheWrite:true};
+      }
+    }finally{api.closeAll();await fs.writeFile(project,saved);}
+  }
+  if(testPython&&['CADCOVE_FREECAD','CADCOVE_GMSH','CADCOVE_CCX'].every(k=>process.env[k])){
+    api.closeAll();await delay(200);
+    const configFile=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(configFile),dir=path.join(folder,'analysis-cad');
+    try{
+      await fs.mkdir(dir,{recursive:true});
+      await fs.writeFile(path.join(dir,'models.py'),"import cadquery as cq\ndef build(ctx):\n return [dict(id='beam',shape=cq.Workplane('XY').box(100,10,10,centered=(False,False,False)))]\n");
+      await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'analysis-cad',buildDirectory:'analysis-build',entryPoint:'models.py',pythonPath:testPython}));
+      const input=path.join(folder,'analysis-input.json'),reviewFile=path.join(folder,'analysis-review.json');
+      await fs.writeFile(input,JSON.stringify({schema:1,analysis:'linearStatic',units:'mm-N-MPa',parts:[{id:'beam'}],outputs:['displacement']}));
+      const run=async args=>JSON.parse((await execute(runtime,['cad-analysis',...args,'--workspace',folder,'--python',testPython],{timeout:180000,maxBuffer:8*1024*1024})).stdout);
+      const review=await run(['--action','prepare','--input',input,'--output',reviewFile]);
+      assert.equal(review.inputComplete,false);assert.ok(review.questions.some(q=>q.field==='loads'));assert.match(review.request.parts[0].shapeHash,/^[a-f0-9]{64}$/);
+      const analysis=review.request;analysis.parts[0].material={name:'synthetic steel',source:'analytical regression only',youngsModulusMPa:210000,poissonRatio:.3};
+      analysis.supports=[{id:'fixed',part:'beam',reference:'mount',source:'fixture',restrainedTranslations:[true,true,true]}];
+      analysis.loads=[{id:'pull',part:'beam',reference:'end',source:'fixture',forceN:[1000,0,0]}];
+      const request={analysis,references:[{id:'mount',part:'beam',kind:'plane',point:[0,5,5],axis:[-1,0,0]},{id:'end',part:'beam',kind:'plane',point:[100,5,5],axis:[1,0,0]}],mesh:{sizesMm:[5,3],relativeTolerance:.01}};
+      await fs.writeFile(input,JSON.stringify(request));
+      const solved=await run(['--action','solve','--input',input,'--output',path.join(folder,'analysis-result')]);
+      assert.equal(solved.solved,true);assert.equal(solved.convergence.passed,true);assert.equal(solved.sourceRevision,review.sourceRevision);assert.equal(solved.engineeringValidated,false);
+      const error=Math.abs(solved.runs.at(-1).maxDisplacementMm/(1000*100/(100*210000))-1);assert.ok(error<.01);
+      report.agentFea={preparedFromCad:true,solved:true,converged:true,analyticalRelativeError:error,sourceRevision:solved.sourceRevision};
+    }finally{api.closeAll();await fs.writeFile(configFile,saved);}
+  }
+  // Standalone hierarchy: no robot IDs, geometry, Java or Driver Station.
+  {
+    api.closeAll();await delay(200);
+    const configFile=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(configFile);
+    const dir=path.join(folder,'nested-cad');await fs.mkdir(dir,{recursive:true});
+    const p={massKg:1,centerOfMassMm:[0,0,0],principalInertiaKgMm2:[1000,1000,1000],friction:0,colliders:[{kind:'box',halfMm:[2,2,2],centerMm:[0,0,0]}],provenance:'Synthetic installed integration test'};
+    const electrical={rotorPerUnit:1,efficiency:1,resistance:1,torqueConstant:.02,velocityConstant:60,currentLimit:10};
+    const definition={schema:1,units:'mm-deg',bodies:[{id:'base',fixed:true,origin:[0,0,0],parts:['base'],physics:p},{id:'carrier',fixed:false,origin:[30,0,0],parts:['carrier'],physics:p},{id:'wheel',fixed:false,origin:[50,0,0],parts:['wheel'],physics:p}],joints:[{id:'spin',type:'revolute',parent:'carrier',child:'wheel',origin:[50,0,0],axis:[0,1,0],damping:.001},{id:'steer',type:'revolute',parent:'base',child:'carrier',origin:[30,0,0],axis:[0,0,1],damping:.001}],relations:[],motors:[{id:'steer-motor',joint:'steer',physics:electrical},{id:'spin-motor',joint:'spin',physics:electrical}]};
+    try{
+      await fs.writeFile(path.join(dir,'models.py'),"import cadquery as cq\ndef build(ctx):\n    return [dict(id=n,name=n,color='#4488ff',shape=cq.Workplane('XY').box(10,8,6).translate((x,0,0))) for n,x in [('base',0),('carrier',30),('wheel',50)]]\n");
+      await fs.writeFile(path.join(dir,'mechanism.json'),JSON.stringify(definition));
+      await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'nested-cad',buildDirectory:'nested-build',entryPoint:'models.py',pythonPath:testPython,simulationProject:'nested-preview.sim.json'}));
+      await api.openModel(vscode.Uri.file(path.join(dir,'models.py')));const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(ready.phase,'ready',JSON.stringify(ready));
+      const canvas=async(action,options={},target)=>{const result=await mcpClient.callTool({name:'canvas_command',arguments:{action,options,target}},undefined,{timeout:90000});if(result.isError)throw Error(result.content[0].text);return JSON.parse(result.content[0].text);};
+      const sourceCaps=await canvas('capabilities',{},'cad');assert.equal(sourceCaps.units.length,'mm');assert.ok(sourceCaps.commands.includes('motion'));assert.ok(!sourceCaps.commands.includes('physics'));
+      await canvas('view',{camera:{target:[30,0,0],distance:200}},'cad');assert.equal((await canvas('state',{},'cad')).camera.distance,200);
+      assert.ok(sourceCaps.commands.includes('opacity'));
+      await canvas('opacity',{action:'set',scope:'except',ids:['wheel'],value:.25},'cad');
+      assert.deepEqual((await canvas('opacity',{},'cad')).parts.map(p=>p.id).sort(),['base','carrier']);
+      await canvas('opacity',{action:'reset',scope:'all'},'cad');
+      const trajectory={units:'deg-s',tracks:['steer','spin'].map((target,i)=>({target,endPosition:30*(i+1),segments:[{seconds:.2,acceleration:750*(i+1)},{seconds:.2,acceleration:-750*(i+1)}]}))};
+      await motion({action:'play',trajectory});await delay(600);const nested=await motion({action:'state'});assert.equal(nested.angles.steer,30);assert.equal(nested.angles.spin,60);
+      // A single existing native prototype becomes a synthetic field obstacle.
+      const meshBytes=await fs.readFile(path.join(folder,'nested-build/cad-cache/models.py/scene.bin'));
+      const oldHeader=meshBytes.readUInt32LE(4),meta=JSON.parse(meshBytes.subarray(8,8+oldHeader).toString())[0],header=Buffer.from(JSON.stringify([meta]));
+      const offset=(8+header.length+3)&~3,oldOffset=(8+oldHeader+3)&~3,bytes=Buffer.alloc(offset+4*(meta.p+meta.n+meta.i));
+      bytes.writeUInt32LE(0x31444349,0);bytes.writeUInt32LE(header.length,4);header.copy(bytes,8);meshBytes.copy(bytes,offset,oldOffset,oldOffset+4*(meta.p+meta.n+meta.i));
+      const fieldDir=path.join(folder,'nested-field');await fs.mkdir(fieldDir,{recursive:true});await fs.writeFile(path.join(fieldDir,'obstacle.bin'),bytes);
+      await fs.writeFile(path.join(fieldDir,'catalog.json'),JSON.stringify({obstacle:{mesh:'obstacle.bin',meshSha256:require('node:crypto').createHash('sha256').update(bytes).digest('hex')}}));
+      await fs.writeFile(path.join(fieldDir,'instances.json'),JSON.stringify([{id:'obstacle',asset:'obstacle',color:'#888888',transform:[1,0,0,100,0,1,0,0,0,0,1,0]}]));
+      await fs.writeFile(path.join(folder,'nested-preview.sim.json'),JSON.stringify({cad:{field:'nested-field'}}));
+      const started=Date.now(),opened=JSON.parse((await mcpCall('open_mechanism_preview',{field:true})).content[0].text);assert.equal(opened.fieldParts,1);assert.equal(opened.parts,3);const previewOpenMs=Date.now()-started;
+      const req=async(action,options={})=>{const result=await mcpClient.callTool({name:'mechanism_preview',arguments:{action,options}},undefined,{timeout:90000});if(result.isError)throw Error(result.content[0].text);return JSON.parse(result.content[0].text);};
+      const fieldCaps=await canvas('capabilities');assert.equal(fieldCaps.units.length,'mm');assert.ok(fieldCaps.commands.includes('physics'));
+      await canvas('view',{camera:{target:[30,0,0],distance:200}});assert.equal((await canvas('state')).camera.distance,200);assert.equal((await req('state')).camera.distance,.2);
+      await canvas('selection',{ids:['wheel','field/obstacle']});
+      const alias=JSON.parse((await mcpCall('cad_selection',{})).content[0].text);assert.deepEqual(alias.selectedIds,['wheel','field/obstacle']);
+      await canvas('highlight',{action:'set',parts:[{id:'wheel'}]});await canvas('visibility',{action:'isolate',ids:['wheel']});assert.ok((await canvas('state')).selection.hiddenIds.includes('base'));await canvas('visibility',{action:'show-all'});
+      await canvas('opacity',{action:'set',scope:'only',ids:['base','carrier'],value:.25});
+
+      assert.deepEqual((await req('state')).selection.selectedIds,['wheel','field/obstacle']);
+      await canvas('motion',{action:'play',trajectory});await delay(600);const animated=await req('state');assert.equal(animated.motion.angles.spin,60);
+      await canvas('place',{position:[2000,3000,500]});
+      const physics=await req('physics');assert.equal(physics.mode,'physics');
+      await req('motors',{volts:{'steer-motor':.2,'spin-motor':.2},seconds:.3});await delay(600);
+      const driven=await req('state');assert.deepEqual(driven.selection.selectedIds,['wheel','field/obstacle']);assert.equal(driven.mode,'physics');assert.ok(driven.physics.tick>0);assert.ok(Math.abs(driven.physics.joints.spin.position)>.001);assert.ok(Math.abs(driven.physics.joints.steer.position)>.001);
+      assert.deepEqual(driven.selection.opacity.parts.map(p=>[p.id,p.opacity]).sort(),[['base',.25],['carrier',.25]]);
+      const capture=await req('capture');assert.ok((await fs.stat(capture.image)).size>1000);
+      await req('cad');assert.equal((await req('state')).mode,'cad');
+      const changed={...definition,motors:[]};await fs.writeFile(path.join(dir,'mechanism.json'),JSON.stringify(changed));
+      await assert.rejects(()=>req('physics'),/changed/);
+      report.unifiedMechanism={commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,staleDefinitionRejected:true};
+    }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
+  }
+  if(process.env.CADCOVE_SOLVED_BELT_FIXTURE){
+    api.closeAll();await delay(200);
+    const configFile=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(configFile),dir=path.join(folder,'solved-belt-cad');
+    await fs.mkdir(dir,{recursive:true});
+    const model={schema:1,units:'mm-deg',bodies:[{id:'ground',fixed:true,origin:[0,0,0],parts:['world']},{id:'base',fixed:false,origin:[0,0,0],parts:['belt']},...[0,1].map(i=>({id:'b'+i,fixed:false,origin:[i*50,0,0],parts:['p'+i]}))],joints:[{id:'parent',type:'revolute',parent:'ground',child:'base',origin:[0,0,0],axis:[0,0,1]},...[0,1].map(i=>({id:'j'+i,type:'revolute',parent:'base',child:'b'+i,origin:[i*50,0,0],axis:[0,0,1]}))],relations:[{id:'belt-drive',type:'belt',driver:'j0',follower:'j1',driverTeeth:10,followerTeeth:10,direction:1}],beltSurfaces:[{id:'belt',part:'belt',body:'base',relation:'belt-drive',pitchMm:2*Math.PI,direction:-1,widthAxis:[0,0,1],pulleys:[0,50].map(x=>({centerMm:[x,0,0],pitchRadiusMm:10}))}]};
+    try{
+      await fs.writeFile(path.join(dir,'models.py'),"import cadquery as cq\ndef loop(r):\n    return cq.Workplane('XY').moveTo(0,-r).lineTo(50,-r).threePointArc((50+r,0),(50,r)).lineTo(0,r).threePointArc((-r,0),(0,-r)).close().extrude(3)\ndef build(ctx):\n    return [dict(id='belt',shape=loop(10).cut(loop(8)),color='#ddaa44'),dict(id='world',shape=cq.Workplane('XY').box(2,2,2).translate((-20,-20,0))),*[dict(id='p'+str(i),shape=cq.Workplane('XY').circle(7).extrude(2).translate((i*50,0,0))) for i in range(2)]]\n");
+      await fs.writeFile(path.join(dir,'mechanism.json'),JSON.stringify(model));
+      await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'solved-belt-cad',buildDirectory:'solved-belt-build',entryPoint:'models.py',pythonPath:testPython,simulationProject:'nested-preview.sim.json'}));
+      await api.openModel(vscode.Uri.file(path.join(dir,'models.py')));const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(ready.phase,'ready',JSON.stringify(ready));
+      const solution=JSON.parse(await fs.readFile(process.env.CADCOVE_SOLVED_BELT_FIXTURE,'utf8'));solution.sourceRevision=ready.revision;
+      const canvas=async(options,target)=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action:'motion',options,target}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
+      const cache=path.join(folder,'solved-belt-build/cad-cache/models.py/scene.bin'),stamp=(await fs.stat(cache)).mtimeMs;
+      for(const target of ['cad','field']){
+        if(target==='field')await mcpCall('open_mechanism_preview',{field:true});
+        await canvas({action:'play-solved',solution},target);await canvas({action:'pause'},target);
+        const halfway=await canvas({action:'seek',seconds:.5},target);assert.ok(Math.abs(halfway.angles.j0-900)<1e-6);
+        const end=await canvas({action:'seek',seconds:1},target);assert.ok(Math.abs(end.angles.j0)<1e-6);
+        await canvas({action:'reset'},target);
+      }
+      assert.equal((await fs.stat(cache)).mtimeMs,stamp);report.solvedBelts={actualOndsel:true,firstCADCommandLoadsMechanism:true,field:true,fullTurns:true,reversal:true,reset:true,noGeometryCacheWrite:true};
+    }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
   }
   await fs.writeFile(reportFile,JSON.stringify(report,null,2));api.closeAll();
  }catch(error){if(simulationStarted){await api?.stopSimulation().catch(()=>{});await delay(1500);simulationStarted=false;}await fs.writeFile(reportFile,JSON.stringify({ok:false,error:String(error.stack),stdout:error.stdout,diagnostics:api?.getDiagnostics()},null,2));api?.closeAll();throw error;}

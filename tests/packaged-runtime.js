@@ -34,6 +34,9 @@ try {
     assert.equal(actual, code, out + '\n' + err); assert.equal(err, '');
     return JSON.parse(out);
   }
+  const drawing = await command(['cad-drawing','--action','capabilities']);
+  assert.deepEqual(drawing.formats,['pdf','svg','FCStd']);
+  for(const name of ['drawing_geometry.py','drawing_freecad.py'])assert.ok(manifest.files.some(f=>f.name===name&&!f.executable));
   const capabilities = await command(['capabilities']);
   assert.equal(capabilities.distribution, external?'external-bun-runtime':'standalone-runtime'); assert.equal(capabilities.version, manifest.version);
   const inventory=JSON.parse(await readFile(path.join(installed.directory,'dependency-inventory.json'),'utf8'));
@@ -56,6 +59,7 @@ try {
     assert.equal(await missing.exited,2);assert.match(await new Response(missing.stderr).text(),/CADCOVE_BUN/);
   }else assert.match(await readFile(path.join(installed.directory,'THIRD-PARTY-NOTICES.txt'),'utf8'),/GNU LESSER GENERAL PUBLIC LICENSE/);
   await command(['init', '--workspace', workspace, '--id', 'fresh-team', '--cad-dir', 'design/robot', '--build-dir', 'generated/cad']);
+  assert.match(await readFile(path.join(workspace,'.cadcove/skills/references/cad-drawings.md'),'utf8'),/positionMm/);
   for(const file of ['AGENTS.md','CLAUDE.md','.github/copilot-instructions.md'])assert.match(await readFile(path.join(workspace,file),'utf8'),/\.cadcove\/AGENT\.md/);
   for(const skill of ['frc-workflow','frc-cad-mechanisms','frc-ctre-controls','frc-vision','frc-season-rules','frc-simulation-validation'])assert.match(await readFile(path.join(workspace,'.cadcove/skills',skill,'SKILL.md'),'utf8'),/^---\nname: /);
   const reference=JSON.parse(await readFile(path.join(installed.directory,'cad-reference.json'),'utf8'));

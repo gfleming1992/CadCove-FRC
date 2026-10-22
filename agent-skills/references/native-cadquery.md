@@ -217,3 +217,14 @@ The current command only prepares an input review. It does not run a structural
 solver, verify restraints, mesh, or certify strength. Never turn inputComplete
 into a claim that analysis ran. Keep any future analysis bound to current CAD
 references and require mesh-convergence checks before interpreting results.
+
+## Technical drawing export
+
+For a dimensioned part drawing, use `cadcove cad-drawing --action capabilities`,
+then `--action export --workspace PATH --input drawing.json --output NEW_DIRECTORY
+--freecad ABSOLUTE_FREECADCMD`. The optional FreeCAD TechDraw backend creates PDF,
+SVG and editable FCStd from exact geometry. Read `.cadcove/skills/references/cad-drawings.md` for the
+request contract. Inspect current part vertices/circular edges, provide dimensions
+and page positions, and verify the exported PDF visually. Never infer tolerances,
+materials or manufacturing approval from a successful export. Keep source hashes
+and regenerate after edits; this is a drawing snapshot, not a recovered sketch.

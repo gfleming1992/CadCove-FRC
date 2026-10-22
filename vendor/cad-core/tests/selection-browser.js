@@ -52,7 +52,7 @@ try{
  assert.equal(await page.evaluate(()=>selection.state().highlights.length),1);
  // Reveal draws only the target, restores on stop/completion, and keeps camera/colors.
  await page.evaluate(()=>{v.setAssembly({prototypes:[p],instances:[{id:'shaft',asset:'shaft',color:p.color,transform:[1,0,0,0,0,1,0,0,0,0,1,0]},{id:'cover',asset:'shaft',color:p.color,transform:[1,0,0,0,0,1,0,0,0,0,1,1]}]},false);selection.setHighlights([{id:'shaft'}]);window.revealCamera=JSON.stringify(v.camera);selection.startReveal({cycles:1,intervalMs:500});});
- const drawCounts=()=>page.evaluate(()=>{const calls=[];let pipeline;v.draw({setPipeline(p){pipeline=p;},setBindGroup(){},setVertexBuffer(){},setIndexBuffer(){},drawIndexed(...a){if(pipeline!==v.edgePipeline&&pipeline!==v.flatEdgePipeline)calls.push(a)}});return calls;});
+ const drawCounts=()=>page.evaluate(()=>{const calls=[];v.draw({setPipeline(){},setBindGroup(){},setVertexBuffer(){},setIndexBuffer(){},drawIndexed(...a){calls.push(a)}});return calls;});
  assert.equal((await drawCounts()).reduce((n,c)=>n+c[1],0),1);
  assert.equal(await page.evaluate(()=>selection.state().reveal.isolated),true);
  await page.waitForFunction(()=>!selection.state().reveal.running);

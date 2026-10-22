@@ -86,7 +86,7 @@ export function installSelection(viewer,onChange=()=>{}){
    viewer.drawAssembly(pass,{indices});
   }else{
    pass.setPipeline(viewer.pipeline);pass.setBindGroup(0,viewer.group);
-   for(const batch of viewer.batches??[]){if(!batch)continue;pass.setPipeline(viewer.pipeline);pass.setVertexBuffer(0,batch.vertices);pass.setIndexBuffer(batch.indices,'uint32');let first=0;for(const p of batch.parts){if(visible(p.id))pass.drawIndexed(p.indices.length,1,first);first+=p.indices.length;}viewer.drawBatchEdges?.(pass,batch,visible);}
+   for(const batch of viewer.batches??[]){if(!batch)continue;pass.setVertexBuffer(0,batch.vertices);pass.setIndexBuffer(batch.indices,'uint32');let first=0;for(const p of batch.parts){if(visible(p.id))pass.drawIndexed(p.indices.length,1,first);first+=p.indices.length;}}
   }
  };
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopReveal();});

@@ -247,12 +247,10 @@ but fresh team workspaces select `models.py`.
 
 ## CAD display detail and field materials
 
-The shared renderer displays cached boundary/crease edges without showing mesh
-triangle diagonals. Edge indices are built once per mesh and follow instance
-transforms and vertex deformation. Opaque assembly drawing uses reusable WebGPU
-render bundles; transform/color writes keep the bundle valid, while changed
-visibility, transparency, topology, or edge mode rebuilds it. Captures use the
-same pipelines with independent bindings.
+The shared renderer uses smooth shaded surfaces without an edge-line overlay.
+Opaque assembly drawing uses reusable WebGPU render bundles; transform/color
+writes keep the bundle valid, while changed visibility, transparency, or topology
+rebuilds it. Captures use the same surface pipelines with independent bindings.
 
 The pinned native field importer retains STEP/XCAF surface opacity and uses
 0.12 mm absolute deflection and 0.15 rad angular deflection for presentation

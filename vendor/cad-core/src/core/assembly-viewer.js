@@ -1,7 +1,6 @@
 // Optional generic assembly renderer. CAD sources/caches stay immutable while
 // applications animate placements. No physics or domain dependency lives here.
 import {Viewer} from './viewer.js';
-import {meshEdges} from './mesh-edges.js';
 import {captureAssembly} from './assembly-capture.js';
 export const ASSEMBLY_VIEW_API_VERSION = 1;
 const identity=[1,0,0,0,0,1,0,0,0,0,1,0];
@@ -23,10 +22,6 @@ fn vertex(p:vec3f,n:vec3f,index:u32)->Out {
  let linear=pow(o.color.rgb,vec3f(2.2))*(0.42+0.55*key+0.18*fill);
  return vec4f(pow(linear,vec3f(1.0/2.2))*o.color.a,o.color.a);
 }
-@vertex fn edgeVS(@location(0) p:vec3f,@location(1) n:vec3f,@builtin(instance_index) index:u32)->Out {
- var o=vertex(p,n,index);o.position.z+=1e-6*o.position.w;return o;
-}
-@fragment fn edgeFS(o:Out)->@location(0) vec4f {return vec4f(o.color.rgb*0.32*o.color.a,o.color.a);}
 `;
 function checkedTransform(value=identity){
  if(value.length!==12||!value.every(Number.isFinite))throw Error('Expected finite row-major 3×4 transform');
@@ -47,7 +42,6 @@ export class AssemblyViewer extends Viewer {
   const descriptor={layout,vertex:{module,entryPoint:'vs',buffers:[{arrayStride:24,attributes:[{shaderLocation:0,offset:0,format:'float32x3'},{shaderLocation:1,offset:12,format:'float32x3'}]}]},fragment:{module,entryPoint:'fs',targets:[{format}]},primitive:{topology:'triangle-list',cullMode:'none'},depthStencil:{format:'depth32float',depthWriteEnabled:true,depthCompare:'greater'},multisample:{count:4}};
   this.assemblyPipeline=await this.device.createRenderPipelineAsync(descriptor);
   this.transparentPipeline=await this.device.createRenderPipelineAsync({...descriptor,fragment:{...descriptor.fragment,targets:[{format,blend:{color:{srcFactor:'one',dstFactor:'one-minus-src-alpha'},alpha:{srcFactor:'one',dstFactor:'one-minus-src-alpha'}}}]},depthStencil:{...descriptor.depthStencil,depthWriteEnabled:false}});
-  this.edgePipeline=await this.device.createRenderPipelineAsync({...descriptor,vertex:{...descriptor.vertex,entryPoint:'edgeVS'},fragment:{module,entryPoint:'edgeFS',targets:[{format,blend:{color:{srcFactor:'one',dstFactor:'one-minus-src-alpha'},alpha:{srcFactor:'one',dstFactor:'one-minus-src-alpha'}}}]},primitive:{topology:'line-list'},depthStencil:{...descriptor.depthStencil,depthWriteEnabled:false,depthCompare:'greater-equal'}});
   return this;
  }
  setAssembly({prototypes,instances},fit=true){
@@ -62,8 +56,6 @@ export class AssemblyViewer extends Viewer {
    if(n.opacity!==undefined&&(!Number.isFinite(n.opacity)||n.opacity<0||n.opacity>1))throw Error('Invalid material opacity');
    if(!groups.has(n.asset))groups.set(n.asset,[]);groups.get(n.asset).push(n);
   }
-  const edges=new Map([...groups.keys()].map(id=>[id,meshEdges(library.get(id))]));
-  const edgeData=new Uint32Array([...edges.values()].reduce((n,e)=>n+e.length,0));let edgeIndex=0;
   let vertices=0,indices=0;for(const asset of groups.keys()){const p=library.get(asset);vertices+=p.positions.length/3;indices+=p.indices.length;}
   const data=new Float32Array(vertices*6),indexData=new Uint32Array(indices),placements=new Float32Array(instances.length*20);
   const meshSlots=new Map(),instanceAssets=[];
@@ -81,18 +73,16 @@ export class AssemblyViewer extends Viewer {
     instanceAssets.push(asset);localBounds.push({low:localMin,high:localMax});lookup.set(n.id,instance++);
     for(let corner=0;corner<8;corner++){const pt=[0,1,2].map(k=>(corner>>k)&1?localMax[k]:localMin[k]);for(let r=0;r<3;r++){const x=m[r*4+3]+pt.reduce((s,v,k)=>s+v*m[r*4+k],0);low[r]=Math.min(low[r],x);high[r]=Math.max(high[r],x);}}
    }
-   const e=edges.get(asset);edgeData.set(e,edgeIndex);
-   draws.push({count:p.indices.length,index,vertex,edgeIndex,edgeCount:e.length,firstInstance:start,instances:nodes.length});edgeIndex+=e.length;vertex+=p.positions.length/3;index+=p.indices.length;
+   draws.push({count:p.indices.length,index,vertex,firstInstance:start,instances:nodes.length});vertex+=p.positions.length/3;index+=p.indices.length;
   }
   if(!vertices||!indices)throw Error('Assembly has no geometry');
   const create=(array,usage)=>{const b=this.device.createBuffer({size:array.byteLength,usage:usage|GPUBufferUsage.COPY_DST});this.device.queue.writeBuffer(b,0,array);return b;};
   const vb=create(data,GPUBufferUsage.VERTEX),ib=create(indexData,GPUBufferUsage.INDEX),sb=create(placements,GPUBufferUsage.STORAGE);
-  this.assemblyEdges?.destroy();this.assemblyEdges=edgeData.length?create(edgeData,GPUBufferUsage.INDEX):null;
   this.assemblyVertices?.destroy();this.assemblyIndices?.destroy();this.assemblyInstances?.destroy();
   this.assemblyVertices=vb;this.assemblyIndices=ib;this.assemblyInstances=sb;this.placements=placements;this.instanceLookup=lookup;this.instanceLocalBounds=localBounds;this.draws=draws;this.meshSlots=meshSlots;this.instanceAssets=instanceAssets;this.deformedParts=new Map();
   this.assemblyGroup=this.device.createBindGroup({layout:this.assemblyPipeline.getBindGroupLayout(0),entries:[{binding:0,resource:{buffer:this.uniform}},{binding:1,resource:{buffer:sb}}]});
   this.bounds={low,high};this.center=low.map((x,i)=>(x+high[i])/2);this.radius=Math.max(Math.hypot(...high.map((x,i)=>x-low[i]))/2,.001);
-  this.gpuBytes=data.byteLength+indexData.byteLength+edgeData.byteLength+placements.byteLength;this.instanceCount=instances.length;
+  this.gpuBytes=data.byteLength+indexData.byteLength+placements.byteLength;this.instanceCount=instances.length;
   this.opaqueBundle=null;this.assemblyDefinition={prototypes,instances};
   this.materialOpacity=new Map(instances.map(n=>[n.id,n.opacity??1]));
   this.instanceDraws=[];for(const d of draws)for(let i=d.firstInstance;i<d.firstInstance+d.instances;i++)this.instanceDraws[i]=d;
@@ -117,13 +107,12 @@ export class AssemblyViewer extends Viewer {
   const drawOpaque=target=>{
    target.setPipeline(this.assemblyPipeline);target.setBindGroup(0,group);target.setVertexBuffer(0,this.assemblyVertices);target.setIndexBuffer(this.assemblyIndices,'uint32');
    for(let k=0;k<opaque.length;k++){const first=opaque[k],d=this.instanceDraws[first];let count=1;while(opaque[k+1]===first+count&&opaque[k+1]<d.firstInstance+d.instances){count++;k++;}target.drawIndexed(d.count,count,d.index,d.vertex,first);}
-   this.drawEdges(target,opaque);
   };
   // Record opaque draw commands once. Moving joints/color updates write the
   // existing storage buffer, so the bundle stays reusable during playback.
   // Captures use their own transient bind group and deliberately bypass it.
   if(pass.executeBundles&&group===this.assemblyGroup&&this.useRenderBundles!==false){
-   const key=(this.showEdges!==false)+':'+opaque.join(',');
+   const key=opaque.join(',');
    if(this.opaqueBundle?.key!==key){
     const encoder=this.device.createRenderBundleEncoder({colorFormats:[navigator.gpu.getPreferredCanvasFormat()],depthStencilFormat:'depth32float',sampleCount:4});
     drawOpaque(encoder);this.opaqueBundle={key,bundle:encoder.finish()};
@@ -138,12 +127,6 @@ export class AssemblyViewer extends Viewer {
   const sorted=transparent.map(i=>({i,depth:depth(i)})).sort((a,b)=>a.depth-b.depth||a.i-b.i);
   pass.setPipeline(this.transparentPipeline);pass.setBindGroup(0,group);pass.setVertexBuffer(0,this.assemblyVertices);pass.setIndexBuffer(this.assemblyIndices,'uint32');
   for(const {i}of sorted){const d=this.instanceDraws[i];pass.drawIndexed(d.count,1,d.index,d.vertex,i);}
-  this.drawEdges(pass,sorted.map(n=>n.i));
- }
- drawEdges(pass,indices){
-  if(this.showEdges===false||!this.assemblyEdges||!indices.length)return;
-  pass.setPipeline(this.edgePipeline);pass.setIndexBuffer(this.assemblyEdges,'uint32');
-  for(let k=0;k<indices.length;k++){const first=indices[k],d=this.instanceDraws[first];let count=1;while(indices[k+1]===first+count&&indices[k+1]<d.firstInstance+d.instances){count++;k++;}if(d.edgeCount)pass.drawIndexed(d.edgeCount,count,d.edgeIndex,d.vertex,first);}
  }
  draw(pass){if(!this.draws)return super.draw(pass);this.drawAssembly(pass);}
  setScene(scene,fit=false){this.deformedParts=new Map();this.draws=null;this.instanceLookup=null;this.materialOpacity=null;super.setScene(scene,fit);}

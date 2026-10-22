@@ -89,6 +89,11 @@ class SheetMetal(unittest.TestCase):
             self.assertAlmostEqual(result['flat']['areaMm2'], (100+math.pi*(3+.4*2))*20-4*math.pi, places=4)
             self.assertEqual(result['flat']['holeCount'],1)
             parts = [dict(id='bracket',shape=bracket())]
+            parts = [dict(id='bracket',shape=bracket().cut(cq.Solid.makeCylinder(3,1,cq.Vector(-20,-10,1))))]
+            root, backend = run('counterbore', request())
+            self.assertFalse(backend['ok']); self.assertIn('uniform sheet',backend['error'])
+            self.assertFalse((root/'flat.brep').exists())
+            parts = [dict(id='bracket',shape=bracket())]
             bad = request(); bad['thicknessMm'] = 3
             root, backend = run('bad-thickness', bad)
             self.assertFalse(backend['ok']); self.assertIn('thickness', backend['error'])

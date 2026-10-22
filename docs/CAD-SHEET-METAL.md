@@ -78,7 +78,9 @@ Outputs require a new directory. Failed jobs keep diagnostics but do not report
 success; an editor display failure does not discard a completed export. The CLI
 works without VS Code unless `--show` is requested. Bend marks must be planar and
 inside the cutting profile. Missing/ambiguous faces, stale geometry, thickness
-mismatches, invalid/disconnected flats and omitted bends are rejected.
+mismatches, invalid/disconnected flats and omitted bends are rejected. A second
+mid-thickness unfold checks material-volume consistency to catch omitted nonuniform
+features such as counterbores; this remains a geometry check, not a DFM certificate.
 
 Initial scope is one solid with planar walls and cylindrical bends. This is not
 a complete recognition or manufacturability proof for arbitrary STEP geometry.

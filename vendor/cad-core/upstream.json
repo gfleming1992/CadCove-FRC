@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "project": "instantcad-local",
-  "revision": "23a6e8732993e824efc85be42f262dd4c4312875",
+  "revision": "3414d986e35fe6d400a038f81b11f98ceabb5cd3",
   "policy": "Update upstream and regenerate; no downstream edits",
   "files": {
     "LICENSE": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6",
@@ -49,7 +49,7 @@
     "src/native/ondsel/upstream.json": "2833000922679ffae1c49bbb2a07a048ba15ce695a8e15a2a9943dc0f0fd67b0",
     "src/native/requirements.txt": "8365d8c2f92c2561701887d9312d4a53d424a8bbb5e22c883137711723355fac",
     "src/native/session.js": "3d873adfe5ca372bfc79cc78ea0c2ebdc5c4775502ff70dd66687e434685d8e0",
-    "src/native/sheetmetal_freecad.py": "482f62c24471ab47fadb3747b739aa0ada63a39392e7131f3414899846de8fe2",
+    "src/native/sheetmetal_freecad.py": "914c6f70d34edd0367798e649bae11f5a0d24dae7eda86577b282fd9af95c462",
     "src/native/sheetmetal_geometry.py": "e1cbaff4b3d74a0648392458ac064fa02679aa80a80ec4decda418cdc03cf4bc",
     "src/native/sketch_solver.py": "649c898384d5ec8745547d73ee9ecd7f160a192348153fadd2797be5f5b6c82e",
     "src/native/step_kinematics.py": "127c12638251a47456e053556a7407965dd8ce0d5b140a185b813d46df691b71",
@@ -73,7 +73,7 @@
     "tests/ondsel.test.js": "dcd08c3e146534595fca0efd8df2ee12febecabf91d3e319302b61a15c418c4b",
     "tests/selection-browser.js": "76cc6b9afa57d12a14051db47dbbd175bde8396edb3d30e3b2efee58502b6e30",
     "tests/selection.test.js": "f67c35390772935c984e1bfae43e2be538263c78bf179639459740aadb5b81f5",
-    "tests/sheetmetal-native.py": "15831bdae7787257e3d6fd8750bcec669474bd7945efd05e9079fc14d0eef644",
+    "tests/sheetmetal-native.py": "47f6009964544164ab51bd3d4181b2e963d9760268170d07b7c89a2b30f7c802",
     "tests/sketch-native.py": "fee72b919157950a610728ecf078f387fbee829846ce0600ea5fa9a3f6dd76ce",
     "tests/sketch.test.js": "3a75eb1597bb34b12c290c139cd854392582aabd780dae0bbf58d78a9be7c4ee",
     "tests/solved-motion.test.js": "57071a60f99689e299080409ae3dadf9586657c82e45bd4f700548aa93f9e03e",

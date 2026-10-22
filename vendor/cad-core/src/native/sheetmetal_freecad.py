@@ -58,6 +58,15 @@ def execute(root):
             raise ValueError('Unfolder omitted bends; refusing a partial flat pattern')
         if not flat.isValid() or len(flat.Solids) != 1:
             raise ValueError('Unfolder returned invalid or disconnected flat geometry')
+        # A mid-thickness neutral axis must preserve the material volume of
+        # constant-thickness planar/cylindrical sheet. This catches e.g. pockets
+        # or counterbores that an unfolded surface alone could silently omit.
+        _, midpoint_flat, _, _, midpoint_infos = sm.getUnfold(
+            sm.BendAllowanceCalculator.from_single_value(0.5, 'ansi'), obj, 'Face'+str(index+1))
+        volume_error = abs(midpoint_flat.Volume-shape.Volume)
+        volume_tolerance = max(1e-4, shape.Volume*1e-5)
+        if len(midpoint_infos) != expected_bends or not midpoint_flat.isValid() or volume_error > volume_tolerance:
+            raise ValueError('Input is not supported uniform sheet: mid-thickness unfold does not preserve material volume')
         matrix = sm.SketchExtraction.move_to_origin(flat, base)
         flat = flat.transformed(matrix); bends = bends.transformed(matrix)
         if abs(flat.BoundBox.ZMin) > 1e-5 or abs(flat.BoundBox.ZLength-thickness) > 1e-5:
@@ -79,6 +88,7 @@ def execute(root):
                     sources[str(p.relative_to(addon))] = hashlib.sha256(p.read_bytes()).hexdigest()
         return dict(ok=True, backend='FreeCAD SheetMetal NewUnfolder', guiUp=App.GuiUp, freecad=App.Version(),
                     networkx=nx.__version__, addonSources=sources, thicknessMm=thickness,
+                    materialVolumeCheck=dict(errorMm3=volume_error,toleranceMm3=volume_tolerance),
                     bendCount=len(infos), bends=bend_specs, bendLineSegments=len(bends.Edges),
                     files={n: hashlib.sha256((root/n).read_bytes()).hexdigest() for n in ('flat.brep', 'bends.brep')})
     finally: App.closeDocument(doc.Name)

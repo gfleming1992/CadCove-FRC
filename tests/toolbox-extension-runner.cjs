@@ -50,6 +50,9 @@ exports.run=async function(){
   assert.equal(doctor.checks.find(c=>c.id==='native-engine').ok,true);
   const initialConfigFile=path.join(folder,'.cadcove/project.json'),initialConfig=JSON.parse(await fs.readFile(initialConfigFile,'utf8'));initialConfig.entryPoint='models.py';await fs.writeFile(initialConfigFile,JSON.stringify(initialConfig));
   const entry=path.join(folder,'cad/models.py');
+  // Present complete edits to the watcher/cache poller, not the empty interval
+  // between writeFile's truncate and write. Assertions still check exact errors.
+  const replaceEntry=async text=>{const temporary=path.join(path.dirname(entry),'.models.py.test-tmp');await fs.writeFile(temporary,text);await fs.rename(temporary,entry);};
   const code=`import cadquery as cq
 def build(ctx):
     plate=cq.Workplane('XY').box(100,80,5,centered=False).edges().fillet(1).cut(cq.Workplane('XY').center(30,40).circle(4).extrude(9).translate((0,0,-2)))
@@ -63,7 +66,7 @@ def build(ctx):
    delete process.env.CADCOVE_PYTHON;
    await vscode.workspace.getConfiguration('instantcad').update('pythonPath','missing-cad-python',vscode.ConfigurationTarget.Workspace);
   }
-  await fs.writeFile(entry,code);
+  await replaceEntry(code);
   await fs.writeFile(path.join(folder,'cad/mechanism.json'),JSON.stringify({schema:1,units:'mm-deg',bodies:[{id:'frame',fixed:true,origin:[0,0,0],parts:['base']},{id:'arm',fixed:false,origin:[10,10,5],parts:['upright']}],joints:[{id:'arm-axis',type:'revolute',parent:'frame',child:'arm',origin:[10,10,5],axis:[0,0,1],limitsDeg:[-180,180]}],relations:[]}));
   const helper=path.join(folder,'cad/helper.py');
   await fs.writeFile(helper,'"""\nresult = example\n"""\ndef helper(): pass\n');
@@ -115,12 +118,12 @@ def build(ctx):
 
   assert.equal((await query('cad-status')).sourceRevision,initial.revision);
   const preview=await query('cad-preview');assert.equal(preview.ok,true);assert.equal(preview.acceptedRevision,initial.revision);assert.equal(preview.image,path.join(cache,'preview.png'));
-  await fs.writeFile(entry,code.replace('100,80,5','140,80,5'));
+  await replaceEntry(code.replace('100,80,5','140,80,5'));
   const edited=await waitFor(s=>s?.phase==='ready'&&s.revision!==initial.revision);
   assert.equal(edited.parts,2);
-  await fs.writeFile(entry,'raise ValueError("intentional failed CAD edit")');
+  await replaceEntry('raise ValueError("intentional failed CAD edit")');
   const failed=await waitFor(s=>s?.phase==='error');assert.match(failed.error,/intentional failed CAD edit/);assert.equal(failed.revision,edited.revision);assert.equal(failed.parts,2);
-  await fs.writeFile(entry,code.replace('100,80,5','140,80,5'));await waitFor(s=>s?.phase==='ready');
+  await replaceEntry(code.replace('100,80,5','140,80,5'));await waitFor(s=>s?.phase==='ready');
   assert.equal((await query('cad-status')).ok,true,'Restored source clears failed CLI feedback');
   api.closeAll();await delay(300);
   await fs.writeFile(path.join(cache,'status.json'),JSON.stringify({ok:false,revision:edited.revision,error:'stale prior error'}));
@@ -134,7 +137,7 @@ def build(ctx):
    await fs.writeFile(initialConfigFile,JSON.stringify({...initialConfig,pythonPath:'missing-cad-python'}));
    await api.openModel();await waitFor(s=>s?.phase==='ready');
    const oldCamera=api.getDiagnostics()[0].camera;
-   await fs.writeFile(entry,code.replace('100,80,5','160,80,5'));
+   await replaceEntry(code.replace('100,80,5','160,80,5'));
    const interpreterFailure=await waitFor(s=>s?.phase==='error');
    assert.match(interpreterFailure.error,/Cannot start CadQuery Python/);
    const cliBuild=JSON.parse((await execute(runtime,['cad-build','--workspace',folder,'--python',testPython],{maxBuffer:4*1024*1024})).stdout);

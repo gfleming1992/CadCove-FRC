@@ -54,7 +54,7 @@ export class MechanismMotion {
     const plan=compileSolvedMotion(value,scene.parts.map(p=>p.id),revision,this.scene===scene?this.model:null);
     // Restore any belt deformation from the existing animator before replacing it.
     if(this.scene===scene)this.reset();else this.stop();
-    if(this.scene!==scene){this.model=null;this.belts=null;this.pendingTopology=null;}
+    if(this.scene!==scene){this.model=null;this.belts=null;this.folds=null;this.pendingTopology=null;}
     this.scene=scene;this.error=null;
     this.playback={...plan,id:crypto.randomUUID(),elapsed:0,status:'playing'};
     this.apply(evaluateSolvedMotion(plan,0));return this.resume();

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "project": "instantcad-local",
-  "revision": "ed442ffa9f56deeeb69a92336239ad8a26c4e981",
+  "revision": "0b4cb03d6007466295041c895b8fb7d5845c61a0",
   "policy": "Update upstream and regenerate; no downstream edits",
   "files": {
     "LICENSE": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6",
@@ -18,7 +18,7 @@
     "src/core/belt-motion.js": "35367cf4876fa2b281f48307c3d2bc7eccd19a3d74f5a2e2f1b9efd327f5f7f0",
     "src/core/canvas-commands.js": "f1090a3c46c15abeecb0304a4b4c094b180912136dbd0629093743bb0fc5fbe1",
     "src/core/fold-motion.js": "a341a527dcbca4827fe8a794634ff5254b3f7519fe499921190f7950f57e8c64",
-    "src/core/mechanism-motion.js": "3ec9b68cdf090f6568cd727400b4fcb7448df30b53f0953a2565a9fc650f93d7",
+    "src/core/mechanism-motion.js": "635978e65265d0d5597e2c71df7a119ba492a4afe92726cfb65ec298bc40406f",
     "src/core/mechanism-solver.js": "347206285c1a5e3599e6b9bbf701e09f120dc1e63e2e37d0b70638785cc2591c",
     "src/core/mechanism.js": "d6ffeb95706feee1fdc92a050f84552083ebae54361fe2fd06c8273a7b5ac984",
     "src/core/mesh.js": "359f6d1e0df22ba37dc3f05dd0b20b647ded8712a5c432f4aa331d987390b9ab",
@@ -66,7 +66,7 @@
     "tests/fea.test.js": "2c5db3ca7611dd3eea903b1f37bd2c14c1be2e864e8de38a96e2c5c700cb1ab7",
     "tests/flat-export-native.py": "a2389d06111afc2ba23087c274461ee5627426b547c822dbaf0df06caee39c96",
     "tests/fold-browser.js": "3ddae086b7dd0383a3bd3cfeb9dceabac8e318eb51b423ba4b61d012eedf5b38",
-    "tests/fold-motion.test.js": "ec2f646e6ea2a26c0c06e34447c3a25a9ec6c3c51440c278b10a0da3459ae447",
+    "tests/fold-motion.test.js": "c9bdec82878f7275ae56a8e8999831040e9dd4497c1ca0703ef7f3f5245f0d1a",
     "tests/fold-native.py": "b356f391ee29f45938f1dc91409a5da3a90f69ca23744ba38eece1637f4e8697",
     "tests/mechanism-browser.js": "3fe18ff43442e7fa9d7ad711f6daa2427e261e96e2045542eead5f31c8dc62b7",
     "tests/mechanism-solver.test.js": "e30f253e26b272631bfea0e01a03e0ec06ae345844a14f0da43bc21576577135",

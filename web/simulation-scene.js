@@ -18,8 +18,9 @@ export async function loadAssembly(name,root,{group='',cache=new Map(),fetcher=f
   const appearance=await appearanceResponse.json();
   if(appearance.schema!==1||appearance.instancesHash!==await digest(new TextEncoder().encode(JSON.stringify(all))))throw Error('Stale CAD appearance: rebuild appearance cache');
   Object.assign(catalog,appearance.catalog);
-  selected=selected.flatMap(n=>{const style=appearance.instances[n.id];if(!style)throw Error('Missing CAD appearance '+n.id);const displayed={...n,viewOffset:style.offset};return style.parts?style.parts.map((part,i)=>({...displayed,...part,id:n.id+'/surface/'+i,sourceId:n.id})):[{...displayed,color:style.color}];});
+  selected=selected.flatMap(n=>{const style=appearance.instances[n.id];if(!style)throw Error('Missing CAD appearance '+n.id);const displayed={...n,viewOffset:style.offset};return style.parts?style.parts.map((part,i)=>({...displayed,...part,id:n.id+'/surface/'+i,sourceId:n.id})):[{...displayed,asset:style.asset??displayed.asset,color:style.color,opacity:style.opacity??1}];});
  }else if(appearanceResponse.status!==404)throw Error('Cannot load CAD appearance');
+ for(const n of selected)if(n.opacity!==undefined&&(!Number.isFinite(n.opacity)||n.opacity<0||n.opacity>1))throw Error('Invalid CAD material opacity');
  const used=[...new Set(selected.map(n=>n.asset))],loaded=[];let cursor=0;
  await Promise.all(Array.from({length:8},async()=>{while(cursor<used.length){
   const asset=used[cursor++],c=catalog[asset];if(!c||!/^[a-f0-9]{64}$/.test(c.meshSha256))throw Error('Invalid CAD mesh descriptor');

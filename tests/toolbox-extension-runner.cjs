@@ -473,11 +473,17 @@ def build(ctx):
       const fieldDir=path.join(folder,'nested-field');await fs.mkdir(fieldDir,{recursive:true});await fs.writeFile(path.join(fieldDir,'obstacle.bin'),bytes);
       await fs.writeFile(path.join(fieldDir,'catalog.json'),JSON.stringify({obstacle:{mesh:'obstacle.bin',meshSha256:require('node:crypto').createHash('sha256').update(bytes).digest('hex')}}));
       await fs.writeFile(path.join(fieldDir,'instances.json'),JSON.stringify([{id:'obstacle',asset:'obstacle',color:'#888888',transform:[1,0,0,100,0,1,0,0,0,0,1,0]}]));
+      const fieldInstances=await fs.readFile(path.join(fieldDir,'instances.json'));
+      await fs.writeFile(path.join(fieldDir,'appearance.json'),JSON.stringify({schema:1,instancesHash:require('node:crypto').createHash('sha256').update(fieldInstances).digest('hex'),catalog:{},instances:{obstacle:{color:'#888888',opacity:.2}}}));
       await fs.writeFile(path.join(folder,'nested-preview.sim.json'),JSON.stringify({cad:{field:'nested-field'}}));
       const started=Date.now(),opened=JSON.parse((await mcpCall('open_mechanism_preview',{field:true})).content[0].text);assert.equal(opened.fieldParts,1);assert.equal(opened.parts,3);const previewOpenMs=Date.now()-started;
       const req=async(action,options={})=>{const result=await mcpClient.callTool({name:'mechanism_preview',arguments:{action,options}},undefined,{timeout:90000});if(result.isError)throw Error(result.content[0].text);return JSON.parse(result.content[0].text);};
       const fieldCaps=await canvas('capabilities');assert.equal(fieldCaps.units.length,'mm');assert.ok(fieldCaps.commands.includes('physics'));
       await canvas('view',{camera:{target:[30,0,0],distance:200}});assert.equal((await canvas('state')).camera.distance,200);assert.equal((await req('state')).camera.distance,.2);
+      const materialAlpha=async()=> (await canvas('opacity')).parts.find(p=>p.id==='field/obstacle')?.opacity;
+      assert.ok(Math.abs(await materialAlpha()-.2)<1e-6);
+      await canvas('opacity',{action:'set',ids:['field/obstacle'],value:.7});
+      await canvas('opacity',{action:'reset',ids:['field/obstacle']});assert.ok(Math.abs(await materialAlpha()-.2)<1e-6);
       await canvas('selection',{ids:['wheel','field/obstacle']});
       const alias=JSON.parse((await mcpCall('cad_selection',{})).content[0].text);assert.deepEqual(alias.selectedIds,['wheel','field/obstacle']);
       await canvas('highlight',{action:'set',parts:[{id:'wheel'}]});await canvas('visibility',{action:'isolate',ids:['wheel']});assert.ok((await canvas('state')).selection.hiddenIds.includes('base'));await canvas('visibility',{action:'show-all'});
@@ -492,12 +498,12 @@ def build(ctx):
       const handed=await req('state');assert.ok(Math.abs(handed.physics.joints.spin.position-Math.PI/3)<1e-6);assert.ok(Math.abs(handed.physics.joints.steer.position-Math.PI/6)<1e-6);
       await req('motors',{volts:{'steer-motor':.2,'spin-motor':.2},seconds:.3});await delay(600);
       const driven=await req('state');assert.deepEqual(driven.selection.selectedIds,['wheel','field/obstacle']);assert.equal(driven.mode,'physics');assert.ok(driven.physics.tick>0);assert.ok(Math.abs(driven.physics.joints.spin.position)>.001);assert.ok(Math.abs(driven.physics.joints.steer.position)>.001);
-      assert.deepEqual(driven.selection.opacity.parts.map(p=>[p.id,p.opacity]).sort(),[['base',.25],['carrier',.25]]);
+      assert.deepEqual(driven.selection.opacity.parts.filter(p=>p.id!=='field/obstacle').map(p=>[p.id,p.opacity]).sort(),[['base',.25],['carrier',.25]]);
       const capture=await req('capture');assert.ok((await fs.stat(capture.image)).size>1000);
       await req('cad');assert.equal((await req('state')).mode,'cad');
       const changed={...definition,motors:[]};await fs.writeFile(path.join(dir,'mechanism.json'),JSON.stringify(changed));
       await assert.rejects(()=>req('physics'),/changed/);
-      report.unifiedMechanism={commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,currentPoseHandoff:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,staleDefinitionRejected:true};
+      report.unifiedMechanism={fieldMaterialOpacity:true,commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,currentPoseHandoff:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,staleDefinitionRejected:true};
     }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
   }
   if(process.env.CADCOVE_SOLVED_BELT_FIXTURE){

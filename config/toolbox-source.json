@@ -20,6 +20,8 @@
     "lib/flat-command.js",
     "lib/svg-preview.js",
     "tests/flat-command.test.js",
+    "tests/field-material.test.js",
+    "tests/field-material-native.py",
     "docs/CAD-FLAT-EXPORT.md",
     "tests/drawing-command.test.js",
     "docs/CAD-DRAWINGS.md",

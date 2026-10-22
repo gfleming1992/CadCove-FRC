@@ -52,7 +52,7 @@ try{
  assert.equal(await page.evaluate(()=>selection.state().highlights.length),1);
  // Reveal draws only the target, restores on stop/completion, and keeps camera/colors.
  await page.evaluate(()=>{v.setAssembly({prototypes:[p],instances:[{id:'shaft',asset:'shaft',color:p.color,transform:[1,0,0,0,0,1,0,0,0,0,1,0]},{id:'cover',asset:'shaft',color:p.color,transform:[1,0,0,0,0,1,0,0,0,0,1,1]}]},false);selection.setHighlights([{id:'shaft'}]);window.revealCamera=JSON.stringify(v.camera);selection.startReveal({cycles:1,intervalMs:500});});
- const drawCounts=()=>page.evaluate(()=>{const calls=[];v.draw({setPipeline(){},setBindGroup(){},setVertexBuffer(){},setIndexBuffer(){},drawIndexed(...a){calls.push(a)}});return calls;});
+ const drawCounts=()=>page.evaluate(()=>{const calls=[];let pipeline;v.draw({setPipeline(p){pipeline=p;},setBindGroup(){},setVertexBuffer(){},setIndexBuffer(){},drawIndexed(...a){if(pipeline!==v.edgePipeline&&pipeline!==v.flatEdgePipeline)calls.push(a)}});return calls;});
  assert.equal((await drawCounts()).reduce((n,c)=>n+c[1],0),1);
  assert.equal(await page.evaluate(()=>selection.state().reveal.isolated),true);
  await page.waitForFunction(()=>!selection.state().reveal.running);
@@ -100,6 +100,18 @@ try{
  assert.equal(await page.evaluate(()=>{const before=JSON.stringify(selection.state());for(const a of [{action:'set',ids:['missing'],value:.5},{action:'set',ids:['front'],value:2},{action:'set',scope:'all',ids:['front'],value:.5}]){try{cmd('opacity',a);return false;}catch{if(JSON.stringify(selection.state())!==before)return false;}}return true;}),true);
  await page.evaluate(()=>{selection.set([]);cmd('opacity',{action:'set',ids:['front'],value:0});});const invisible=await page.evaluate(()=>pixel());assert(invisible[0]>200&&invisible[2]<10);
  await page.evaluate(()=>cmd('opacity',{action:'reset',scope:'all'}));assert.deepEqual(await page.evaluate(()=>selection.state().opacity.parts),[]);
+ // Source material transparency survives overrides, reset and mesh updates.
+ await page.evaluate(()=>{v.setAssembly({...v.assemblyDefinition,instances:v.assemblyDefinition.instances.map(n=>({...n,opacity:n.id==='front'?.2:1}))},false);});
+ assert(Math.abs(await page.evaluate(()=>v.placements[v.instanceLookup.get('front')*20+19])-.2)<1e-6);
+ await page.evaluate(()=>{cmd('opacity',{action:'set',ids:['front'],value:.6});cmd('opacity',{action:'reset',scope:'all'});});
+ assert(Math.abs(await page.evaluate(()=>v.placements[v.instanceLookup.get('front')*20+19])-.2)<1e-6);
+ await page.evaluate(()=>v.setAssembly({...v.assemblyDefinition,instances:v.assemblyDefinition.instances.map(n=>({...n,opacity:1}))},false));
+ assert.equal(await page.evaluate(()=>v.placements[v.instanceLookup.get('front')*20+19]),1);
  await page.evaluate(()=>{cmd('opacity',{action:'set',scope:'all',value:.5});v.setScene({parts:[p]},false);});assert.deepEqual(await page.evaluate(()=>selection.state().opacity.parts),[]);
+ // Render bundles reuse draw commands across motion; transparency changes
+ // invalidate membership, and live output still equals offscreen rendering.
+ await page.evaluate(async()=>{v.setAssembly({prototypes:[p],instances:[{id:'shaft',asset:'shaft',color:p.color,transform:[1,0,0,0,0,1,0,0,0,0,1,0]}]},false);v.render();await v.device.queue.onSubmittedWorkDone();window.bundle=v.opaqueBundle;v.setTransforms({shaft:[1,0,0,.5,0,1,0,0,0,0,1,0]});v.render();await v.device.queue.onSubmittedWorkDone();});
+ assert.equal(await page.evaluate(()=>v.opaqueBundle===bundle),true);
+ await page.evaluate(()=>{v.setOpacity({shaft:.5});v.render();});assert.equal(await page.evaluate(()=>v.opaqueBundle===bundle),false);
  console.log('PASS: click, toggle, drag, Escape, rebuild, moving instances, neutral captures, multi-part agent colors, selection priority, atomic validation, motion, rebuild clearing, unchanged geometry');
 }finally{await browser.close();server.stop(true);}

@@ -24,6 +24,7 @@ const selected=all.filter(f=>f.startsWith('src/native/')||[
  'src/core/selection.js','tests/selection.test.js','tests/selection-browser.js',
  'src/core/belt-motion.js','src/core/canvas-commands.js','tests/belt-motion.test.js','tests/belt-browser.js',
  'src/core/mechanism.js','src/core/mechanism-motion.js','tests/mechanism.test.js','tests/mechanism-browser.js',
+ 'src/core/mesh-edges.js','tests/mesh-edges.test.js',
  'src/core/viewer.js','src/core/assembly-viewer.js','src/core/assembly-capture.js',
  'src/core/scene-cache.js','src/core/scene-capture.js','src/core/mesh.js','src/core/revision.js','src/core/source-limits.js',
  'extensions/vscode/src/extension.js','extensions/vscode/src/project-files.js','extensions/vscode/src/step-source.js',

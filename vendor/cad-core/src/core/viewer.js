@@ -1,3 +1,4 @@
+import {meshEdges} from './mesh-edges.js';
 const subtract = (a, b) => a.map((x, i) => x - b[i]),
   dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0),
   cross = (a, b) => [
@@ -18,8 +19,11 @@ function multiply(a, b) {
 }
 const shader = `struct View {mvp:mat4x4f}; @group(0) @binding(0) var<uniform> view:View;
 struct Out {@builtin(position) position:vec4f,@location(0) normal:vec3f,@location(1) color:vec3f};
-@vertex fn vs(@location(0) p:vec3f,@location(1) n:vec3f,@location(2) color:vec3f)->Out {var o:Out;o.position=view.mvp*vec4f(p,1);o.normal=n;o.color=color;return o;}
-@fragment fn fs(o:Out,@builtin(front_facing) front:bool)->@location(0) vec4f {let n=normalize(o.normal)*select(-1.0,1.0,front);let key=max(dot(n,normalize(vec3f(-0.3,-0.6,1.0))),0.0);let fill=max(dot(n,normalize(vec3f(0.8,0.4,0.2))),0.0);let linear=pow(o.color,vec3f(2.2))*(0.42+0.55*key+0.18*fill);return vec4f(pow(linear,vec3f(1.0/2.2)),1);}`;
+fn vertex(p:vec3f,n:vec3f,color:vec3f)->Out {var o:Out;o.position=view.mvp*vec4f(p,1);o.normal=n;o.color=color;return o;}
+@vertex fn vs(@location(0) p:vec3f,@location(1) n:vec3f,@location(2) color:vec3f)->Out {return vertex(p,n,color);}
+@fragment fn fs(o:Out,@builtin(front_facing) front:bool)->@location(0) vec4f {let n=normalize(o.normal)*select(-1.0,1.0,front);let key=max(dot(n,normalize(vec3f(-0.3,-0.6,1.0))),0.0);let fill=max(dot(n,normalize(vec3f(0.8,0.4,0.2))),0.0);let linear=pow(o.color,vec3f(2.2))*(0.42+0.55*key+0.18*fill);return vec4f(pow(linear,vec3f(1.0/2.2)),1);}
+@vertex fn edgeVS(@location(0) p:vec3f,@location(1) n:vec3f,@location(2) color:vec3f)->Out {var o=vertex(p,n,color);o.position.z+=1e-6*o.position.w;return o;}
+@fragment fn edgeFS(o:Out)->@location(0) vec4f {return vec4f(o.color*0.32,1);}`;
 export class Viewer {
   constructor(canvas) {
     this.canvas = canvas;
@@ -46,8 +50,9 @@ export class Viewer {
       alphaMode: "opaque",
     });
     const module = this.device.createShaderModule({ code: shader });
+    const layout=this.device.createPipelineLayout({bindGroupLayouts:[this.device.createBindGroupLayout({entries:[{binding:0,visibility:GPUShaderStage.VERTEX,buffer:{type:"uniform"}}]})]});
     this.pipeline = await this.device.createRenderPipelineAsync({
-      layout: "auto",
+      layout,
       vertex: {
         module,
         entryPoint: "vs",
@@ -71,6 +76,7 @@ export class Viewer {
       },
       multisample: { count: 4 },
     });
+    this.flatEdgePipeline=await this.device.createRenderPipelineAsync({layout,vertex:{module,entryPoint:'edgeVS',buffers:[{arrayStride:36,attributes:[{shaderLocation:0,offset:0,format:'float32x3'},{shaderLocation:1,offset:12,format:'float32x3'},{shaderLocation:2,offset:24,format:'float32x3'}]}]},fragment:{module,entryPoint:'edgeFS',targets:[{format}]},primitive:{topology:'line-list'},depthStencil:{format:'depth32float',depthWriteEnabled:false,depthCompare:'greater-equal'},multisample:{count:4}});
     this.uniform = this.device.createBuffer({
       size: 64,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
@@ -134,7 +140,7 @@ export class Viewer {
         if(!parts.length){next.push(null);continue;}
         const vertices=parts.reduce((n,p)=>n+p.positions.length/3,0),count=parts.reduce((n,p)=>n+p.indices.length,0);
         const data=new Float32Array(vertices*9),indices=new Uint32Array(count),low=[Infinity,Infinity,Infinity],high=[-Infinity,-Infinity,-Infinity];
-        let vertex=0,index=0;
+        let vertex=0,index=0;const edgeValues=[],edgeRanges=new Map();
         for(const part of parts) {
           const color=[1,3,5].map(i=>parseInt(part.color.slice(i,i+2),16)/255);
           for(let n=0;n<part.positions.length/3;n++)for(let j=0;j<3;j++) {
@@ -142,20 +148,22 @@ export class Viewer {
             data[(vertex+n)*9+j]=p;data[(vertex+n)*9+3+j]=part.normals[n*3+j];data[(vertex+n)*9+6+j]=color[j];
           }
           for(const value of part.indices)indices[index++]=value+vertex;
+          const edges=meshEdges(part);edgeRanges.set(part.id,{first:edgeValues.length,count:edges.length});for(const e of edges)edgeValues.push(e+vertex);
           vertex+=part.positions.length/3;
         }
         if(!vertices)throw Error('The scene has no visible triangles');
-        const batch={parts,count,low,high,bytes:data.byteLength+indices.byteLength};
+        const batch={parts,count,low,high,edgeRanges,edgeCount:edgeValues.length,bytes:data.byteLength+indices.byteLength+edgeValues.length*4};
         created.push(batch);
         batch.vertices=this.device.createBuffer({size:data.byteLength,usage:GPUBufferUsage.VERTEX|GPUBufferUsage.COPY_DST});
         batch.indices=this.device.createBuffer({size:indices.byteLength,usage:GPUBufferUsage.INDEX|GPUBufferUsage.COPY_DST});
         this.device.queue.writeBuffer(batch.vertices,0,data);this.device.queue.writeBuffer(batch.indices,0,indices);
+        if(edgeValues.length){batch.edges=this.device.createBuffer({size:edgeValues.length*4,usage:GPUBufferUsage.INDEX|GPUBufferUsage.COPY_DST});this.device.queue.writeBuffer(batch.edges,0,new Uint32Array(edgeValues));}
         uploadedBytes+=batch.bytes;next.push(batch);
       }
       if(!next.some(b=>b?.count))throw Error('The scene has no visible triangles');
-    }catch(error){for(const b of created){b.vertices?.destroy();b.indices?.destroy();}throw error;}
+    }catch(error){for(const b of created){b.vertices?.destroy();b.indices?.destroy();b.edges?.destroy();}throw error;}
     for(let i=0;i<(this.batches?.length??0);i++)if(this.batches[i] && this.batches[i]!==next[i]) {
-      this.batches[i].vertices.destroy();this.batches[i].indices.destroy();
+      this.batches[i].vertices.destroy();this.batches[i].indices.destroy();this.batches[i].edges?.destroy();
     }
     this.batches=next;
     const low=[Infinity,Infinity,Infinity],high=[-Infinity,-Infinity,-Infinity];
@@ -307,8 +315,14 @@ export class Viewer {
     for(const batch of this.batches??[])if(batch) {
       pass.setVertexBuffer(0,batch.vertices);
       pass.setIndexBuffer(batch.indices,'uint32');
-      pass.drawIndexed(batch.count);
+      pass.setPipeline(this.pipeline);pass.drawIndexed(batch.count);
+      this.drawBatchEdges(pass,batch);
     }
+  }
+  drawBatchEdges(pass,batch,visible=()=>true){
+    if(this.showEdges===false||!batch.edges)return;
+    pass.setPipeline(this.flatEdgePipeline);pass.setIndexBuffer(batch.edges,'uint32');
+    for(const [id,r] of batch.edgeRanges)if(r.count&&visible(id))pass.drawIndexed(r.count,1,r.first);
   }
   pan(dx, dy) {
     const { x, y } = this.basis(),

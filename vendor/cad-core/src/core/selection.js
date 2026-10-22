@@ -74,7 +74,7 @@ export function installSelection(viewer,onChange=()=>{}){
   if(names!==undefined){if(!Array.isArray(names)||!names.length||names.some(n=>typeof n!=='string'||!n.trim()))throw Error('Expected nonempty part names');for(const name of names){const matches=all.filter(n=>(n.name??n.part.name??n.id).toLowerCase()===name.toLowerCase());if(!matches.length)throw Error('No part named: '+name);matches.forEach(n=>targets.add(n.id));}}
   if(scope!=='all'&&ids===undefined&&names===undefined)selected.forEach(id=>targets.add(id));
   if(scope!=='all'&&!targets.size)throw Error('Select parts or provide existing IDs or exact names');
-  const changes=Object.fromEntries(all.filter(n=>scope==='all'||(scope==='except'?!targets.has(n.id):targets.has(n.id))).map(n=>[n.id,action==='reset'?1:value]));
+  const changes=Object.fromEntries(all.filter(n=>scope==='all'||(scope==='except'?!targets.has(n.id):targets.has(n.id))).map(n=>[n.id,action==='reset'?(viewer.materialOpacity?.get(n.id)??1):value]));
   if(!viewer.draws){if(!viewer.setAssembly||!viewer.scene)throw Error('Opacity requires the assembly renderer');viewer.setAssembly({prototypes:viewer.scene.parts,instances:viewer.scene.parts.map(p=>({id:p.id,asset:p.id,color:p.color,transform:identity}))},false);}
   viewer.setOpacity(changes);onChange(state());return opacityState();
  }
@@ -86,7 +86,7 @@ export function installSelection(viewer,onChange=()=>{}){
    viewer.drawAssembly(pass,{indices});
   }else{
    pass.setPipeline(viewer.pipeline);pass.setBindGroup(0,viewer.group);
-   for(const batch of viewer.batches??[]){if(!batch)continue;pass.setVertexBuffer(0,batch.vertices);pass.setIndexBuffer(batch.indices,'uint32');let first=0;for(const p of batch.parts){if(visible(p.id))pass.drawIndexed(p.indices.length,1,first);first+=p.indices.length;}}
+   for(const batch of viewer.batches??[]){if(!batch)continue;pass.setPipeline(viewer.pipeline);pass.setVertexBuffer(0,batch.vertices);pass.setIndexBuffer(batch.indices,'uint32');let first=0;for(const p of batch.parts){if(visible(p.id))pass.drawIndexed(p.indices.length,1,first);first+=p.indices.length;}viewer.drawBatchEdges?.(pass,batch,visible);}
   }
  };
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopReveal();});

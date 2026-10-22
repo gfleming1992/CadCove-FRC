@@ -24,6 +24,7 @@ try{
  await run('toolbox contracts',[process.execPath,'run','test:toolbox']);
  await run('native contracts',['cargo','test','--locked','--release','-p','instantcad-sim','--features','composite-compact','--target-dir','target/distribution']);
  await run('baseline native release',[process.execPath,'scripts/build-native-runtime.js']);
+ await run('CAD to native mechanism contracts',[process.execPath,'test','--timeout','60000','./tests/mechanism-export.test.js','./tests/mechanism-session.test.js']);
  const executable='instantcad-sim'+(process.platform==='win32'?'.exe':'');
  await run('external Bun runtime packaging',[process.execPath,'scripts/package-runtime.js','--native-binary','target/distribution/release/'+executable,'--output','artifacts/runtime-source-check','--version',version,'--base-url',`https://github.com/gfleming1992/CadCove-FRC/releases/download/v${version}`]);
  await run('relocated offline runtime',[process.execPath,'tests/packaged-runtime.js','artifacts/runtime-source-check']);

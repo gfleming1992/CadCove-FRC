@@ -1,7 +1,8 @@
 import {test,expect} from 'bun:test';
 import {readFileSync,existsSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
 import {MechanismSession} from '../lib/mechanism-session.js';
-const binary=new URL('../target/distribution/release/instantcad-sim',import.meta.url).pathname;
+const binary=fileURLToPath(new URL('../target/distribution/release/instantcad-sim'+(process.platform==='win32'?'.exe':''),import.meta.url));
 const fixture=()=>JSON.parse(readFileSync(new URL('../examples/rotary-mechanism/cad/mechanism.json',import.meta.url)));
 test.skipIf(!existsSync(binary))('direct native motor session expires commands and closes without Java',async()=>{
  const m=fixture(),states=[],errors=[],s=new MechanismSession(binary,{onState:r=>states.push(r),onError:e=>errors.push(e.message)});

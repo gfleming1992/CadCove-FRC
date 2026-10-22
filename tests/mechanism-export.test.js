@@ -1,5 +1,6 @@
 import {test,expect} from 'bun:test';
 import {readFileSync,existsSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
 import {compileMechanism} from '../lib/mechanism-export.js';
 const fixture=()=>JSON.parse(readFileSync(new URL('../examples/rotary-mechanism/cad/mechanism.json',import.meta.url),'utf8'));
 const compile=m=>compileMechanism(m,m.bodies.flatMap(b=>b.parts));
@@ -19,7 +20,7 @@ test('missing physical inputs fail rather than guessing mass or coupling stiffne
  const n=fixture();delete n.relations[0].physics;expect(()=>compile(n)).toThrow('compliance');
  const p=fixture();delete p.motors[0].physics;expect(()=>compile(p)).toThrow('electrical');
 });
-const binary=new URL('../target/distribution/release/instantcad-sim',import.meta.url).pathname;
+const binary=fileURLToPath(new URL('../target/distribution/release/instantcad-sim'+(process.platform==='win32'?'.exe':''),import.meta.url));
 test.skipIf(!existsSync(binary))('exported world loads and its motor drives all three native transmissions',async()=>{
  const {world}=compile(fixture());
  const child=Bun.spawn([binary],{stdin:'pipe',stdout:'pipe',stderr:'pipe'});

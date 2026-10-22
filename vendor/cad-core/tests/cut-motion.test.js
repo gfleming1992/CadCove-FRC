@@ -55,3 +55,20 @@ test('cut uses shared playback, preserves source/camera, resets and rejects befo
  for(let t=0;t<7;t+=.1)s.evaluate(p,t);s.evaluate(p,7);const sampled=Array.from(s.heights);
  s.evaluate(p,0);s.evaluate(p,7);expect(Array.from(s.heights)).toEqual(sampled);
  });
+
+test('circular cut walls follow the cutter instead of square grid steps',()=>{
+ const r=request();r.start=[10,6,0];r.tool.diameterMm=4;r.moves=[{mode:'cut',to:[10,6,0],seconds:1}];
+ const scene=fixture(),p=compileCutMotion(r,scene,'rev'),s=new CutSurfaces(p,scene);s.evaluate(p,1);
+ let walls=0,maxError=0;
+ for(let i=0;i<s.positions.length;i+=72)for(let side=0;side<4;side++){
+  const k=i+24+side*12,a=Array.from(s.positions.slice(k,k+3)),b=Array.from(s.positions.slice(k+9,k+12));
+  if(a[2]!==3||s.positions[k+5]!==0||Math.hypot(a[0]-b[0],a[1]-b[1])<1e-8)continue;
+  if(a[0]<1||a[0]>19||a[1]<1||a[1]>11)continue;
+  for(const v of [a,b])maxError=Math.max(maxError,Math.abs(Math.hypot(v[0]-10,v[1]-6)-2));walls++;
+ }
+ expect(walls).toBeGreaterThan(20);expect(maxError).toBeLessThan(.07);
+ const end=Array.from(s.positions);s.evaluate(p,0);for(let t=.1;t<1;t+=.1)s.evaluate(p,t);s.evaluate(p,1);expect(Array.from(s.positions)).toEqual(end);
+ // Pockets retain their exact depth while sharing the same smooth contour.
+ r.moves=[{mode:'cut',to:[10,6,1],seconds:1}];r.start=[10,6,1];const pp=compileCutMotion(r,scene,'rev'),pocket=new CutSurfaces(pp,scene);pocket.evaluate(pp,1);
+ expect(at(pocket,10,6)).toBe(1);expect(at(pocket,1,1)).toBe(3);
+});

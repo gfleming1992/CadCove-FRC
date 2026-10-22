@@ -70,7 +70,10 @@ This is an explicit-path **visual preview**, not a CAM planner, G-code interpret
 collision checker, manufacturing approval or gravity simulation. It supports
 rectangular planar stock, vertical flat cutters and through laser kerfs—not
 ball tools, undercuts or multi-axis machining. Removal samples stock column
-centres; requested resolution must be <= one third of cutter/kerf width and
+centres. Planar cuts share boundary vertices fitted to the swept cutter outline,
+so curved ends and diagonal edges do not render as square stair steps. Depth
+ramps and ambiguous sub-grid intersections retain column boundaries; this is
+still an approximation, not an exact CAD boolean. Requested resolution must be <= one third of cutter/kerf width and
 within 40,000 cells. The result reports actual cell size and half-cell diagonal
 as the raster boundary approximation. Fine kerfs on large sheets may exceed the
 budget; crop the stock or use a focused job rather than silently hiding a kerf.

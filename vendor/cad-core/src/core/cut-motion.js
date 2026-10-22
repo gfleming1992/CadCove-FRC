@@ -62,6 +62,7 @@ export class CutSurfaces {
    if(this.beamSpan<=0)throw Error('Laser beam mesh must have nonzero height');
   }
   const count=plan.nx*plan.ny;this.heights=new Float64Array(count);
+  this.corners=new Float64Array((plan.nx+1)*(plan.ny+1)*2);
   this.positions=new Float32Array(count*24*3);this.normals=new Float32Array(this.positions.length);const indices=new Uint32Array(count*36);
   for(let i=0;i<count*6;i++){const v=i*4;indices.set([v,v+1,v+2,v,v+2,v+3],i*6);}
   this.mesh={...this.source,positions:this.positions,normals:this.normals,indices};this.last=-1;
@@ -79,29 +80,70 @@ export class CutSurfaces {
    if(z<this.heights[i]){this.heights[i]=z;this.changed=true;}
   }
  }
- rebuild(){
-  const p=this.plan,[ox,oy,z0]=p.stock.origin;
+ // Surface-net boundary vertices: intersect neighbouring cell centres with the
+ // actual swept cutter, then share each vertex between all incident columns.
+ // This removes axis-aligned stairs without blurring heights or losing islands.
+ contour(segments){
+  const p=this.plan,[ox,oy]=p.stock.origin,r=p.tool.diameterMm/2,stride=p.nx+1;
+  let local=[];
+  const distance=(x,y,depth)=>{
+   let best=Infinity;
+   for(const [a,b] of local){
+    if(Math.min(a[2],b[2])>depth+1e-8)continue;
+    const vx=b[0]-a[0],vy=b[1]-a[1],length=vx*vx+vy*vy;
+    const t=length?Math.max(0,Math.min(1,((x-a[0])*vx+(y-a[1])*vy)/length)):0;
+    best=Math.min(best,Math.hypot(x-a[0]-vx*t,y-a[1]-vy*t)-r);
+   }
+   return best;
+  };
+  // Depth ramps keep the column representation; contouring applies to planar
+  // passes and vertical plunges, where the swept boundary is well-defined.
+  const planar=segments.every(([a,b])=>Math.abs(a[2]-b[2])<1e-8||Math.hypot(a[0]-b[0],a[1]-b[1])<1e-8);
+  for(let y=0;y<=p.ny;y++)for(let x=0;x<=p.nx;x++){
+   const k=(y*stride+x)*2,cx=ox+x*p.dx,cy=oy+y*p.dy;this.corners[k]=cx;this.corners[k+1]=cy;
+   if(!planar||!x||!y||x===p.nx||y===p.ny)continue;
+   const h=[this.heights[(y-1)*p.nx+x-1],this.heights[(y-1)*p.nx+x],this.heights[y*p.nx+x],this.heights[y*p.nx+x-1]];
+   const low=Math.min(...h),high=Math.max(...h);if(high-low<1e-8||h.some(v=>v!==low&&v!==high))continue;
+   local=segments.filter(([a,b])=>Math.min(a[2],b[2])<=low+1e-8&&cx+p.dx/2>=Math.min(a[0],b[0])-r&&cx-p.dx/2<=Math.max(a[0],b[0])+r&&cy+p.dy/2>=Math.min(a[1],b[1])-r&&cy-p.dy/2<=Math.max(a[1],b[1])+r);
+   const pts=[[-.5,-.5],[.5,-.5],[.5,.5],[-.5,.5]].map(([a,b])=>[cx+a*p.dx,cy+b*p.dy]);
+   const crosses=[];
+   for(let i=0;i<4;i++){
+    const j=(i+1)%4;if(h[i]===h[j])continue;
+    let a=pts[h[i]===low?i:j],b=pts[h[i]===low?j:i];
+    // Reject ambiguous/sub-grid cases rather than moving unrelated geometry.
+    if(distance(...a,low)>1e-7||distance(...b,low)<-1e-7){crosses.length=0;break;}
+    for(let n=0;n<16;n++){const m=[(a[0]+b[0])/2,(a[1]+b[1])/2];if(distance(...m,low)<=0)a=m;else b=m;}
+    crosses.push([(a[0]+b[0])/2,(a[1]+b[1])/2]);
+   }
+   // Four crossings indicate disconnected diagonal regions. Preserve topology.
+   if(crosses.length===2){this.corners[k]=(crosses[0][0]+crosses[1][0])/2;this.corners[k+1]=(crosses[0][1]+crosses[1][1])/2;}
+  }
+ }
+ rebuild(segments){
+  const p=this.plan,[ox,oy,z0]=p.stock.origin;this.contour(segments);
   const quad=(slot,pts,n)=>{for(let k=0;k<4;k++){this.positions.set(pts[k],slot+k*3);this.normals.set(n,slot+k*3);}};
   for(let y=0;y<p.ny;y++)for(let x=0;x<p.nx;x++){
    const i=y*p.nx+x,s=i*72,z=this.heights[i],x0=ox+x*p.dx,x1=x0+p.dx,y0=oy+y*p.dy,y1=y0+p.dy;
-   const top=[[x0,y0,z],[x1,y0,z],[x1,y1,z],[x0,y1,z]];
+   const top=[[x,y],[x+1,y],[x+1,y+1],[x,y+1]].map(([a,b])=>{const k=(b*(p.nx+1)+a)*2;return [this.corners[k],this.corners[k+1],z];});
    // Fully removed cells collapse to a point, leaving no bottom across a kerf.
    if(z<=z0+1e-10){for(let k=0;k<24;k++)this.positions.set([x0,y0,z0],s+k*3);continue;}
-   quad(s,top,[0,0,1]);quad(s+12,[[x0,y1,z0],[x1,y1,z0],[x1,y0,z0],[x0,y0,z0]],[0,0,-1]);
+   quad(s,top,[0,0,1]);quad(s+12,[...top].reverse().map(v=>[v[0],v[1],z0]),[0,0,-1]);
    const levels=[y?this.heights[i-p.nx]:z0,x<p.nx-1?this.heights[i+1]:z0,y<p.ny-1?this.heights[i+p.nx]:z0,x?this.heights[i-1]:z0];
-   for(let k=0;k<4;k++){const a=top[k],b=top[(k+1)%4],bottom=Math.min(z,levels[k]);quad(s+24+k*12,[a,[a[0],a[1],bottom],[b[0],b[1],bottom],b],[[0,-1,0],[1,0,0],[0,1,0],[-1,0,0]][k]);}
+   for(let k=0;k<4;k++){const a=top[k],b=top[(k+1)%4],bottom=Math.min(z,levels[k]),dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy)||1;quad(s+24+k*12,[a,[a[0],a[1],bottom],[b[0],b[1],bottom],b],[dy/length,-dx/length,0]);}
   }
  }
  evaluate(plan,time){
   const t=Math.max(0,Math.min(plan.duration,time));this.changed=false;
   if(this.last<0||t<this.last){this.heights.fill(plan.stock.origin[2]+plan.stock.size[2]);this.last=0;this.changed=true;}
-  let tip=plan.start,cutting=false;
+  let tip=plan.start,cutting=false;const segments=[];
   for(const m of plan.moves){
    if(t<m.start)break;
    const f=Math.min(1,(t-m.start)/m.seconds);cutting=m.mode==='cut'&&t<m.start+m.seconds;tip=m.from.map((v,k)=>v+(m.to[k]-v)*f);
-   if(m.mode==='cut'&&t>m.start&&this.last<m.start+m.seconds){const start=Math.max(0,(this.last-m.start)/m.seconds),a=m.from.map((v,k)=>v+(m.to[k]-v)*start);this.carve(a,tip);}
+   if(m.mode==='cut'&&t>m.start)segments.push([m.from,tip]);
+   if(m.mode==='cut'&&t>m.start&&this.last<m.start+m.seconds){const start=Math.max(0,(this.last-m.start)/m.seconds),a=m.from.map((v,k)=>v+(m.to[k]-v)*start);this.carve(a,tip);this.changed=true;}
   }
-  if(this.changed)this.rebuild();this.last=t;
+  // The boundary moves continuously even before another cell centre is cut.
+  if(this.changed)this.rebuild(segments);this.last=t;
   const transforms=Object.fromEntries(plan.partIds?.map(id=>[id,identityTransform()])??[]),tool=identityTransform();[tool[3],tool[7],tool[11]]=tip;transforms[plan.tool.id]=tool;
   const deformations=this.changed?{[plan.stock.id]:{positions:this.positions,normals:this.normals}}:{};
   if(this.beam){

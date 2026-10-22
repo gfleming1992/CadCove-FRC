@@ -46,7 +46,8 @@ export function activate(context,options={}) {
     const relative=path.relative(root,resource.fsPath).split(path.sep).join('/');
     await inside(root,relative);
     const entry=step?stepEntry(relative):relative;
-    const sources=()=>step?readStepSource(root,relative):readSources(root,layout.buildRoot);
+    const sourceCache=new Map();
+    const sources=()=>step?readStepSource(root,relative):readSources(root,layout.buildRoot,{cache:sourceCache});
     const panel=vscode.window.createWebviewPanel(options.viewType??'instantcad.model',`CAD · ${path.basename(resource.fsPath)}`,vscode.ViewColumn.Active,{enableScripts:true,retainContextWhenHidden:true,localResourceRoots:[vscode.Uri.joinPath(context.extensionUri,'media'),vscode.Uri.file(root),...(layout.buildRoot?[vscode.Uri.file(layout.buildRoot)]:[])]});
     const state={panel,resource,root,entry,layout,diagnostics:{phase:'opening'},pending:new Map(),writes:new Map(),disposed:false};
     panels.set(resource.toString(),state);
@@ -176,6 +177,6 @@ export function activate(context,options={}) {
     const state=[...panels.values()].find(p=>p.layout.workspaceRoot===workspace&&p.entry===entry);
     if(!state)throw Error('Open this model with VS Code: right-click → Open in CAD Canvas');
     return new Promise((resolve,reject)=>{const id=randomBytes(16).toString('hex'),timer=setTimeout(()=>{state.pending.delete(id);reject(Error('CAD capture timed out'));},60000);state.pending.set(id,{resolve,reject,timer});void state.panel.webview.postMessage({agentRequest:id,method,args});});
-  },getDiagnostics:()=>[...panels.values()].map(p=>({entry:p.entry,...p.diagnostics})),closeAll:()=>{for(const p of panels.values())p.panel.dispose();}};
+  },canvases:workspace=>[...panels.values()].filter(p=>p.layout.workspaceRoot===workspace).map(p=>({entry:p.entry,active:p.panel.active,visible:p.panel.visible})),getDiagnostics:()=>[...panels.values()].map(p=>({entry:p.entry,...p.diagnostics})),closeAll:()=>{for(const p of panels.values())p.panel.dispose();}};
 }
 export function deactivate(){for(const p of panels.values())p.panel.dispose();}

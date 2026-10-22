@@ -21,8 +21,25 @@ export async function inside(root,relative,{create=false}={}) {
   }
   return target;
 }
-export async function readSources(root, excludedDirectory) {
+export async function readSources(root, excludedDirectory, {cache}={}) {
   const files={};let total=0;
+  // Cache bytes/digests, not directory contents: every request still enumerates
+  // files and checks their identity and nanosecond modification/change times.
+  const seen=new Set();
+  async function content(file,relative,binary){
+    await inside(root,relative);
+    const stat=await fs.stat(file,{bigint:true});
+    if(!binary&&stat.size>BigInt(SOURCE_LIMITS.fileBytes))throw Error(`${relative} exceeds 1 MB`);
+    const key=[stat.dev,stat.ino,stat.size,stat.mtimeNs,stat.ctimeNs].join(':');
+    seen.add(file);
+    if(cache?.get(file)?.key===key)return cache.get(file).value;
+    let value;
+    if(binary){const hash=createHash('sha256');for await(const chunk of createReadStream(file))hash.update(chunk);value='sha256:'+hash.digest('hex');}
+    else value=await fs.readFile(file,'utf8');
+    const after=await fs.stat(file,{bigint:true});
+    if([after.dev,after.ino,after.size,after.mtimeNs,after.ctimeNs].join(':')!==key)throw Error('Source changed while reading '+relative);
+    cache?.set(file,{key,value});return value;
+  }
   async function visit(dir,prefix='',depth=0){
     if(depth>12)throw Error('Model folder nesting is too deep');
     for(const item of await fs.readdir(dir,{withFileTypes:true})){
@@ -30,20 +47,16 @@ export async function readSources(root, excludedDirectory) {
       const relative=prefix+item.name, file=path.join(dir,item.name);
       if(item.isDirectory()){if(excludedDirectory&&path.resolve(file)===path.resolve(excludedDirectory))continue;await visit(file,relative+'/',depth+1);}
       else if(item.isFile()&&/\.(py|json)$/i.test(item.name)){
-        await inside(root,relative);
-        if((await fs.stat(file)).size>SOURCE_LIMITS.fileBytes)throw Error(`${relative} exceeds 1 MB`);
-        const code=await fs.readFile(file,'utf8');total+=Buffer.byteLength(code);
+        const code=await content(file,relative,false);total+=Buffer.byteLength(code);
         files[relative]=code;
         checkSourceBudget(Object.keys(files).length,total);
       }else if(item.isFile()&&/\.(step|stp|brep)$/i.test(item.name)){
-        await inside(root,relative);const hash=createHash('sha256');
-        for await(const chunk of createReadStream(file))hash.update(chunk);
-        files[relative]='sha256:'+hash.digest('hex');
+        files[relative]=await content(file,relative,true);
         total+=Buffer.byteLength(files[relative]);checkSourceBudget(Object.keys(files).length,total);
       }
     }
   }
-  await visit(root);return files;
+  await visit(root);if(cache)for(const file of cache.keys())if(!seen.has(file))cache.delete(file);return files;
 }
 export function artifactPath(entry,name) {
   if(!['scene.bin','scene.json','status.json','preview.png','profile.json'].includes(name))throw Error('Unsupported cache artifact');

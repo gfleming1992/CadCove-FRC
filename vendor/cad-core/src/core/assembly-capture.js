@@ -10,7 +10,7 @@ export async function captureAssembly(viewer,{ids,transforms={},camera,view='iso
  if(!Array.isArray(selected)||!selected.length||new Set(selected).size!==selected.length)throw Error('Expected unique nonempty capture IDs');
  const indices=selected.map(id=>{const i=viewer.instanceLookup.get(id);if(i===undefined)throw Error('Unknown capture instance '+id);return i;}).sort((a,b)=>a-b);
  const placements=viewer.placements.slice();
- for(const [id,color] of viewer.selectionOriginalColors??[]){const i=viewer.instanceLookup.get(id);if(i!==undefined)placements.set([...color,1],i*20+16);}
+ for(const [id,color] of viewer.selectionOriginalColors??[]){const i=viewer.instanceLookup.get(id);if(i!==undefined)placements.set(color,i*20+16);}
  for(const [id,m]of Object.entries(transforms)){
   const i=viewer.instanceLookup.get(id);if(i===undefined)throw Error('Unknown transform instance '+id);
   for(let r=0;r<4;r++)for(let c=0;c<4;c++)placements[i*20+c*4+r]=r===3?(c===3?1:0):m[r*4+c];
@@ -41,15 +41,7 @@ export async function captureAssembly(viewer,{ids,transforms={},camera,view='iso
   const encoder=device.createCommandEncoder(),pass=encoder.beginRenderPass({
    colorAttachments:[{view:msaa.createView(),resolveTarget:color.createView(),loadOp:'clear',storeOp:'discard',clearValue:{r:.047,g:.065,b:.084,a:1}}],
    depthStencilAttachment:{view:depth.createView(),depthClearValue:0,depthLoadOp:'clear',depthStoreOp:'discard'}});
-  pass.setPipeline(viewer.assemblyPipeline);pass.setBindGroup(0,group);pass.setVertexBuffer(0,viewer.assemblyVertices);pass.setIndexBuffer(viewer.assemblyIndices,'uint32');
-  let cursor=0;
-  for(const d of viewer.draws){
-   while(cursor<indices.length&&indices[cursor]<d.firstInstance+d.instances){
-    const first=indices[cursor++];let count=1;
-    while(cursor<indices.length&&indices[cursor]===first+count&&indices[cursor]<d.firstInstance+d.instances){cursor++;count++;}
-    pass.drawIndexed(d.count,count,d.index,d.vertex,first);
-   }
-  }
+  viewer.drawAssembly(pass,{indices,placements,camera:c,group});
   pass.end();
   const bytesPerRow=Math.ceil(width*4/256)*256;
   const readback=buffer({size:bytesPerRow*height,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ});

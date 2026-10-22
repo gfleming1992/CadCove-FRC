@@ -48,6 +48,7 @@ test('CLI and editor share Python precedence and project-relative paths',()=>{
 (python?test:test.skip)('startup errors include bounded Python stderr and executable',async()=>{
  const root=await fs.mkdtemp(path.join(os.tmpdir(),'cad-startup-error-'));
  await fs.writeFile(path.join(root,'geometry.py'),'');
+ for(const name of ['sketch_solver.py','cad_references.py'])await fs.writeFile(path.join(root,name),'');
  const worker=path.join(root,'worker.py');
  await fs.writeFile(worker,"import sys\nsys.stderr.write('x' * 12000 + '\\nModuleNotFoundError: No module named cadquery\\n')\nsys.exit(1)\n");
  const client=new NativeCadClient({python,worker});

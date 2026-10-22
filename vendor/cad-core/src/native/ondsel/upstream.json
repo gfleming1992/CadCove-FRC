@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/FreeCAD/OndselSolver",
+  "revision": "4be80eef02a3486cda0d78f3ccbb308d207a9639",
+  "license": "LGPL-2.1",
+  "modified": false,
+  "integration": "optional shared library; no FreeCAD GUI, OCCT or Qt dependency"
+}

@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Add solver-backed motion commands for the active CAD or field canvas using
+  optional OndselSolver. Preserve the current pose and cached geometry; reject
+  stale definitions or concurrent pose changes before playback. Solved pulley
+  motion drives the existing belt mesh, including full turns, reverse and seek.
+- Connect current CadQuery solids to an optional headless FreeCAD/Gmsh/CalculiX
+  linear-static analysis workflow. Preparation reports missing physical inputs;
+  solving checks geometry references and mesh convergence and retains evidence.
+- Add optional PlaneGCS sketch solving, checked named geometry references, and
+  STEP kinematics inspection through extended OCP bindings. These integrations
+  do not automatically reconstruct missing mechanical relationships.
+
 - Prepare automatic Marketplace publishing after all platform CI checks pass,
   with per-run patch versions and short-lived GitHub authentication.
 

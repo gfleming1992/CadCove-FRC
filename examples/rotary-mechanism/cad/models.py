@@ -1,11 +1,11 @@
-"""Rotary mechanism teaching fixture. Dimensions/axes come from mechanism.json.
+"""Rotary mechanism teaching fixture. Geometry dimensions come from geometry.json; motion stays in mechanism.json.
 Spur teeth use sampled involutes; pulleys/sprockets are schematic profiles,
 not vendor replacements or manufacturing-qualified tooth forms.
 """
 import json, math
 from pathlib import Path
 import cadquery as cq
-DATA=json.loads((Path(__file__).parent/'mechanism.json').read_text())
+DATA=json.loads((Path(__file__).parent/'geometry.json').read_text())
 def wheel(teeth, radius, thickness, kind):
     if kind=='gear':
         base=radius*math.cos(math.radians(20)); root=radius-2.5; outer=radius+2

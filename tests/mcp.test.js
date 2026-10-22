@@ -34,3 +34,20 @@ test('cad-open CLI uses the running editor without chat tool registration and re
   fail=true;const failed=await run();expect(failed.code).toBe(2);expect(failed.result.ok).toBe(false);expect(failed.result.error.message).toBe('CAD entry is missing');expect(calls).toBe(2);
  }finally{await server.close();await rm(root,{recursive:true,force:true});}
 });
+
+test('highlight CLI preserves multiple exact part IDs and colors and can clear them',async()=>{
+ const {mkdtemp,mkdir,writeFile,rm}=await import('node:fs/promises');
+ const {tmpdir}=await import('node:os');const path=await import('node:path');
+ const root=await mkdtemp(path.join(tmpdir(),'cadcove-highlight-'));let parts=[];
+ const server=await startMcpServer({tools:[{name:'cad_highlight',description:'Highlight CAD parts',schema:{workspace:z.string(),action:z.enum(['set','clear','state']),parts:z.array(z.object({id:z.string(),color:z.string().optional()})).optional()},run:a=>{expect(a.workspace).toBe(root);if(a.action==='set')parts=a.parts;if(a.action==='clear')parts=[];return {ok:true,highlights:parts};}}]});
+ try{
+  await mkdir(path.join(root,'.cadcove'));await mkdir(path.join(root,'build'));
+  await writeFile(path.join(root,'.cadcove/project.json'),JSON.stringify({buildDirectory:'build'}));
+  await writeFile(path.join(root,'build/cadcove-mcp.json'),JSON.stringify({schema:1,workspace:root,endpoint:server.url,token:server.token}));
+  const expected=[{id:'motor/left'},{id:'pulley/right',color:'#e95dca'}],input=path.join(root,'highlights.json');await writeFile(input,JSON.stringify({parts:expected}));
+  const run=async(command,args=[])=>{const p=Bun.spawn([process.execPath,path.resolve(import.meta.dir,'../bin/cadcove.js'),command,'--workspace',root,...args],{stdout:'pipe',stderr:'pipe'});const [out,err,code]=await Promise.all([new Response(p.stdout).text(),new Response(p.stderr).text(),p.exited]);expect(err).toBe('');expect(code).toBe(0);return JSON.parse(out);};
+  expect((await run('cad-highlight',['--input',input])).highlights).toEqual(expected);
+  expect((await run('cad-highlight-state')).highlights).toEqual(expected);
+  expect((await run('cad-clear-highlights')).highlights).toEqual([]);
+ }finally{await server.close();await rm(root,{recursive:true,force:true});}
+});

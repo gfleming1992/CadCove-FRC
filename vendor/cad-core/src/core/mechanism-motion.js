@@ -1,14 +1,35 @@
+import {compileSolvedMotion,evaluateSolvedMotion} from './solved-motion.js';
+import {BeltSurfaces} from './belt-motion.js';
 import {validateMechanism,mechanismPose,resolveJoint,identityTransform} from './mechanism.js';
 export class MechanismMotion {
   constructor(viewer){this.viewer=viewer;this.angles={};this.running=false;this.frame=null;this.scene=null;}
   stop(){this.running=false;if(this.frame!==null)cancelAnimationFrame(this.frame);this.frame=null;if(this.playback?.status==='playing')this.playback.status='stopped';return this.state();}
-  state(){return {running:this.running,angles:{...this.angles},error:this.error??null,playback:this.playback?{id:this.playback.id,elapsed:this.playback.elapsed,duration:this.playback.duration,status:this.playback.status,samples:trajectorySamples(this.playback,this.playback.elapsed)}:null};}
+  state(){return {running:this.running,angles:{...this.angles},error:this.error??null,playback:this.playback?{id:this.playback.id,elapsed:this.playback.elapsed,duration:this.playback.duration,status:this.playback.status,samples:this.playback.kind==='solved'?null:trajectorySamples(this.playback,this.playback.elapsed),kind:this.playback.kind??'trajectory'}:null};}
   load(value){
     const scene=this.viewer.scene;
     if(!scene)throw Error('Build the model first');
     const model=validateMechanism(value,scene.parts.map(p=>p.id));
     if(this.scene!==scene||JSON.stringify(this.model)!==JSON.stringify(model)){
-      this.stop();this.playback=null;this.model=model;this.scene=scene;this.angles=Object.fromEntries(model.joints.map(j=>[j.id,j.bindAngleDeg]));this.error=null;
+      const previous=this.scene===scene?this.model:null,angles={};
+      const sameRelations=previous&&JSON.stringify(previous.relations)===JSON.stringify(model.relations);
+      for(const joint of model.joints){
+        const old=previous?.joints.find(j=>j.id===joint.id);
+        const same=sameRelations&&JSON.stringify(old)===JSON.stringify(joint)&&
+          JSON.stringify(previous.bodies.find(b=>b.id===joint.child))===JSON.stringify(model.bodies.find(b=>b.id===joint.child));
+        angles[joint.id]=same?this.angles[joint.id]:joint.bindAngleDeg;
+      }
+      let pose={angles,transforms:Object.fromEntries(scene.parts.map(p=>[p.id,identityTransform()]))};
+      for(const joint of model.joints.filter(j=>!model.relations.some(r=>r.follower===j.id))){
+        const next=mechanismPose(model,joint.id,angles[joint.id],pose.angles);
+        pose={angles:next.angles,transforms:{...pose.transforms,...next.transforms}};
+      }
+      const belts=new BeltSurfaces(model,scene);
+      this.pendingTopology={...(previous?this.belts?.originals():{}),...belts.renderParts()};
+      this.stop();this.playback=null;this.model=model;this.scene=scene;this.angles=pose.angles;this.error=null;
+      this.belts=belts;
+      // Clear removed bindings and preserve unchanged joints without replacing
+      // the scene or uploading geometry. Validate before touching live state.
+      if(previous)this.apply(pose);
     }
     return this;
   }
@@ -16,10 +37,26 @@ export class MechanismMotion {
     if(!this.viewer.draws){
       this.viewer.setAssembly({prototypes:this.scene.parts.map(p=>({...p})),instances:this.scene.parts.map(p=>({id:p.id,asset:p.id,color:p.color,transform:identityTransform()}))},false);
     }
-    this.viewer.clearMarkers();this.viewer.setTransforms(pose.transforms);this.angles=pose.angles;
+    if(this.pendingTopology){this.viewer.setDeformedTopology?.(this.pendingTopology);this.pendingTopology=null;}
+    this.viewer.clearMarkers();this.viewer.setTransforms(pose.transforms);this.angles=pose.angles;this.updateVisuals(pose);
   }
+  updateVisuals(pose){
+    if(this.belts?.belts.length)this.viewer.setDeformedParts?.(this.belts.evaluate(pose.angles));
+  }
+
   rotate(part,degrees){const pose=mechanismPose(this.model,part,degrees,this.angles);this.stop();this.playback=null;this.apply(pose);return this.state();}
-  reset(){this.stop();this.playback=null;this.angles=Object.fromEntries(this.model.joints.map(j=>[j.id,j.bindAngleDeg]));const transforms=Object.fromEntries(this.scene.parts.map(p=>[p.id,identityTransform()]));this.apply({angles:this.angles,transforms});this.error=null;return this.state();}
+  reset(){this.stop();this.playback=null;this.angles=Object.fromEntries((this.model?.joints??[]).map(j=>[j.id,j.bindAngleDeg]));const transforms=Object.fromEntries(this.scene.parts.map(p=>[p.id,identityTransform()]));this.apply({angles:this.angles,transforms});this.error=null;return this.state();}
+  playSolved(value,revision){
+    const scene=this.viewer.scene;if(!scene)throw Error('Build the model first');
+    const plan=compileSolvedMotion(value,scene.parts.map(p=>p.id),revision,this.scene===scene?this.model:null);
+    // Restore any belt deformation from the existing animator before replacing it.
+    if(this.scene===scene)this.reset();else this.stop();
+    if(this.scene!==scene){this.model=null;this.belts=null;this.pendingTopology=null;}
+    this.scene=scene;this.error=null;
+    this.playback={...plan,id:crypto.randomUUID(),elapsed:0,status:'playing'};
+    this.apply(evaluateSolvedMotion(plan,0));return this.resume();
+  }
+  evaluate(plan,time){return plan.kind==='solved'?evaluateSolvedMotion(plan,time):evaluateTrajectory(this.model,plan,time);}
   play(request){
     const plan=compileTrajectory(this.model,request,this.angles);
     this.stop();this.error=null;
@@ -33,7 +70,7 @@ export class MechanismMotion {
   }
   seek(seconds){
     if(!this.playback||!Number.isFinite(seconds)||seconds<0||seconds>this.playback.duration)throw Error('Seek time is outside the trajectory');
-    this.stop();this.apply(evaluateTrajectory(this.model,this.playback,seconds));
+    this.stop();this.apply(this.evaluate(this.playback,seconds));
     this.playback.elapsed=seconds;this.playback.status='paused';return this.state();
   }
   resume(){
@@ -44,7 +81,7 @@ export class MechanismMotion {
       if(!this.running)return;
       if(this.viewer.scene!==scene){this.stop();plan.status='stopped';return;}
       plan.elapsed=Math.min(plan.duration,Math.max(0,(now-start)/1000));
-      try{this.apply(evaluateTrajectory(this.model,plan,plan.elapsed));}
+      try{this.apply(this.evaluate(plan,plan.elapsed));}
       catch(error){this.error=error.message;this.stop();plan.status='error';return;}
       if(plan.elapsed>=plan.duration){this.stop();plan.status='completed';return;}
       this.frame=requestAnimationFrame(tick);

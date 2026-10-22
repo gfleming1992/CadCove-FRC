@@ -2,7 +2,7 @@ import {currentCachedScene} from './core/scene-cache.js';
 import {captureScene} from './core/scene-capture.js';
 import {AssemblyViewer} from './core/assembly-viewer.js';
 import {installSelection} from './core/selection.js';
-import {resolveJoint} from './core/mechanism.js';
+import {createCanvasCommands,CANVAS_COMMANDS} from './core/canvas-commands.js';
 import {MechanismMotion} from './core/mechanism-motion.js';
 import {snapshot,hash} from './core/revision.js';
 import {createVSCodeHost} from './hosts/vscode.js';
@@ -17,6 +17,7 @@ const message=(text,error=false)=>{status.textContent=text;status.dataset.error=
 const report=(phase,extra={})=>host.report({phase,revision:head??null,workerLoaded:host.nativeLoaded,parts:viewer.scene?.parts.length??0,gpuBytes:viewer.gpuBytes??0,camera:viewer.camera,upload:viewer.lastUpload,...extra}).catch(()=>{});
 const selectionBadge=document.createElement('div');selectionBadge.style.cssText='position:fixed;bottom:12px;left:12px;max-width:80vw;padding:7px 10px;background:#16212ee8;color:#ffe17a;border-radius:6px;font:12px system-ui;pointer-events:none;z-index:5';selectionBadge.hidden=true;document.body.append(selectionBadge);
 const selection=installSelection(viewer,state=>{selectionBadge.hidden=!state.selectedIds.length;selectionBadge.textContent=state.parts.map(p=>p.name+' · '+p.id).join(' | ');});
+const canvasCommand=createCanvasCommands({viewer,motion,selection,revision:()=>head});
 const source=async()=>snapshot(await host.readSources(),config.entry,identity);
 async function execute(revision, current) {
   current??=await source();
@@ -111,13 +112,17 @@ inspect.onclick=()=>{
   };
 };
 host.onAgentRequest(async(method,args)=>{
- if(!['capture','motion','selection'].includes(method))throw Error('Unknown source viewer request');
+ if(!['capture',...CANVAS_COMMANDS].includes(method))throw Error('Unknown source viewer request');
  if(building||!initialized||!head)throw Error('CAD is still building');
- if((await source()).revision!==head)await refresh();
- if(building||feedbackDirty||(await source()).revision!==head)throw Error('CAD source has not built successfully');
- if(method==='selection')return {ok:true,revision:head,...selection.state()};
+ let current=await source();
+ if(current.revision!==head){await refresh();current=await source();}
+ if(building||feedbackDirty||current.revision!==head)throw Error('CAD source has not built successfully');
+ if(method!=='motion'&&method!=='capture'){const result=canvasCommand(method,args);if(method==='view')host.saveState({entry:config.entry,camera:viewer.camera});return {ok:true,revision:head,...result};}
  if(method==='motion'){
-   const current=await source(),file=config.entry.replace(/[^/]+$/, '')+'mechanism.json';
+   // Bound pulley visuals need the current mechanism even on the first motion
+   // command after opening CAD. Pose-only solutions remain model-independent.
+   if((args.action==='play-solved'&&!args.solution?.jointBindings?.length)||(args.action!=='play-solved'&&motion.playback?.kind==='solved'))return {ok:true,revision:head,...canvasCommand('motion',args)};
+   const file=config.entry.replace(/[^/]+$/, '')+'mechanism.json';
    if(!current.files[file])throw Error('Add mechanism.json beside this CAD entry');
    const mechanism=JSON.parse(current.files[file]);
    if(mechanism.sourceStep){
@@ -125,19 +130,7 @@ host.onAgentRequest(async(method,args)=>{
      if(typeof stepFile!=='string'||!/^([a-f0-9]{64})$/.test(sha256)||current.files[stepFile]!=='sha256:'+sha256)throw Error('STEP kinematics source changed or is missing; regenerate the motion projection');
    }
    motion.load(mechanism);
-   let result;
-   if(args.action==='list')result={joints:motion.model.joints,bodies:motion.model.bodies,relations:motion.model.relations,motors:motion.model.motors??[]};
-   else if(args.action==='play')result=motion.play(args.trajectory);
-   else if(args.action==='pause')result=motion.pause();
-   else if(args.action==='resume')result=motion.resume();
-   else if(args.action==='seek')result=motion.seek(args.seconds);
-   else if(args.action==='rotate')result=motion.rotate(args.part,args.degrees);
-   else if(args.action==='move') {const joint=resolveJoint(motion.model,args.part);result=motion.rotate(joint,motion.angles[joint]+args.degrees);}
-   else if(args.action==='animate')result=motion.animate(args.part,args.rpm,args.seconds);
-   else if(args.action==='stop')result=motion.stop();
-   else if(args.action==='reset')result=motion.reset();
-   else if(args.action==='state')result=motion.state();
-   else throw Error('Unknown motion action');
+   const result=canvasCommand('motion',args);
    return {ok:true,revision:head,...result};
  }
  const revision=head,frame=viewer.draws?await viewer.captureView(args):await captureScene(viewer,args);

@@ -14,12 +14,16 @@ export async function snapshot(files, entry = "models.py", identity = runtimeIde
     Object.entries(files).sort(([a], [b]) => a.localeCompare(b)),
   );
   if (!sorted[entry]) throw Error(`The folder must contain ${entry}`);
+  // Reserved viewer metadata is not an input to CAD geometry. Keep it in the
+  // snapshot for validation/playback, but out of the geometry/cache revision.
+  const mechanismFile = entry.replace(/[^/]+$/, "") + "mechanism.json";
+  const geometry = Object.fromEntries(Object.entries(sorted).filter(([name]) => name !== mechanismFile));
   return {
     files: sorted,
     entry,
     revision: await hash(
       identity + "\n" +
-        `entry:${entry}\n` + JSON.stringify(sorted),
+        `entry:${entry}\n` + JSON.stringify(geometry),
     ),
   };
 }

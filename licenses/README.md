@@ -34,6 +34,15 @@ feature set (conservatively including build/platform dependencies), the bundled 
 CadQuery/OCCT are installed separately by the user. Robot programs, WPILib and vendor
 SDKs supplied by a team are not bundled or relicensed by this inventory.
 
+The experimental sketch service optionally uses the independently installed
+`planegcs==0.9.6` package (FreeCAD PlaneGCS plus a Python wrapper,
+LGPL-2.1-or-later; https://github.com/spookylukey/planegcs). This package and its
+compiled library are not included in the runtime or VSIX. The local Apple Silicon
+evaluation built it without source changes using Eigen and Boost. Those build
+dependencies are also not distributed here. Bundling this library in a future
+release requires a separate source, notice and replacement-obligation review;
+the current inventory's releaseReady flag does not cover such a future bundle.
+
 The installed training-example bundle contains the pinned official
 LimelightHelpers 1.14 **source**, including its MIT notice. The generated inventory
 includes this source component and validates its recorded hashes. It does not
@@ -124,6 +133,15 @@ this additional archive. The rebuilt CLI and installed editor passed on macOS;
 complete file-level and release-distribution review still remain.
 
 Primary source documents are linked in `upstream.json` and generated inventory.
+
+## Optional external structural analysis backend
+
+The experimental FEA command invokes a separately installed FreeCAD application,
+Gmsh and CalculiX. The runtime ships only CadCove's request/geometry/launch adapters;
+it does not copy or redistribute those applications, their Python modules, or
+their libraries. Their licenses remain applicable to those installations. Any
+future bundled distribution requires an exact-version license, source and notice
+review; this process boundary is not a blanket redistribution authorization.
 
 ## Unfinished gates for the optional embedded-Bun profile
 

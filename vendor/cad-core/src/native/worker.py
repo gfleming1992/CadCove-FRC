@@ -39,7 +39,9 @@ from OCP.gp import gp_Trsf
 from OCP.BRepTools import BRepTools
 from OCP.TopTools import TopTools_FormatVersion_VERSION_1
 
-IDENTITY = "cadquery@2.6.1/ocp@7.8.1.1/native-mesh-v1/worker:" + hashlib.sha256(Path(__file__).read_bytes() + Path(__file__).with_name("geometry.py").read_bytes()).hexdigest()
+IDENTITY = "cadquery@2.6.1/ocp@7.8.1.1/native-mesh-v1/worker:" + hashlib.sha256(b''.join(
+    Path(__file__).with_name(name).read_bytes() for name in
+    (Path(__file__).name, 'geometry.py', 'sketch_solver.py', 'cad_references.py'))).hexdigest()
 if cq.__version__ != "2.6.1" or OCP.__version__ != "7.8.1.1":
     raise RuntimeError("Install the pinned CadCove native requirements in your Python environment")
 sys.stdout = sys.stderr  # User print() must never corrupt the protocol.

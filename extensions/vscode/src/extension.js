@@ -12,6 +12,7 @@ import {cadProjectSettings} from '../../../lib/cad-project.js';
 import {relativePath} from '../../../vendor/cad-core/extensions/vscode/src/project-files.js';
 import {simulationPanels} from './simulation-panel.js';
 import {robotPanels} from './robot-panel.js';
+import {mechanismPanels} from './mechanism-panel.js';
 import {registerMcp} from './mcp.js';
 import {SimulationTasks} from './simulation-tasks.js';
 import {registerModelMenu} from './model-menu.js';
@@ -156,12 +157,14 @@ export function activate(context) {
     const report=await cli(['sim-stop','--project',record?.project??await simulationProject(root)],root);
     output.appendLine(JSON.stringify(report,null,2));return report;
   }
+  const mechanisms=mechanismPanels(context,{workspace,ensureRuntime});
+  context.subscriptions.push({dispose:()=>mechanisms.closeAll()});
   const robots=robotPanels(context,{workspace,simulationProject,cad,settings});
   context.subscriptions.push({dispose:()=>robots.closeAll()});
-  const mcp=registerMcp(context,{workspace,simulationProject,robots,cad,cli,startSimulation,stopSimulation,playTeamWorkspace,output});
+  const mcp=registerMcp(context,{workspace,simulationProject,robots,mechanisms,cad,cli,startSimulation,stopSimulation,playTeamWorkspace,output});
   context.subscriptions.push(vscode.tasks.onDidEndTask(event=>tasks.ended(event.execution)));
   stopOwnedSimulations=async()=>{
-    await mcp.close();robots.closeAll();views.closeAll();
+    await mcp.close();robots.closeAll();views.closeAll();mechanisms.closeAll();
     const closing=tasks.close();
     for(const c of cancellations)c.abort();
     await closing;
@@ -206,6 +209,6 @@ export function activate(context) {
   if(vscode.workspace.isTrusted&&pending&&vscode.workspace.workspaceFolders?.some(f=>f.uri.fsPath===pending)){
     void context.globalState.update('cadcove.pendingTeamExample',undefined).then(()=>playTeamWorkspace(vscode.Uri.file(pending))).catch(error=>{output.appendLine(String(error.stack||error));void vscode.window.showErrorMessage('CadCove team example: '+error.message);});
   }
-  return {...cad,modelMenuEntries:modelMenu.entries,openRobotCAD:robots.open,robotDiagnostics:robots.diagnostics,startMcp:mcp.start,createTeamExample,playTeamWorkspace,ensureRuntime,repairRuntime,initializeWorkspace:initialize,doctor,projectSettings:settings,startSimulation,stopSimulation,openSimulation:views.open,simulationDiagnostics:views.diagnostics,closeSimulationViews:views.closeAll,captureSimulation:views.capture};
+  return {...cad,modelMenuEntries:modelMenu.entries,openMechanismPreview:mechanisms.open,mechanismRequest:mechanisms.request,closeMechanismPreviews:mechanisms.closeAll,openRobotCAD:robots.open,robotDiagnostics:robots.diagnostics,startMcp:mcp.start,createTeamExample,playTeamWorkspace,ensureRuntime,repairRuntime,initializeWorkspace:initialize,doctor,projectSettings:settings,startSimulation,stopSimulation,openSimulation:views.open,simulationDiagnostics:views.diagnostics,closeSimulationViews:views.closeAll,captureSimulation:views.capture};
 }
 export async function deactivate(){deactivateCAD();await stopOwnedSimulations();}

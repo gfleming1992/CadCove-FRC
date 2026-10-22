@@ -237,3 +237,7 @@ for the frame, validation and scope. `--action preview` converts an existing DXF
 without building CAD. When asked to display it, use `--show` or MCP
 `open_svg_preview` with the generated SVG. Check display success separately from
 export success. Do not send dimensioned/scaled drawings as cutting outlines.
+
+For bent sheet stock, `cad-sheetmetal --action unfold` reuses the optional headless
+FreeCAD SheetMetal library. Read `.cadcove/skills/references/cad-sheet-metal.md`
+for explicit thickness/K-factor inputs, checked root faces, and DXF/SVG outputs.

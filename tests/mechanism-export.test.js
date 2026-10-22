@@ -58,3 +58,41 @@ test('no-contact commissioning requires explicit intent and validates collision 
  const b=compile(m).world.bodies[1];expect(b.colliders).toEqual([]);expect(b.membership).toBe(1);expect(b.filter).toBe(6);
  m.bodies[1].physics.filter=-1;expect(()=>compile(m)).toThrow('collision group');
 });
+
+test('physics handoff validates a complete consistent current pose before compiling',()=>{
+ const m=fixture(),angles=Object.fromEntries(m.joints.map(j=>[j.id,j.bindAngleDeg??0]));
+ expect(()=>compileMechanism(m,m.bodies.flatMap(b=>b.parts),{})).toThrow('every joint');
+ expect(()=>compileMechanism(m,m.bodies.flatMap(b=>b.parts),{...angles,unknown:0})).toThrow('every joint');
+ const r=m.relations[0];angles[r.follower]+=1;
+ expect(()=>compileMechanism(m,m.bodies.flatMap(b=>b.parts),angles)).toThrow('coupling');
+});
+
+test.skipIf(!existsSync(binary))('paused animation transfers nested multi-turn poses into native physics without a jump',async()=>{
+ const {validateMechanism,mechanismPose}=await import('../vendor/cad-core/src/core/mechanism.js');
+ const {quaternionMatrix,compose,translation,point}=await import('../lib/transforms.js');
+ const p={massKg:1,centerOfMassMm:[1,2,3],principalInertiaKgMm2:[1000,1500,2000],friction:0,colliders:[],collisionModel:'none',provenance:'Synthetic pose handoff regression'};
+ const m={schema:1,units:'mm-deg',bodies:[{id:'chassis',fixed:true,origin:[10,0,0],parts:['base'],physics:p},{id:'module',fixed:false,origin:[30,0,0],parts:['fork'],physics:p},{id:'wheel',fixed:false,origin:[50,0,0],parts:['tire'],physics:p}],joints:[{id:'spin',parent:'module',child:'wheel',type:'revolute',origin:[50,0,0],axis:[0,1,0],bindAngleDeg:17,damping:.001},{id:'steer',parent:'chassis',child:'module',type:'revolute',origin:[30,0,0],axis:[0,0,1],bindAngleDeg:31,limitsDeg:[-180,180],damping:.001}],relations:[],motors:[{id:'steer-motor',joint:'steer',physics:fixture().motors[0].physics},{id:'spin-motor',joint:'spin',physics:fixture().motors[0].physics}]};
+ const angles={steer:121,spin:797},original=JSON.stringify(m);
+ const {world}=compileMechanism(m,m.bodies.flatMap(b=>b.parts),angles);
+ expect(JSON.stringify(m)).toBe(original);
+ const child=Bun.spawn([binary],{stdin:'pipe',stdout:'pipe',stderr:'pipe'});
+ child.stdin.write(JSON.stringify({op:'load',world})+'\n');
+ child.stdin.write(JSON.stringify({op:'step',steps:20,volts:{}})+'\n');
+ child.stdin.write(JSON.stringify({op:'step',steps:40,volts:{'steer-motor':.2,'spin-motor':.2}})+'\n');child.stdin.end();
+ const text=await new Response(child.stdout).text();expect(await child.exited).toBe(0);
+ const replies=text.trim().split('\n').map(JSON.parse);for(const r of replies)expect(r.ok).toBe(true);
+ for(const [index,reply] of replies.entries()){
+  const state=reply.state??reply,current=Object.fromEntries(Object.entries(state.joints).map(([id,j])=>[id,j.position*180/Math.PI]));
+  if(index<2)for(const [id,value] of Object.entries(angles))expect(Math.abs(current[id]-value)).toBeLessThan(.001);
+  else{expect(Math.abs(current.spin-angles.spin)).toBeGreaterThan(.01);expect(Math.abs(current.steer-angles.steer)).toBeGreaterThan(.01);}
+  const pose=mechanismPose(validateMechanism(m),'spin',current.spin,current);
+  for(const b of m.bodies){
+   const actual=state.bodies[b.id],matrix=compose(quaternionMatrix(actual.quaternion,actual.position),translation(b.origin.map(v=>-v/1000)));
+   for(const sample of [[0,0,0],[20,30,10]]){
+    const cadPoint=point(pose.transforms[b.parts[0]],sample).map(v=>v/1000),simPoint=point(matrix,sample.map(v=>v/1000));
+    cadPoint.forEach((v,i)=>expect(Math.abs(v-simPoint[i])).toBeLessThan(.0002));
+   }
+  }
+ }
+ expect(()=>compileMechanism(m,m.bodies.flatMap(b=>b.parts),{...angles,steer:181})).toThrow('limit');
+},30000);

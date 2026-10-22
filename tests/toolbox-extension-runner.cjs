@@ -119,7 +119,7 @@ def build(ctx):
   await fs.writeFile(path.join(cache,'status.json'),JSON.stringify({ok:false,revision:edited.revision,error:'stale prior error'}));
   await api.openModel();
   const cached=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');
-  assert.equal(cached.phase,'ready',JSON.stringify(cached));assert.equal(cached.source,'disk-cache');assert.equal(cached.workerLoaded,false);
+  assert.equal(cached.phase,'ready',JSON.stringify(cached));assert.ok(['disk-cache','unchanged'].includes(cached.source));assert.equal(cached.revision,edited.revision);assert.equal(cached.parts,edited.parts);assert.ok(cached.gpuBytes>0);assert.equal(cached.workerLoaded,false);
   assert.equal((await query('cad-status')).ok,true,'Validated cache clears stale CLI feedback without loading the worker');
   let externalBuildRecovery;
   if(testPython){
@@ -133,7 +133,7 @@ def build(ctx):
    const cliBuild=JSON.parse((await execute(runtime,['cad-build','--workspace',folder,'--python',testPython],{maxBuffer:4*1024*1024})).stdout);
    assert.equal(cliBuild.ok,true);
    const recovered=await waitFor(s=>s?.phase==='ready'&&s.revision===cliBuild.revision);
-   assert.equal(recovered.source,'disk-cache','Open viewer adopts an external CLI build without restarting Python');
+   assert.ok(['disk-cache','unchanged'].includes(recovered.source),'Open viewer adopts an external CLI build without restarting Python');assert.ok(recovered.gpuBytes>0);
    assert.deepEqual(recovered.camera,oldCamera,'External build preserves the current camera');
    assert.equal((await query('cad-status')).ok,true);
    externalBuildRecovery={interpreterFailure:true,revision:recovered.revision,source:recovered.source,cameraPreserved:true};
@@ -205,7 +205,7 @@ def build(ctx):
       await api.openModel(vscode.Uri.file(path.join(destination,teamConfig.sourceDirectory,'models.py')));
       const nativeTeam=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');
       assert.equal(nativeTeam.phase,'ready',JSON.stringify(nativeTeam));assert.equal(nativeTeam.parts,1958);
-      assert.equal(nativeTeam.source,'disk-cache');assert.equal(nativeTeam.workerLoaded,false);
+      assert.ok(['disk-cache','unchanged'].includes(nativeTeam.source));assert.ok(nativeTeam.gpuBytes>0);assert.equal(nativeTeam.workerLoaded,false);
       const capture=await mcpCall('cad_capture',{view:'iso'});assert.equal(capture.content[1].type,'image');
       const image=path.join(folder,'native-team.png');await fs.writeFile(image,Buffer.from(capture.content[1].data,'base64'));
       report.teamExample.nativeCad={parts:nativeTeam.parts,source:nativeTeam.source,workerLoaded:false,image,revision:nativeTeam.revision};
@@ -371,7 +371,7 @@ def build(ctx):
       if(process.env.CADCOVE_MATE_SOLVER){
         // Exercise the installed agent CLI, not a precomputed/relabelled solution.
         const canvas=async(options,target)=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action:'motion',options,target}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
-        const drives=[['axis/22',5],['axis/27',-5],['axis/24',90],['axis/29',90],['axis/23',-2],['axis/28',-2],['steer/0',15],['drive/1',90]].map(([joint,velocity])=>({joint,velocity}));
+        const drives=[['axis/22',5],['axis/27',-5],['axis/24',90],['axis/29',90],['axis/23',-2],['axis/28',-2],['steer/0',15],['drive/1',90],['axis/12',-5]].map(([joint,velocity])=>({joint,velocity}));
         const input=path.join(folder,'agent-motion.json');await fs.writeFile(input,JSON.stringify({duration:2,samplePeriod:.05,drives}));
         const timings={};
         for(const target of ['cad','field']){
@@ -389,12 +389,12 @@ def build(ctx):
           const actual=await canvas({action:'seek',seconds:last.time},target);
           for(const d of drives)assert.ok(Math.abs(actual.angles[d.joint]-(prior.angles[d.joint]+2*d.velocity))<1e-6,d.joint);
           assert.ok(Math.abs(actual.angles['flywheel/left/secondary/axis']-2*actual.angles['axis/24'])<1e-6);
-          assert.ok(Math.abs(actual.angles['axis/12']-prior.angles['axis/12'])<1e-6,'Unresolved intake stays at its current pose');
+          assert.ok(Math.abs(actual.angles['axis/12']-(prior.angles['axis/12']-10))<1e-6,'Existing intake pivot animation remains available');
           await canvas({action:'reset'},target);
         }
         api.closeMechanismPreviews();
         assert.equal((await fs.stat(sceneFile)).mtimeMs,before.mtimeMs);
-        report.fullAssemblyAgentSolve={parts:ready.parts,solver:'OndselSolver',cad:true,field:true,posedStart:true,shooters:true,hoods:true,turrets:true,steeringAndSpin:true,intakeHeld:true,noGeometryCacheWrite:true,commandMs:timings};
+        report.fullAssemblyAgentSolve={parts:ready.parts,solver:'OndselSolver',cad:true,field:true,posedStart:true,shooters:true,hoods:true,turrets:true,steeringAndSpin:true,intakeAnimated:true,noGeometryCacheWrite:true,commandMs:timings};
       }
       if(process.env.CADCOVE_TEST_ROBOT_SOLUTION){
         const solution=JSON.parse(await fs.readFile(process.env.CADCOVE_TEST_ROBOT_SOLUTION,'utf8'));solution.sourceRevision=ready.revision;
@@ -457,7 +457,7 @@ def build(ctx):
       assert.deepEqual((await canvas('opacity',{},'cad')).parts.map(p=>p.id).sort(),['base','carrier']);
       await canvas('opacity',{action:'reset',scope:'all'},'cad');
       const trajectory={units:'deg-s',tracks:['steer','spin'].map((target,i)=>({target,endPosition:30*(i+1),segments:[{seconds:.2,acceleration:750*(i+1)},{seconds:.2,acceleration:-750*(i+1)}]}))};
-      await motion({action:'play',trajectory});await delay(600);const nested=await motion({action:'state'});assert.equal(nested.angles.steer,30);assert.equal(nested.angles.spin,60);
+      await motion({action:'play',trajectory});await motion({action:'pause'});const nested=await motion({action:'seek',seconds:.4});assert.equal(nested.angles.steer,30);assert.equal(nested.angles.spin,60);
       // A single existing native prototype becomes a synthetic field obstacle.
       const meshBytes=await fs.readFile(path.join(folder,'nested-build/cad-cache/models.py/scene.bin'));
       const oldHeader=meshBytes.readUInt32LE(4),meta=JSON.parse(meshBytes.subarray(8,8+oldHeader).toString())[0],header=Buffer.from(JSON.stringify([meta]));
@@ -477,9 +477,12 @@ def build(ctx):
       await canvas('opacity',{action:'set',scope:'only',ids:['base','carrier'],value:.25});
 
       assert.deepEqual((await req('state')).selection.selectedIds,['wheel','field/obstacle']);
-      await canvas('motion',{action:'play',trajectory});await delay(600);const animated=await req('state');assert.equal(animated.motion.angles.spin,60);
+      await canvas('motion',{action:'play',trajectory});await canvas('motion',{action:'pause'});await canvas('motion',{action:'seek',seconds:.4});const animated=await req('state');assert.equal(animated.motion.angles.spin,60);
       await canvas('place',{position:[2000,3000,500]});
+      await canvas('motion',{action:'play',trajectory});await canvas('motion',{action:'pause'});await canvas('motion',{action:'seek',seconds:.4});
       const physics=await req('physics');assert.equal(physics.mode,'physics');
+      assert.deepEqual(physics.initialAngles,{spin:60,steer:30});
+      const handed=await req('state');assert.ok(Math.abs(handed.physics.joints.spin.position-Math.PI/3)<1e-6);assert.ok(Math.abs(handed.physics.joints.steer.position-Math.PI/6)<1e-6);
       await req('motors',{volts:{'steer-motor':.2,'spin-motor':.2},seconds:.3});await delay(600);
       const driven=await req('state');assert.deepEqual(driven.selection.selectedIds,['wheel','field/obstacle']);assert.equal(driven.mode,'physics');assert.ok(driven.physics.tick>0);assert.ok(Math.abs(driven.physics.joints.spin.position)>.001);assert.ok(Math.abs(driven.physics.joints.steer.position)>.001);
       assert.deepEqual(driven.selection.opacity.parts.map(p=>[p.id,p.opacity]).sort(),[['base',.25],['carrier',.25]]);
@@ -487,7 +490,7 @@ def build(ctx):
       await req('cad');assert.equal((await req('state')).mode,'cad');
       const changed={...definition,motors:[]};await fs.writeFile(path.join(dir,'mechanism.json'),JSON.stringify(changed));
       await assert.rejects(()=>req('physics'),/changed/);
-      report.unifiedMechanism={commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,staleDefinitionRejected:true};
+      report.unifiedMechanism={commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,currentPoseHandoff:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,staleDefinitionRejected:true};
     }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
   }
   if(process.env.CADCOVE_SOLVED_BELT_FIXTURE){

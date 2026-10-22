@@ -39,7 +39,11 @@ export function mechanismPanels(context,{workspace,ensureRuntime}){
     const executable=await ensureRuntime();if(s.closed)throw Error('Preview closed');
     const native=path.join(path.dirname(executable),process.platform==='win32'?'instantcad-sim.exe':'instantcad-sim');
     const session=new MechanismSession(native,{onState:state=>{if(!s.closed)void s.panel.webview.postMessage({physics:state});},onError:e=>{s.diagnostics={phase:'error',error:e.message};}});
-    try{const state=await session.start(s.descriptor.definition,s.descriptor.parts);await view(s,'physics');s.physics=session;s.mode='physics';await s.panel.webview.postMessage({physics:state});return {ok:true,mode:'physics',world:session.compiled.world,scope:session.compiled.scope,fieldContact:false};}catch(e){session.close();throw e;}
+    try{
+     const pose=await view(s,'motion',{action:'stop'});
+     const state=await session.start(s.descriptor.definition,s.descriptor.parts,pose.angles);
+     await assertPreviewFresh(s.descriptor);
+     await view(s,'physics');s.physics=session;s.mode='physics';await s.panel.webview.postMessage({physics:state});return {ok:true,mode:'physics',world:session.compiled.world,scope:session.compiled.scope,initialAngles:pose.angles,initialVelocity:'rest',fieldContact:false};}catch(e){session.close();throw e;}
    }
    if(action==='motors'){if(!s.physics)throw Error('Start physics first');return s.physics.command(args);}
    if(action==='zero'){if(!s.physics)throw Error('Start physics first');return s.physics.zero();}

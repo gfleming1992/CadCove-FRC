@@ -1,5 +1,15 @@
 # Native CadQuery authoring
 
+## Animation to simulation
+
+In the mechanism preview, `physics` stops animation and starts the native motor
+simulation at the current displayed joint angles. The pose is preserved, including
+nested steering/spin and coupled shafts; initial velocities are zero. This is a
+pose handoff, not a transfer of animation velocities or a structural analysis.
+The mechanism still needs explicit physical body, motor and transmission data.
+Existing scripted animation remains available for mechanisms whose physical
+parameters are incomplete. Returning to `cad` resets the preview to its bind pose.
+
 ## Optional solved motion and structural analysis
 
 For an open robot with reviewed mechanism definitions, use

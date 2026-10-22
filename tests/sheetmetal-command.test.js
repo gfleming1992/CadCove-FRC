@@ -8,7 +8,7 @@ import {createHash} from 'node:crypto';
 
 test('sheet metal contract requires external headless backend and explicit unfold inputs',async()=>{
  const cap=await sheetmetalCommand();expect(cap.requiresGUI).toBe(false);expect(cap.requiresEditor).toBe(false);
- expect(cap.commands).toEqual(['unfold']);
+ expect(cap.commands).toEqual(['unfold','preview']);
  await expect(sheetmetalCommand({action:'bend'})).rejects.toThrow('unfold');
  await expect(sheetmetalCommand({action:'unfold',input:'request.json',output:'out',freecad:'relative',sheetmetal:'/missing'})).rejects.toThrow('absolute');
 });
@@ -54,5 +54,14 @@ def build(ctx):
   const second=await run(path.join(root,'second'));expect(second.sourceRevision).toBe(first.sourceRevision);
   expect(await cache()).toEqual(before);expect(await fs.readFile(model,'utf8')).toBe(source);
   await expect(sheetmetalCommand({action:'unfold',workspace:root,input,output:path.join(root,'first')})).rejects.toThrow('already exists');
+  const preview=await sheetmetalCommand({action:'preview',workspace:root,input:path.join(root,'first'),output:path.join(root,'cad','fold-preview'),seconds:2});
+  expect(preview.foldPreview.entry).toBe('fold-preview/models.py');
+  expect(preview.foldPreview.durationSeconds).toBe(4);
+  const plan=JSON.parse(await fs.readFile(preview.foldPreview.playbackFile,'utf8'));
+  expect(plan.definition.bends.length).toBe(1);expect(plan.sourceRevision).toBeTruthy();
+  expect(plan.definition.validation.flatDifferenceMm3).toBeLessThan(.001);
+  expect(await fs.readFile(model,'utf8')).toBe(source);
+  await expect(sheetmetalCommand({action:'preview',workspace:root,input:path.join(root,'first'),output:path.join(root,'outside-source')})).rejects.toThrow('CAD source');
+
  }finally{await fs.rm(root,{recursive:true,force:true});}
 },60000);

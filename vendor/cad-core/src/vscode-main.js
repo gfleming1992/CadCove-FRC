@@ -121,7 +121,7 @@ host.onAgentRequest(async(method,args)=>{
  if(method==='motion'){
    // Bound pulley visuals need the current mechanism even on the first motion
    // command after opening CAD. Pose-only solutions remain model-independent.
-   if((args.action==='play-solved'&&!args.solution?.jointBindings?.length)||(args.action!=='play-solved'&&motion.playback?.kind==='solved'))return {ok:true,revision:head,...canvasCommand('motion',args)};
+   if(args.action==='play-fold'||(args.action==='state'&&!motion.model)||(args.action==='play-solved'&&!args.solution?.jointBindings?.length)||(args.action!=='play-solved'&&['solved','fold'].includes(motion.playback?.kind)))return {ok:true,revision:head,...canvasCommand('motion',args)};
    const file=config.entry.replace(/[^/]+$/, '')+'mechanism.json';
    if(!current.files[file])throw Error('Add mechanism.json beside this CAD entry');
    const mechanism=JSON.parse(current.files[file]);

@@ -20,7 +20,7 @@ import {buildCustomSimulator} from '../lib/custom-simulator.js';
 const optionsByCommand = {
   'sim-build': ['project'],
   'cad-sketch': ['action','input','output','python'],
-  'cad-sheetmetal': ['action','input','output','python','workspace','entry','freecad','sheetmetal','show','explain'],
+  'cad-sheetmetal': ['action','input','output','python','workspace','entry','freecad','sheetmetal','show','explain','seconds'],
   'cad-flat': ['action','input','output','python','workspace','entry','show'],
   'cad-drawing': ['action','input','output','python','workspace','entry','freecad'],
   'cad-analysis': ['action','input','output','python','workspace','entry','freecad','gmsh','ccx'],
@@ -152,7 +152,7 @@ async function run() {
     'cad-session': 'cadcove cad-session --workspace PATH [--entry models.py] [--python PYTHON] (warm JSONL build/inspect/export; stdin EOF stops worker)',
     'cad-mates': 'cadcove cad-mates --action capabilities|solve|solve-mechanism|animate|inspect-step [--input REQUEST.json --output NEW_RESULT.json] [--solver EXECUTABLE] (animate: --workspace PATH --target cad|field; uses current cached geometry and pose)',
     'cad-sketch': 'cadcove cad-sketch --action capabilities|solve [--input REQUEST.json --output NEW_RESULT.json --python PYTHON] (optional PlaneGCS)',
-    'cad-sheetmetal': 'cadcove cad-sheetmetal --action unfold --input REQUEST.json --output NEW_DIRECTORY --workspace . --freecad /path/to/FreeCADCmd --sheetmetal /path/to/SheetMetal [--explain] [--show]',
+    'cad-sheetmetal': 'cadcove cad-sheetmetal --action unfold|preview --input REQUEST.json|UNFOLD_DIRECTORY --output NEW_DIRECTORY --workspace . --freecad /path/to/FreeCADCmd --sheetmetal /path/to/SheetMetal [--seconds 4] [--explain] [--show]',
     'cad-flat': 'cadcove cad-flat --action export|preview|show --input FILE --output NEW_DIRECTORY --workspace . [--show] (full-size flat DXF export and SVG preview)',
     'cad-drawing': 'cadcove cad-drawing --action capabilities|export --input REQUEST.json --output NEW_DIRECTORY --workspace . --freecad /absolute/path/to/FreeCADCmd (optional TechDraw backend)',
     'cad-analysis': 'cadcove cad-analysis --action capabilities|prepare|solve --input REQUEST.json --output NEW_RESULT (solve: new directory; --workspace, --freecad, --gmsh, --ccx; optional external FEA)',

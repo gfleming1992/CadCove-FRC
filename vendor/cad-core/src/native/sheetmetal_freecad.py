@@ -77,6 +77,10 @@ def execute(root):
         # DXF is XY at Z=0, independent of which stock surface was the reference.
         bends.translate(App.Vector(0, 0, -bends.BoundBox.ZMin))
         flat.exportBrep(str(root/'flat.brep')); bends.exportBrep(str(root/'bends.brep'))
+        fold = None
+        if os.environ.get('CADCOVE_SHEETMETAL_FOLD') == '1':
+            from sheetmetal_fold import export_fold
+            fold = export_fold(shape, index, graph, bac, thickness, flat, matrix, root)
         # Store the actual loaded add-on Python source hashes, including dependencies
         # loaded from that directory, instead of claiming every install is the tested pin.
         sources = {}
@@ -89,7 +93,7 @@ def execute(root):
         return dict(ok=True, backend='FreeCAD SheetMetal NewUnfolder', guiUp=App.GuiUp, freecad=App.Version(),
                     networkx=nx.__version__, addonSources=sources, thicknessMm=thickness,
                     materialVolumeCheck=dict(errorMm3=volume_error,toleranceMm3=volume_tolerance),
-                    bendCount=len(infos), bends=bend_specs, bendLineSegments=len(bends.Edges),
+                    fold=fold, bendCount=len(infos), bends=bend_specs, bendLineSegments=len(bends.Edges),
                     files={n: hashlib.sha256((root/n).read_bytes()).hexdigest() for n in ('flat.brep', 'bends.brep')})
     finally: App.closeDocument(doc.Name)
 

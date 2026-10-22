@@ -5,7 +5,7 @@ export const CANVAS_COMMANDS=['capabilities','state','selection','highlight','op
 export function createCanvasCommands({viewer,motion,selection,unitsPerMm=1,mode=()=> 'cad',revision=()=>null}){
  const camera=(c,scale)=>({...c,...(c.target?{target:c.target.map(v=>v*scale)}:{}),...(c.distance!==undefined?{distance:c.distance*scale}:{})});
  return function command(method,args={}, {nativeUnits=false}={}){
-  if(method==='capabilities')return {version:1,commands:[...CANVAS_COMMANDS],units:{length:'mm',jointAngle:'deg',time:'s',cameraAngle:'rad'},mode:mode(),motion:mode()==='cad',beltSurfaces:true};
+  if(method==='capabilities')return {version:1,commands:[...CANVAS_COMMANDS],units:{length:'mm',jointAngle:'deg',time:'s',cameraAngle:'rad'},mode:mode(),motion:mode()==='cad',beltSurfaces:true,sheetMetalFolds:true};
   if(method==='state')return {mode:mode(),camera:camera(viewer.camera,nativeUnits?1:1/unitsPerMm),selection:selection.state(),motion:motion.state()};
   if(method==='selection')return args.ids===undefined?selection.state():selection.set(args.ids);
   if(method==='opacity')return selection.opacity(args);
@@ -19,9 +19,11 @@ export function createCanvasCommands({viewer,motion,selection,unitsPerMm=1,mode=
   }
   if(method!=='motion')throw Error('Unsupported canvas command: '+method);
   if(mode()!=='cad')throw Error('Return to CAD motion mode before commanding trajectories; physics uses motor controls');
+  if(args.action==='play-fold')return motion.playFold(args.solution,revision());
   if(args.action==='play-solved')return motion.playSolved(args.solution,revision());
-  if(['pause','resume','stop','reset','state','seek'].includes(args.action)&&motion.playback?.kind==='solved')return args.action==='seek'?motion.seek(args.seconds):motion[args.action]();
-  if(motion.playback?.kind==='solved'&&['rotate','move','animate','play'].includes(args.action))throw Error('Reset solved motion before issuing joint animation commands');
+  if(['pause','resume','stop','reset','state','seek'].includes(args.action)&&['solved','fold'].includes(motion.playback?.kind))return args.action==='seek'?motion.seek(args.seconds):motion[args.action]();
+  if(['solved','fold'].includes(motion.playback?.kind)&&['rotate','move','animate','play'].includes(args.action))throw Error('Reset solved motion before issuing joint animation commands');
+  if(args.action==='state')return motion.state();
   if(!motion.model)throw Error('No mechanism definition loaded');
   if(args.action==='list')return {joints:motion.model.joints,bodies:motion.model.bodies,relations:motion.model.relations,motors:motion.model.motors??[],beltSurfaces:motion.model.beltSurfaces??[]};
   if(args.action==='play')return motion.play(args.trajectory);

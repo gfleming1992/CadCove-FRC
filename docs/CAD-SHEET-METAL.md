@@ -105,3 +105,44 @@ collision/material-deformation simulation. Up to 24 bends, each at most 180 degr
 are supported by the explanation generator. The six-second loop folds, holds,
 and visually resets. Future DFM explanations can reuse this scripted artifact
 approach without interpreting a diagram as a manufacturing validation.
+
+## Interactive 3D fold preview
+
+For spatial explanations use the existing WebGPU CAD canvas. After unfolding,
+create a separate preview entry under the configured CAD source directory:
+
+```sh
+cadcove cad-sheetmetal --action preview --workspace . \
+  --input output/bracket-unfold --output cad/bracket-fold-preview \
+  --seconds 4 --freecad /absolute/path/to/FreeCADCmd \
+  --sheetmetal /absolute/path/to/FreeCAD_SheetMetal --show
+```
+
+Replace `cad` with your configured source directory. The input is the completed
+unfold job directory, not the original request JSON. It uses that frozen geometry
+snapshot, checks its hash, and revalidates it with the external backend. It does
+not rewrite your original model. The output directory must be new. With no
+`--show`, creation and building work headlessly; the returned `foldPreview.entry`
+and `playbackFile` can be opened and played later.
+
+The agent can orbit, pan and zoom during playback. The shared `canvas_command`
+accepts `motion` options `{action:"play-fold",solutionFile:"build/...json"}` with
+an explicit CAD entry. Pause, resume, seek (seconds), stop, reset and state use the
+same motion API as mechanisms. Reset restores flat stock. A new play-fold command
+starts at flat stock. Replay and seeking use the loaded meshes, not CAD rebuilds.
+The generated plan has one timed track per bend; `startSeconds` and `seconds`
+allow sequential or simultaneous folds. The CLI's `--seconds` is time per bend,
+with sequential illustrative ordering and a two-second final hold.
+
+Flat sections remain rigid; bend strips change curvature while preserving neutral
+axis length and thickness. Descendant regions follow their parent bends. Holes and
+profiles come from the actual unfolded geometry. Rendering subdivides bend strips
+once; the source geometry cache stays immutable. Plans require the exact preview
+source revision and reject invalid frames, missing regions and inconsistent trees.
+
+Initial scope: an acyclic tree of planar walls and cylindrical bends up to 180°,
+64 bends / 128 regions / 500,000 display vertices, and at most 300 seconds of motion.
+The recovered regions must partition the independently validated flat stock.
+This is a geometric folding illustration, not a forming/material simulation or a
+collision-checked press-brake sequence. Bend ordering is not manufacturing advice.
+SVG remains available for flat patterns and compact cross-section explanations.

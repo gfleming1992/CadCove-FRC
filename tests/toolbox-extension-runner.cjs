@@ -529,6 +529,40 @@ def build(ctx):
       assert.equal((await fs.stat(cache)).mtimeMs,stamp);report.solvedBelts={actualOndsel:true,firstCADCommandLoadsMechanism:true,field:true,fullTurns:true,reversal:true,reset:true,noGeometryCacheWrite:true};
     }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
   }
+  // Sheet folding uses the same canvas playback API without mechanism.json.
+  {
+    api.closeAll();await delay(200);
+    const configFile=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(configFile),dir=path.join(folder,'fold-cad');
+    await fs.mkdir(dir,{recursive:true});
+    try{
+      const length=Math.PI/2*3.8;
+      await fs.writeFile(path.join(dir,'models.py'),`import cadquery as cq
+def build(ctx):
+ return [dict(id='strip',color='#73b9df',shape=cq.Workplane('XY').box(10,${length},2).translate((5,${length/2},-1)))]
+`);
+      await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'fold-cad',buildDirectory:'fold-build',entryPoint:'models.py',pythonPath:testPython}));
+      await api.openModel(vscode.Uri.file(path.join(dir,'models.py')));const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(ready.phase,'ready',JSON.stringify(ready));
+      const canvas=async(action,options={})=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action,options,target:'cad',entry:'models.py'}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
+      assert.equal((await canvas('capabilities')).sheetMetalFolds,true);
+      const solution={schema:1,sourceRevision:ready.revision,definition:{schema:1,units:'mm-deg-s',thicknessMm:2,bends:[{id:'bend',origin:[0,0,0],axes:[[1,0,0],[0,1,0],[0,0,1]],angleDeg:90,lengthMm:length,neutralOffsetMm:-.8}],zones:[{id:'strip',chain:['bend'],bend:'bend'}]},tracks:[{bend:'bend',startSeconds:0,seconds:2}],holdSeconds:1};
+      const solutionFile='fold-motion.json';await fs.writeFile(path.join(folder,solutionFile),JSON.stringify(solution));
+      const cache=path.join(folder,'fold-build/cad-cache/models.py/scene.bin'),stamp=(await fs.stat(cache)).mtimeMs;
+      await canvas('view',{camera:{target:[5,3,0],distance:45}});
+      await canvas('motion',{action:'play-fold',solutionFile});
+      await canvas('selection',{ids:['strip']});
+      await canvas('motion',{action:'seek',seconds:1});
+      assert.equal((await canvas('state')).motion.playback.kind,'fold');
+      await canvas('view',{zoom:.8});assert.equal((await canvas('state')).camera.distance,36);
+      await canvas('motion',{action:'resume'});await delay(2500);
+      assert.equal((await canvas('motion',{action:'state'})).playback.status,'completed');
+      assert.deepEqual((await canvas('selection')).selectedIds,['strip']);
+      await canvas('motion',{action:'reset'});
+      assert.equal((await canvas('motion',{action:'state'})).playback,null);
+      await assert.rejects(()=>canvas('motion',{action:'play-fold',solution:{...solution,sourceRevision:'stale'}}),/stale/);
+      assert.equal((await fs.stat(cache)).mtimeMs,stamp);
+      report.sheetMetalFold={play:true,seek:true,resume:true,reset:true,selection:true,camera:true,staleRejected:true,noGeometryCacheWrite:true};
+    }finally{api.closeAll();await fs.writeFile(configFile,saved);}
+  }
   await fs.writeFile(reportFile,JSON.stringify(report,null,2));api.closeAll();
  }catch(error){if(simulationStarted){await api?.stopSimulation().catch(()=>{});await delay(1500);simulationStarted=false;}await fs.writeFile(reportFile,JSON.stringify({ok:false,error:String(error.stack),stdout:error.stdout,diagnostics:api?.getDiagnostics()},null,2));api?.closeAll();throw error;}
  finally{await mcpClient?.close();if(simulationStarted)await api?.stopSimulation().catch(()=>{});}

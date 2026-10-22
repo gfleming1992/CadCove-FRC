@@ -20,6 +20,7 @@ test('solved motion loads large workspace artifacts while rejecting unsafe or co
   const command={action:'play-solved',solutionFile:'motion.json'};
   expect((await fs.stat(path.join(root,'motion.json'))).size).toBeGreaterThan(65536);
   expect(await canvasMotionInput(root,'motion',command)).toEqual({action:'play-solved',solution});
+  expect(await canvasMotionInput(root,'motion',{action:'play-fold',solutionFile:'motion.json'})).toEqual({action:'play-fold',solution});
   expect(await canvasMotionInput(root,'motion',{action:'pause'})).toEqual({action:'pause'});
   await expect(canvasMotionInput(root,'motion',{...command,solution})).rejects.toThrow('cannot be combined');
   await expect(canvasMotionInput(root,'motion',{...command,action:'rotate'})).rejects.toThrow('play-solved');

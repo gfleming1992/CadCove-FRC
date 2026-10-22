@@ -241,3 +241,7 @@ export success. Do not send dimensioned/scaled drawings as cutting outlines.
 For bent sheet stock, `cad-sheetmetal --action unfold` reuses the optional headless
 FreeCAD SheetMetal library. Read `.cadcove/skills/references/cad-sheet-metal.md`
 for explicit thickness/K-factor inputs, checked root faces, and DXF/SVG outputs.
+
+For an interactive fold explanation, use `cad-sheetmetal --action preview` on a
+completed unfold job; see `cad-sheet-metal.md`. It opens the normal orbit/pan/zoom
+canvas and uses shared motion playback. It illustrates folds, not verified tooling.

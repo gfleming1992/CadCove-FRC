@@ -77,5 +77,5 @@ test('switching to a different scene discards old fold topology before reset',()
  const motion=new MechanismMotion(viewer);motion.playFold(request(),'rev');
  viewer.scene={parts:[{id:'new'}]};const I=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1];
  motion.playSolved({schema:1,units:'mm-deg-s',sourceRevision:'new-rev',bodies:[{id:'new',parts:['new'],pose:I}],frames:[{time:0,poses:[I]},{time:1,poses:[I]}]},'new-rev');
- motion.reset();expect(motion.folds).toBe(null);
+ motion.reset();expect(motion.surfaces).toBe(null);
 });

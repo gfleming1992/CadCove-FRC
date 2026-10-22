@@ -1,3 +1,4 @@
+import {compileCutMotion,CutSurfaces} from './cut-motion.js';
 import {compileFoldMotion,FoldSurfaces} from './fold-motion.js';
 import {compileSolvedMotion,evaluateSolvedMotion} from './solved-motion.js';
 import {BeltSurfaces} from './belt-motion.js';
@@ -5,7 +6,7 @@ import {validateMechanism,mechanismPose,resolveJoint,identityTransform} from './
 export class MechanismMotion {
   constructor(viewer){this.viewer=viewer;this.angles={};this.running=false;this.frame=null;this.scene=null;}
   stop(){this.running=false;if(this.frame!==null)cancelAnimationFrame(this.frame);this.frame=null;if(this.playback?.status==='playing')this.playback.status='stopped';return this.state();}
-  state(){return {running:this.running,angles:{...this.angles},error:this.error??null,playback:this.playback?{id:this.playback.id,elapsed:this.playback.elapsed,duration:this.playback.duration,status:this.playback.status,samples:['solved','fold'].includes(this.playback.kind)?null:trajectorySamples(this.playback,this.playback.elapsed),kind:this.playback.kind??'trajectory'}:null};}
+  state(){return {running:this.running,angles:{...this.angles},error:this.error??null,playback:this.playback?{id:this.playback.id,elapsed:this.playback.elapsed,duration:this.playback.duration,status:this.playback.status,samples:['solved','fold','cut'].includes(this.playback.kind)?null:trajectorySamples(this.playback,this.playback.elapsed),kind:this.playback.kind??'trajectory'}:null};}
   load(value){
     const scene=this.viewer.scene;
     if(!scene)throw Error('Build the model first');
@@ -26,7 +27,7 @@ export class MechanismMotion {
       }
       const belts=new BeltSurfaces(model,scene);
       this.pendingTopology={...(previous?this.belts?.originals():{}),...belts.renderParts()};
-      if(this.folds&&this.scene===scene){this.viewer.setDeformedTopology?.(this.folds.originals());}this.folds=null;
+      if(this.surfaces&&this.scene===scene){this.viewer.setDeformedTopology?.(this.surfaces.originals());}this.surfaces=null;
       this.stop();this.playback=null;this.model=model;this.scene=scene;this.angles=pose.angles;this.error=null;
       this.belts=belts;
       // Clear removed bindings and preserve unchanged joints without replacing
@@ -48,27 +49,36 @@ export class MechanismMotion {
   }
 
   rotate(part,degrees){const pose=mechanismPose(this.model,part,degrees,this.angles);this.stop();this.playback=null;this.apply(pose);return this.state();}
-  reset(){this.stop();if(this.folds){this.viewer.setDeformedTopology?.(this.folds.originals());this.folds=null;}this.playback=null;this.angles=Object.fromEntries((this.model?.joints??[]).map(j=>[j.id,j.bindAngleDeg]));const transforms=Object.fromEntries(this.scene.parts.map(p=>[p.id,identityTransform()]));this.apply({angles:this.angles,transforms});this.error=null;return this.state();}
+  reset(){this.stop();if(this.surfaces){this.viewer.setDeformedTopology?.(this.surfaces.originals());this.surfaces=null;}this.playback=null;this.angles=Object.fromEntries((this.model?.joints??[]).map(j=>[j.id,j.bindAngleDeg]));const transforms=Object.fromEntries(this.scene.parts.map(p=>[p.id,identityTransform()]));this.apply({angles:this.angles,transforms});this.error=null;return this.state();}
   playSolved(value,revision){
     const scene=this.viewer.scene;if(!scene)throw Error('Build the model first');
     const plan=compileSolvedMotion(value,scene.parts.map(p=>p.id),revision,this.scene===scene?this.model:null);
     // Restore any belt deformation from the existing animator before replacing it.
     if(this.scene===scene)this.reset();else this.stop();
-    if(this.scene!==scene){this.model=null;this.belts=null;this.folds=null;this.pendingTopology=null;}
+    if(this.scene!==scene){this.model=null;this.belts=null;this.surfaces=null;this.pendingTopology=null;}
     this.scene=scene;this.error=null;
     this.playback={...plan,id:crypto.randomUUID(),elapsed:0,status:'playing'};
     this.apply(evaluateSolvedMotion(plan,0));return this.resume();
+  }
+  playCut(value,revision){
+    const scene=this.viewer.scene;if(!scene)throw Error('Build the model first');
+    const plan=compileCutMotion(value,scene,revision),surfaces=new CutSurfaces(plan,scene);
+    if(this.scene===scene)this.reset();else this.stop();
+    this.scene=scene;this.model=null;this.belts=null;this.surfaces=surfaces;this.error=null;
+    this.pendingTopology=surfaces.renderParts();
+    this.playback={...plan,id:crypto.randomUUID(),elapsed:0,status:'playing'};
+    this.apply(surfaces.evaluate(plan,0));return this.resume();
   }
   playFold(value,revision){
     const scene=this.viewer.scene;if(!scene)throw Error('Build the model first');
     const plan=compileFoldMotion(value,scene,revision),folds=new FoldSurfaces(plan,scene);
     if(this.scene===scene)this.reset();else this.stop();
-    this.scene=scene;this.model=null;this.belts=null;this.folds=folds;this.error=null;
+    this.scene=scene;this.model=null;this.belts=null;this.surfaces=folds;this.error=null;
     this.pendingTopology=folds.renderParts();
     this.playback={...plan,id:crypto.randomUUID(),elapsed:0,status:'playing'};
     this.apply(folds.evaluate(plan,0));return this.resume();
   }
-  evaluate(plan,time){return plan.kind==='fold'?this.folds.evaluate(plan,time):plan.kind==='solved'?evaluateSolvedMotion(plan,time):evaluateTrajectory(this.model,plan,time);}
+  evaluate(plan,time){return ['fold','cut'].includes(plan.kind)?this.surfaces.evaluate(plan,time):plan.kind==='solved'?evaluateSolvedMotion(plan,time):evaluateTrajectory(this.model,plan,time);}
   play(request){
     const plan=compileTrajectory(this.model,request,this.angles);
     this.stop();this.error=null;

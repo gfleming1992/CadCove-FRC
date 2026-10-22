@@ -245,3 +245,14 @@ for explicit thickness/K-factor inputs, checked root faces, and DXF/SVG outputs.
 For an interactive fold explanation, use `cad-sheetmetal --action preview` on a
 completed unfold job; see `cad-sheet-metal.md`. It opens the normal orbit/pan/zoom
 canvas and uses shared motion playback. It illustrates folds, not verified tooling.
+
+## Cutting path explanations
+
+Use `cad-cut-preview --action preview --workspace PATH --input paths.json
+--output NEW_CAD_SOURCE_DIRECTORY --show` for a 3D stock-removal explanation.
+Provide explicit mm-s stock, tool, resolution and timed cut/rapid XYZ moves;
+see `docs/CAD-CUT-PREVIEW.md`. Keep both cutouts and scrap visible; only swept
+material disappears. This is a rasterized planar preview, not CAM planning or
+verified G-code. Reuse `canvas` motion `play-cut` with the returned solutionFile
+and pause/resume/seek/reset. Do not rebuild CAD for playback or silently
+substitute an outline for a supplied toolpath.

@@ -1,6 +1,6 @@
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {mkdir, rm, readFile, writeFile, copyFile, cp, realpath} from 'node:fs/promises';
+import {mkdir, rm, readFile, writeFile, copyFile, realpath} from 'node:fs/promises';
 import * as esbuild from 'esbuild';
 import {validateRuntimeManifest} from '../lib/runtime-install.js';
 import {validateCliBuild} from '../lib/cli-build-provenance.js';
@@ -33,7 +33,13 @@ await copyFile(path.join(root,'LICENSE'),path.join(out,'LICENSE.txt'));
 await writeFile(path.join(out,'.vscodeignore'),'*.vsix\n');
 const viewer=await Bun.build({entrypoints:[path.join(core,'src/vscode-main.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'main.js'});
 if(!viewer.success)throw Error(viewer.logs.join('\n'));
-await cp(path.join(core,'src/native'),path.join(media,'native'),{recursive:true});
+// Tests may leave bytecode or local solver build outputs beside the sources.
+// Only the reviewed, hash-checked files belong in a distributable extension.
+for(const name of Object.keys(pin.files).filter(name=>name.startsWith('src/native/'))){
+ const destination=path.join(media,name.slice('src/'.length));
+ await mkdir(path.dirname(destination),{recursive:true});
+ await copyFile(path.join(core,name),destination);
+}
 await copyFile(path.join(core,'index.html'),path.join(media,'index.html'));
 const simulation=await Bun.build({entrypoints:[path.join(root,'web/editor-simulation.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'simulation.js'});
 if(!simulation.success)throw Error(simulation.logs.join('\n'));

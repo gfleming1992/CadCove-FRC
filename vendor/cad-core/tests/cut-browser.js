@@ -26,6 +26,8 @@ try{
   return {deterministic,updateMs,sameCamera:JSON.stringify(v.camera)===camera,sameBuffer:v.assemblyVertices===buffer,sameScene:v.scene===scene,sourceUnchanged:source.every((x,i)=>x===scene.parts[0].positions[i]),selected};
  });
  await page.screenshot({path:'build/cut-finished.png'});
+ await page.evaluate(()=>{const {api,motion:m}=window.cutTest;api('motion',{action:'seek',seconds:Math.min(3,m.playback.duration/2)});});
+ await page.screenshot({path:'build/cut-active.png'});
  const before=await page.evaluate(()=>({...window.cutTest.viewer.camera}));
  await page.evaluate(()=>{const {api}=window.cutTest;api('motion',{action:'seek',seconds:0});api('motion',{action:'resume'});});
  await page.mouse.move(500,350);await page.mouse.down();await page.mouse.move(540,375,{steps:5});await page.mouse.up();await page.mouse.wheel(0,-80);

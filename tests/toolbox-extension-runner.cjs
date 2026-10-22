@@ -570,12 +570,13 @@ def build(ctx):
     await fs.mkdir(dir,{recursive:true});
     try{
       await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'cut-cad',buildDirectory:'cut-build',entryPoint:'preview/models.py',pythonPath:testPython}));
-      const request={schema:1,units:'mm-s',stock:{id:'stock',origin:[0,0,0],size:[20,12,3]},tool:{id:'tool',kind:'router',diameterMm:2,lengthMm:8},resolutionMm:.5,start:[3,3,5],moves:[{mode:'cut',to:[3,3,0],seconds:1},{mode:'cut',to:[17,3,0],seconds:1}]};
+      const request={schema:1,units:'mm-s',stock:{id:'stock',origin:[0,0,0],size:[20,12,3]},tool:{id:'tool',kind:'bit',diameterMm:2,lengthMm:8},resolutionMm:.5,start:[3,3,5],moves:[{mode:'cut',to:[3,3,0],seconds:1},{mode:'cut',to:[17,3,0],seconds:1}]};
       const input=path.join(folder,'cut-input.json');await fs.writeFile(input,JSON.stringify(request));
       const made=JSON.parse((await execute(runtime,['cad-cut-preview','--action','preview','--workspace',folder,'--input',input,'--output',path.join(dir,'preview'),'--python',testPython],{timeout:90000,maxBuffer:4*1024*1024})).stdout);
       await api.openModel(vscode.Uri.file(path.join(dir,'preview/models.py')));const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(ready.phase,'ready',JSON.stringify(ready));
-      const canvas=async(action,options={})=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action,options,target:'cad',entry:'preview/models.py'}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
-      assert.equal((await canvas('capabilities')).stockRemoval,true);
+      let cutEntry='preview/models.py';
+      const canvas=async(action,options={})=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action,options,target:'cad',entry:cutEntry}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
+      assert.equal((await canvas('capabilities')).stockRemoval,true);assert.deepEqual((await canvas('capabilities')).cutTools,['bit','laser']);
       const cache=path.join(folder,'cut-build/cad-cache/preview/models.py/scene.bin'),stamp=(await fs.stat(cache)).mtimeMs;
       await canvas('motion',{action:'play-cut',solutionFile:path.relative(folder,made.playbackFile)});
       await canvas('motion',{action:'seek',seconds:1});assert.equal((await canvas('state')).motion.playback.kind,'cut');
@@ -585,7 +586,21 @@ def build(ctx):
       assert.deepEqual((await canvas('selection')).selectedIds,['stock']);assert.equal((await canvas('state')).camera.distance,45);
       await canvas('motion',{action:'reset'});assert.equal((await canvas('motion',{action:'state'})).playback,null);
       assert.equal((await fs.stat(cache)).mtimeMs,stamp);
-      report.stockRemoval={cli:true,play:true,seek:true,resume:true,reset:true,selection:true,camera:true,noGeometryCacheWrite:true};
+      api.closeAll();await delay(200);
+      const laser={...request,tool:{id:'tool',kind:'laser',diameterMm:1.5,lengthMm:8},start:[3,3,0],moves:[{mode:'cut',to:[17,3,0],seconds:2},{mode:'rapid',to:[17,9,0],seconds:1}]};
+      await fs.writeFile(input,JSON.stringify(laser));
+      const laserMade=JSON.parse((await execute(runtime,['cad-cut-preview','--action','preview','--workspace',folder,'--input',input,'--output',path.join(dir,'laser'),'--python',testPython],{timeout:90000,maxBuffer:4*1024*1024})).stdout);
+      cutEntry='laser/models.py';await api.openModel(vscode.Uri.file(path.join(dir,cutEntry)));
+      const laserReady=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(laserReady.phase,'ready',JSON.stringify(laserReady));
+      const laserCache=path.join(folder,'cut-build/cad-cache/laser/models.py/scene.bin'),laserStamp=(await fs.stat(laserCache)).mtimeMs;
+      await canvas('motion',{action:'play-cut',solutionFile:path.relative(folder,laserMade.playbackFile)});
+      await canvas('motion',{action:'seek',seconds:1});
+      assert.equal((await canvas('opacity')).parts.find(p=>p.id==='tool')?.opacity??1,1);
+      await canvas('selection',{ids:['tool-nozzle']});assert.deepEqual((await canvas('selection')).selectedIds,['tool-nozzle']);
+      await canvas('motion',{action:'seek',seconds:2.5});assert.equal((await canvas('opacity')).parts.find(p=>p.id==='tool')?.opacity,0);
+      await canvas('motion',{action:'reset'});assert.equal((await canvas('opacity')).parts.find(p=>p.id==='tool')?.opacity,0);
+      assert.equal((await fs.stat(laserCache)).mtimeMs,laserStamp);
+      report.stockRemoval={cli:true,play:true,seek:true,resume:true,reset:true,selection:true,camera:true,noGeometryCacheWrite:true,laserNozzle:true,laserBeamCutOnly:true};
     }finally{api.closeAll();await fs.writeFile(configFile,saved);}
   }
   await fs.writeFile(reportFile,JSON.stringify(report,null,2));api.closeAll();

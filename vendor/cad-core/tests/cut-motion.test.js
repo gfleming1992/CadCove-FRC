@@ -2,7 +2,7 @@ import {test,expect} from 'bun:test';
 import {validateCutRequest,compileCutMotion,CutSurfaces} from '../src/core/cut-motion.js';
 import {MechanismMotion} from '../src/core/mechanism-motion.js';
 import {createCanvasCommands} from '../src/core/canvas-commands.js';
-export const request=()=>({schema:1,sourceRevision:'rev',units:'mm-s',stock:{id:'stock',origin:[0,0,0],size:[20,12,3]},tool:{id:'tool',kind:'router',diameterMm:2,lengthMm:8},resolutionMm:.5,start:[3,3,5],moves:[{mode:'cut',to:[3,3,1],seconds:1},{mode:'cut',to:[17,3,1],seconds:3},{mode:'rapid',to:[17,3,5],seconds:1},{mode:'rapid',to:[3,8,5],seconds:1},{mode:'cut',to:[3,8,-1],seconds:1},{mode:'cut',to:[17,8,-1],seconds:3}]});
+export const request=()=>({schema:1,sourceRevision:'rev',units:'mm-s',stock:{id:'stock',origin:[0,0,0],size:[20,12,3]},tool:{id:'tool',kind:'bit',diameterMm:2,lengthMm:8},resolutionMm:.5,start:[3,3,5],moves:[{mode:'cut',to:[3,3,1],seconds:1},{mode:'cut',to:[17,3,1],seconds:3},{mode:'rapid',to:[17,3,5],seconds:1},{mode:'rapid',to:[3,8,5],seconds:1},{mode:'cut',to:[3,8,-1],seconds:1},{mode:'cut',to:[17,8,-1],seconds:3}]});
 export function fixture(){
  const vertices=[[0,0,0],[20,0,0],[20,12,0],[0,12,0],[0,0,3],[20,0,3],[20,12,3],[0,12,3]];
  const stock={id:'stock',color:'#b9c5d0',positions:new Float32Array(vertices.flat()),normals:new Float32Array(vertices.map(()=>[0,0,1]).flat()),indices:new Uint32Array([0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7])};
@@ -21,6 +21,8 @@ test('stock removal preserves pockets, finished islands, scrap and rapid moves',
  const q=compileCutMotion(loop,scene,'rev'),b=new CutSurfaces(q,scene);b.evaluate(q,4);expect(at(b,10,6)).toBe(3);expect(at(b,1,1)).toBe(3);expect(at(b,5,6)).toBe(0);
 });
 test('laser kerf, angled depth ramps, backwards seek, stale and oversized inputs',()=>{
+ const decimal=request();decimal.tool.diameterMm=.6;decimal.resolutionMm=.2;expect(validateCutRequest(decimal).nx).toBe(100);
+ const alias=request();alias.tool.kind='router';expect(compileCutMotion(alias,fixture(),'rev').tool.kind).toBe('router');
  const r=request();r.tool.kind='laser';r.start=[3,3,0];r.moves=[{mode:'cut',to:[17,3,0],seconds:2}];const p=compileCutMotion(r,fixture(),'rev'),s=new CutSurfaces(p,fixture());s.evaluate(p,2);expect(at(s,10,3)).toBe(0);expect(at(s,10,5)).toBe(3);s.evaluate(p,0);expect(at(s,10,3)).toBe(3);
  for(const mutate of [p=>p.sourceRevision='stale',p=>p.stock.size[0]=19,p=>p.resolutionMm=.0001,p=>p.resolutionMm=2,p=>p.moves[0].seconds=NaN,p=>p.tool.id='stock']){const v=request();mutate(v);expect(()=>compileCutMotion(v,fixture(),'rev')).toThrow();}
  r.moves[0].to[2]=1;expect(()=>validateCutRequest(r)).toThrow('Laser');
@@ -36,3 +38,20 @@ test('cut uses shared playback, preserves source/camera, resets and rejects befo
  const previous=motion.playback;expect(()=>api('motion',{action:'play-cut',solution:{...request(),sourceRevision:'bad'}})).toThrow();expect(motion.playback).toBe(previous);
  api('motion',{action:'reset'});expect(topology.stock).toBe(scene.parts[0]);expect(viewer.camera).toBe(camera);expect(viewer.scene).toBe(scene);
 });
+
+ test('laser nozzle follows the head, beam ends on the surface and is off during travel and reset',()=>{
+ const scene=fixture();scene.parts.push({...scene.parts[1],id:'nozzle'});
+ const r=request();r.tool.kind='laser';r.tool.nozzleId='nozzle';r.start=[3,3,0];r.moves=[{mode:'cut',to:[17,3,0],seconds:2},{mode:'rapid',to:[17,9,0],seconds:2}];
+ const p=compileCutMotion(r,scene,'rev'),s=new CutSurfaces(p,scene),cut=s.evaluate(p,1);
+ expect(cut.transforms.nozzle).toEqual(cut.transforms.tool);expect(cut.opacity.tool).toBe(1);
+ const zs=Array.from(cut.deformations.tool.positions).filter((_,i)=>i%3===2);expect(Math.min(...zs)).toBe(3);expect(Math.max(...zs)).toBe(8);
+ expect(s.evaluate(p,3).opacity.tool).toBe(0);expect(s.evaluate(p,4).opacity.tool).toBe(0);expect(s.resetOpacity().tool).toBe(0);
+ r.tool.lengthMm=2;expect(()=>compileCutMotion(r,scene,'rev')).toThrow('above');
+ });
+
+ test('thin kerf tangent cells are identical across frame subdivision and direct seek',()=>{
+ const r=request();r.tool.kind='laser';r.tool.diameterMm=.6;r.resolutionMm=.2;r.start=[3,3,0];r.moves=[{mode:'rapid',to:[3,3,0],seconds:2},{mode:'cut',to:[17,3,0],seconds:5}];
+ const scene=fixture(),p=compileCutMotion(r,scene,'rev'),s=new CutSurfaces(p,scene);
+ for(let t=0;t<7;t+=.1)s.evaluate(p,t);s.evaluate(p,7);const sampled=Array.from(s.heights);
+ s.evaluate(p,0);s.evaluate(p,7);expect(Array.from(s.heights)).toEqual(sampled);
+ });

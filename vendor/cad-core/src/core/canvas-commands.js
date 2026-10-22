@@ -5,7 +5,7 @@ export const CANVAS_COMMANDS=['capabilities','state','selection','highlight','op
 export function createCanvasCommands({viewer,motion,selection,unitsPerMm=1,mode=()=> 'cad',revision=()=>null}){
  const camera=(c,scale)=>({...c,...(c.target?{target:c.target.map(v=>v*scale)}:{}),...(c.distance!==undefined?{distance:c.distance*scale}:{})});
  return function command(method,args={}, {nativeUnits=false}={}){
-  if(method==='capabilities')return {version:1,commands:[...CANVAS_COMMANDS],units:{length:'mm',jointAngle:'deg',time:'s',cameraAngle:'rad'},mode:mode(),motion:mode()==='cad',beltSurfaces:true,sheetMetalFolds:true,stockRemoval:true};
+  if(method==='capabilities')return {version:1,commands:[...CANVAS_COMMANDS],units:{length:'mm',jointAngle:'deg',time:'s',cameraAngle:'rad'},mode:mode(),motion:mode()==='cad',beltSurfaces:true,sheetMetalFolds:true,stockRemoval:true,cutTools:['bit','laser']};
   if(method==='state')return {mode:mode(),camera:camera(viewer.camera,nativeUnits?1:1/unitsPerMm),selection:selection.state(),motion:motion.state()};
   if(method==='selection')return args.ids===undefined?selection.state():selection.set(args.ids);
   if(method==='opacity')return selection.opacity(args);

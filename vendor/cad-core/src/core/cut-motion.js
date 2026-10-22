@@ -4,9 +4,10 @@ import {identityTransform} from './mechanism.js';
 const vec=v=>Array.isArray(v)&&v.length===3&&v.every(x=>Number.isFinite(x)&&Math.abs(x)<=1e6);
 export function validateCutRequest(value){
  const p=structuredClone(value),s=p?.stock,t=p?.tool;
- if(p?.schema!==1||p.units!=='mm-s'||!s||!vec(s.origin)||!vec(s.size)||s.size.some(x=>x<=0)||typeof s.id!=='string'||!s.id||!t||!['router','laser'].includes(t.kind)||typeof t.id!=='string'||!t.id||t.id===s.id||!Number.isFinite(t.diameterMm)||t.diameterMm<=0||!Number.isFinite(t.lengthMm)||t.lengthMm<=0||!vec(p.start))throw Error('Expected mm-s rectangular stock, tool and start point');
- if(!Number.isFinite(p.resolutionMm)||p.resolutionMm<=0||p.resolutionMm>t.diameterMm/3)throw Error('Stock resolution must be positive and at most one third of cutter diameter or kerf');
- if(![s.id,t.id].every(id=>/^[a-zA-Z0-9_.:/-]{1,200}$/.test(id))||t.diameterMm>10000||t.lengthMm>10000)throw Error('Invalid stock/tool identifier or dimensions');
+ if(p?.schema!==1||p.units!=='mm-s'||!s||!vec(s.origin)||!vec(s.size)||s.size.some(x=>x<=0)||typeof s.id!=='string'||!s.id||!t||!['bit','router','laser'].includes(t.kind)||typeof t.id!=='string'||!t.id||t.id===s.id||!Number.isFinite(t.diameterMm)||t.diameterMm<=0||!Number.isFinite(t.lengthMm)||t.lengthMm<=0||!vec(p.start))throw Error('Expected mm-s rectangular stock, tool and start point');
+ if(!Number.isFinite(p.resolutionMm)||p.resolutionMm<=0||p.resolutionMm>t.diameterMm/3*(1+1e-12))throw Error('Stock resolution must be positive and at most one third of cutter diameter or kerf');
+ if(t.nozzleId!==undefined&&(t.kind!=='laser'||typeof t.nozzleId!=='string'||[s.id,t.id].includes(t.nozzleId)))throw Error('Laser nozzle must have a distinct part ID');
+ if(![s.id,t.id,...(t.nozzleId?[t.nozzleId]:[])].every(id=>/^[a-zA-Z0-9_.:/-]{1,200}$/.test(id))||t.diameterMm>10000||t.lengthMm>10000)throw Error('Invalid stock/tool identifier or dimensions');
  const nx=Math.ceil(s.size[0]/p.resolutionMm),ny=Math.ceil(s.size[1]/p.resolutionMm);
  if(nx*ny>40000)throw Error('Cut preview exceeds 40000 stock cells; reduce stock area or use a coarser resolution within the kerf limit');
  if(!Array.isArray(p.moves)||!p.moves.length||p.moves.length>2000)throw Error('Provide 1–2000 explicit linear tool moves');
@@ -14,6 +15,7 @@ export function validateCutRequest(value){
  p.moves=p.moves.map(m=>{
   if(!['cut','rapid'].includes(m.mode)||!vec(m.to)||!Number.isFinite(m.seconds)||m.seconds<=0)throw Error('Each move needs cut/rapid mode, XYZ to, and positive seconds');
   if(t.kind==='laser'&&m.mode==='cut'&&(Math.abs(from[2]-m.to[2])>1e-8||m.to[2]>s.origin[2]))throw Error('Laser cut moves must be through the stock at a constant Z at or below its bottom');
+  if(t.kind==='laser'&&m.mode==='cut'&&m.to[2]+t.lengthMm<=s.origin[2]+s.size[2])throw Error('Laser nozzle must be above the stock surface');
   const out={...m,from:[...from],start:time};time+=m.seconds;from=m.to;return out;
  });
  const hold=p.holdSeconds??0;if(!Number.isFinite(hold)||hold<0||time+hold>300)throw Error('Cut preview duration must be at most 300 seconds');
@@ -22,7 +24,7 @@ export function validateCutRequest(value){
 export function compileCutMotion(value,scene,revision){
  if(!revision||value?.sourceRevision!==revision)throw Error('Cut preview is stale or missing its CAD source revision');
  const p=validateCutRequest(value),stock=scene.parts.find(v=>v.id===p.stock.id),tool=scene.parts.find(v=>v.id===p.tool.id);
- if(!stock||!tool)throw Error('Cut stock or tool is missing from this scene');
+ if(!stock||!tool||p.tool.nozzleId&&!scene.parts.some(v=>v.id===p.tool.nozzleId))throw Error('Cut stock or tool is missing from this scene');
  // Replacement is only permitted for an uncut box, not an arbitrary CAD part.
  const lo=p.stock.origin,hi=lo.map((v,i)=>v+p.stock.size[i]),eps=1e-4;
  let volume=0;
@@ -39,16 +41,26 @@ export function compileCutMotion(value,scene,revision){
 // Intersect the XY segment with a disk; Z varies linearly through this interval.
 function toolDepth(x,y,a,b,r){
  const vx=b[0]-a[0],vy=b[1]-a[1],dx=a[0]-x,dy=a[1]-y,A=vx*vx+vy*vy;
- if(A<1e-20)return dx*dx+dy*dy<=r*r?Math.min(a[2],b[2]):Infinity;
- const B=2*(dx*vx+dy*vy),C=dx*dx+dy*dy-r*r,D=B*B-4*A*C;
- if(D<0)return Infinity;
- const low=Math.max(0,(-B-Math.sqrt(D))/(2*A)),high=Math.min(1,(-B+Math.sqrt(D))/(2*A));
+ if(A<1e-20)return dx*dx+dy*dy<=(r+1e-9*Math.max(1,r))**2?Math.min(a[2],b[2]):Infinity;
+ // Projection avoids cancellation of B²-4AC for a narrow kerf on a long
+ // segment. A sub-nanometre pad makes tangent cell classification independent
+ // of how the timeline was subdivided into rendered frames.
+ const padded=r+1e-9*Math.max(1,r),centre=-(dx*vx+dy*vy)/A;
+ const px=dx+centre*vx,py=dy+centre*vy,remaining=padded*padded-px*px-py*py;
+ if(remaining<0)return Infinity;
+ const half=Math.sqrt(remaining/A),low=Math.max(0,centre-half),high=Math.min(1,centre+half);
  if(low>high)return Infinity;
  return a[2]+(b[2]-a[2])*(b[2]>=a[2]?low:high);
 }
 export class CutSurfaces {
  constructor(plan,scene){
   this.plan=plan;this.source=scene.parts.find(p=>p.id===plan.stock.id);
+  if(plan.tool.kind==='laser'){
+   this.beam=scene.parts.find(p=>p.id===plan.tool.id);
+   this.beamPositions=new Float32Array(this.beam.positions.length);
+   this.beamLow=Infinity;let high=-Infinity;for(let i=2;i<this.beam.positions.length;i+=3){this.beamLow=Math.min(this.beamLow,this.beam.positions[i]);high=Math.max(high,this.beam.positions[i]);}this.beamSpan=high-this.beamLow;
+   if(this.beamSpan<=0)throw Error('Laser beam mesh must have nonzero height');
+  }
   const count=plan.nx*plan.ny;this.heights=new Float64Array(count);
   this.positions=new Float32Array(count*24*3);this.normals=new Float32Array(this.positions.length);const indices=new Uint32Array(count*36);
   for(let i=0;i<count*6;i++){const v=i*4;indices.set([v,v+1,v+2,v,v+2,v+3],i*6);}
@@ -56,7 +68,8 @@ export class CutSurfaces {
   this.evaluate(plan,0);
  }
  renderParts(){return {[this.source.id]:this.mesh};}
- originals(){return {[this.source.id]:this.source};}
+ originals(){return {[this.source.id]:this.source,...(this.beam?{[this.beam.id]:this.beam}:{})};}
+ resetOpacity(){return this.beam?{[this.beam.id]:0}:{};}
  carve(a,b){
   const p=this.plan,r=p.tool.diameterMm/2,[ox,oy,oz]=p.stock.origin;
   const xmin=Math.max(0,Math.floor((Math.min(a[0],b[0])-r-ox)/p.dx)),xmax=Math.min(p.nx-1,Math.floor((Math.max(a[0],b[0])+r-ox)/p.dx));
@@ -82,14 +95,21 @@ export class CutSurfaces {
  evaluate(plan,time){
   const t=Math.max(0,Math.min(plan.duration,time));this.changed=false;
   if(this.last<0||t<this.last){this.heights.fill(plan.stock.origin[2]+plan.stock.size[2]);this.last=0;this.changed=true;}
-  let tip=plan.start;
+  let tip=plan.start,cutting=false;
   for(const m of plan.moves){
    if(t<m.start)break;
-   const f=Math.min(1,(t-m.start)/m.seconds);tip=m.from.map((v,k)=>v+(m.to[k]-v)*f);
+   const f=Math.min(1,(t-m.start)/m.seconds);cutting=m.mode==='cut'&&t<m.start+m.seconds;tip=m.from.map((v,k)=>v+(m.to[k]-v)*f);
    if(m.mode==='cut'&&t>m.start&&this.last<m.start+m.seconds){const start=Math.max(0,(this.last-m.start)/m.seconds),a=m.from.map((v,k)=>v+(m.to[k]-v)*start);this.carve(a,tip);}
   }
   if(this.changed)this.rebuild();this.last=t;
   const transforms=Object.fromEntries(plan.partIds?.map(id=>[id,identityTransform()])??[]),tool=identityTransform();[tool[3],tool[7],tool[11]]=tip;transforms[plan.tool.id]=tool;
-  return {angles:{},transforms,...(this.changed?{deformations:{[plan.stock.id]:{positions:this.positions,normals:this.normals}}}:{})};
+  const deformations=this.changed?{[plan.stock.id]:{positions:this.positions,normals:this.normals}}:{};
+  if(this.beam){
+   const bottom=plan.stock.origin[2]+plan.stock.size[2]-tip[2],top=plan.tool.lengthMm;
+   for(let i=0;i<this.beamPositions.length;i+=3){this.beamPositions[i]=this.beam.positions[i];this.beamPositions[i+1]=this.beam.positions[i+1];this.beamPositions[i+2]=bottom+(this.beam.positions[i+2]-this.beamLow)/this.beamSpan*Math.max(0,top-bottom);}
+   deformations[plan.tool.id]={positions:this.beamPositions,normals:this.beam.normals};
+   if(plan.tool.nozzleId)transforms[plan.tool.nozzleId]=[...tool];
+  }
+  return {angles:{},transforms,deformations,...(this.beam?{opacity:{[plan.tool.id]:cutting?1:0}}:{})};
  }
 }

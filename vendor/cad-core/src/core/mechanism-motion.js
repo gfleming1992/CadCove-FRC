@@ -44,12 +44,13 @@ export class MechanismMotion {
     this.viewer.clearMarkers();this.viewer.setTransforms(pose.transforms);this.angles=pose.angles;this.updateVisuals(pose);
   }
   updateVisuals(pose){
+    if(pose.opacity)this.viewer.setOpacity?.(pose.opacity);
     if(pose.deformations)this.viewer.setDeformedParts?.(pose.deformations);
     if(this.belts?.belts.length)this.viewer.setDeformedParts?.(this.belts.evaluate(pose.angles));
   }
 
   rotate(part,degrees){const pose=mechanismPose(this.model,part,degrees,this.angles);this.stop();this.playback=null;this.apply(pose);return this.state();}
-  reset(){this.stop();if(this.surfaces){this.viewer.setDeformedTopology?.(this.surfaces.originals());this.surfaces=null;}this.playback=null;this.angles=Object.fromEntries((this.model?.joints??[]).map(j=>[j.id,j.bindAngleDeg]));const transforms=Object.fromEntries(this.scene.parts.map(p=>[p.id,identityTransform()]));this.apply({angles:this.angles,transforms});this.error=null;return this.state();}
+  reset(){this.stop();if(this.surfaces){this.viewer.setDeformedTopology?.(this.surfaces.originals());this.viewer.setOpacity?.(this.surfaces.resetOpacity?.()??{});this.surfaces=null;}this.playback=null;this.angles=Object.fromEntries((this.model?.joints??[]).map(j=>[j.id,j.bindAngleDeg]));const transforms=Object.fromEntries(this.scene.parts.map(p=>[p.id,identityTransform()]));this.apply({angles:this.angles,transforms});this.error=null;return this.state();}
   playSolved(value,revision){
     const scene=this.viewer.scene;if(!scene)throw Error('Build the model first');
     const plan=compileSolvedMotion(value,scene.parts.map(p=>p.id),revision,this.scene===scene?this.model:null);

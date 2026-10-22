@@ -23,7 +23,7 @@ Example `paths.json` (all positions and tool dimensions in mm, timing in seconds
   "schema": 1,
   "units": "mm-s",
   "stock": {"id":"stock","origin":[0,0,0],"size":[60,40,4]},
-  "tool": {"id":"tool","kind":"router","diameterMm":3,"lengthMm":12},
+  "tool": {"id":"tool","kind":"bit","diameterMm":3,"lengthMm":12},
   "resolutionMm": 0.5,
   "start": [10,8,8],
   "moves": [
@@ -34,6 +34,20 @@ Example `paths.json` (all positions and tool dimensions in mm, timing in seconds
   "holdSeconds": 2
 }
 ```
+
+Choose `tool.kind:"bit"` for the fluted end mill and short shank, or
+`tool.kind:"laser"` for a compact nozzle with a thin red beam to the stock surface. `"router"` remains a compatibility
+alias for `"bit"`. The visuals are built once when creating the preview;
+`diameterMm` is the bit diameter or laser kerf width, independently of timing.
+For example, a ¼-inch bit uses `diameterMm:6.35`; its diameter controls both
+the cutter geometry and the removed groove. For bits, `lengthMm` controls the
+displayed cutter length; cutting depth comes from the move’s Z coordinate.
+No spindle housing or machine body obscures the stock. The laser beam is on
+only during cut moves and off during travel, holds and after completion.
+For laser, `lengthMm` is the nozzle-tip height above the programmed XYZ; it
+must place the nozzle above the stock. The CLI adds `tool.nozzleId` and binds
+that separate part to the same motion. Direct `play-cut` callers can provide
+that ID explicitly; the beam uses `tool.id`.
 
 Coordinates are absolute in the XY stock plane, Z up. The tool's tip is at the
 specified XYZ. Router moves sweep a vertical flat-ended cylindrical cutter;

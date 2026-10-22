@@ -250,7 +250,8 @@ canvas and uses shared motion playback. It illustrates folds, not verified tooli
 
 Use `cad-cut-preview --action preview --workspace PATH --input paths.json
 --output NEW_CAD_SOURCE_DIRECTORY --show` for a 3D stock-removal explanation.
-Provide explicit mm-s stock, tool, resolution and timed cut/rapid XYZ moves;
+Choose tool.kind bit (fluted cutter) or laser (small nozzle and red beam). Provide explicit
+mm-s stock, tool diameter/kerf, resolution and timed cut/rapid XYZ moves;
 see `docs/CAD-CUT-PREVIEW.md`. Keep both cutouts and scrap visible; only swept
 material disappears. This is a rasterized planar preview, not CAM planning or
 verified G-code. Reuse `canvas` motion `play-cut` with the returned solutionFile

@@ -228,3 +228,12 @@ request contract. Inspect current part vertices/circular edges, provide dimensio
 and page positions, and verify the exported PDF visually. Never infer tolerances,
 materials or manufacturing approval from a successful export. Keep source hashes
 and regenerate after edits; this is a drawing snapshot, not a recovered sketch.
+
+## Flat cutting files and preview
+
+Use `cadcove cad-flat --action export` for full-size DXF outlines and an SVG
+preview of a constant-section plate. Read `.cadcove/skills/references/cad-flat-export.md`
+for the frame, validation and scope. `--action preview` converts an existing DXF
+without building CAD. When asked to display it, use `--show` or MCP
+`open_svg_preview` with the generated SVG. Check display success separately from
+export success. Do not send dimensioned/scaled drawings as cutting outlines.

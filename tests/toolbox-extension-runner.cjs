@@ -39,6 +39,13 @@ exports.run=async function(){
   const toolList=(await mcpClient.listTools()).tools.map(t=>t.name);assert.ok(toolList.includes('open_robot_cad'));
   const mcpCall=async(name,args={})=>{const result=await mcpClient.callTool({name,arguments:args},undefined,{timeout:90000});assert.ok(!result.isError,JSON.stringify(result));return result;};
   assert.equal(JSON.parse((await mcpCall('workspace_context')).content[0].text).workspace,folder);
+  assert.ok(toolList.includes('open_svg_preview'));
+  const previewSvg=path.join(folder,'flat-preview.svg');
+  await fs.writeFile(previewSvg,'<svg xmlns="http://www.w3.org/2000/svg" width="80mm" height="50mm" viewBox="0 0 80 50"><path d="M0 0H80V50H0Z" fill="none" stroke="black"/></svg>');
+  const previewOpened=JSON.parse((await mcpCall('open_svg_preview',{file:'flat-preview.svg'})).content[0].text);
+  assert.equal(previewOpened.file,previewSvg);assert.equal(previewOpened.ok,true);
+  assert.ok(vscode.window.tabGroups.all.some(group=>group.tabs.some(tab=>tab.input?.uri?.fsPath===previewSvg)), 'SVG preview tab must be open');
+  await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
   const doctor=await api.doctor();assert.equal(doctor.ok,false);
   assert.equal(doctor.checks.find(c=>c.id==='native-engine').ok,true);
   const initialConfigFile=path.join(folder,'.cadcove/project.json'),initialConfig=JSON.parse(await fs.readFile(initialConfigFile,'utf8'));initialConfig.entryPoint='models.py';await fs.writeFile(initialConfigFile,JSON.stringify(initialConfig));

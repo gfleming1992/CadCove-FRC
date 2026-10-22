@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "project": "instantcad-local",
-  "revision": "a6675457663560a6a0e24bc5e675358a78254948",
+  "revision": "fb4c044548a92ea5453975b0e2ac63ae71de24a8",
   "policy": "Update upstream and regenerate; no downstream edits",
   "files": {
     "LICENSE": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6",
@@ -34,9 +34,11 @@
     "src/native/discovery.py": "1c984bb4bf4df65d366679d74427980dc5e61b6ed5f1309a8fb224639a91a1c6",
     "src/native/drawing_freecad.py": "85e70c472c9026f88ac7152aee91ed848037fd2e62f6b78b08615f623c92b8aa",
     "src/native/drawing_geometry.py": "66475de57f61f04976b78757d32e9ada633ad0a99efdb85caec7d76fc6fdb1d3",
+    "src/native/dxf_preview.py": "6c43c562fdc556d1acd8c009ff33c3abd007312a7f872d19b00d4d3b386cce82",
     "src/native/fea_freecad.py": "de32c950d9981f6a5b8acb1d43469a3d38fc463dc760017c380815cf6c042c61",
     "src/native/fea_geometry.py": "27362a46a11098e26f40ce0a788c4879e41af5d8b24c3a977771c23e6c6081a7",
     "src/native/fea_request.py": "5802586a889cba62b2cc2c3383c965ebab5fc3be5c8c185fe9fbb7d999a062e4",
+    "src/native/flat_export.py": "0f229dd43adeeb28aab403f2744150307a5f4a9b75b763aa6fd3804a8af1d7f4",
     "src/native/geometry.py": "252178b10b44c4e3e319f085fe378e5e98d1d40bae4905482177429d9120a790",
     "src/native/ondsel/CMakeLists.txt": "494352ae9ae9c0cc75f6aa6d56b2c3333c5083378ed65a66f07065f342ba3949",
     "src/native/ondsel/LICENSE.Ondsel": "299de7a97751fb7babe99f05580d6b1fe5be11d8113fe4b8f2dd2071d3931b2d",
@@ -57,6 +59,7 @@
     "tests/drawing-native.py": "d6a3e32e29d22498ddffe5ee4d859b85b155b001875a575637507c858d95eeb9",
     "tests/fea-native.py": "b26fba7500c95f78f0d9676967be7db121c10c2389b37f0c675d401d9e74e9de",
     "tests/fea.test.js": "2c5db3ca7611dd3eea903b1f37bd2c14c1be2e864e8de38a96e2c5c700cb1ab7",
+    "tests/flat-export-native.py": "a2389d06111afc2ba23087c274461ee5627426b547c822dbaf0df06caee39c96",
     "tests/mechanism-browser.js": "3fe18ff43442e7fa9d7ad711f6daa2427e261e96e2045542eead5f31c8dc62b7",
     "tests/mechanism-solver.test.js": "e30f253e26b272631bfea0e01a03e0ec06ae345844a14f0da43bc21576577135",
     "tests/mechanism.test.js": "12d8808b5445ce2f9f758c55412677f8f0d1125b4e670879585e62e4c8cfef6f",

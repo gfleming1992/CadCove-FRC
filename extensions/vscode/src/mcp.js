@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {svgPreviewFile} from '../../../lib/svg-preview.js';
 import {randomUUID} from 'node:crypto';
 import {startMcpServer,z} from '../../../lib/mcp-server.js';
 import {cadFeedback} from '../../../lib/cad-feedback.js';
@@ -31,6 +32,11 @@ export function registerMcp(context,{workspace,simulationProject,robots,mechanis
   return result;
  }
  const tools=[
+  {name:'open_svg_preview',description:'Display an existing workspace SVG in the VS Code image preview, including DXF previews from cadcove cad-flat. Does not execute CAD or SVG scripts. file is absolute or workspace-relative. Use after generating an export when the user asks to see it.',schema:{...schema,file:z.string().min(1)},run:async a=>{
+   const artifact=await svgPreviewFile(workspace(resource(a)),a.file);
+   await vscode.commands.executeCommand('vscode.openWith',vscode.Uri.file(artifact.file),'imagePreview.previewEditor');
+   return {ok:true,...artifact,viewer:'VS Code image preview'};
+  }},
   {name:'canvas_command',description:'Unified controls for the active CAD or field canvas. Query capabilities first. Common actions: state, selection, highlight, opacity, visibility, reveal, view, motion, capture. Field adds place, physics, motors, zero, cad. All lengths including camera and placement use mm; joint angles degrees, time seconds. Explicit target/entry resolves multiple hidden canvases. Opacity options: action set/reset/state, scope only/except/all, ids or exact names (defaults to selection), value 0 invisible to 1 opaque. For solved motion use options {action: play-solved, solutionFile: workspace-relative JSON path}; this loads large trajectories locally (32 MiB maximum). Existing cad tools are compatibility aliases.',schema:{...schema,target:z.enum(['active','cad','field']).optional(),entry:z.string().optional(),action:z.enum(['capabilities','state','selection','highlight','opacity','visibility','reveal','view','motion','capture','place','physics','motors','zero','cad']),options:z.record(z.string(),z.unknown()).optional()},run:a=>canvasRequest(a,a.action,a.options??{})},
   {name:'open_mechanism_preview',description:'Open current native CAD meshes in a shared motion/physics preview. Optional field is visual context, with no WPILib or Java. Cached geometry must match current source.',schema:{...schema,field:z.boolean().optional()},run:a=>mechanisms.open(resource(a),{field:a.field??false})},
   {name:'mechanism_preview',description:'Control the open preview: state includes selected robot or field part IDs/names; selection reads selection or sets ids; visibility hides/shows/isolates parts. motion uses the CAD trajectory API; place takes position in metres; physics starts an explicitly defined native world; motors takes volts by motor ID and seconds (maximum 30). cad closes physics and restores bind pose. Field is visual context only. capture returns a local PNG path.',schema:{...schema,action:z.enum(['state','view','capture','selection','visibility','place','motion','physics','motors','zero','cad']),options:z.record(z.string(),z.unknown()).optional()},run:a=>mechanisms.request(resource(a),a.action,a.options??{})},

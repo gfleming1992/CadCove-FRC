@@ -16,7 +16,7 @@ const all=(await git(['ls-tree','-r','--name-only',revision])).toString().trim()
 const selected=all.filter(f=>f.startsWith('src/native/')||[
  'tests/step-kinematics-native.py','tests/step-kinematics.test.js',
  'src/core/mechanism-solver.js','tests/mechanism-solver.test.js','tests/fea-native.py','tests/fea.test.js',
- 'tests/drawing-native.py','docs/DRAWINGS.md','tests/sketch-native.py','tests/sketch.test.js','docs/DESIGN-SERVICES.md',
+ 'tests/flat-export-native.py','tests/drawing-native.py','docs/DRAWINGS.md','tests/sketch-native.py','tests/sketch.test.js','docs/DESIGN-SERVICES.md',
  'src/core/solved-motion.js','tests/solved-motion.test.js','tests/ondsel-browser.js',
  'tests/ondsel-native.py','tests/ondsel.test.js','docs/ASSEMBLY-SOLVER.md',
  'tests/discovery-native.py','tests/discovery.test.js',

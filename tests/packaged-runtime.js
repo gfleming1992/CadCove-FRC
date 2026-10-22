@@ -34,6 +34,12 @@ try {
     assert.equal(actual, code, out + '\n' + err); assert.equal(err, '');
     return JSON.parse(out);
   }
+  const sheetMetal = await command(['cad-sheetmetal','--action','capabilities']);
+  assert.equal(sheetMetal.requiresGUI,false);
+  for(const name of ['sheetmetal_geometry.py','sheetmetal_freecad.py','fold_diagram.py','sheetmetal_fold.py'])assert.ok(manifest.files.some(f=>f.name===name&&!f.executable));
+  const flat = await command(['cad-flat','--action','capabilities']);
+  assert.deepEqual(flat.formats,['dxf','svg']);
+  for(const name of ['flat_export.py','dxf_preview.py'])assert.ok(manifest.files.some(f=>f.name===name&&!f.executable));
   const drawing = await command(['cad-drawing','--action','capabilities']);
   assert.deepEqual(drawing.formats,['pdf','svg','FCStd']);
   for(const name of ['drawing_geometry.py','drawing_freecad.py'])assert.ok(manifest.files.some(f=>f.name===name&&!f.executable));

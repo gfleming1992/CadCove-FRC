@@ -228,3 +228,32 @@ request contract. Inspect current part vertices/circular edges, provide dimensio
 and page positions, and verify the exported PDF visually. Never infer tolerances,
 materials or manufacturing approval from a successful export. Keep source hashes
 and regenerate after edits; this is a drawing snapshot, not a recovered sketch.
+
+## Flat cutting files and preview
+
+Use `cadcove cad-flat --action export` for full-size DXF outlines and an SVG
+preview of a constant-section plate. Read `.cadcove/skills/references/cad-flat-export.md`
+for the frame, validation and scope. `--action preview` converts an existing DXF
+without building CAD. When asked to display it, use `--show` or MCP
+`open_svg_preview` with the generated SVG. Check display success separately from
+export success. Do not send dimensioned/scaled drawings as cutting outlines.
+
+For bent sheet stock, `cad-sheetmetal --action unfold` reuses the optional headless
+FreeCAD SheetMetal library. Read `.cadcove/skills/references/cad-sheet-metal.md`
+for explicit thickness/K-factor inputs, checked root faces, and DXF/SVG outputs.
+
+For an interactive fold explanation, use `cad-sheetmetal --action preview` on a
+completed unfold job; see `cad-sheet-metal.md`. It opens the normal orbit/pan/zoom
+canvas and uses shared motion playback. It illustrates folds, not verified tooling.
+
+## Cutting path explanations
+
+Use `cad-cut-preview --action preview --workspace PATH --input paths.json
+--output NEW_CAD_SOURCE_DIRECTORY --show` for a 3D stock-removal explanation.
+Choose tool.kind bit (fluted cutter) or laser (small nozzle and red beam). Provide explicit
+mm-s stock, tool diameter/kerf, resolution and timed cut/rapid XYZ moves;
+see `docs/CAD-CUT-PREVIEW.md`. Keep both cutouts and scrap visible; only swept
+material disappears. This is a rasterized planar preview, not CAM planning or
+verified G-code. Reuse `canvas` motion `play-cut` with the returned solutionFile
+and pause/resume/seek/reset. Do not rebuild CAD for playback or silently
+substitute an outline for a supplied toolpath.

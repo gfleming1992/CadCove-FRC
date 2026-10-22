@@ -39,6 +39,13 @@ exports.run=async function(){
   const toolList=(await mcpClient.listTools()).tools.map(t=>t.name);assert.ok(toolList.includes('open_robot_cad'));
   const mcpCall=async(name,args={})=>{const result=await mcpClient.callTool({name,arguments:args},undefined,{timeout:90000});assert.ok(!result.isError,JSON.stringify(result));return result;};
   assert.equal(JSON.parse((await mcpCall('workspace_context')).content[0].text).workspace,folder);
+  assert.ok(toolList.includes('open_svg_preview'));
+  const previewSvg=path.join(folder,'flat-preview.svg');
+  await fs.writeFile(previewSvg,'<svg xmlns="http://www.w3.org/2000/svg" width="80mm" height="50mm" viewBox="0 0 80 50"><path d="M0 0H80V50H0Z" fill="none" stroke="black"/></svg>');
+  const previewOpened=JSON.parse((await mcpCall('open_svg_preview',{file:'flat-preview.svg'})).content[0].text);
+  assert.equal(previewOpened.file,previewSvg);assert.equal(previewOpened.ok,true);
+  assert.ok(vscode.window.tabGroups.all.some(group=>group.tabs.some(tab=>tab.input?.uri?.fsPath===previewSvg)), 'SVG preview tab must be open');
+  await vscode.commands.executeCommand('workbench.action.closeActiveEditor');
   const doctor=await api.doctor();assert.equal(doctor.ok,false);
   assert.equal(doctor.checks.find(c=>c.id==='native-engine').ok,true);
   const initialConfigFile=path.join(folder,'.cadcove/project.json'),initialConfig=JSON.parse(await fs.readFile(initialConfigFile,'utf8'));initialConfig.entryPoint='models.py';await fs.writeFile(initialConfigFile,JSON.stringify(initialConfig));
@@ -466,11 +473,17 @@ def build(ctx):
       const fieldDir=path.join(folder,'nested-field');await fs.mkdir(fieldDir,{recursive:true});await fs.writeFile(path.join(fieldDir,'obstacle.bin'),bytes);
       await fs.writeFile(path.join(fieldDir,'catalog.json'),JSON.stringify({obstacle:{mesh:'obstacle.bin',meshSha256:require('node:crypto').createHash('sha256').update(bytes).digest('hex')}}));
       await fs.writeFile(path.join(fieldDir,'instances.json'),JSON.stringify([{id:'obstacle',asset:'obstacle',color:'#888888',transform:[1,0,0,100,0,1,0,0,0,0,1,0]}]));
+      const fieldInstances=await fs.readFile(path.join(fieldDir,'instances.json'));
+      await fs.writeFile(path.join(fieldDir,'appearance.json'),JSON.stringify({schema:1,instancesHash:require('node:crypto').createHash('sha256').update(fieldInstances).digest('hex'),catalog:{},instances:{obstacle:{color:'#888888',opacity:.2}}}));
       await fs.writeFile(path.join(folder,'nested-preview.sim.json'),JSON.stringify({cad:{field:'nested-field'}}));
       const started=Date.now(),opened=JSON.parse((await mcpCall('open_mechanism_preview',{field:true})).content[0].text);assert.equal(opened.fieldParts,1);assert.equal(opened.parts,3);const previewOpenMs=Date.now()-started;
       const req=async(action,options={})=>{const result=await mcpClient.callTool({name:'mechanism_preview',arguments:{action,options}},undefined,{timeout:90000});if(result.isError)throw Error(result.content[0].text);return JSON.parse(result.content[0].text);};
       const fieldCaps=await canvas('capabilities');assert.equal(fieldCaps.units.length,'mm');assert.ok(fieldCaps.commands.includes('physics'));
       await canvas('view',{camera:{target:[30,0,0],distance:200}});assert.equal((await canvas('state')).camera.distance,200);assert.equal((await req('state')).camera.distance,.2);
+      const materialAlpha=async()=> (await canvas('opacity')).parts.find(p=>p.id==='field/obstacle')?.opacity;
+      assert.ok(Math.abs(await materialAlpha()-.2)<1e-6);
+      await canvas('opacity',{action:'set',ids:['field/obstacle'],value:.7});
+      await canvas('opacity',{action:'reset',ids:['field/obstacle']});assert.ok(Math.abs(await materialAlpha()-.2)<1e-6);
       await canvas('selection',{ids:['wheel','field/obstacle']});
       const alias=JSON.parse((await mcpCall('cad_selection',{})).content[0].text);assert.deepEqual(alias.selectedIds,['wheel','field/obstacle']);
       await canvas('highlight',{action:'set',parts:[{id:'wheel'}]});await canvas('visibility',{action:'isolate',ids:['wheel']});assert.ok((await canvas('state')).selection.hiddenIds.includes('base'));await canvas('visibility',{action:'show-all'});
@@ -485,12 +498,12 @@ def build(ctx):
       const handed=await req('state');assert.ok(Math.abs(handed.physics.joints.spin.position-Math.PI/3)<1e-6);assert.ok(Math.abs(handed.physics.joints.steer.position-Math.PI/6)<1e-6);
       await req('motors',{volts:{'steer-motor':.2,'spin-motor':.2},seconds:.3});await delay(600);
       const driven=await req('state');assert.deepEqual(driven.selection.selectedIds,['wheel','field/obstacle']);assert.equal(driven.mode,'physics');assert.ok(driven.physics.tick>0);assert.ok(Math.abs(driven.physics.joints.spin.position)>.001);assert.ok(Math.abs(driven.physics.joints.steer.position)>.001);
-      assert.deepEqual(driven.selection.opacity.parts.map(p=>[p.id,p.opacity]).sort(),[['base',.25],['carrier',.25]]);
+      assert.deepEqual(driven.selection.opacity.parts.filter(p=>p.id!=='field/obstacle').map(p=>[p.id,p.opacity]).sort(),[['base',.25],['carrier',.25]]);
       const capture=await req('capture');assert.ok((await fs.stat(capture.image)).size>1000);
       await req('cad');assert.equal((await req('state')).mode,'cad');
       const changed={...definition,motors:[]};await fs.writeFile(path.join(dir,'mechanism.json'),JSON.stringify(changed));
       await assert.rejects(()=>req('physics'),/changed/);
-      report.unifiedMechanism={commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,currentPoseHandoff:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,staleDefinitionRejected:true};
+      report.unifiedMechanism={fieldMaterialOpacity:true,commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,currentPoseHandoff:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,staleDefinitionRejected:true};
     }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
   }
   if(process.env.CADCOVE_SOLVED_BELT_FIXTURE){
@@ -515,6 +528,80 @@ def build(ctx):
       }
       assert.equal((await fs.stat(cache)).mtimeMs,stamp);report.solvedBelts={actualOndsel:true,firstCADCommandLoadsMechanism:true,field:true,fullTurns:true,reversal:true,reset:true,noGeometryCacheWrite:true};
     }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
+  }
+  // Sheet folding uses the same canvas playback API without mechanism.json.
+  {
+    api.closeAll();await delay(200);
+    const configFile=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(configFile),dir=path.join(folder,'fold-cad');
+    await fs.mkdir(dir,{recursive:true});
+    try{
+      const length=Math.PI/2*3.8;
+      await fs.writeFile(path.join(dir,'models.py'),`import cadquery as cq
+def build(ctx):
+ return [dict(id='strip',color='#73b9df',shape=cq.Workplane('XY').box(10,${length},2).translate((5,${length/2},-1)))]
+`);
+      await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'fold-cad',buildDirectory:'fold-build',entryPoint:'models.py',pythonPath:testPython}));
+      await api.openModel(vscode.Uri.file(path.join(dir,'models.py')));const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(ready.phase,'ready',JSON.stringify(ready));
+      const canvas=async(action,options={})=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action,options,target:'cad',entry:'models.py'}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
+      assert.equal((await canvas('capabilities')).sheetMetalFolds,true);
+      const solution={schema:1,sourceRevision:ready.revision,definition:{schema:1,units:'mm-deg-s',thicknessMm:2,bends:[{id:'bend',origin:[0,0,0],axes:[[1,0,0],[0,1,0],[0,0,1]],angleDeg:90,lengthMm:length,neutralOffsetMm:-.8}],zones:[{id:'strip',chain:['bend'],bend:'bend'}]},tracks:[{bend:'bend',startSeconds:0,seconds:2}],holdSeconds:1};
+      const solutionFile='fold-motion.json';await fs.writeFile(path.join(folder,solutionFile),JSON.stringify(solution));
+      const cache=path.join(folder,'fold-build/cad-cache/models.py/scene.bin'),stamp=(await fs.stat(cache)).mtimeMs;
+      await canvas('view',{camera:{target:[5,3,0],distance:45}});
+      await canvas('motion',{action:'play-fold',solutionFile});
+      await canvas('selection',{ids:['strip']});
+      await canvas('motion',{action:'seek',seconds:1});
+      assert.equal((await canvas('state')).motion.playback.kind,'fold');
+      await canvas('view',{zoom:.8});assert.equal((await canvas('state')).camera.distance,36);
+      await canvas('motion',{action:'resume'});await delay(2500);
+      assert.equal((await canvas('motion',{action:'state'})).playback.status,'completed');
+      assert.deepEqual((await canvas('selection')).selectedIds,['strip']);
+      await canvas('motion',{action:'reset'});
+      assert.equal((await canvas('motion',{action:'state'})).playback,null);
+      await assert.rejects(()=>canvas('motion',{action:'play-fold',solution:{...solution,sourceRevision:'stale'}}),/stale/);
+      assert.equal((await fs.stat(cache)).mtimeMs,stamp);
+      report.sheetMetalFold={play:true,seek:true,resume:true,reset:true,selection:true,camera:true,staleRejected:true,noGeometryCacheWrite:true};
+    }finally{api.closeAll();await fs.writeFile(configFile,saved);}
+  }
+  // Cutting retains stock/cutouts and shares the local timeline, without mechanism.json.
+  {
+    api.closeAll();await delay(200);
+    const configFile=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(configFile),dir=path.join(folder,'cut-cad');
+    await fs.mkdir(dir,{recursive:true});
+    try{
+      await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'cut-cad',buildDirectory:'cut-build',entryPoint:'preview/models.py',pythonPath:testPython}));
+      const request={schema:1,units:'mm-s',stock:{id:'stock',origin:[0,0,0],size:[20,12,3]},tool:{id:'tool',kind:'bit',diameterMm:2,lengthMm:8},resolutionMm:.5,start:[3,3,5],moves:[{mode:'cut',to:[3,3,0],seconds:1},{mode:'cut',to:[17,3,0],seconds:1}]};
+      const input=path.join(folder,'cut-input.json');await fs.writeFile(input,JSON.stringify(request));
+      const made=JSON.parse((await execute(runtime,['cad-cut-preview','--action','preview','--workspace',folder,'--input',input,'--output',path.join(dir,'preview'),'--python',testPython],{timeout:90000,maxBuffer:4*1024*1024})).stdout);
+      await api.openModel(vscode.Uri.file(path.join(dir,'preview/models.py')));const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(ready.phase,'ready',JSON.stringify(ready));
+      let cutEntry='preview/models.py';
+      const canvas=async(action,options={})=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action,options,target:'cad',entry:cutEntry}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
+      assert.equal((await canvas('capabilities')).stockRemoval,true);assert.deepEqual((await canvas('capabilities')).cutTools,['bit','laser']);
+      const cache=path.join(folder,'cut-build/cad-cache/preview/models.py/scene.bin'),stamp=(await fs.stat(cache)).mtimeMs;
+      await canvas('motion',{action:'play-cut',solutionFile:path.relative(folder,made.playbackFile)});
+      await canvas('motion',{action:'seek',seconds:1});assert.equal((await canvas('state')).motion.playback.kind,'cut');
+      await canvas('selection',{ids:['stock']});await canvas('view',{camera:{target:[10,6,0],distance:45}});
+      await canvas('motion',{action:'resume'});await delay(1500);
+      assert.equal((await canvas('motion',{action:'state'})).playback.status,'completed');
+      assert.deepEqual((await canvas('selection')).selectedIds,['stock']);assert.equal((await canvas('state')).camera.distance,45);
+      await canvas('motion',{action:'reset'});assert.equal((await canvas('motion',{action:'state'})).playback,null);
+      assert.equal((await fs.stat(cache)).mtimeMs,stamp);
+      api.closeAll();await delay(200);
+      const laser={...request,tool:{id:'tool',kind:'laser',diameterMm:1.5,lengthMm:8},start:[3,3,0],moves:[{mode:'cut',to:[17,3,0],seconds:2},{mode:'rapid',to:[17,9,0],seconds:1}]};
+      await fs.writeFile(input,JSON.stringify(laser));
+      const laserMade=JSON.parse((await execute(runtime,['cad-cut-preview','--action','preview','--workspace',folder,'--input',input,'--output',path.join(dir,'laser'),'--python',testPython],{timeout:90000,maxBuffer:4*1024*1024})).stdout);
+      cutEntry='laser/models.py';await api.openModel(vscode.Uri.file(path.join(dir,cutEntry)));
+      const laserReady=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(laserReady.phase,'ready',JSON.stringify(laserReady));
+      const laserCache=path.join(folder,'cut-build/cad-cache/laser/models.py/scene.bin'),laserStamp=(await fs.stat(laserCache)).mtimeMs;
+      await canvas('motion',{action:'play-cut',solutionFile:path.relative(folder,laserMade.playbackFile)});
+      await canvas('motion',{action:'seek',seconds:1});
+      assert.equal((await canvas('opacity')).parts.find(p=>p.id==='tool')?.opacity??1,1);
+      await canvas('selection',{ids:['tool-nozzle']});assert.deepEqual((await canvas('selection')).selectedIds,['tool-nozzle']);
+      await canvas('motion',{action:'seek',seconds:2.5});assert.equal((await canvas('opacity')).parts.find(p=>p.id==='tool')?.opacity,0);
+      await canvas('motion',{action:'reset'});assert.equal((await canvas('opacity')).parts.find(p=>p.id==='tool')?.opacity,0);
+      assert.equal((await fs.stat(laserCache)).mtimeMs,laserStamp);
+      report.stockRemoval={cli:true,play:true,seek:true,resume:true,reset:true,selection:true,camera:true,noGeometryCacheWrite:true,laserNozzle:true,laserBeamCutOnly:true};
+    }finally{api.closeAll();await fs.writeFile(configFile,saved);}
   }
   await fs.writeFile(reportFile,JSON.stringify(report,null,2));api.closeAll();
  }catch(error){if(simulationStarted){await api?.stopSimulation().catch(()=>{});await delay(1500);simulationStarted=false;}await fs.writeFile(reportFile,JSON.stringify({ok:false,error:String(error.stack),stdout:error.stdout,diagnostics:api?.getDiagnostics()},null,2));api?.closeAll();throw error;}

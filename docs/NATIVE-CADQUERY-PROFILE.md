@@ -243,3 +243,27 @@ The shipped team example includes a source/runtime-hash-validated native scene
 cache. Opening that cache does not start Python. Editing still requires the
 pinned local CadQuery environment. Legacy JS remains available for compatibility,
 but fresh team workspaces select `models.py`.
+
+
+## CAD display detail and field materials
+
+The shared renderer uses smooth shaded surfaces without an edge-line overlay.
+Opaque assembly drawing uses reusable WebGPU render bundles; transform/color
+writes keep the bundle valid, while changed visibility, transparency, or topology
+rebuilds it. Captures use the same surface pipelines with independent bindings.
+
+The pinned native field importer retains STEP/XCAF surface opacity and uses
+0.12 mm absolute deflection and 0.15 rad angular deflection for presentation
+meshes. An `--appearance-only` refresh updates those display assets without
+rewriting STEP components, physical properties or occurrence bindings. The
+single-material path uses its presentation mesh too. Existing caches must be
+refreshed explicitly to obtain the new surface detail; ordinary reopen and
+motion reuse the cache.
+
+Opacity overrides are temporary display settings; reset returns to the imported
+material alpha. Transparency uses sorted occurrences with no depth writes, so
+intersecting translucent surfaces can still exhibit sorting artifacts. No
+texture, refraction, metallic finish, ambient occlusion or automatic net openings
+are synthesized. An opaque solid used to represent a net in STEP remains an
+opaque solid. This is a shaded CAD inspection renderer, not a photorealistic
+material renderer or a claim of parity with every commercial CAD display mode.

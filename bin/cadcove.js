@@ -20,6 +20,9 @@ import {buildCustomSimulator} from '../lib/custom-simulator.js';
 const optionsByCommand = {
   'sim-build': ['project'],
   'cad-sketch': ['action','input','output','python'],
+  'cad-cut-preview': ['action','input','output','python','workspace','show'],
+  'cad-sheetmetal': ['action','input','output','python','workspace','entry','freecad','sheetmetal','show','explain','seconds'],
+  'cad-flat': ['action','input','output','python','workspace','entry','show'],
   'cad-drawing': ['action','input','output','python','workspace','entry','freecad'],
   'cad-analysis': ['action','input','output','python','workspace','entry','freecad','gmsh','ccx'],
   'cad-references': ['workspace','entry','python','input'],
@@ -80,7 +83,7 @@ function parse(args) {
     const arg = args.shift();
     const key = arg.startsWith('--') ? arg.slice(2) : '';
     if (!optionsByCommand[command].includes(key) || Object.hasOwn(options, key)) throw Error(`Unknown or duplicate option: ${arg}`);
-    if (key === 'dry-run'||key==='review') options[key] = true;
+    if (key === 'dry-run'||key==='review'||key==='show'||key==='explain') options[key] = true;
     else {
       const value = args.shift();
       if (!value || value.startsWith('--')) throw Error(`Missing value for --${key}`);
@@ -96,6 +99,9 @@ async function regularFile(file, executable = false) {
 
 async function run() {
   const {command, options} = parse(process.argv.slice(2));
+  if(command==='cad-cut-preview'){const {cutPreviewCommand}=await import('../lib/cut-preview-command.js');return cutPreviewCommand(options);}
+  if(command==='cad-sheetmetal'){const {sheetmetalCommand}=await import('../lib/sheetmetal-command.js');return sheetmetalCommand(options);}
+  if(command==='cad-flat'){const {flatCommand}=await import('../lib/flat-command.js');return flatCommand(options);}
   if(command==='cad-drawing'){const {drawingCommand}=await import('../lib/drawing-command.js');return drawingCommand(options);}
   if(['cad-sketch','cad-analysis'].includes(command)){const {designCommand}=await import('../lib/design-command.js');return designCommand(command,options);}
   if(command==='cad-references'){const {cadCommand}=await import('../lib/cad-command.js');return cadCommand(command,options);}
@@ -148,6 +154,9 @@ async function run() {
     'cad-session': 'cadcove cad-session --workspace PATH [--entry models.py] [--python PYTHON] (warm JSONL build/inspect/export; stdin EOF stops worker)',
     'cad-mates': 'cadcove cad-mates --action capabilities|solve|solve-mechanism|animate|inspect-step [--input REQUEST.json --output NEW_RESULT.json] [--solver EXECUTABLE] (animate: --workspace PATH --target cad|field; uses current cached geometry and pose)',
     'cad-sketch': 'cadcove cad-sketch --action capabilities|solve [--input REQUEST.json --output NEW_RESULT.json --python PYTHON] (optional PlaneGCS)',
+    'cad-cut-preview': 'cadcove cad-cut-preview --action preview --input PATHS.json --output NEW_CAD_DIRECTORY --workspace . [--show]',
+    'cad-sheetmetal': 'cadcove cad-sheetmetal --action unfold|preview --input REQUEST.json|UNFOLD_DIRECTORY --output NEW_DIRECTORY --workspace . --freecad /path/to/FreeCADCmd --sheetmetal /path/to/SheetMetal [--seconds 4] [--explain] [--show]',
+    'cad-flat': 'cadcove cad-flat --action export|preview|show --input FILE --output NEW_DIRECTORY --workspace . [--show] (full-size flat DXF export and SVG preview)',
     'cad-drawing': 'cadcove cad-drawing --action capabilities|export --input REQUEST.json --output NEW_DIRECTORY --workspace . --freecad /absolute/path/to/FreeCADCmd (optional TechDraw backend)',
     'cad-analysis': 'cadcove cad-analysis --action capabilities|prepare|solve --input REQUEST.json --output NEW_RESULT (solve: new directory; --workspace, --freecad, --gmsh, --ccx; optional external FEA)',
     'cad-references': 'cadcove cad-references --workspace PATH --input REFERENCES.json (current exact geometry; named cylinder references)',

@@ -1,15 +1,15 @@
 {
   "schema": 1,
   "project": "instantcad-local",
-  "revision": "e171313918627b32d2dccaae416a027d3fb36c17",
+  "revision": "87ee1b89849c33b6fb078eed5c6553687383b9f2",
   "policy": "Update upstream and regenerate; no downstream edits",
   "files": {
     "LICENSE": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6",
     "docs/ASSEMBLY-SOLVER.md": "6c81630ecb5585b1f5aad14ac8d4b559922ea029e93e7d2c9f94da0ebf321305",
     "docs/DESIGN-SERVICES.md": "9f29b3eb9ad8f3bd4da095cb95939e9f0959d81c0483373f61822ce660f2e6e4",
-    "docs/NATIVE-CADQUERY.md": "7809aa780112f65f7076931c67e06c14ab9e2d223bb0ff200d3f2375731fcfd3",
+    "docs/NATIVE-CADQUERY.md": "28839fa66623d00fa5c3f6851a74a5d833f11f880750e55cb07b124554cbbd18",
     "extensions/vscode/src/extension.js": "6ffada90b9c2669fcb44d0c20f2f556ed8257b0294b3133a51e9be3d547e388a",
-    "extensions/vscode/src/project-files.js": "2229401e6171b4038790702b09ee216dccb2d1b6a188c4182d5982528516fd79",
+    "extensions/vscode/src/project-files.js": "efd35802687b7c5192be0de04bd5f7cde88a660835c202a0ea97454284a29857",
     "extensions/vscode/src/step-source.js": "0fe88df4c91e59d995c2691aaee1ecff984a1a7baa706820c8f31b251cd541ac",
     "index.html": "fcad867ac158d07305548ab75c0b10665b7475006d135e65160d09055fcaaab3",
     "src/core/assembly-capture.js": "ac6f1ae2b8a80ecd748fd7f10120032e3b2e772136f118b8fe4c383f67aae8f6",
@@ -52,7 +52,7 @@
     "tests/discovery-native.py": "43caeb0d161813e3c08465f83c6005512f47be0512b269cb0456585355fc156d",
     "tests/discovery.test.js": "df9ddcfa35c9a43f89c4230cfc2df53b2947084934159d6f92e4ba360b4f43b3",
     "tests/fea-native.py": "b26fba7500c95f78f0d9676967be7db121c10c2389b37f0c675d401d9e74e9de",
-    "tests/fea.test.js": "d1163b98579d1ea0d4e772314418df63a5446da361c0a339ce00ca05ff14ce26",
+    "tests/fea.test.js": "2c5db3ca7611dd3eea903b1f37bd2c14c1be2e864e8de38a96e2c5c700cb1ab7",
     "tests/mechanism-browser.js": "3fe18ff43442e7fa9d7ad711f6daa2427e261e96e2045542eead5f31c8dc62b7",
     "tests/mechanism-solver.test.js": "e30f253e26b272631bfea0e01a03e0ec06ae345844a14f0da43bc21576577135",
     "tests/mechanism.test.js": "12d8808b5445ce2f9f758c55412677f8f0d1125b4e670879585e62e4c8cfef6f",
@@ -67,7 +67,7 @@
     "tests/sketch.test.js": "3a75eb1597bb34b12c290c139cd854392582aabd780dae0bbf58d78a9be7c4ee",
     "tests/solved-motion.test.js": "57071a60f99689e299080409ae3dadf9586657c82e45bd4f700548aa93f9e03e",
     "tests/step-kinematics-native.py": "7083e33478502dab326895e20b61153dfb811534415ef1957a34d8e54e636a48",
-    "tests/step-kinematics.test.js": "db8ef141942d3fb1cb2886bf0e593491af17def70d752986fdd7c67b322844a6",
+    "tests/step-kinematics.test.js": "a6fcdbcacd7b03d9622816c97238e418d920abc660cea806f67c7e04ff9230f5",
     "tests/viewer-marker-browser.js": "ac3dbb79cab899415bc8ab91ee38f3a54d8b415dbb24a80c47a691b38c589bcb",
     "tests/vscode-host.test.js": "b277fc6f9487a2244f184f271ff2e171c6f516c51b0de2f33734c451783a4a7d"
   }

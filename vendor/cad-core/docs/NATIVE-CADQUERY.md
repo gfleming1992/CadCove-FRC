@@ -57,7 +57,10 @@ match. Native source revisions track `.py`, `.json`, `.step`, `.stp` and `.brep`
 files in that folder (excluding the build directory and hidden directories).
 Other generated/external dependencies are not tracked: put authored numeric data
 in Python/JSON, and do not depend on environment/time/network for deterministic
-cached builds. STEP hashing cost is part of source scanning; a large source pack
+cached builds. On Windows, source bytes are re-read rather than trusting a
+timestamp-only digest cache: rapid same-size edits can retain identical file
+metadata. This preserves geometry and mesh cache reuse by content hash.
+STEP hashing cost is part of source scanning; a large source pack
 still needs profiling before switching its default backend.
 
 `ctx.component(name, factory, dependencies=None, inputs=None)` caches exact

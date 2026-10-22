@@ -23,8 +23,10 @@ export async function inside(root,relative,{create=false}={}) {
 }
 export async function readSources(root, excludedDirectory, {cache}={}) {
   const files={};let total=0;
-  // Cache bytes/digests, not directory contents: every request still enumerates
-  // files and checks their identity and nanosecond modification/change times.
+  // Cache bytes/digests, not directory contents. Windows timestamp metadata
+  // can remain unchanged across a rapid same-size rewrite (including Bun/NTFS
+  // combinations), so re-read sources there. Geometry/mesh caches still reuse
+  // their content hashes; this only disables the stat-to-digest shortcut.
   const seen=new Set();
   async function content(file,relative,binary){
     await inside(root,relative);
@@ -32,7 +34,8 @@ export async function readSources(root, excludedDirectory, {cache}={}) {
     if(!binary&&stat.size>BigInt(SOURCE_LIMITS.fileBytes))throw Error(`${relative} exceeds 1 MB`);
     const key=[stat.dev,stat.ino,stat.size,stat.mtimeNs,stat.ctimeNs].join(':');
     seen.add(file);
-    if(cache?.get(file)?.key===key)return cache.get(file).value;
+    const reliableTimes=typeof stat.mtimeNs==='bigint'&&typeof stat.ctimeNs==='bigint';
+    if(process.platform!=='win32'&&reliableTimes&&cache?.get(file)?.key===key)return cache.get(file).value;
     let value;
     if(binary){const hash=createHash('sha256');for await(const chunk of createReadStream(file))hash.update(chunk);value='sha256:'+hash.digest('hex');}
     else value=await fs.readFile(file,'utf8');

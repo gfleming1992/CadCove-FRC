@@ -519,6 +519,7 @@ def build(ctx):
       await fs.writeFile(path.join(fieldDir,'catalog.json'),JSON.stringify({obstacle:{mesh:'obstacle.bin',meshSha256:require('node:crypto').createHash('sha256').update(bytes).digest('hex')}}));
       await fs.writeFile(path.join(fieldDir,'instances.json'),JSON.stringify([{id:'obstacle',asset:'obstacle',color:'#888888',transform:[1,0,0,100,0,1,0,0,0,0,1,0]}]));
       const fieldInstances=await fs.readFile(path.join(fieldDir,'instances.json'));
+      await fs.writeFile(path.join(fieldDir,'assembly.json'),JSON.stringify({schema:1,sourceHash:require('node:crypto').createHash('sha256').update(fieldInstances).digest('hex')}));
       await fs.writeFile(path.join(fieldDir,'appearance.json'),JSON.stringify({schema:1,instancesHash:require('node:crypto').createHash('sha256').update(fieldInstances).digest('hex'),catalog:{},instances:{obstacle:{color:'#888888',opacity:.2}}}));
       await fs.writeFile(path.join(folder,'nested-preview.sim.json'),JSON.stringify({cad:{field:'nested-field'}}));
       const started=Date.now(),opened=JSON.parse((await mcpCall('open_mechanism_preview',{field:true})).content[0].text);assert.equal(opened.unifiedScene,true);const previewOpenMs=Date.now()-started;

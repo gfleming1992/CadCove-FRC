@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "sourceRevision": "d0c3b62f7e1e7cc5b47aa517f44aebe9fa2be0f7",
+  "sourceRevision": "600af36cfe5bdc40303f9905d1e5ad936239607f",
   "policy": "config/toolbox-source.json",
   "files": {
     ".gitattributes": {
@@ -5952,8 +5952,8 @@
       "sha256": "7ae7d2104cbb0cfb83954bee31c3555444435591c45c1f3c6aedd0fdf573d7d6"
     },
     "lib/match-coordinator.js": {
-      "bytes": 8897,
-      "sha256": "531d291f372d60382edc5c4f36517f1c1499692d72b4c421002c33b44eee0c09"
+      "bytes": 8925,
+      "sha256": "86118f660562e7117dbc4d414d9b1a16a556e054c5474542a7dbb4d57b48ef8f"
     },
     "lib/match-server.js": {
       "bytes": 9481,
@@ -8576,8 +8576,8 @@
       "sha256": "7a87d05eec4ec56af0632cfcef421f4bd66ab5e5e1d1dcf3f046ef85c920213a"
     },
     "tests/match.test.js": {
-      "bytes": 7783,
-      "sha256": "b43a6d993d5ef7c04953a734a2151b2e144cc115c595946ae77b4387126ccae1"
+      "bytes": 7902,
+      "sha256": "d576f55bbd81949c724875ca8d01f317303a9e71da1fb90bc2825ecbc64b61ad"
     },
     "tests/mate-command.test.js": {
       "bytes": 4127,

@@ -111,7 +111,7 @@ await install(vsix);
 const reportFile=path.join(folders.workspace,'extension-test-report.json');
 const softwareGPU=process.env.CADCOVE_TEST_SOFTWARE_GPU==='1';
 const graphics=softwareGPU?['--enable-unsafe-webgpu','--use-webgpu-adapter=swiftshader','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader',...(process.platform==='win32'?[]:['--enable-features=Vulkan','--use-vulkan=swiftshader'])]:[];
-const child=spawn(executable,[...args,...graphics,'--new-window',`--extensionDevelopmentPath=${folders.driver}`,`--extensionTestsPath=${path.join(root,'tests/toolbox-extension-runner.cjs')}`,'--skip-welcome','--skip-release-notes','--disable-workspace-trust','--disable-updates',folders.workspace],{env,stdio:'inherit',detached:process.platform!=='win32'});
+const child=spawn(executable,[...args,...graphics,'--new-window',`--extensionDevelopmentPath=${folders.driver}`,`--extensionTestsPath=${path.join(root,process.env.CADCOVE_TEST_UNIFIED_SCENE==='1'?'tests/unified-extension-runner.cjs':'tests/toolbox-extension-runner.cjs')}`,'--skip-welcome','--skip-release-notes','--disable-workspace-trust','--disable-updates',folders.workspace],{env,stdio:'inherit',detached:process.platform!=='win32'});
 let launchError,exited=false;
 const completion=new Promise(resolve=>{child.on('error',error=>{launchError=error;exited=true;resolve();});child.on('exit',()=>{exited=true;resolve();});});
 console.log(JSON.stringify({profile,pid:child.pid,reportFile}));

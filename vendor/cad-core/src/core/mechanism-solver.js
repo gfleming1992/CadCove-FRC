@@ -1,4 +1,4 @@
-// Translate reviewed rotary trees into Ondsel constraints. No mesh/STEP rebuild.
+// Translate reviewed rotary trees into the mate solver constraints. No mesh/STEP rebuild.
 import {validateMechanism,resolveJoint,mechanismPose} from './mechanism.js';
 const finite = x => typeof x==='number' && Number.isFinite(x);
 const cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
@@ -40,11 +40,11 @@ export function mechanismSolverRequest(mechanism,motion,sourceRevision){
   coords.set(id,d);return d;
  }
  for(const j of m.joints){const d=coordinate(j.id);if(j.limitsDeg&&extrema(d,motion.duration).some(x=>x<j.limitsDeg[0]-1e-7||x>j.limitsDeg[1]+1e-7))throw Error('Joint limit exceeded during trajectory: '+j.id);}
- for(const r of m.relations){const a=joints.get(r.driver),b=joints.get(r.follower);if(a.parent!==b.parent||Math.max(...a.axis.map((x,i)=>Math.abs(x-b.axis[i])))>1e-7)throw Error('Ondsel coupling requires equally oriented parallel shafts on one carrier: '+r.id);}
+ for(const r of m.relations){const a=joints.get(r.driver),b=joints.get(r.follower);if(a.parent!==b.parent||Math.max(...a.axis.map((x,i)=>Math.abs(x-b.axis[i])))>1e-7)throw Error('the mate solver coupling requires equally oriented parallel shafts on one carrier: '+r.id);}
  const startAngles=Object.fromEntries(m.joints.map(j=>[j.id,coordinate(j.id).position]));
  if(!m.joints.length)throw Error('Mechanism has no movable joints');
  // Seed the solver from the requested initial placement only. All subsequent
- // poses are solved by Ondsel. Preserve the CAD bind separately for rendering.
+ // poses are solved by the mate solver. Preserve the CAD bind separately for rendering.
  const initial=mechanismPose(m,m.joints[0].id,startAngles[m.joints[0].id],startAngles);
  const deltas=new Map(m.bodies.map(b=>[b.id,fromRows(initial.transforms[b.parts[0]])]));
  const bind=new Map(m.bodies.map(b=>[b.id,[1,0,0,0,0,1,0,0,0,0,1,0,...b.origin,1]]));

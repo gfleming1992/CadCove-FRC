@@ -369,6 +369,40 @@ impl World {
         serde_json::json!({"tick":self.tick,"bodies":bodies})
     }
 
+    pub(super) fn manipulation_body_state(&self, id: &str) -> (Vector, Vector, f32) {
+        if let Some(a)=self.compliance.active.get(id) {
+            let soft=&self.soft_bodies[a.handle];
+            let m=moments(soft, &self.bodies[soft.root_body()]);
+            (m.center,m.velocity,soft.mass())
+        } else {
+            let b=&self.bodies[self.body_ids[id]];
+            (b.translation(),b.linvel(),b.mass())
+        }
+    }
+    pub(super) fn manipulation_impulse(&mut self,id:&str,impulse:Vector) {
+        if let Some(a)=self.compliance.active.get(id) {
+            let soft=&mut self.soft_bodies[a.handle];
+            // Rapier soft-body apply_impulse takes a uniform velocity change.
+            let mass=soft.mass();
+            soft.apply_impulse(impulse/mass,true);
+        } else { self.bodies[self.body_ids[id]].apply_impulse(impulse,true); }
+    }
+
+    /// The enabled contact body, which may differ from the authored rigid proxy.
+    pub(super) fn game_piece_handle(&self, id: &str) -> RigidBodyHandle {
+        self.compliance.active.get(id)
+            .map(|a| self.soft_bodies[a.handle].root_body())
+            .unwrap_or(self.body_ids[id])
+    }
+
+    /// Explicit placement and reduced-order launch reset the representation.
+    /// Ordinary physics demotion still uses all recovery and clearance gates.
+    pub(super) fn reset_game_piece_compliance(&mut self, id: &str) {
+        if self.compliance.active.contains_key(id) {
+            self.demote_compliance(id);
+        }
+    }
+
     fn demote_compliance(&mut self, id: &str) {
         let a = self.compliance.active.remove(id).unwrap();
         let c = &self.compliance.configs[id];
@@ -499,6 +533,55 @@ mod tests {
             assert!((m.velocity - Vector::new(2.0, -1.0, 0.5)).length() < 1.0e-5);
             let expected_momentum = 0.4 * 0.215 * 0.075_f32.powi(2) * 10.0;
             assert!((m.momentum.z - expected_momentum).abs() < 1.0e-6);
+        }
+    }
+
+    #[test]
+    fn local_cylinder_refresh_keeps_passive_impact_bounded_at_50hz() {
+        for speed in [0.0, 1.0] {
+          let mut reference = None;
+          for workers in [1,4] {
+            let mut w = World::new(serde_json::from_value(json!({
+                "dt":0.02,"gravity":[0,0,0],"max_contact_substeps":1,
+                "solver_schedule":"per_tick","local_cylinder_contacts":true,
+                "bodies":[
+                    {"id":"roller","fixed":true,"position":[0,0,0],"friction":0.8,
+                     "colliders":[{"kind":"cylinder","radius":0.1,"half_height":0.4}]},
+                    {"id":"fuel","position":[-0.18,0,0],"velocity":[speed,0,0],
+                     "mass":0.215,"friction":0.65,"restitution":0,
+                     "colliders":[{"kind":"ball","radius":0.075}],"compliance":{}},
+                    {"id":"unrelated","position":[10,10,10],"velocity":[2,0,0],
+                     "colliders":[{"kind":"ball","radius":0.1}]}
+                ],"compliance_zones":[{"body":"roller","center":[0,0,0],"half":[0.4,0.5,0.4]}]
+            })).unwrap()).unwrap();
+            #[cfg(feature = "parallel")]
+            w.pipeline.configure_thread_pool(workers).unwrap();
+            #[cfg(not(feature = "parallel"))]
+            let _ = workers;
+            let mut penetration = 0.0_f32;
+            for _ in 0..100 {
+                w.step(&Input::default()).unwrap();
+                let s = w.snapshot(); let b = &s.bodies["fuel"];
+                assert_eq!(w.physics_substeps,1);
+                assert!((s.bodies["unrelated"].position[0]-(10.0+2.0*s.time as f32)).abs()<0.0002,
+                    "unrelated body must advance exactly one coarse tick");
+                assert!(b.position[0] < -0.1,"ball crossed the passive roller");
+                assert!(Vector::from(b.velocity).length() <= speed+0.05,"passive contact added gross energy");
+                // Free recovered balls can return to the rigid representation.
+                let points = w.inspect_particles("fuel").unwrap_or_else(|_| vec![b.position]);
+                let radius = if s.compliance.active_soft == 0 { 0.075 } else { 0.0 };
+                for p in points {
+                    let p = Vector::from(p);
+                    if p.y.abs()<0.4 { penetration = penetration.max(0.1+radius-(p.x*p.x+p.z*p.z).sqrt()); }
+                }
+            }
+            // New pairs are still discovered at the coarse tick: permit at
+            // most one tick's incoming travel plus 2 mm of contact tolerance.
+            assert!(penetration < speed*0.02+0.002,"penetration exceeded coarse-step travel: {penetration}");
+            let final_state = serde_json::to_value(w.snapshot()).unwrap();
+            if let Some(first) = &reference { assert_eq!(&final_state,first,"worker count changed physical state"); }
+            else { reference = Some(final_state); }
+          }
         }
     }
 
@@ -913,6 +996,7 @@ mod tests {
 
     #[test]
     fn compliant_fuel_squeezes_through_driven_gap_while_rigid_control_jams() {
+        for schedule in [SolverSchedule::PerRefresh, SolverSchedule::PerTick] {
         for voltage in [0.0, 1.6, 6.0, 12.0] {
             for compliant in [false, true] {
                 let mut spec = serde_json::json!({"dt":0.005,"bodies":[
@@ -930,6 +1014,7 @@ mod tests {
                 if compliant {
                     spec["bodies"][3]["compliance"] = serde_json::json!({});
                 }
+                spec["solver_schedule"] = serde_json::to_value(schedule).unwrap();
                 let mut w = World::new(serde_json::from_value(spec).unwrap()).unwrap();
                 let input = Input {
                     volts: BTreeMap::from([
@@ -980,7 +1065,7 @@ mod tests {
                     previous_z = p[2];
                 }
                 let state = w.snapshot();
-                eprintln!("pinch voltage={voltage} soft={compliant} penetration={max_penetration} deformation={deformation} promotions={} demotions={}", state.compliance.promotions, state.compliance.demotions);
+                eprintln!("pinch schedule={schedule:?} voltage={voltage} soft={compliant} penetration={max_penetration} deformation={deformation} promotions={} demotions={}", state.compliance.promotions, state.compliance.demotions);
                 assert!(
                     max_penetration < 0.001,
                     "excessive contact penetration {max_penetration}"
@@ -1006,6 +1091,7 @@ mod tests {
                     );
                 }
             }
+        }
         }
     }
 }

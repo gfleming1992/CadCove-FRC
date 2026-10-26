@@ -25,6 +25,21 @@ test('explicit mechanism profile removes only selected ball compliance and prese
  expect(physicsModeWorld(detailed,'accurate')).toEqual(detailed);
 });
 
+test('robot compliance recipes retain authored foam and moving mechanism zones',()=>{
+ const detailed={...source,bodies:[...source.bodies,{id:'field',fixed:true},{id:'intake'}],compliance_zones:[{body:'field',half:[1,1,1]},{body:'intake',half:[.1,.1,.1]}]};
+ const settings={gameplay:{balls:['ball'],robot_compliance:true,passive_storage:true,launchers:[{pickup:{body:'intake'}}]}};
+ const original=structuredClone(detailed),recipe=structuredClone(settings);
+ const practice=physicsModeWorld(detailed,'gameplay',settings);
+ expect(practice.bodies).toEqual(detailed.bodies);
+ expect(practice.compliance_zones).toEqual(detailed.compliance_zones);
+ practice.bodies[0].compliance.subdivisions=0;
+ practice.compliance_zones[1].half[0]=2;
+ practice.gameplay.launchers[0].pickup.body='changed';
+ expect(detailed).toEqual(original);expect(settings).toEqual(recipe);
+ expect(()=>physicsModeWorld(detailed,'gameplay',{gameplay:{...settings.gameplay,field_compliance:true}})).toThrow('Choose field or robot compliance');
+ expect(()=>physicsModeWorld(detailed,'gameplay',{...settings,fieldFoamSubdivisions:0})).toThrow('Field foam resolution');
+});
+
 test('approximate source cannot be relabeled as accurate',()=>{
  expect(()=>physicsModeWorld({...source,gameplay:{balls:['ball']}},'accurate')).toThrow('detailed source');
 });
@@ -79,4 +94,23 @@ test('installed mode builder relocates references, pins recipes and keeps detail
   await expect(createPhysicsMode({project,mode:'accurate',output:path.join(root,'bad')})).rejects.toThrow('audit failed');
   expect(await readFile(path.join(root,'compiled/world.json'),'utf8')).toBe(original);
  }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('solver scheduling is an explicit recipe setting and preserves detailed settings',()=>{
+ const original=structuredClone(source);
+ expect(physicsModeWorld(source,'accurate')).not.toHaveProperty('solver_schedule');
+ const candidate=physicsModeWorld(source,'gameplay',{solver_schedule:'per_tick',solver_iterations:4});
+ expect(candidate.solver_schedule).toBe('per_tick');expect(candidate.bodies).toEqual(source.bodies);
+ expect(physicsModeWorld(source,'gameplay',{solver_schedule:'per_refresh'}).solver_schedule).toBe('per_refresh');
+ for(const solver_schedule of [null,0,'fast',true])expect(()=>physicsModeWorld(source,'gameplay',{solver_schedule})).toThrow('Unknown solver schedule');
+ expect(source).toEqual(original);
+});
+
+test('gameplay contact budget is explicit, bounded and does not alter source geometry',()=>{
+ expect(physicsModeWorld(source,'gameplay',{local_cylinder_contacts:true}).local_cylinder_contacts).toBe(true);
+ for(const value of [null,1,'true'])expect(()=>physicsModeWorld(source,'gameplay',{local_cylinder_contacts:value})).toThrow('boolean');
+ const candidate=physicsModeWorld(source,'gameplay',{dt:.02,max_contact_substeps:2});
+ expect(candidate.dt).toBe(.02);expect(candidate.max_contact_substeps).toBe(2);
+ expect(candidate.bodies).toEqual(source.bodies);expect(source).not.toHaveProperty('max_contact_substeps');
+ for(const max_contact_substeps of [null,0,65,1.1,'2'])expect(()=>physicsModeWorld(source,'gameplay',{max_contact_substeps})).toThrow('1..64');
 });

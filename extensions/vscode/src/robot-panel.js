@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import {randomBytes,randomUUID} from 'node:crypto';
 
 // Imported CAD is independent of physics readiness and Java/vendor runtimes.
-export function robotPanels(context,{workspace,simulationProject,cad,settings}){
+export function robotPanels(context,{workspace,simulationProject,cad,settings,scenes}){
  const panels=new Map();
  async function open(resource){
   const root=workspace(resource),configured=await settings(root);
@@ -21,12 +21,15 @@ export function robotPanels(context,{workspace,simulationProject,cad,settings}){
   let resolve,reject;
   const ready=new Promise((a,b)=>{resolve=a;reject=b;}),pending=new Map();
   const timer=setTimeout(()=>reject(Error('Robot CAD did not finish loading within 60 seconds')),60000);
-  const state={panel,ready,pending,diagnostics:{phase:'loading'}};panels.set(root,state);
-  const messages=panel.webview.onDidReceiveMessage(message=>{
+  const state={panel,ready,pending,diagnostics:{phase:'loading'},imported:true,asset,entry:'@imported-robot',root,layout:{workspaceRoot:root}};panels.set(root,state);
+  state.requestView=(method,args={})=>request(resource,method,args);
+  const integration=await scenes.integrate(state);
+  const messages=panel.webview.onDidReceiveMessage(async message=>{
+   if(Number.isSafeInteger(message?.id)&&typeof message.method==='string'){try{await panel.webview.postMessage({id:message.id,result:await integration.request(message.method,message.args??{})});}catch(e){await panel.webview.postMessage({id:message.id,error:e.message});}return;}
    if(message?.report){state.diagnostics=message.report;if(message.report.phase==='ready'){clearTimeout(timer);resolve({ok:true,kind:'imported-assembly',...message.report});}else if(message.report.phase==='error'){clearTimeout(timer);reject(Error(message.report.error));}}
    if(message?.reply){const p=pending.get(message.reply);if(p){clearTimeout(p.timer);pending.delete(message.reply);message.error?p.reject(Error(message.error)):p.resolve(message.result);}}
   });
-  panel.onDidDispose(()=>{clearTimeout(timer);reject(Error('Robot CAD closed'));for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error('Robot CAD closed'));}messages.dispose();panels.delete(root);});
+  panel.onDidDispose(()=>{integration.dispose();clearTimeout(timer);reject(Error('Robot CAD closed'));for(const p of pending.values()){clearTimeout(p.timer);p.reject(Error('Robot CAD closed'));}messages.dispose();panels.delete(root);});
   const uri=p=>panel.webview.asWebviewUri(vscode.Uri.file(p)).toString(),nonce=randomBytes(20).toString('hex');
   const config=JSON.stringify({asset:uri(asset)}).replace(/</g,'\\u003c');
   panel.webview.html=`<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${panel.webview.cspSource} data:; connect-src ${panel.webview.cspSource}; script-src 'nonce-${nonce}'; style-src 'nonce-${nonce}';"><style nonce="${nonce}">html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#121820}canvas{width:100%;height:100%;display:block;touch-action:none}#status{position:absolute;bottom:8px;left:12px;color:#bbb;font:12px sans-serif;pointer-events:none}</style></head><body><canvas></canvas><div id="status">Loading robot CAD…</div><script nonce="${nonce}">window.cadcoveRobot=${config}</script><script nonce="${nonce}" src="${uri(path.join(media,'robot.js'))}"></script></body></html>`;

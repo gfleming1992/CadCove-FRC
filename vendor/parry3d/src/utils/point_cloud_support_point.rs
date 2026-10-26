@@ -21,8 +21,8 @@ pub fn point_cloud_support_point_id(dir: Vector, points: &[Vector]) -> usize {
             all(target_arch = "x86_64", feature = "x86-support-batch")
         )
     ))]
-    if points.len() >= 16 {
-        return point_cloud_support_point_id_batched(dir, points);
+    if points.len() >= 16 && points.len() <= (1 << 24) {
+        return point_cloud_support_point_id_batched::<false>(dir, points);
     }
 
     let mut best_pt = 0;
@@ -40,6 +40,24 @@ pub fn point_cloud_support_point_id(dir: Vector, points: &[Vector]) -> usize {
     best_pt
 }
 
+/// Support index relative to the first point, matching the CCD proxy's scalar
+/// arithmetic. Subtract before multiplying to retain accuracy far from origin.
+#[inline]
+pub(crate) fn point_cloud_support_point_id_relative(dir: Vector, points: &[Vector]) -> usize {
+    #[cfg(all(feature = "dim3", feature = "f32", any(target_arch = "aarch64",
+        all(target_arch = "x86_64", feature = "x86-support-batch"))))]
+    if points.len() >= 16 && points.len() <= (1 << 24) {
+        return point_cloud_support_point_id_batched::<true>(dir, points);
+    }
+    let origin = points[0];
+    let (mut best, mut value) = (0, 0.0);
+    for (i, p) in points.iter().enumerate().skip(1) {
+        let dot = dir.dot(*p - origin);
+        if dot > value { best = i; value = dot; }
+    }
+    best
+}
+
 /// Computes the support point of a cloud of points.
 #[inline]
 pub fn point_cloud_support_point(dir: Vector, points: &[Vector]) -> Vector {
@@ -55,31 +73,47 @@ pub fn point_cloud_support_point(dir: Vector, points: &[Vector]) -> Vector {
     )
 ))]
 #[inline]
-fn point_cloud_support_point_id_batched(dir: Vector, points: &[Vector]) -> usize {
+fn point_cloud_support_point_id_batched<const RELATIVE: bool>(dir: Vector, points: &[Vector]) -> usize {
     use crate::math::Vec4;
     let mut best = 0;
-    let mut value = points[0].dot(dir);
+    let mut value = if RELATIVE { 0.0 } else { points[0].dot(dir) };
+    let origin = points[0];
     let dx = Vec4::splat(dir.x);
     let dy = Vec4::splat(dir.y);
     let dz = Vec4::splat(dir.z);
+    // Four independent maxima avoid a serial scalar compare after every dot.
+    // Float lane indices are exact under the caller's 2^24-point bound.
+    let mut maxima = Vec4::splat(value);
+    let mut ids = Vec4::ZERO;
     let mut index = 1;
     while index + 4 <= points.len() {
         let p = &points[index..index + 4];
         let x = Vec4::new(p[0].x, p[1].x, p[2].x, p[3].x);
         let y = Vec4::new(p[0].y, p[1].y, p[2].y, p[3].y);
         let z = Vec4::new(p[0].z, p[1].z, p[2].z, p[3].z);
-        // Same multiplication/addition order as Vec3::dot, across four points.
-        let dots = ((x * dx + y * dy) + z * dz).to_array();
-        for k in 0..4 {
-            if dots[k] > value {
-                value = dots[k];
-                best = index + k;
-            }
-        }
+        let (x, y, z) = if RELATIVE {
+            (x - Vec4::splat(origin.x), y - Vec4::splat(origin.y), z - Vec4::splat(origin.z))
+        } else { (x, y, z) };
+        // Same multiplication/addition order as Vec3::dot; no fused adds.
+        let dots = (x * dx + y * dy) + z * dz;
+        let greater = dots.cmpgt(maxima);
+        maxima = Vec4::select(greater, dots, maxima);
+        let current = Vec4::new(index as f32, (index + 1) as f32,
+            (index + 2) as f32, (index + 3) as f32);
+        ids = Vec4::select(greater, current, ids);
         index += 4;
     }
+    let values = maxima.to_array();
+    let indices = ids.to_array();
+    for lane in 0..4 {
+        let id = indices[lane] as usize;
+        if values[lane] > value || (values[lane] == value && id < best) {
+            value = values[lane];
+            best = id;
+        }
+    }
     for (i, p) in points.iter().enumerate().skip(index) {
-        let dot = p.dot(dir);
+        let dot = if RELATIVE { dir.dot(*p - origin) } else { p.dot(dir) };
         if dot > value {
             value = dot;
             best = i;

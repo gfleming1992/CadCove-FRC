@@ -38,7 +38,8 @@ pub fn reply(next: Snapshot, previous: &mut Option<Snapshot>, delta: bool) -> Va
             .collect();
         let mut state = json!({"tick":next.tick,"time":next.time,"physics_substeps":next.physics_substeps,
             "bodies":changed,"joints":next.joints,"motors":next.motors,
-            "transmissions":next.transmissions,"compliance":next.compliance});
+            "transmissions":next.transmissions,"compliance":next.compliance,"manipulation":next.manipulation});
+        if !next.robot_gameplay.is_empty() { state["robot_gameplay"] = json!(next.robot_gameplay); }
         if let Some(status) = &next.gameplay { state["gameplay"] = json!(status); }
         if old.contacts != next.contacts {
             state["contacts"] = json!(next.contacts);

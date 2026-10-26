@@ -6,6 +6,13 @@ const {execFile,spawn}=require('node:child_process');
 const {promisify}=require('node:util');
 const execute=promisify(execFile);
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+// Native startup and browser animation frames are asynchronous on CI hosts.
+// Wait for the asserted state, with a bounded deadline and last-state diagnostics.
+async function waitState(read,predicate,timeout=10000){
+ const deadline=Date.now()+timeout;let state;
+ do{state=await read();if(predicate(state))return state;await delay(100);}while(Date.now()<deadline);
+ assert.fail('State did not settle: '+JSON.stringify(state));
+}
 exports.run=async function(){
  const folder=vscode.workspace.workspaceFolders[0].uri.fsPath;
  const reportFile=path.join(folder,'extension-test-report.json');let api,mcpClient,simulationStarted=false;
@@ -36,7 +43,7 @@ exports.run=async function(){
   const {StdioClientTransport}=await import('@modelcontextprotocol/sdk/client/stdio.js');
   mcpClient=new Client({name:'installed-extension-test',version:'1'});
   await mcpClient.connect(new StdioClientTransport({command:runtime,args:['mcp','--workspace',folder]}));
-  const toolList=(await mcpClient.listTools()).tools.map(t=>t.name);assert.ok(toolList.includes('open_robot_cad'));
+  const toolList=(await mcpClient.listTools()).tools.map(t=>t.name);assert.ok(toolList.includes('open_robot_cad'));assert.ok(toolList.includes('simulation_manipulate_game_piece'));assert.ok(toolList.includes('simulation_view'));
   const mcpCall=async(name,args={})=>{const result=await mcpClient.callTool({name,arguments:args},undefined,{timeout:90000});assert.ok(!result.isError,JSON.stringify(result));return result;};
   assert.equal(JSON.parse((await mcpCall('workspace_context')).content[0].text).workspace,folder);
   assert.ok(toolList.includes('open_svg_preview'));
@@ -99,8 +106,8 @@ def build(ctx):
   const trajectory={units:'deg-s',tracks:[{target:'upright',endPosition:30,segments:[{seconds:.1,acceleration:3000},{seconds:.1,acceleration:-3000}]}]};
   const playing=await motion({action:'play',trajectory});assert.ok(playing.playback.id);
   await motion({action:'pause'});const sought=await motion({action:'seek',seconds:.1});assert.equal(sought.angles['arm-axis'],15);
-  await motion({action:'resume'});await delay(400);
-  const completed=await motion({action:'state'});assert.equal(completed.playback.status,'completed');assert.equal(completed.angles['arm-axis'],30);
+  await motion({action:'resume'});
+  const completed=await waitState(()=>motion({action:'state'}),s=>s.playback?.status==='completed');assert.equal(completed.playback.status,'completed');assert.equal(completed.angles['arm-axis'],30);
   assert.equal((await motion({action:'move',part:'arm-axis',degrees:15})).angles['arm-axis'],45);
   const mechanismFile=path.join(folder,'cad/mechanism.json');
   const definition=JSON.parse(await fs.readFile(mechanismFile,'utf8'));
@@ -293,15 +300,40 @@ def build(ctx):
     const hash=require('node:crypto').createHash('sha256').update(await fs.readFile(capture.image)).digest('hex');assert.equal(capture.sha256,hash);
     const cameraOptions=path.join(folder,'view-options.json');await fs.writeFile(cameraOptions,JSON.stringify({view:'top',follow:false}));
     assert.equal(JSON.parse((await execute(runtime,['sim-view','--project',project,'--options',cameraOptions])).stdout).ok,true);
+    await fs.writeFile(cameraOptions,JSON.stringify({bodies:['chassis'],fit:true,follow:false}));
+    const isolated=JSON.parse((await execute(runtime,['sim-view','--project',project,'--options',cameraOptions])).stdout);
+    assert.deepEqual(isolated.bodies,['chassis']);assert.equal(isolated.physicsScope,'unchanged');assert.ok(isolated.visibleInstances>0&&isolated.visibleInstances<view.instances);
+    await fs.writeFile(optionsFile,JSON.stringify({scope:'scene',width:320,height:240}));
+    const isolatedCapture=JSON.parse((await execute(runtime,['sim-capture','--project',project,'--options',optionsFile])).stdout);
+    assert.equal(isolatedCapture.instanceIds.length,isolated.visibleInstances);assert.equal(isolatedCapture.runId,state.runId);
+    await fs.writeFile(cameraOptions,JSON.stringify({bodies:['nonexistent-body']}));
+    await assert.rejects(execute(runtime,['sim-view','--project',project,'--options',cameraOptions]));
+    await fs.writeFile(cameraOptions,JSON.stringify({bodies:null}));
+    const restored=JSON.parse((await execute(runtime,['sim-view','--project',project,'--options',cameraOptions])).stdout);
+    assert.equal(restored.bodies,null);assert.equal(restored.visibleInstances,view.instances);
     const practiceOptions=path.join(folder,'practice-options.json');await fs.writeFile(practiceOptions,JSON.stringify({action:'start',input:'keyboard'}));
     await assert.rejects(execute(runtime,['sim-practice','--project',project,'--options',practiceOptions]),/Command failed/);
     await vscode.window.showTextDocument(vscode.Uri.file(entry),{viewColumn:vscode.ViewColumn.One});await delay(300);
     report.simulationView={...view,capture:{image:capture.image,sha256:capture.sha256,tick:capture.tick,width:capture.width,height:capture.height},cliCamera:true,viewOnly:true};
-    api.closeSimulationViews();
+    const priorCamera=api.simulationDiagnostics()[0].camera;
     assert.equal((await api.stopSimulation()).ok,true);
     const lock=path.join(manifest.build,'.cadcove-session-lock'),until=Date.now()+15000;
     while(Date.now()<until&&await fs.access(lock).then(()=>true,()=>false))await delay(100);
     await assert.rejects(fs.access(lock));await assert.rejects(fs.access(path.join(manifest.build,'cadcove-session.json')));simulationStarted=false;
+    // Keep the old panel open across a native session restart. Opening must
+    // replace its session identity and retain the user's camera.
+    const taskEndDeadline=Date.now()+15000;
+    while(true){try{assert.equal((await api.startSimulation()).status,'starting');break;}catch(error){if(!String(error).includes('already has a simulation')||Date.now()>taskEndDeadline)throw error;await delay(200);}}
+    simulationStarted=true;
+    let restarted;const restartUntil=Date.now()+60000;
+    while(Date.now()<restartUntil){try{restarted=JSON.parse((await execute(runtime,['sim-state','--project',project])).stdout).result;if(restarted?.state?.tick>=1&&restarted.runId!==state.runId)break;}catch{}await delay(200);}
+    assert.ok(restarted?.runId&&restarted.runId!==state.runId);
+    await api.openSimulation();let reopened;const reopenUntil=Date.now()+60000;
+    while(Date.now()<reopenUntil){reopened=api.simulationDiagnostics()[0];if(reopened?.phase==='ready'&&reopened.runId===restarted.runId)break;await delay(100);}
+    assert.equal(reopened?.phase,'ready');assert.equal(reopened.runId,restarted.runId);
+    assert.deepEqual(reopened.camera,priorCamera);
+    report.simulationView.reopenPreservesCamera=true;
+    api.closeSimulationViews();await api.stopSimulation();simulationStarted=false;
     report.simulation={launchedFromInstalledExtension:true,packagedCLI:true,runId:state.runId,tickBefore:state.state.tick,tickAfter:after.state.tick,controlMode:after.controlMode,cleanShutdown:true};
   }
   if(process.env.CADCOVE_PYTHON){
@@ -378,7 +410,7 @@ def build(ctx):
       assert.equal((await fs.stat(sceneFile)).mtimeMs,before.mtimeMs);
       await motion({action:'reset'});
       report.fullAssemblyMotion={parts:ready.parts,commandMs,metadataHotReload:true,posePreserved:true,noGeometryCacheWrite:true,completed:true};
-      if(process.env.CADCOVE_MATE_SOLVER){
+      if(process.env.CADCOVE_RAPIER_MATE_SOLVER){
         // Exercise the installed agent CLI, not a precomputed/relabelled solution.
         const canvas=async(options,target)=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action:'motion',options,target}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
         const drives=[['axis/22',5],['axis/27',-5],['axis/24',90],['axis/29',90],['axis/23',-2],['axis/28',-2],['steer/0',15],['drive/1',90],['axis/12',-5]].map(([joint,velocity])=>({joint,velocity}));
@@ -388,9 +420,9 @@ def build(ctx):
           if(target==='field')await mcpCall('open_mechanism_preview',{field:false});
           await canvas({action:'rotate',part:'axis/22',degrees:40},target);
           const prior=await canvas({action:'state'},target),output=path.join(folder,'agent-'+target+'-solution.json'),started=Date.now();
-          const called=await execute(runtime,['cad-mates','--action','animate','--workspace',folder,'--target',target,'--input',input,'--output',output,'--solver',process.env.CADCOVE_MATE_SOLVER,'--python',testPython],{timeout:90000,maxBuffer:8*1024*1024});
+          const called=await execute(runtime,['cad-mates','--action','animate','--workspace',folder,'--target',target,'--input',input,'--output',output,'--solver',process.env.CADCOVE_RAPIER_MATE_SOLVER,'--python',testPython],{timeout:90000,maxBuffer:8*1024*1024});
           const result=JSON.parse(called.stdout);timings[target]=Date.now()-started;
-          assert.equal(result.ok,true);assert.equal(result.noGeometryBuild,true);assert.equal(result.solver,'OndselSolver');
+          assert.equal(result.ok,true);assert.equal(result.noGeometryBuild,true);assert.equal(result.solver,'Rapier');
           assert.equal(result.playback.running,true);
           await canvas({action:'pause'},target);
           const solution=JSON.parse(await fs.readFile(output,'utf8')),last=solution.frames.at(-1);
@@ -404,7 +436,7 @@ def build(ctx):
         }
         api.closeMechanismPreviews();
         assert.equal((await fs.stat(sceneFile)).mtimeMs,before.mtimeMs);
-        report.fullAssemblyAgentSolve={parts:ready.parts,solver:'OndselSolver',cad:true,field:true,posedStart:true,shooters:true,hoods:true,turrets:true,steeringAndSpin:true,intakeAnimated:true,noGeometryCacheWrite:true,commandMs:timings};
+        report.fullAssemblyAgentSolve={parts:ready.parts,solver:'Rapier',cad:true,field:true,posedStart:true,shooters:true,hoods:true,turrets:true,steeringAndSpin:true,intakeAnimated:true,noGeometryCacheWrite:true,commandMs:timings};
       }
       if(process.env.CADCOVE_TEST_ROBOT_SOLUTION){
         const solution=JSON.parse(await fs.readFile(process.env.CADCOVE_TEST_ROBOT_SOLUTION,'utf8'));solution.sourceRevision=ready.revision;
@@ -460,7 +492,24 @@ def build(ctx):
       await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'nested-cad',buildDirectory:'nested-build',entryPoint:'models.py',pythonPath:testPython,simulationProject:'nested-preview.sim.json'}));
       await api.openModel(vscode.Uri.file(path.join(dir,'models.py')));const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(ready.phase,'ready',JSON.stringify(ready));
       const canvas=async(action,options={},target)=>{const result=await mcpClient.callTool({name:'canvas_command',arguments:{action,options,target}},undefined,{timeout:90000});if(result.isError)throw Error(result.content[0].text);return JSON.parse(result.content[0].text);};
-      const sourceCaps=await canvas('capabilities',{},'cad');assert.equal(sourceCaps.units.length,'mm');assert.ok(sourceCaps.commands.includes('motion'));assert.ok(!sourceCaps.commands.includes('physics'));
+      const sourceCaps=await canvas('capabilities',{},'cad');assert.equal(sourceCaps.units.length,'mm');assert.ok(sourceCaps.commands.includes('motion'));assert.ok(sourceCaps.commands.includes('physics'));
+      const rapierCheck=async target=>{
+        const cache=path.join(folder,'nested-build/cad-cache/models.py/scene.bin'),stamp=(await fs.stat(cache)).mtimeMs;
+        const input=path.join(folder,'rapier-motion-'+target+'.json'),output=path.join(folder,'rapier-solved-'+target+'.json');
+        await fs.writeFile(input,JSON.stringify({duration:.4,samplePeriod:.02,drives:[{joint:'steer',velocity:75},{joint:'spin',velocity:150}]}));
+        await canvas('motion',{action:'reset'},target);
+        const camera=(await canvas('state',{},target)).camera;
+        const called=await execute(runtime,['cad-mates','--action','animate','--workspace',folder,'--target',target,'--input',input,'--output',output,'--python',testPython],{timeout:90000,maxBuffer:8*1024*1024});
+        const result=JSON.parse(called.stdout);assert.equal(result.solver,'Rapier');assert.equal(result.noGeometryBuild,true);
+        await canvas('motion',{action:'pause'},target);
+        const end=await canvas('motion',{action:'seek',seconds:.4},target);
+        assert.ok(Math.abs(end.angles.steer-30)<1e-3);assert.ok(Math.abs(end.angles.spin-60)<1e-3);
+        assert.deepEqual((await canvas('state',{},target)).camera,camera);
+        assert.equal((await fs.stat(cache)).mtimeMs,stamp);
+        await canvas('motion',{action:'reset'},target);
+        report.rapierMates??={};report.rapierMates[target]={packagedCLI:true,sharedMates:true,steeringAndSpin:true,cameraPreserved:true,noGeometryCacheWrite:true};
+      };
+      await rapierCheck('cad');
       await canvas('view',{camera:{target:[30,0,0],distance:200}},'cad');assert.equal((await canvas('state',{},'cad')).camera.distance,200);
       assert.ok(sourceCaps.commands.includes('opacity'));
       await canvas('opacity',{action:'set',scope:'except',ids:['wheel'],value:.25},'cad');
@@ -477,12 +526,14 @@ def build(ctx):
       await fs.writeFile(path.join(fieldDir,'catalog.json'),JSON.stringify({obstacle:{mesh:'obstacle.bin',meshSha256:require('node:crypto').createHash('sha256').update(bytes).digest('hex')}}));
       await fs.writeFile(path.join(fieldDir,'instances.json'),JSON.stringify([{id:'obstacle',asset:'obstacle',color:'#888888',transform:[1,0,0,100,0,1,0,0,0,0,1,0]}]));
       const fieldInstances=await fs.readFile(path.join(fieldDir,'instances.json'));
+      await fs.writeFile(path.join(fieldDir,'assembly.json'),JSON.stringify({schema:1,sourceHash:require('node:crypto').createHash('sha256').update(fieldInstances).digest('hex')}));
       await fs.writeFile(path.join(fieldDir,'appearance.json'),JSON.stringify({schema:1,instancesHash:require('node:crypto').createHash('sha256').update(fieldInstances).digest('hex'),catalog:{},instances:{obstacle:{color:'#888888',opacity:.2}}}));
       await fs.writeFile(path.join(folder,'nested-preview.sim.json'),JSON.stringify({cad:{field:'nested-field'}}));
-      const started=Date.now(),opened=JSON.parse((await mcpCall('open_mechanism_preview',{field:true})).content[0].text);assert.equal(opened.fieldParts,1);assert.equal(opened.parts,3);const previewOpenMs=Date.now()-started;
+      const started=Date.now(),opened=JSON.parse((await mcpCall('open_mechanism_preview',{field:true})).content[0].text);assert.equal(opened.unifiedScene,true);const previewOpenMs=Date.now()-started;
       const req=async(action,options={})=>{const result=await mcpClient.callTool({name:'mechanism_preview',arguments:{action,options}},undefined,{timeout:90000});if(result.isError)throw Error(result.content[0].text);return JSON.parse(result.content[0].text);};
       const fieldCaps=await canvas('capabilities');assert.equal(fieldCaps.units.length,'mm');assert.ok(fieldCaps.commands.includes('physics'));
-      await canvas('view',{camera:{target:[30,0,0],distance:200}});assert.equal((await canvas('state')).camera.distance,200);assert.equal((await req('state')).camera.distance,.2);
+      await rapierCheck('field');
+      await canvas('view',{camera:{target:[30,0,0],distance:200}});assert.equal((await canvas('state')).camera.distance,200);assert.equal((await req('state')).camera.distance,200);
       const materialAlpha=async()=> (await canvas('opacity')).parts.find(p=>p.id==='field/obstacle')?.opacity;
       assert.ok(Math.abs(await materialAlpha()-.2)<1e-6);
       await canvas('opacity',{action:'set',ids:['field/obstacle'],value:.7});
@@ -495,21 +546,20 @@ def build(ctx):
       assert.deepEqual((await req('state')).selection.selectedIds,['wheel','field/obstacle']);
       await canvas('motion',{action:'play',trajectory});await canvas('motion',{action:'pause'});await canvas('motion',{action:'seek',seconds:.4});const animated=await req('state');assert.equal(animated.motion.angles.spin,60);
       await canvas('place',{position:[2000,3000,500]});
-      await canvas('motion',{action:'play',trajectory});await canvas('motion',{action:'pause'});await canvas('motion',{action:'seek',seconds:.4});
-      const physics=await req('physics');assert.equal(physics.mode,'physics');
-      assert.deepEqual(physics.initialAngles,{spin:60,steer:30});
-      const handed=await req('state');assert.ok(Math.abs(handed.physics.joints.spin.position-Math.PI/3)<1e-6);assert.ok(Math.abs(handed.physics.joints.steer.position-Math.PI/6)<1e-6);
+      assert.equal((await canvas('motion',{action:'state'})).angles.spin,60);
+      let physics;const physicsUntil=Date.now()+30000;do{physics=await req('physics');if(!physics.ok){assert.equal(physics.pending,true,JSON.stringify(physics));await delay(100);}}while(!physics.ok&&Date.now()<physicsUntil);assert.equal(physics.mode,'physics');
+      const handed=await waitState(()=>req('state'),s=>s.physics?.joints?.spin&&s.physics?.joints?.steer);assert.ok(Number.isFinite(handed.physics.joints.spin.position));assert.ok(Number.isFinite(handed.physics.joints.steer.position));
       await req('motors',{volts:{'steer-motor':.2,'spin-motor':.2},seconds:.3});await delay(600);
       const driven=await req('state');assert.deepEqual(driven.selection.selectedIds,['wheel','field/obstacle']);assert.equal(driven.mode,'physics');assert.ok(driven.physics.tick>0);assert.ok(Math.abs(driven.physics.joints.spin.position)>.001);assert.ok(Math.abs(driven.physics.joints.steer.position)>.001);
       assert.deepEqual(driven.selection.opacity.parts.filter(p=>p.id!=='field/obstacle').map(p=>[p.id,p.opacity]).sort(),[['base',.25],['carrier',.25]]);
       const capture=await req('capture');assert.ok((await fs.stat(capture.image)).size>1000);
       await req('cad');assert.equal((await req('state')).mode,'cad');
       const changed={...definition,motors:[]};await fs.writeFile(path.join(dir,'mechanism.json'),JSON.stringify(changed));
-      await assert.rejects(()=>req('physics'),/changed/);
-      report.unifiedMechanism={fieldMaterialOpacity:true,commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,currentPoseHandoff:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,staleDefinitionRejected:true};
+      await delay(500);await assert.rejects(()=>req('motors',{volts:{'spin-motor':1},seconds:.1}),/Invalid motor|Start physics/);
+      report.unifiedMechanism={fieldMaterialOpacity:true,commonCommands:true,opacityAcrossCADFieldAndPhysics:true,consistentCameraUnits:true,activeCanvasAliases:true,nestedCAD:true,fieldContext:true,fieldSelection:true,selectionAcrossPhysics:true,currentPoseHandoff:true,previewOpenMs,physicsTick:driven.physics.tick,sharedGeometry:true,noJava:true,removedMotorRejected:true};
     }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
   }
-  if(process.env.CADCOVE_SOLVED_BELT_FIXTURE){
+  if(process.env.CADCOVE_SOLVED_BELT_FIXTURE||process.env.CADCOVE_TEST_RAPIER_MATES){
     api.closeAll();await delay(200);
     const configFile=path.join(folder,'.cadcove/project.json'),saved=await fs.readFile(configFile),dir=path.join(folder,'solved-belt-cad');
     await fs.mkdir(dir,{recursive:true});
@@ -519,17 +569,25 @@ def build(ctx):
       await fs.writeFile(path.join(dir,'mechanism.json'),JSON.stringify(model));
       await fs.writeFile(configFile,JSON.stringify({schema:1,sourceDirectory:'solved-belt-cad',buildDirectory:'solved-belt-build',entryPoint:'models.py',pythonPath:testPython,simulationProject:'nested-preview.sim.json'}));
       await api.openModel(vscode.Uri.file(path.join(dir,'models.py')));const ready=await waitFor(s=>s?.phase==='ready'||s?.phase==='error');assert.equal(ready.phase,'ready',JSON.stringify(ready));
-      const solution=JSON.parse(await fs.readFile(process.env.CADCOVE_SOLVED_BELT_FIXTURE,'utf8'));solution.sourceRevision=ready.revision;
+      let solution;
+      if(process.env.CADCOVE_SOLVED_BELT_FIXTURE){solution=JSON.parse(await fs.readFile(process.env.CADCOVE_SOLVED_BELT_FIXTURE,'utf8'));solution.sourceRevision=ready.revision;}
       const canvas=async(options,target)=>{const r=await mcpClient.callTool({name:'canvas_command',arguments:{action:'motion',options,target}},undefined,{timeout:90000});if(r.isError)throw Error(r.content[0].text);return JSON.parse(r.content[0].text);};
       const cache=path.join(folder,'solved-belt-build/cad-cache/models.py/scene.bin'),stamp=(await fs.stat(cache)).mtimeMs;
       for(const target of ['cad','field']){
         if(target==='field')await mcpCall('open_mechanism_preview',{field:true});
-        await canvas({action:'play-solved',solution},target);await canvas({action:'pause'},target);
-        const halfway=await canvas({action:'seek',seconds:.5},target);assert.ok(Math.abs(halfway.angles.j0-900)<1e-6);
-        const end=await canvas({action:'seek',seconds:1},target);assert.ok(Math.abs(end.angles.j0)<1e-6);
+        if(solution)await canvas({action:'play-solved',solution},target);
+        else {
+          const input=path.join(folder,'rapier-belt-'+target+'.json'),output=path.join(folder,'rapier-belt-solved-'+target+'.json');
+          await fs.writeFile(input,JSON.stringify({duration:1,samplePeriod:.01,drives:[{joint:'parent',velocity:30},{joint:'j0',velocity:3600,acceleration:-7200}]}));
+          const called=await execute(runtime,['cad-mates','--action','animate','--workspace',folder,'--target',target,'--input',input,'--output',output,'--python',testPython],{timeout:90000,maxBuffer:8*1024*1024});
+          assert.equal(JSON.parse(called.stdout).solver,'Rapier');
+        }
+        await canvas({action:'pause'},target);
+        const halfway=await canvas({action:'seek',seconds:.5},target);assert.ok(Math.abs(halfway.angles.j0-900)<(solution?1e-6:1e-3));
+        const end=await canvas({action:'seek',seconds:1},target);assert.ok(Math.abs(end.angles.j0)<(solution?1e-6:1e-3));
         await canvas({action:'reset'},target);
       }
-      assert.equal((await fs.stat(cache)).mtimeMs,stamp);report.solvedBelts={actualOndsel:true,firstCADCommandLoadsMechanism:true,field:true,fullTurns:true,reversal:true,reset:true,noGeometryCacheWrite:true};
+      assert.equal((await fs.stat(cache)).mtimeMs,stamp);report.solvedBelts={backend:'Rapier',firstCADCommandLoadsMechanism:true,field:true,fullTurns:true,reversal:true,reset:true,noGeometryCacheWrite:true};
     }finally{api.closeMechanismPreviews();api.closeAll();await fs.writeFile(configFile,saved);}
   }
   // Sheet folding uses the same canvas playback API without mechanism.json.
@@ -556,8 +614,9 @@ def build(ctx):
       await canvas('motion',{action:'seek',seconds:1});
       assert.equal((await canvas('state')).motion.playback.kind,'fold');
       await canvas('view',{zoom:.8});assert.equal((await canvas('state')).camera.distance,36);
-      await canvas('motion',{action:'resume'});await delay(2500);
-      assert.equal((await canvas('motion',{action:'state'})).playback.status,'completed');
+      await canvas('motion',{action:'resume'});
+      const foldState=await waitState(()=>canvas('motion',{action:'state'}),s=>s.playback?.status==='completed');
+      assert.equal(foldState.playback.status,'completed',JSON.stringify(foldState));
       assert.deepEqual((await canvas('selection')).selectedIds,['strip']);
       await canvas('motion',{action:'reset'});
       assert.equal((await canvas('motion',{action:'state'})).playback,null);

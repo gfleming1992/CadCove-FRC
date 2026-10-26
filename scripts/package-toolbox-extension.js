@@ -16,7 +16,7 @@ const manifest=validateRuntimeManifest(JSON.parse(await readFile(path.join(cwd,'
 const inventory=JSON.parse(await readFile(path.join(cwd,'dependency-inventory.json'),'utf8'));
 const extension=JSON.parse(await readFile(path.join(cwd,'package.json'),'utf8'));
 if(!development&&(!inventory.releaseReady||!extension.license||extension.license==='UNLICENSED'||!extension.repository||!extension.publisher||extension.publisher==='cadcove-dev'))throw Error('Production VSIX requires resolved licensing and publication identity; use --development only for a local candidate');
-const required=['package.json','build-provenance.json','dependency-inventory.json','out/extension.cjs','media/main.js','media/native/worker.py','media/native/geometry.py','media/native/requirements.txt','media/simulation.js','runtime/manifest.json','THIRD-PARTY-NOTICES.txt'];
+const required=['package.json','build-provenance.json','dependency-inventory.json','out/extension.cjs','media/main.js','media/native/worker.py','media/native/geometry.py','media/native/requirements.txt','runtime/manifest.json','THIRD-PARTY-NOTICES.txt'];
 const expected=new Map();
 required.push('LICENSE.txt');
 for(const name of [...required,...manifest.files.map(f=>'runtime/'+f.name)]){const bytes=await readFile(path.join(cwd,name));expected.set('extension/'+name.toLowerCase(),createHash('sha256').update(bytes).digest('hex'));}

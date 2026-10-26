@@ -24,6 +24,17 @@ final class DeviceMath {
       return new MotorAdapter.Feedback(sign*(number(joint,"position")*turnsPerUnit-offsetTurns),sign*number(joint,"velocity")*turnsPerUnit);
     }
   }
+  /** A gyro boots at zero; robot code chooses its field heading with setYaw.
+   * Accumulate physical changes across quaternion +/-180 degree wrapping without
+   * overwriting the device's user-controlled heading offset. */
+  static final class GyroYaw {
+    private double previous,raw;
+    GyroYaw(double initialDegrees){if(!Double.isFinite(initialDegrees))throw new IllegalArgumentException("Invalid initial gyro yaw");previous=initialDegrees;}
+    double update(double physicalDegrees){
+      if(!Double.isFinite(physicalDegrees))throw new IllegalArgumentException("Invalid gyro yaw");
+      raw+=Math.IEEEremainder(physicalDegrees-previous,360.0);previous=physicalDegrees;return raw;
+    }
+  }
   static double yawDegrees(JsonNode body) {
     var q=vector(body,"quaternion",4);double norm=0;for(double v:q)norm+=v*v;
     if(Math.abs(norm-1)>0.01)throw new IllegalArgumentException("Device feedback quaternion is not normalized");

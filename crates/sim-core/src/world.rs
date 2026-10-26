@@ -2,11 +2,15 @@ use crate::transmission::{self, Jacobian, Row, TransmissionSpec, TransmissionSta
 use anyhow::{bail, ensure, Context, Result};
 use rapier3d::prelude::*;
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, HashMap};
+use std::collections::{BTreeMap, HashMap, HashSet};
 mod compliance;
+mod contact_groups;
+mod manipulation;
+pub use manipulation::ManipulationCommand;
 mod gameplay;
+mod multiplayer;
 mod field_transport;
-pub use gameplay::GameplaySpec;
+pub use gameplay::{GameplaySpec, GamePiecePlacement};
 mod visibility;
 pub use compliance::{ComplianceSpec, ComplianceZone};
 pub use visibility::SightSegment;
@@ -41,12 +45,37 @@ fn default_friction() -> f32 {
 fn all_groups() -> u32 {
     u32::MAX
 }
+/// Distribution of the base temporal solver substeps over contact refreshes.
+/// Changing this schedule is an explicit numerical-accuracy choice.
+#[derive(Clone, Copy, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum SolverSchedule {
+    #[default]
+    PerRefresh,
+    PerTick,
+}
+impl SolverSchedule {
+    fn is_per_refresh(&self) -> bool { *self == Self::PerRefresh }
+    fn iterations(self, base: usize, refreshes: usize) -> usize {
+        match self {
+            Self::PerRefresh => base,
+            // Each refresh still advances time. Ceil keeps the base internal
+            // timestep no larger than the original tick/base budget. Rapier's
+            // adaptive island extras remain in force on top of this base.
+            Self::PerTick => base.div_ceil(refreshes),
+        }
+    }
+}
+
 #[derive(Clone, Deserialize, Serialize)]
 pub struct WorldSpec {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub mechanisms: Vec<crate::mechanism::Spec>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub gameplay: Option<GameplaySpec>,
+    /// Additional robot mechanisms sharing the primary game-piece pool.
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub robot_gameplay: BTreeMap<String, GameplaySpec>,
     /// Experimental contact algorithm selection is part of the pinned world,
     /// so a recorded load fully specifies its physics without ambient flags.
     #[serde(default)]
@@ -61,6 +90,17 @@ pub struct WorldSpec {
     /// Four preserves the existing engine default; material properties are separate.
     #[serde(default = "solver_iterations")]
     pub solver_iterations: usize,
+    #[serde(default, skip_serializing_if = "SolverSchedule::is_per_refresh")]
+    pub solver_schedule: SolverSchedule,
+    /// Optional gameplay budget for adaptive whole-world contact refreshes.
+    /// Omission preserves motion-driven refinement (and the hard limit of 64).
+    /// This does not limit the solver's local island substeps or CCD sweeps.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub max_contact_substeps: Option<usize>,
+    /// Experimental refresh of existing soft/cylinder contact geometry inside
+    /// local solver substeps, without another whole-world collision pass.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub local_cylinder_contacts: bool,
     /// Numerical contact regularization, not foam stiffness. Preserve the
     /// pinned Rapier default unless a convergence profile explicitly opts in.
     #[serde(default = "static_contact_frequency")]
@@ -109,6 +149,9 @@ pub struct BodySpec {
     pub center_of_mass: Option<[f32; 3]>,
     #[serde(default)]
     pub principal_inertia: Option<[f32; 3]>,
+    /// Symmetric inertia about COM: xx, yy, zz, xy, xz, yz in kg m².
+    #[serde(default)]
+    pub inertia_tensor: Option<[f32; 6]>,
     #[serde(default)]
     pub compliance: Option<ComplianceSpec>,
 }
@@ -154,6 +197,9 @@ pub enum ShapeSpec {
 }
 #[derive(Clone, Deserialize, Serialize)]
 pub struct JointSpec {
+    /// Ideal one-way sliding retention; resets only when the world is reloaded.
+    #[serde(default)]
+    pub one_way: bool,
     pub id: String,
     pub parent: String,
     pub child: String,
@@ -229,8 +275,11 @@ pub struct Snapshot {
     pub transmissions: BTreeMap<String, TransmissionState>,
     pub contacts: Vec<[String; 2]>,
     pub compliance: compliance::ComplianceStatus,
+    pub manipulation: serde_json::Value,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub gameplay: Option<gameplay::Status>,
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    pub robot_gameplay: BTreeMap<String, gameplay::Status>,
 }
 #[derive(Serialize)]
 pub struct ContactInspection {
@@ -328,6 +377,22 @@ pub struct ColliderInspection {
     pub volume_m3: f32,
     pub convex_pieces: Option<usize>,
 }
+// Resolve names once per request, instead of repeatedly scanning every joint in
+// every motor/substep. Rebuild at the request boundary because spec is public.
+struct JointTopology {
+    indices: HashMap<String, usize>,
+    coupled: HashSet<String>,
+}
+impl JointTopology {
+    fn new(spec: &WorldSpec) -> Self {
+        let indices = spec.joints.iter().enumerate().map(|(i, j)| (j.id.clone(), i)).collect();
+        // A motor and its stop must share the impulse solve, even without a belt.
+        let coupled = spec.joints.iter().filter(|j| j.limits.is_some()).map(|j| j.id.clone())
+            .chain(spec.transmissions.iter().flat_map(|t| [t.driver.clone(), t.follower.clone()])).collect();
+        Self { indices, coupled }
+    }
+}
+
 pub struct World {
     mechanisms: Vec<crate::mechanism::Instance>,
     pub spec: WorldSpec,
@@ -339,6 +404,7 @@ pub struct World {
     body_ids: HashMap<String, RigidBodyHandle>,
     joint_ids: HashMap<String, ImpulseJointHandle>,
     joint_references: HashMap<String, GenericJoint>,
+    retained_positions: HashMap<String, f32>,
     names: HashMap<RigidBodyHandle, String>,
     motor_states: BTreeMap<String, MotorState>,
     joint_states: BTreeMap<String, JointState>,
@@ -350,9 +416,12 @@ pub struct World {
     ccd: CCDSolver,
     soft_bodies: SoftBodySet,
     compliance: compliance::Runtime,
+    manipulation: manipulation::Runtime,
     gameplay: gameplay::Runtime,
+    robot_gameplay: BTreeMap<String, gameplay::Runtime>,
     field_transport: field_transport::Runtime,
     physics_substeps: usize,
+    requested_contact_substeps: usize,
     transmission_ms: f64,
     // Optional diagnostics accumulated over every narrow-phase refinement, not
     // just Rapier's final inner step. Never serialized as physical state.
@@ -380,6 +449,8 @@ impl World {
                 && spec.contact_tolerance <= 0.01,
             "invalid contact tolerance"
         );
+        ensure!(spec.max_contact_substeps.is_none_or(|n| (1..=64).contains(&n)),
+            "max_contact_substeps must be in 1..64");
         ensure!((1..=32).contains(&spec.solver_iterations), "solver_iterations must be in 1..32");
         ensure!(spec.static_contact_frequency_hz.is_finite()
             && (10.0..=1000.0).contains(&spec.static_contact_frequency_hz),
@@ -398,6 +469,7 @@ impl World {
             body_ids: HashMap::new(),
             joint_ids: HashMap::new(),
             joint_references: HashMap::new(),
+            retained_positions: HashMap::new(),
             names: HashMap::new(),
             motor_states: BTreeMap::new(),
             joint_states: BTreeMap::new(),
@@ -417,9 +489,12 @@ impl World {
             ccd: CCDSolver::new(),
             soft_bodies: SoftBodySet::new(),
             compliance: Default::default(),
+            manipulation: Default::default(),
             gameplay: Default::default(),
+            robot_gameplay: Default::default(),
             field_transport: Default::default(),
             physics_substeps: 1,
+            requested_contact_substeps: 1,
             transmission_ms: 0.0,
             profile_total: [0.0; 18],
             islands_total_ms: 0.0,
@@ -587,7 +662,18 @@ impl World {
             body.recompute_mass_properties_from_colliders(&s.colliders);
             if !b.fixed {
                 let props = body.mass_properties().local_mprops;
-                if let Some(inertia) = b.principal_inertia {
+                if let Some(t) = b.inertia_tensor {
+                    ensure!(b.principal_inertia.is_none(), "select tensor or principal inertia, not both");
+                    let [a, d, f, x, y, z] = t;
+                    let center = b.center_of_mass.unwrap_or([0.0; 3]);
+                    let determinant = a*d*f + 2.0*x*y*z - a*z*z - d*y*y - f*x*x;
+                    ensure!(t.iter().chain(center.iter()).all(|v|v.is_finite()) && a>0.0 && a*d-x*x>0.0 && determinant>0.0, "invalid inertia tensor");
+                    let second = (a+d+f)*0.5;
+                    let (u,v,w)=(second-a,second-d,second-f);
+                    ensure!(u>=0.0 && v>=0.0 && w>=0.0 && u*v>=x*x && u*w>=y*y && v*w>=z*z && u*v*w-2.0*x*y*z-u*z*z-v*y*y-w*x*x>=-1e-12, "nonphysical inertia tensor");
+                    for h in body.colliders().to_vec() { s.colliders[h].set_density(0.0); }
+                    body.set_additional_mass_properties(MassProperties::with_inertia_matrix(Vector::from(center), b.mass, rapier3d::math::Matrix::from_cols_array(&[a,x,y,x,d,z,y,z,f])), true);
+                } else if let Some(inertia) = b.principal_inertia {
                     let center = b.center_of_mass.unwrap_or([0.0; 3]);
                     ensure!(
                         inertia.iter().all(|v| v.is_finite() && *v > 0.0)
@@ -641,6 +727,12 @@ impl World {
                     l[0].is_finite() && l[1].is_finite() && l[0] < l[1],
                     "invalid limits"
                 );
+            }
+            ensure!(!j.one_way || (j.kind == "prismatic" && j.limits.is_some()), "one-way retention requires a bounded prismatic joint");
+            if j.one_way {
+                let [lo,hi]=j.limits.unwrap();
+                ensure!((lo..=hi).contains(&j.initial_position), "one-way initial position outside travel");
+                s.retained_positions.insert(j.id.clone(),j.initial_position);
             }
             let axis = Vector::from(j.axis).normalize();
             let mut data: GenericJoint = match j.kind.as_str() {
@@ -757,7 +849,7 @@ impl World {
             );
         }
         s.validate_compliance()?;
-        s.validate_gameplay()?;
+        s.validate_all_gameplay()?;
         s.update_transmission_states();
         s.mechanisms = crate::mechanism::instantiate(&spec, registry)?;
         Ok(s)
@@ -814,33 +906,14 @@ impl World {
             );
         }
     }
-    fn coupled(&self, id: &str) -> bool {
-        // A motor and its unilateral stop must share the same impulse solve.
-        // Solving the velocity drive separately leaves false residual motion
-        // at a powered end stop, even without a belt on that shaft.
-        self.spec
-            .joints
-            .iter()
-            .any(|j| j.id == id && j.limits.is_some())
-            || self
-                .spec
-                .transmissions
-                .iter()
-                .any(|t| t.driver == id || t.follower == id)
-    }
-    fn solve_transmissions(&mut self, drives: &BTreeMap<String, (f32, f32, f32)>, dt: f32) {
+    fn solve_transmissions(&mut self, drives: &BTreeMap<String, (f32, f32, f32)>, dt: f32, topology: &JointTopology) {
         let mut rows: Vec<_> = self
             .spec
             .transmissions
             .iter()
             .map(|t| {
-                let driver = self.spec.joints.iter().find(|j| j.id == t.driver).unwrap();
-                let follower = self
-                    .spec
-                    .joints
-                    .iter()
-                    .find(|j| j.id == t.follower)
-                    .unwrap();
+                let driver = &self.spec.joints[topology.indices[&t.driver]];
+                let follower = &self.spec.joints[topology.indices[&t.follower]];
                 let mut terms = Vec::with_capacity(4);
                 self.joint_jacobian(driver, -t.ratio, &mut terms);
                 self.joint_jacobian(follower, 1.0, &mut terms);
@@ -860,7 +933,7 @@ impl World {
         // Coupled motors must be in the same implicit solve as their belts.
         // Applying a separate velocity motor afterwards would inject torque
         // after the load reaction and report a false residual shaft velocity.
-        for j in self.spec.joints.iter().filter(|j| self.coupled(&j.id)) {
+        for j in self.spec.joints.iter().filter(|j| topology.coupled.contains(&j.id)) {
             let (motor_damping, weighted_target, max_force) =
                 drives.get(&j.id).copied().unwrap_or_default();
             let damping = motor_damping + j.damping;
@@ -882,7 +955,8 @@ impl World {
                     min_effort: -force,
                 });
             }
-            if let Some([lower, upper]) = j.limits {
+            if let Some([mut lower, upper]) = j.limits {
+                if j.one_way { lower=lower.max(self.retained_positions[&j.id]); }
                 // Speculative unilateral stops take part in the same solve.
                 // Otherwise a light roller could wind up a whole belt before
                 // Rapier applies its end stop later in the step.
@@ -934,7 +1008,7 @@ impl World {
             JointState::default()
         }
     }
-    fn contact_substeps(&mut self, input: &Input) -> Result<usize> {
+    fn contact_substeps(&mut self, input: &Input, topology: &JointTopology) -> Result<usize> {
         // Solver iterations reuse contact anchors. A rapidly turning roller
         // needs actual narrow-phase refreshes, not merely more solver iterations.
         // Predictive contacts become active before touching, so they trigger
@@ -978,12 +1052,7 @@ impl World {
             }
         }
         for motor in &self.spec.motors {
-            let joint = self
-                .spec
-                .joints
-                .iter()
-                .find(|j| j.id == motor.joint)
-                .unwrap();
+            let joint = &self.spec.joints[topology.indices[&motor.joint]];
             if joint.kind == "revolute" {
                 let Some(angle) = contacting.get(&self.body_ids[&joint.child]) else {
                     continue;
@@ -1003,11 +1072,13 @@ impl World {
         }
         // Soft contacts additionally refine their own island. Only rapid rigid
         // surface rotation needs extra narrow-phase refreshes of the world.
+        ensure!(demand.is_finite(), "nonfinite contact refinement demand");
         let count = demand.ceil() as usize;
-        ensure!(
-            count <= 64,
-            "contact motion exceeds bounded physics substep budget"
-        );
+        self.requested_contact_substeps = count;
+        if let Some(budget) = self.spec.max_contact_substeps {
+            return Ok(count.min(budget));
+        }
+        ensure!(count <= 64, "contact motion exceeds bounded physics substep budget");
         Ok(count)
     }
 
@@ -1016,10 +1087,15 @@ impl World {
     }
 
     pub fn enable_profiling(&mut self) {
-        self.detailed_profiling = true;
-        self.pipeline.counters.enable();
-        self.ccd.enable_profiling(true);
-        self.narrow.enable_profiling(true);
+        self.set_profiling(true);
+    }
+
+    pub fn set_profiling(&mut self, enabled: bool) {
+        self.detailed_profiling = enabled;
+        if enabled { self.pipeline.counters.enable(); }
+        else { self.pipeline.counters.disable(); }
+        self.ccd.enable_profiling(enabled);
+        self.narrow.enable_profiling(enabled);
     }
 
     /// Live sampling enables only stage timers, never per-pair/CCD traces.
@@ -1044,9 +1120,11 @@ impl World {
         }
         sample.counts[3] = self.soft_bodies.iter().count();
         for pair in self.narrow.contact_pairs().filter(|p| p.has_any_active_contact()) {
+            // Gameplay may remove a soft representation after the physics
+            // step. Narrow-phase pairs are retired on the next update; they
+            // must not crash post-step diagnostics in the meantime.
+            let (Some(a), Some(b)) = (self.colliders.get(pair.collider1), self.colliders.get(pair.collider2)) else { continue; };
             sample.counts[4] += 1;
-            let a = &self.colliders[pair.collider1];
-            let b = &self.colliders[pair.collider2];
             let sphere = |c: &Collider| c.shape().as_ball().is_some();
             let fixed = |c: &Collider| c.parent().is_none_or(|h| self.bodies[h].is_fixed());
             if sphere(a) && sphere(b) { sample.counts[5] += 1; }
@@ -1066,6 +1144,12 @@ impl World {
         }
         Some(serde_json::json!({
             "tick":self.tick,"substeps":self.physics_substeps,
+            "solverSchedule":self.spec.solver_schedule,
+            "requestedContactSubsteps":self.requested_contact_substeps,
+            "maxContactSubsteps":self.spec.max_contact_substeps,
+            "localCylinderContacts":self.spec.local_cylinder_contacts,
+            "baseSolverSubstepsPerTick":self.physics_substeps * self.spec.solver_schedule.iterations(self.spec.solver_iterations, self.physics_substeps),
+            "baseSolverSubstepsPerRefresh":self.spec.solver_schedule.iterations(self.spec.solver_iterations, self.physics_substeps),
             "allSubsteps": {
                 "pipelineMs":self.profile_total[0],
                 "collisionMs":self.profile_total[1],
@@ -1094,28 +1178,34 @@ impl World {
             "substepDemands":self.substep_demands,
             "contactPairsLastSubstep":self.narrow.contact_pairs().filter_map(|pair| {
                 let (milliseconds,outcome)=pair.update_profile?;
+                // Gameplay can retire a soft collider after the last pipeline
+                // step. Diagnostics must not dereference those stale handles.
+                self.colliders.get(pair.collider1)?;
+                self.colliders.get(pair.collider2)?;
                 let collider = |handle: ColliderHandle| {
                     let c=&self.colliders[handle];
                     serde_json::json!({"body":c.parent().and_then(|h|self.names.get(&h)),
                         "index":c.user_data as usize})
                 };
                 Some(serde_json::json!({"a":collider(pair.collider1),"b":collider(pair.collider2),
-                    "milliseconds":milliseconds,"outcome":outcome}))
+                    "milliseconds":milliseconds,"outcome":outcome,
+                    "manifoldMs":pair.update_stage_profile.map(|s|s[0]),
+                    "softAugmentationMs":pair.update_stage_profile.map(|s|s[1])}))
             }).collect::<Vec<_>>(),
             "pipelineLastSubstepMs":c.step_time_ms(),
             "ccdBodies":self.body_ids.iter().filter_map(|(id,h)|self.bodies[*h].is_ccd_active().then_some(id)).collect::<Vec<_>>(),
             "ccdSweeps":self.ccd.body_profiles().iter().map(|body|serde_json::json!({
                 "body":self.names.get(&body.body),"milliseconds":body.milliseconds,
-                "colliders":body.colliders.iter().map(|collider|serde_json::json!({
-                    "index":self.colliders[collider.collider].user_data as usize,
+                "colliders":body.colliders.iter().filter_map(|collider|Some(serde_json::json!({
+                    "index":self.colliders.get(collider.collider)?.user_data as usize,
                     "preparationMs":collider.preparation_ms,
-                    "pairs":collider.pairs.iter().map(|pair|{
-                        let target=&self.colliders[pair.target];
-                        serde_json::json!({"body":target.parent().and_then(|h|self.names.get(&h)),
+                    "pairs":collider.pairs.iter().filter_map(|pair|{
+                        let target=self.colliders.get(pair.target)?;
+                        Some(serde_json::json!({"body":target.parent().and_then(|h|self.names.get(&h)),
                             "index":target.user_data as usize,"milliseconds":pair.milliseconds,
-                            "fraction":pair.fraction})
+                            "fraction":pair.fraction}))
                     }).collect::<Vec<_>>()
-                })).collect::<Vec<_>>()
+                }))).collect::<Vec<_>>()
             })).collect::<Vec<_>>(),
             "lastSubstep":{
                 "awakeDynamicBodies":self.bodies.iter().filter(|(_, b)| b.is_enabled() && b.is_dynamic() && !b.is_sleeping()).count(),
@@ -1165,6 +1255,9 @@ impl World {
                     && v.abs() <= 16.0),
             "unknown motor or invalid voltage"
         );
+        ensure!(self.spec.max_contact_substeps.is_none_or(|n| minimum_substeps <= n),
+            "minimum_substeps exceeds max_contact_substeps; use a separate finer world for offline checks");
+        let topology = JointTopology::new(&self.spec);
         let steps = input.steps.unwrap_or(1);
         ensure!(steps > 0 && steps <= 10000, "step count out of range");
         self.transmission_ms = 0.0;
@@ -1172,9 +1265,10 @@ impl World {
         self.islands_total_ms = 0.0;
         for _ in 0..steps {
             self.update_compliance()?;
-            self.physics_substeps = self.contact_substeps(input)?.max(minimum_substeps);
+            self.physics_substeps = self.contact_substeps(input, &topology)?.max(minimum_substeps);
             let dt = self.spec.dt / self.physics_substeps as f32;
             for _substep in 0..self.physics_substeps {
+                self.manipulation_step(dt, self.tick as f64 * self.spec.dt as f64 + _substep as f64 * dt as f64);
                 crate::mechanism::apply(&mut self.mechanisms, &mut self.bodies, &self.body_ids, input,
                     dt, self.tick as f64 * self.spec.dt as f64 + _substep as f64 * dt as f64)?;
                 // Motors use constraints/impulses, not persistent user forces.
@@ -1183,7 +1277,7 @@ impl World {
                 let mut drives: BTreeMap<String, (f32, f32, f32)> = BTreeMap::new();
                 for m in &self.spec.motors {
                     let q = self
-                        .coordinates(self.spec.joints.iter().find(|j| j.id == m.joint).unwrap());
+                        .coordinates(&self.spec.joints[topology.indices[&m.joint]]);
                     let voltage = input.volts.get(&m.id).copied().unwrap_or(0.0);
                     let speed = q.velocity * m.rotor_per_unit;
                     let coasting = input.coast.contains(&m.id);
@@ -1222,6 +1316,13 @@ impl World {
                     if j.kind == "fixed" {
                         continue;
                     }
+                    if j.one_way {
+                        let [lo,hi]=j.limits.unwrap();
+                        let q=self.coordinates(j).position.clamp(lo,hi);
+                        let retained=self.retained_positions.get_mut(&j.id).unwrap();
+                        *retained=retained.max(q);
+                        self.joints.get_mut(self.joint_ids[&j.id],true).unwrap().data.set_limits(JointAxis::LinX,[*retained-j.initial_position,hi-j.initial_position]);
+                    }
                     if j.kind == "revolute" {
                         if let Some([lo, hi]) = j.limits {
                             let q = self.coordinates(j).position;
@@ -1245,7 +1346,7 @@ impl World {
                     let (motor_damping, weighted_target, max_force) =
                         drives.get(&j.id).copied().unwrap_or_default();
                     let damping = motor_damping + j.damping;
-                    if damping > 0.0 && !self.coupled(&j.id) {
+                    if damping > 0.0 && !topology.coupled.contains(&j.id) {
                         let axis = if j.kind == "prismatic" {
                             JointAxis::LinX
                         } else {
@@ -1284,13 +1385,17 @@ impl World {
                     .counters
                     .enabled()
                     .then(std::time::Instant::now);
-                self.solve_transmissions(&drives, dt);
+                self.solve_transmissions(&drives, dt, &topology);
                 if let Some(t) = transmission_started {
                     self.transmission_ms += t.elapsed().as_secs_f64() * 1000.0;
                 }
                 let params = IntegrationParameters {
                     dt,
-                    num_solver_iterations: self.spec.solver_iterations,
+                    soft_bodies: SoftBodiesSettings {
+                        local_cylinder_contacts: self.spec.local_cylinder_contacts,
+                        ..Default::default()
+                    },
+                    num_solver_iterations: self.spec.solver_schedule.iterations(self.spec.solver_iterations, self.physics_substeps),
                     normalized_allowed_linear_error: self.spec.contact_tolerance,
                     contact_softness: SpringCoefficients::new(1.0e6, 1.0),
                     static_contact_softness: SpringCoefficients::new(self.spec.static_contact_frequency_hz, 10.0),
@@ -1366,7 +1471,7 @@ impl World {
                     };
                 }
             }
-            self.gameplay_step(input);
+            self.all_gameplay_step(input);
             self.field_transport_step(input);
             self.tick += 1;
         }
@@ -1516,13 +1621,32 @@ impl World {
             transmissions: self.transmission_states.clone(),
             contacts,
             compliance: self.compliance_status(),
+            manipulation: self.manipulation_status(),
             gameplay: self.gameplay_status(),
+            robot_gameplay: self.robot_gameplay_status(),
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn full_inertia_tensor_retains_cross_terms_and_rejects_invalid_mass_distribution() {
+        let mut spec=fixture("revolute",1.0);
+        spec.bodies[1].principal_inertia=None;
+        spec.bodies[1].inertia_tensor=Some([0.02,0.025,0.03,0.001,0.002,0.0]);
+        let world=World::new(spec.clone()).unwrap();
+        let body=&world.bodies[world.body_ids[&spec.bodies[1].id]];
+        let tensor=body.mass_properties().local_mprops.reconstruct_inertia_matrix().to_cols_array();
+        for (actual,expected) in tensor.iter().zip([0.02,0.001,0.002,0.001,0.025,0.0,0.002,0.0,0.03]) {
+            assert!((actual-expected).abs()<1e-6);
+        }
+        spec.bodies[1].inertia_tensor=Some([1.0,1.0,10.0,0.0,0.0,0.0]);
+        assert!(World::new(spec.clone()).is_err());
+        spec.bodies[1].inertia_tensor=Some([1.0,1.0,1.0,2.0,0.0,0.0]);
+        assert!(World::new(spec).is_err());
+    }
+
     #[test]
     fn inclined_compound_cylinder_preserves_analytic_inertia() {
         // Two adjacent coaxial cylinders are exactly one longer cylinder.
@@ -1552,6 +1676,63 @@ mod tests {
             "compound inertia rotated the shaft axis: actual {actual:?}, expected {expected:?}"
         );
     }
+    #[test]
+    fn anisotropic_gyro_refresh_preserves_rotation_locks() {
+        let mut spec=fixture("revolute",1.0);
+        spec.joints.clear(); spec.motors.clear();
+        spec.bodies[1].principal_inertia=Some([0.01,0.02,0.025]);
+        spec.bodies[1].rotation=[0.2,-0.3,0.1];
+        let mut world=World::new(spec).unwrap(); let handle=world.body_ids["moving"];
+        world.bodies[handle].set_locked_axes(LockedAxes::ROTATION_LOCKED_X|LockedAxes::ROTATION_LOCKED_Y,true);
+        world.bodies[handle].set_angvel(Vector::new(0.0,0.0,30.0),true);
+        for _ in 0..1000 { world.step(&Input::default()).unwrap(); }
+        let angular=world.bodies[handle].angvel();
+        assert!(angular.x.abs()<1e-6&&angular.y.abs()<1e-6,"rotation locks lost: {angular:?}");
+    }
+
+    #[test]
+    fn anisotropic_free_spin_preserves_energy_and_momentum() {
+        for dt in [0.001, 0.0005] {
+            let mut spec = fixture("revolute", 1.0);
+            spec.dt=dt; spec.joints.clear(); spec.motors.clear();
+            spec.bodies[1].principal_inertia=Some([0.01,0.02,0.025]);
+            spec.bodies[1].center_of_mass=Some([0.0;3]);
+            spec.bodies[1].rotation=[0.2,-0.3,0.1];
+            let mut world=World::new(spec).unwrap();
+            let handle=world.body_ids["moving"];
+            world.bodies[handle].set_angvel(Vector::new(10.0,20.0,30.0),true);
+            let momentum=|b:&RigidBody| {
+                let rotation=b.position().rotation;
+                rotation*(b.mass_properties().local_mprops.reconstruct_inertia_matrix()*(rotation.inverse()*b.angvel()))
+            };
+            let energy0=world.bodies[handle].kinetic_energy();
+            let momentum0=momentum(&world.bodies[handle]);
+            for _ in 0..(2.0/dt) as usize {world.step(&Input::default()).unwrap();}
+            let energy=world.bodies[handle].kinetic_energy();
+            let momentum1=momentum(&world.bodies[handle]);
+            assert!((energy-energy0).abs()/energy0<0.01,"free spin energy drift dt={dt}: {energy0}->{energy}");
+            assert!((momentum1-momentum0).length()/momentum0.length()<0.01,"free spin momentum drift dt={dt}: {momentum0:?}->{momentum1:?}");
+        }
+    }
+
+    #[test]
+    fn oblique_anisotropic_shooter_does_not_accelerate_past_motor_free_speed() {
+        // Authored oblique shafts have non-axisymmetric estimated inertia. This
+        // reproduces the coupled shooter without contacts, gravity or a ball.
+        let baseline: WorldSpec = serde_json::from_str(include_str!("../tests/fixtures/oblique-shooter-drive.json")).unwrap();
+        for dt in [0.001, 0.0005] {
+            let mut spec = baseline.clone(); spec.dt = dt;
+            let motor = spec.motors.iter().find(|m|m.id=="talon/24").unwrap().clone();
+            let free_speed = 6.0 * motor.velocity_constant / motor.rotor_per_unit;
+            let mut world = World::new(spec).unwrap();
+            let input = Input { volts: BTreeMap::from([("talon/24".into(),6.0)]), ..Default::default() };
+            for _ in 0..(2.0/dt) as usize { world.step(&input).unwrap(); }
+            let speed = world.joint_states[&motor.joint].velocity;
+            eprintln!("anisotropic shooter dt={dt} speed={speed} free={free_speed}");
+            assert!(speed <= free_speed*1.005, "coupled anisotropic shaft overspeed dt={dt}: {speed}, electrical free={free_speed}");
+        }
+    }
+
     #[test]
     fn inclined_gear_graph_obeys_motor_speed_and_coast_energy() {
         // Eight shafts with coaxial compound wheels and alternating gear ratios.
@@ -1613,8 +1794,12 @@ mod tests {
             let bearing = 0.0001 * (4.0 + 4.0 * (80.0f32 / 48.0).powi(2));
             let expected_speed = free_speed * damping / (damping + bearing);
             let mut speeds = Vec::new();
-            for refinement in [1, 16] {
-                let mut w = World::new(spec.clone()).unwrap();
+            for (schedule, refinement) in [
+                (SolverSchedule::PerRefresh, 1), (SolverSchedule::PerRefresh, 16),
+                (SolverSchedule::PerTick, 1), (SolverSchedule::PerTick, 16),
+            ] {
+                let mut selected = spec.clone(); selected.solver_schedule = schedule;
+                let mut w = World::new(selected).unwrap();
                 let powered = Input {
                     volts: BTreeMap::from([("motor".into(), 12.0)]),
                     ..Default::default()
@@ -1661,7 +1846,7 @@ mod tests {
                     "bearing damping must dissipate energy"
                 );
             }
-            assert!((speeds[0] - speeds[1]).abs() / expected_speed < 0.002);
+            for speed in &speeds[1..] { assert!((speeds[0] - speed).abs() / expected_speed < 0.002); }
         }
     }
     use super::*;
@@ -1699,6 +1884,22 @@ mod tests {
             s.joints["joint"].position > 20.0,
             "continuous angle must unwrap"
         );
+    }
+    #[test]
+    fn one_way_slide_retains_extension_and_new_world_resets_it() {
+        let mut spec=fixture("prismatic",100.0);
+        spec.joints[0].limits=Some([0.0,0.4]);
+        spec.joints[0].one_way=true;
+        let mut w=World::new(spec.clone()).unwrap();
+        w.step(&Input { volts:BTreeMap::from([("motor".into(),6.0)]),steps:Some(100),coast:vec![] }).unwrap();
+        let extended=w.snapshot().joints["joint"].position;
+        assert!(extended>0.02);
+        w.step(&Input { volts:BTreeMap::from([("motor".into(),-6.0)]),steps:Some(300),coast:vec![] }).unwrap();
+        assert!(w.snapshot().joints["joint"].position>=extended-0.001);
+        let fresh=World::new(spec).unwrap();
+        assert!(fresh.snapshot().joints["joint"].position.abs()<1e-6);
+        let mut invalid=fixture("revolute",20.0);invalid.joints[0].one_way=true;
+        assert!(World::new(invalid).is_err());
     }
     #[test]
     fn pulley_carriage_moves_linearly_and_hits_stop() {
@@ -1866,6 +2067,103 @@ mod tests {
                 assert!(sample.counts[0] > 0);
             }
         }
+    }
+
+    #[test]
+    fn gameplay_contact_budget_caps_refreshes_without_changing_default_or_time() {
+        let spec: WorldSpec = serde_json::from_value(json!({
+            "dt":0.02,"gravity":[0,0,0],
+            "bodies":[
+                {"id":"wall","fixed":true,"position":[0,0,0],"colliders":[{"kind":"ball","radius":1.0}]},
+                {"id":"roller","position":[1.99,0,0],"colliders":[{"kind":"ball","radius":1.0}]}
+            ]
+        })).unwrap();
+        assert!(serde_json::to_value(&spec).unwrap().get("max_contact_substeps").is_none());
+        for invalid in [0,65] {
+            let mut bad = spec.clone(); bad.max_contact_substeps = Some(invalid);
+            assert!(World::new(bad).is_err());
+        }
+        let mut world = World::new(spec).unwrap();
+        let input: Input = serde_json::from_value(json!({"volts":{}})).unwrap();
+        world.step(&input).unwrap();
+        let topology = JointTopology::new(&world.spec);
+        let roller = world.body_ids["roller"];
+        world.bodies[roller].set_angvel(Vector::new(600.0,0.0,0.0),true);
+        assert!(world.contact_substeps(&input,&topology).unwrap() > 4);
+        world.spec.max_contact_substeps = Some(2);
+        world.enable_profiling();
+        world.step(&input).unwrap();
+        assert_eq!(world.physics_substeps,2);
+        assert!(world.requested_contact_substeps > 4);
+        assert_eq!(world.tick,2);
+        assert!((world.snapshot().time - 0.04).abs() < 1.0e-7);
+        let before = serde_json::to_value(world.snapshot()).unwrap();
+        assert!(world.step_refined(&input,4).is_err());
+        assert_eq!(serde_json::to_value(world.snapshot()).unwrap(),before);
+        assert_eq!(world.profile().unwrap()["maxContactSubsteps"],2);
+        // The explicit budget accepts extreme but finite motion; omission still
+        // reports the original safety limit instead of silently truncating it.
+        world.bodies[roller].set_angvel(Vector::new(6000.0,0.0,0.0),true);
+        assert_eq!(world.contact_substeps(&input,&topology).unwrap(),2);
+        world.spec.max_contact_substeps = None;
+        assert!(world.contact_substeps(&input,&topology).is_err());
+    }
+
+    #[test]
+    fn solver_schedule_is_explicit_and_keeps_the_internal_timestep_bound() {
+        let spec = fixture("revolute", 1.0);
+        assert_eq!(spec.solver_schedule, SolverSchedule::PerRefresh);
+        let original = serde_json::to_value(&spec).unwrap();
+        assert!(original.get("solver_schedule").is_none());
+        let mut selected = original.clone();
+        selected["solver_schedule"] = json!("per_tick");
+        let mut selected: WorldSpec = serde_json::from_value(selected).unwrap();
+        assert_eq!(selected.solver_schedule, SolverSchedule::PerTick);
+        for base in 1..=32 {
+            for refreshes in 1..=64 {
+                let n = SolverSchedule::PerTick.iterations(base, refreshes);
+                assert!(n >= 1 && n <= base);
+                assert!(n * refreshes >= base);
+                assert_eq!(SolverSchedule::PerRefresh.iterations(base, refreshes), base);
+            }
+        }
+        selected.solver_schedule = SolverSchedule::PerRefresh;
+        assert_eq!(serde_json::to_value(selected).unwrap(), original);
+        let mut invalid = original;
+        invalid["solver_schedule"] = json!("fast");
+        assert!(serde_json::from_value::<WorldSpec>(invalid).is_err());
+    }
+
+    #[test]
+    fn profiling_toggle_and_retired_contact_colliders_are_safe() {
+        let spec: WorldSpec = serde_json::from_value(serde_json::json!({
+            "dt":0.005,"gravity":[0,0,0],"joints":[],"motors":[],
+            "bodies":[
+                {"id":"fixed","fixed":true,"position":[0,0,0],"colliders":[{"kind":"ball","radius":1.0}]},
+                {"id":"ball","mass":1.0,"position":[1.9,0,0],"colliders":[{"kind":"ball","radius":1.0}]}
+            ]
+        })).unwrap();
+        let mut world = World::new(spec).unwrap();
+        let before = serde_json::to_value(world.snapshot()).unwrap();
+        world.set_profiling(true);
+        assert_eq!(before, serde_json::to_value(world.snapshot()).unwrap());
+        world.step(&Input::default()).unwrap();
+        let report = world.profile().unwrap();
+        let pairs = report["contactPairsLastSubstep"].as_array().unwrap();
+        assert!(!pairs.is_empty());
+        for pair in pairs {
+            let manifold = pair["manifoldMs"].as_f64().unwrap();
+            let soft = pair["softAugmentationMs"].as_f64().unwrap();
+            assert!(manifold >= 0.0 && soft >= 0.0);
+            assert!(manifold + soft <= pair["milliseconds"].as_f64().unwrap());
+        }
+        let handle = world.bodies[world.body_ids["ball"]].colliders()[0];
+        world.colliders.remove(handle, &mut world.islands, &mut world.bodies, &mut world.soft_bodies, true);
+        assert!(world.profile().unwrap()["contactPairsLastSubstep"].as_array().unwrap().is_empty());
+        let before = serde_json::to_value(world.snapshot()).unwrap();
+        world.set_profiling(false);
+        assert!(world.profile().is_none());
+        assert_eq!(before, serde_json::to_value(world.snapshot()).unwrap());
     }
 
     #[test]

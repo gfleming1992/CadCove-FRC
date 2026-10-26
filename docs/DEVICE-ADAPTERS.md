@@ -135,3 +135,15 @@ for all CTRE devices, or another complete robot's integration. Record measured
 calibration evidence in the project's ledger and qualify disabled behavior,
 mechanism limits, sensor directions, trajectories and estimator error before
 using detailed simulation for sign-off.
+
+
+The Pigeon simulation raw yaw starts at zero at world load and accumulates
+physical yaw changes, including crossings of ±180°. The robot owns firmware
+`setYaw` offsets. `TwinBridge.initialPose()` supplies the initial field pose from
+the loaded body's quaternion for seeding odometry. A robot spawned facing 180°
+can therefore call `setYaw(180)` once without adding the physical initial heading
+a second time. This fixes mirrored field-relative control; it does not reset the
+robot's heading on every physics tick. Bridge state reports `gyroReference` as
+`boot-relative`. Agent-controlled station selection uses
+`INSTANTCAD_ALLIANCE_STATION` (Blue1–Blue3 or Red1–Red3, default Blue1); an external
+Driver Station retains authority over its own alliance and station.

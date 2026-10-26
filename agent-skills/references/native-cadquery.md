@@ -16,9 +16,9 @@ For an open robot with reviewed mechanism definitions, use
 `cadcove cad-mates --action animate --workspace PATH --target cad --input motion.json
 --output build/NEW_SOLUTION.json` (or `--target field`). The motion file is
 `{"duration":5,"samplePeriod":0.02,"drives":[{"joint":"JOINT_ID","velocity":12}]}`.
-Use the actual joint/part/motor ID from the mechanism. Configure the separately
-installed solver with `CADCOVE_MATE_SOLVER` or `--solver`. This command reads the
-current cached assembly and canvas pose, solves through Ondsel, and plays the
+Use the actual joint/part/motor ID from the mechanism. Rapier uses the bundled
+native runtime; `--solver` can select another compatible Rapier executable. This command reads the
+current cached assembly and canvas pose, solves the mates, and plays the
 result locally. It preserves uncommanded coordinates, checks limits and stale
 definitions, and never rebuilds geometry or silently falls back to scripted
 motion. Pause/stop any active playback first; omitted position means the current
@@ -45,7 +45,7 @@ workspace and pass `options:{action:"play-solved",solutionFile:"build/solution.j
 to `canvas_command` with `action:"motion"`. The host reads the file locally (maximum
 32 MiB), avoiding MCP's 64 KiB inline request limit. Read the current revision first;
 do not rebuild geometry just to animate. Uncommanded joints hold bind pose, so supply
-current positions explicitly when preserving a posed scene. This path calls Ondsel;
+current positions explicitly when preserving a posed scene. This path defaults to Rapier;
 the existing tree animator remains available. Missing intake/contact relationships
 are not inferred or repaired by conversion.
 
@@ -179,9 +179,9 @@ candidate or a confirmation.
 
 ### Optional headless assembly solving
 
-`cadcove cad-mates --action capabilities` reports the experimental Ondsel bridge.
-With an explicitly installed `CADCOVE_MATE_SOLVER`, use `--action solve --input
-REQUEST.json --output NEW_RESULT.json`. Read `vendor/cad-core/docs/ASSEMBLY-SOLVER.md`
+`cadcove cad-mates --action capabilities` reports the experimental mate backends.
+Use `--action solve --input REQUEST.json --output NEW_RESULT.json` for bundled
+Rapier. Read `vendor/cad-core/docs/ASSEMBLY-SOLVER.md`
 in the source checkout for frames, units and examples. The adapter accepts reviewed
 fixed/revolute/slider mates, including closed loops, and explicit timed drivers;
 it does not infer intent, check collision, or supply physics properties. Never
@@ -189,8 +189,7 @@ silently promote `cad-discover` proposals to joints. A solver request contains
 transforms and mates only, so repeated solves reuse existing geometry. Include the
 current CAD source revision and occurrence bindings to display the result using
 canvas motion action `play-solved`; stale solutions are rejected. Reset before
-switching back to tree-joint animation. This optional library is not automatically
-installed and its new closed-loop results are not yet accepted by physics export.
+switching back to tree-joint animation. Define physical joints and properties explicitly for dynamic physics; a solved trajectory is not a physical model.
 
 ### Optional sketch solving, checked references, and analysis intake
 
@@ -199,7 +198,7 @@ interface. Use `--action solve --input sketch.json --output new-result.json
 --python PYTHON` with explicitly installed `planegcs==0.9.6`. Check `ok`,
 constraint diagnostics and remaining degrees of freedom before constructing CAD.
 Do not silently remove conflicting constraints. This changes sketch coordinates,
-not assembly motion; Ondsel handles assembly mates. The full source contract is
+not assembly motion; the mate backends handle assembly mates. The full source contract is
 in `vendor/cad-core/docs/DESIGN-SERVICES.md`.
 
 `cadcove cad-references --workspace . --input references.json` checks explicit
@@ -257,3 +256,34 @@ material disappears. This is a rasterized planar preview, not CAM planning or
 verified G-code. Reuse `canvas` motion `play-cut` with the returned solutionFile
 and pause/resume/seek/reset. Do not rebuild CAD for playback or silently
 substitute an outline for a supplied toolpath.
+
+### Persistent scene physics
+
+CAD, mechanism preview and simulation share a persistent viewport. After editing
+CAD, use `canvas_command` action `physics-status` to inspect background jobs and
+`physics-wait` with `after` and `timeoutMs` to await readiness without blocking
+other work. A pending physics response identifies the dependency components and
+revision; do not retry motors blindly or use stale results. `physical` in
+`mechanism.json` supplies SI bodies, inertial/contact properties and joint graphs.
+Use explicit density/provenance for mass calculations. Field meshes alone do not
+provide collision physics. Read docs/UNIFIED-SCENE.md in the source checkout.
+
+## Router cut order and workholding
+
+When authoring router demonstrations, normally cut internal holes, pockets and
+windows first and the exterior perimeter last, so the surrounding stock keeps
+the part supported. Use a different sequence only with an explicit workholding
+reason. Consider tabs, an onion-skin layer, clamps or vacuum hold-down, cutter
+clearance from fixtures, and securing internal cutouts as well as the finished
+part so neither becomes loose during cutting.
+
+State the holding assumptions and any omitted retention features. The preview
+does not plan or validate workholding, cut order, fixture clearance or loose-piece
+motion; a visual demonstration is not machine-ready code. Preserve a supplied
+toolpath's order and flag concerns rather than silently resequencing it.
+
+### Subsystem trees and complete isolation
+
+For mechanism isolation, author a versioned subsystem manifest rather than selecting only an attractive CAD branch. Preserve stable occurrence IDs in nested STEP or CadQuery assembly trees and use `lib/subsystem-model.js` / `.cadcove/skills/references/subsystems.md` (source: `docs/SUBSYSTEMS.md`) for deterministic resolution. Enrich the existing hierarchy with explicit bodies, joints, motors, transmissions, stationary supports, cross-branch subsystem dependencies, test boundaries and provenance. An assembly node is not necessarily a rigid body. Motor housings, feeder shafts, bearings and belt surfaces may live outside the turret branch; include their actual occurrences. Never guess membership from labels or duplicate prototype IDs.
+
+Treat missing expected physical definitions as reported incompleteness. Resolve and inspect the complete selection before applying isolation, and leave ball staging/feeding and motion as explicit subsequent actions. A complete CAD selection does not establish contact physics or hardware calibration. Keep actual rendered tree IDs and source revisions checked; a retained preview is not proof the new source built.

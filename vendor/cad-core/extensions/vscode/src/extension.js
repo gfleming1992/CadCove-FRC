@@ -51,6 +51,8 @@ export function activate(context,options={}) {
     const panel=vscode.window.createWebviewPanel(options.viewType??'instantcad.model',`CAD · ${path.basename(resource.fsPath)}`,vscode.ViewColumn.Active,{enableScripts:true,retainContextWhenHidden:true,localResourceRoots:[vscode.Uri.joinPath(context.extensionUri,'media'),vscode.Uri.file(root),...(layout.buildRoot?[vscode.Uri.file(layout.buildRoot)]:[])]});
     const state={panel,resource,root,entry,layout,diagnostics:{phase:'opening'},pending:new Map(),writes:new Map(),disposed:false};
     panels.set(resource.toString(),state);
+    state.requestView=(method,args={})=>new Promise((resolve,reject)=>{const id=randomBytes(16).toString("hex"),timer=setTimeout(()=>{state.pending.delete(id);reject(Error("Canvas request timed out"));},60000);state.pending.set(id,{resolve,reject,timer});void panel.webview.postMessage({agentRequest:id,method,args});});
+    const integration=await options.integrate?.(state)??{};
     const assetUri=file=>panel.webview.asWebviewUri(vscode.Uri.file(file)).toString();
     const media=path.join(context.extensionPath,'media');
     const manifest=JSON.parse(await fs.readFile(path.join(media,'manifest.json'),'utf8'));
@@ -121,9 +123,10 @@ export function activate(context,options={}) {
         case 'reveal':await vscode.window.showTextDocument(resource,{viewColumn:panel.viewColumn??vscode.ViewColumn.Active});return true;
         case 'report':{
           if(!args.state||JSON.stringify(args.state).length>16000)throw Error('Invalid diagnostics');
+          integration.report?.(args.state);
           state.diagnostics={...args.state,sourceDirectory:root,buildDirectory:layout.buildRoot??path.dirname(await cacheFile(layout,entry,'scene.bin',{create:true}))};output.appendLine(JSON.stringify({entry,...state.diagnostics}));return true;
         }
-        default:throw Error('Unknown CAD host request');
+        default:if(integration.request)return integration.request(method,args);throw Error('Unknown CAD host request');
       }
     }
     // Serial host requests also make chunk writes ordered and cancellation safe.
@@ -131,6 +134,7 @@ export function activate(context,options={}) {
     const messages=panel.webview.onDidReceiveMessage(message=>{
       if(message?.agentReply){const task=state.pending.get(message.agentReply);if(task){clearTimeout(task.timer);state.pending.delete(message.agentReply);message.error?task.reject(Error(message.error)):task.resolve(message.result);}return;}
       if(message?.method==='native-cancel'){nativeClient?.dispose();void panel.webview.postMessage({id:message.id,result:true});return;}
+      if(integration.concurrent?.(message?.method)){void Promise.resolve().then(()=>handle(message.method,message.args??{})).then(result=>panel.webview.postMessage({id:message.id,result}),error=>panel.webview.postMessage({id:message.id,error:error.message}));return;}
       queue=queue.then(async()=>{
         if(!Number.isSafeInteger(message?.id)||typeof message.method!=='string')return;
         try{const result=await handle(message.method,message.args??{});await panel.webview.postMessage({id:message.id,result});}
@@ -140,19 +144,19 @@ export function activate(context,options={}) {
     const watcher=vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(root),'**/*'));
     let debounce;
     const changed=uri=>{
-      if(step){if(uri.fsPath!==resource.fsPath)return;clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);return;}
+      if(step){if(uri.fsPath!==resource.fsPath)return;integration.invalidate?.();clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);return;}
       if(layout.buildRoot&&(uri.fsPath===layout.buildRoot||uri.fsPath.startsWith(layout.buildRoot+path.sep)))return;
       const relative=path.relative(root,uri.fsPath).split(path.sep);
       if(relative.some(segment=>segment.startsWith('.')||['node_modules','dist','__pycache__'].includes(segment)))return;
       if(!/\.(py|json|step|stp|brep)$/i.test(uri.fsPath))return;
-      clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);
+      integration.invalidate?.();clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);
     };
     watcher.onDidChange(changed);watcher.onDidCreate(changed);watcher.onDidDelete(changed);
     // Source and generated artifacts have separate watchers: a CLI build may
     // finish after an editor failure without changing the source a second time.
     const cacheMeta=await cacheFile(layout,entry,'scene.json',{create:true});
     const cacheWatcher=vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(vscode.Uri.file(path.dirname(cacheMeta)),'scene.json'));
-    const cacheChanged=()=>{clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);};
+    const cacheChanged=()=>{integration.invalidate?.();clearTimeout(debounce);debounce=setTimeout(()=>panel.webview.postMessage({event:'source-changed'}),200);};
     cacheWatcher.onDidChange(cacheChanged);cacheWatcher.onDidCreate(cacheChanged);
     // Build folders can be excluded from VS Code's recursive watcher (notably
     // on Linux). Observe the one atomic commit marker independently as well.
@@ -160,7 +164,7 @@ export function activate(context,options={}) {
     watchFile(cacheMeta,{persistent:false,interval:1000},cachePoll);
 
     const configurationListener=vscode.workspace.onDidChangeConfiguration(event=>{if(event.affectsConfiguration('instantcad',workspace?.uri)){void panel.webview.postMessage({event:'configuration-changed'});}});
-    panel.onDidDispose(()=>{for(const task of state.pending.values()){clearTimeout(task.timer);task.reject(Error('CAD panel closed'));}state.pending.clear();nativeClient?.dispose();if(nativeArtifact)void fs.unlink(nativeArtifact).catch(()=>{});configurationListener.dispose();state.disposed=true;clearTimeout(debounce);watcher.dispose();cacheWatcher.dispose();unwatchFile(cacheMeta,cachePoll);messages.dispose();for(const token of state.writes.keys())void cleanup(token);panels.delete(resource.toString());});
+    panel.onDidDispose(()=>{integration.dispose?.();for(const task of state.pending.values()){clearTimeout(task.timer);task.reject(Error('CAD panel closed'));}state.pending.clear();nativeClient?.dispose();if(nativeArtifact)void fs.unlink(nativeArtifact).catch(()=>{});configurationListener.dispose();state.disposed=true;clearTimeout(debounce);watcher.dispose();cacheWatcher.dispose();unwatchFile(cacheMeta,cachePoll);messages.dispose();for(const token of state.writes.keys())void cleanup(token);panels.delete(resource.toString());});
     panel.onDidChangeViewState(()=>{if(panel.visible)void panel.webview.postMessage({event:'source-changed'});});
     const nonce=randomBytes(16).toString('base64');
     const csp=`default-src 'none'; img-src ${panel.webview.cspSource} data: blob:; style-src 'nonce-${nonce}'; script-src 'nonce-${nonce}' ${panel.webview.cspSource}; connect-src ${panel.webview.cspSource};`;

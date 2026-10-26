@@ -16,6 +16,9 @@ test('mate CLI advertises limited capabilities without loading CAD',async()=>{
  const c=await mateCommand({action:'capabilities'});expect(c.mates).toEqual(['fixed','revolute','slider']);expect(c.couplings).toEqual(['gear','belt','chain']);expect(c.continuousPulleyBindings).toBe(true);expect(c.physics).toBe(false);expect(c.closedLoops).toBe(true);
  await expect(mateCommand({action:'solve'})).rejects.toThrow('input');
  expect(c.commands).toContain('inspect-step');expect(c.stepInspection.automaticSolverMapping).toBe(false);
+ expect(c.defaultBackend).toBe('rapier');expect(c.solver).toBe('Rapier');expect((await mateCommand({action:'capabilities',solver:'/explicit/legacy/solver'})).solver).toBe('Rapier');expect(c.backends).toEqual(['rapier']);
+ expect((await mateCommand({action:'capabilities',backend:'rapier'})).solver).toBe('Rapier');
+ await expect(mateCommand({backend:'unknown'})).rejects.toThrow('backend');
  await expect(mateCommand({action:'inspect-step'})).rejects.toThrow('STEP_FILE');
 });
 test.skipIf(!process.env.CADCOVE_STEP_FIXTURE)('agent STEP inspection preserves metadata without claiming solver readiness',async()=>{
@@ -27,13 +30,14 @@ test.skipIf(!process.env.CADCOVE_STEP_FIXTURE)('agent STEP inspection preserves 
   await expect(mateCommand(options)).rejects.toThrow('File exists');
  }finally{await rm(dir,{recursive:true,force:true});}
 },65000);
-test.skipIf(!process.env.CADCOVE_MATE_SOLVER)('agent command solves driven slider and refuses overwriting prior evidence',async()=>{
- const dir=await mkdtemp(path.join(os.tmpdir(),'cadcove-mates-'));
+test.skipIf(!process.env.CADCOVE_RAPIER_MATE_SOLVER)('Rapier CLI solves the same request and never overwrites evidence',async()=>{
+ const dir=await mkdtemp(path.join(os.tmpdir(),'cadcove-rapier-'));
  try{
-  const I=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],input=path.join(dir,'request.json'),output=path.join(dir,'result.json');
-  const request={schema:1,units:'mm-deg-s',sourceRevision:'fixture',bodies:[{id:'base',pose:I,fixed:true},{id:'slide',pose:I}],mates:[{id:'slider',type:'slider',a:{body:'base',frame:I},b:{body:'slide',frame:I}}],drives:[{joint:'slider',velocity:10}],duration:.1,samplePeriod:.05};
-  await writeFile(input,JSON.stringify(request));const r=await mateCommand({action:'solve',input,output});expect(r.ok).toBe(true);expect(r.frames).toBe(3);
-  const result=JSON.parse(await readFile(output,'utf8'));expect(result.frames.at(-1).poses[1][14]).toBeCloseTo(1,8);expect(result.sourceRevision).toBe('fixture');
-  await expect(mateCommand({action:'solve',input,output})).rejects.toThrow('File exists');
+  const I=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],input=path.join(dir,'input.json'),output=path.join(dir,'output.json');
+  await writeFile(input,JSON.stringify({schema:1,units:'mm-deg-s',bodies:[{id:'base',pose:I,fixed:true},{id:'slide',pose:I}],mates:[{id:'s',type:'slider',a:{body:'base',frame:I},b:{body:'slide',frame:I}}],drives:[{joint:'s',velocity:10}],duration:.1,samplePeriod:.05}));
+  const options={backend:'rapier',action:'solve',input,output,solver:process.env.CADCOVE_RAPIER_MATE_SOLVER};
+  expect((await mateCommand(options)).solver).toBe('Rapier');
+  expect(JSON.parse(await readFile(output,'utf8')).frames.at(-1).poses[1][14]).toBeCloseTo(1,4);
+  await expect(mateCommand(options)).rejects.toThrow('File exists');
  }finally{await rm(dir,{recursive:true,force:true});}
 },70000);

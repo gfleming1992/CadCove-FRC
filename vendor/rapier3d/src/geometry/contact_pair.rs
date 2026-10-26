@@ -212,6 +212,9 @@ pub struct ContactPair {
     /// Cleared for pairs that were not visited. Excluded from saved physics state.
     #[cfg_attr(feature = "serde-serialize", serde(skip))]
     pub update_profile: Option<(f64, u8)>,
+    /// Manifold detection and soft-rigid augmentation durations, in milliseconds.
+    #[cfg_attr(feature = "serde-serialize", serde(skip))]
+    pub update_stage_profile: Option<[f64; 2]>,
     /// The first collider involved in the contact pair.
     pub collider1: ColliderHandle,
     /// The second collider involved in the contact pair.
@@ -425,6 +428,7 @@ impl ContactPair {
     pub(crate) fn new(collider1: ColliderHandle, collider2: ColliderHandle) -> Self {
         Self {
             update_profile: None,
+            update_stage_profile: None,
             collider1,
             collider2,
             event_status: PairEventStatus::empty(),
@@ -437,6 +441,7 @@ impl ContactPair {
     /// reallocation on pair-churn-heavy scenes.
     pub(crate) fn reset_for_reuse(&mut self, collider1: ColliderHandle, collider2: ColliderHandle) {
         self.update_profile = None;
+        self.update_stage_profile = None;
         self.collider1 = collider1;
         self.collider2 = collider2;
         self.event_status = PairEventStatus::empty();

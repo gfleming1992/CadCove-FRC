@@ -47,6 +47,7 @@ impl NarrowPhase {
         if profiling {
             for edge in &mut self.contact_graph.graph.edges {
                 edge.weight.update_profile = None;
+                edge.weight.update_stage_profile = None;
             }
         }
         self.update_awake_body_mask(islands);
@@ -106,11 +107,13 @@ impl NarrowPhase {
         let mut transitions: Vec<PairTransition> = Vec::new();
         #[cfg(not(feature = "parallel"))]
         let process_pair = |edge: &mut crate::data::graph::Edge<ContactPair>, edge_id: u32| {
+            let mut stages = profiling.then_some([0.0; 2]);
             let mut timer = crate::counters::Timer::new();
             if profiling { timer.start(); }
             let outcome = pair_update::process_pair(
                 edge,
                 edge_id,
+                &mut stages,
                 prediction_distance,
                 dt,
                 contact_clustering,
@@ -129,6 +132,7 @@ impl NarrowPhase {
             if profiling {
                 timer.pause();
                 edge.weight.update_profile = Some((timer.time_ms(), outcome));
+                edge.weight.update_stage_profile = stages;
             }
             outcome
         };
@@ -140,11 +144,13 @@ impl NarrowPhase {
         let process_pair = |edge: &mut crate::data::graph::Edge<ContactPair>,
                             edge_id: u32,
                             hooks: &dyn PhysicsHooks| {
+            let mut stages = profiling.then_some([0.0; 2]);
             let mut timer = crate::counters::Timer::new();
             if profiling { timer.start(); }
             let outcome = pair_update::process_pair(
                 edge,
                 edge_id,
+                &mut stages,
                 prediction_distance,
                 dt,
                 contact_clustering,
@@ -163,6 +169,7 @@ impl NarrowPhase {
             if profiling {
                 timer.pause();
                 edge.weight.update_profile = Some((timer.time_ms(), outcome));
+                edge.weight.update_stage_profile = stages;
             }
             outcome
         };

@@ -1,5 +1,5 @@
 import {test,expect} from 'bun:test';
-import {loadAssembly,bindSimulationScene,poseTransforms,assetURL,digest} from '../web/simulation-scene.js';
+import {loadAssembly,bindSimulationScene,bindPersistentScene,poseTransforms,assetURL,digest,selectSimulationBodies} from '../web/simulation-scene.js';
 import {encodeScene} from '../vendor/cad-core/src/core/mesh.js';
 import {identity,translation} from '../lib/transforms.js';
 async function fixture(){
@@ -63,4 +63,42 @@ test('single material render mesh replaces coarse prototype without changing sou
  const f=await fixture();f.appearance.catalog.fine={...f.catalog.p};f.appearance.instances.plate.asset='fine';
  const scene=await loadAssembly('field','https://assets/field',{fetcher:f.fetcher});
  expect(scene.instances[0].id).toBe('field/plate');expect(scene.instances[0].sourceId).toBe('plate');expect(scene.instances[0].asset).toBe('field/fine');expect(scene.prototypes[0].id).toBe('field/fine');
+});
+
+test('subsystem presentation isolates exact physical bodies and restores all without mutating scene',()=>{
+ const instances=[{id:'a',body:'wheel',opacity:.4},{id:'b',body:'wheel'},{id:'ball',body:'fuel'},{id:'wall'}];
+ const before=JSON.stringify(instances);
+ expect(selectSimulationBodies(instances,['wheel','fuel']).map(n=>n.id)).toEqual(['a','b','ball']);
+ expect(selectSimulationBodies(instances,null)).toBe(instances);
+ for(const bad of [[],['missing'],['wheel','missing'],'wheel'])expect(()=>selectSimulationBodies(instances,bad)).toThrow();
+ expect(JSON.stringify(instances)).toBe(before);
+});
+
+test('persistent binding removes baked native occurrence frames and keeps IDs and source data',()=>{
+ const frame=[0,-1,0,1000,1,0,0,2000,0,0,1,3000];
+ const local=[0,-1,0,1,1,0,0,2,0,0,1,3];
+ const robot={instances:[{id:'part',asset:'part',transform:identity()}]},field={instances:[]},physical={instances:[],bindings:[]};
+ const bindings={schema:1,start:[0,0,0],fieldOrigin:[0,0,0],robot:{part:{body:'chassis',local}},field:{}};
+ const before=JSON.stringify({robot,bindings});
+ const scene=bindPersistentScene({robot,field,physical,nativeFrames:{part:frame}},bindings);
+ expect(scene.instances[0].id).toBe('part');expect(scene.instances[0].local).toEqual(identity());
+ expect(poseTransforms(scene.instances,{bodies:{chassis:{position:[4,5,6],quaternion:[0,0,0,1]}}}).part).toEqual([.001,0,0,4,0,.001,0,5,0,0,.001,6]);
+ expect(JSON.stringify({robot,bindings})).toBe(before);
+ expect(()=>bindPersistentScene({robot,field,physical,nativeFrames:{}},bindings)).toThrow('Missing native');
+ expect(()=>bindPersistentScene({robot,field,physical,nativeFrames:{part:Array(12).fill(0)}},bindings)).toThrow('rotation');
+ expect(()=>bindPersistentScene({robot:{instances:[]},field,physical},bindings)).toThrow('missing from CAD');
+});
+
+test('persistent imported split surfaces, moving field and physical proxies share pose bindings',()=>{
+ const robot={instances:[0,1].map(i=>({id:'robot/part/surface/'+i,sourceId:'part',opacity:.3,transform:identity()}))};
+ const field={instances:[{id:'field/gate',sourceId:'gate',matrix:translation([1,2,3])}]};
+ const physical={instances:[{id:'physics/ball/0'}],bindings:[{id:'physics/ball/0',body:'ball',local:identity()}]};
+ const bindings={schema:1,start:[0,0,0],fieldOrigin:[10,0,0],robot:{part:{body:'chassis',local:identity()}},field:{gate:{body:'gate',bindPosition:[1,2,3]}}};
+ const before=JSON.stringify({robot,field,physical});
+ const scene=bindPersistentScene({robot,field,physical},bindings,['chassis','gate','ball']);
+ expect(scene.instances.map(n=>n.id)).toEqual(['robot/part/surface/0','robot/part/surface/1','field/gate','physics/ball/0']);
+ expect(scene.instances[2].transform[3]).toBe(11);expect(scene.instances[2].local).toEqual(identity());
+ const transforms=poseTransforms(scene.instances,{bodies:Object.fromEntries(['chassis','gate','ball'].map(id=>[id,{position:[2,3,4],quaternion:[0,0,0,1]}]))});
+ expect(Object.keys(transforms)).toHaveLength(4);expect(transforms['physics/ball/0'][11]).toBe(4);
+ expect(JSON.stringify({robot,field,physical})).toBe(before);
 });

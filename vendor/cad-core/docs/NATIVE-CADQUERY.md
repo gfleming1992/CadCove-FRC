@@ -278,3 +278,33 @@ Headless assembly captures preserve opacity while neutralizing highlight colors.
 Rendering sorts translucent occurrences back-to-front; intersecting translucent
 surfaces may exhibit object-sorting artifacts. This is a visual inspection aid,
 not geometric sectioning or a clearance check.
+
+## Physical description and source bindings
+
+A `physical` member of `mechanism.json` uses schema 1 and explicit
+`m-kg-s-rad` units. It is shared by CadQuery and STEP-derived geometry. Bodies
+bind stable CAD part IDs to mass, COM, symmetric inertia (`xx,yy,zz,xy,xz,yz`,
+about COM in the body frame), collision shapes/contact properties and provenance.
+Joint anchors are body-local metres; axis is in the parent's bind frame. Body
+rotation is an axis-angle rotation vector in radians. Joints can be fixed,
+revolute or prismatic; free dynamic bodies and closed joint loops are supported
+by the physical description independently of the legacy CAD animation tree.
+Potential collision pairs, joints and transmissions generate dependency components.
+Unknown fields and unsupported geometry fail instead of disappearing silently.
+
+The design follows SDFormat 1.12's separation of inertial, collision and joint
+properties, but is a deliberately limited JSON contract, not an SDF importer.
+See https://sdformat.org/spec/1.12/link/ and https://sdformat.org/spec/1.12/joint/.
+
+For homogeneous solids, `physical_properties.mass_properties(shape,
+density_kg_m3, evidence)` computes SI mass, COM and full inertia from a CadQuery
+shape, including a STEP-imported shape. Run this explicit calculation during
+physical preparation or inspection; do not guess a material from appearance.
+Subtract the body's origin (in metres) from the returned COM before assigning
+it to a translated body; rotate the tensor if the body frame is rotated.
+
+STEP inspection now reports the kinematic dependency graph and the physical
+properties still required. Raw STEP representation units and occurrence mappings
+must be resolved explicitly. `source: {kind: 'step', sha256, entities: [...]}`
+on a physical body records the source-scoped mapping; entity IDs do not remain
+stable across file revisions. A top-level `sourceStep` pin protects the projection.

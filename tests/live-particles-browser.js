@@ -1,0 +1,51 @@
+// End-to-end native authoritative soft sphere -> unified canvas -> real WebGPU.
+// Synthetic fixture; tests transport/presentation, not calibrated foam dynamics.
+import assert from 'node:assert/strict';
+import path from 'node:path';
+import {chromium} from 'playwright';
+import {MechanismSession} from '../lib/mechanism-session.js';
+const root=process.cwd(),binary=path.join(root,'target/distribution/release/instantcad-sim'+(process.platform==='win32'?'.exe':'')),pending=[],nativeErrors=[];
+const world={dt:.005,gravity:[0,0,-9.81],bodies:[{id:'floor',fixed:true,position:[0,0,-.1],mass:1,colliders:[{kind:'box',half:[1,1,.1],center:[0,0,0]}]},{id:'ball',position:[0,0,.18],mass:.215,colliders:[{kind:'ball',radius:.075,center:[0,0,0]}],compliance:{frequency_hz:120,subdivisions:1,entry_margin:.03,exit_margin:.1,recovery_tolerance:.0005}}],joints:[],motors:[],transmissions:[],compliance_zones:[{body:'floor',center:[0,0,.3],half:[.5,.5,.5],lookahead:.03}]};
+const native=new MechanismSession(binary,{onState:s=>{pending.push(s);if(pending.length>4)pending.shift();},onError:e=>nativeErrors.push(e.message)});await native.startWorld(world);pending.length=0;
+const server=Bun.serve({port:0,async fetch(request){const p=new URL(request.url).pathname;
+ if(p==='/configure'){const options=await request.json();return Response.json({ok:true,...native.configureParticles({...options,revision:'native-fixture'}),sourceRevision:'cad-fixture'});}
+ if(p==='/configuration')return Response.json(native.particleStream.config);
+ if(p==='/resume'){native.resume();return Response.json({ok:true});}if(p==='/pause'){native.pause();return Response.json({ok:true});}if(p==='/disable'){native.disableParticles();return Response.json({ok:true});}if(p==='/poll')return Response.json(pending.splice(0));
+ if(['/web/','/lib/','/vendor/cad-core/src/core/'].some(prefix=>p.startsWith(prefix))&&!p.includes('..'))return new Response(Bun.file(path.join(root,p)),{headers:{'content-type':'text/javascript'}});return new Response('<style>canvas{width:640px;height:480px}</style><canvas></canvas>',{headers:{'content-type':'text/html'}});
+}});
+const browser=await chromium.launch({headless:true,executablePath:process.platform==='darwin'?'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome':undefined,args:['--enable-unsafe-webgpu',...(process.platform==='darwin'?['--use-angle=metal']:[])]});
+try{
+ const page=await browser.newPage();await page.goto(`http://localhost:${server.port}`);
+ const result=await page.evaluate(async()=>{
+  const {AssemblyViewer}=await import('/vendor/cad-core/src/core/assembly-viewer.js'),{MechanismMotion}=await import('/vendor/cad-core/src/core/mechanism-motion.js'),{installSelection}=await import('/vendor/cad-core/src/core/selection.js'),{installSceneExtension}=await import('/web/scene-extension.js');
+  const viewer=await new AssemblyViewer(document.querySelector('canvas')).init(),motion=new MechanismMotion(viewer),selection=installSelection(viewer),gpuErrors=[],send=e=>window.dispatchEvent(new MessageEvent('message',{data:{sceneEvent:e}}));viewer.device.addEventListener('uncapturederror',e=>gpuErrors.push(e.error.message));
+  let revision='cad-fixture';const host={request:async(method,args)=>{if(method==='scene:physics-particles'){if(args.action==='disable'){await fetch('/disable');send({particlesDisabled:true});return {ok:true};}return (await fetch('/configure',{method:'POST',body:JSON.stringify(args)})).json();}if(method==='scene:physics'){await fetch('/resume');send({mode:'physics'});return {ok:true};}throw Error('Unexpected host request '+method);}};
+  const ext=installSceneExtension({viewer,motion,selection,host,revision:()=>revision}),part={id:'floorCAD',name:'CAD sentinel',color:'#336699',positions:new Float32Array([-100,-100,0,100,-100,0,0,100,0]),normals:new Float32Array([0,0,1,0,0,1,0,0,1]),indices:new Uint32Array([0,1,2])};viewer.setScene({parts:[part,{...part,id:'hiddenCAD'}]},true);
+  send({model:{bodies:[{id:'floor',parts:['floorCAD'],position:[0,0,0],rotation:[0,0,0],collision:{shapes:[]}},{id:'ball',parts:[],position:[0,0,.18],rotation:[0,0,0],collision:{shapes:[{kind:'ball',radius:.075,center:[0,0,0]}]}}]}});
+  viewer.camera={target:[0,0,100],distance:600,yaw:1,pitch:1};selection.set(['floorCAD']);viewer.setOpacity({floorCAD:.37,hiddenCAD:0});
+  const configureAttempts=await Promise.allSettled([ext.command('physics-particles',{action:'enable',bodyIds:['ball'],maxHz:20}),ext.command('physics-particles',{action:'enable',bodyIds:['ball'],maxHz:20})]);
+  if(configureAttempts[1].status!=='fulfilled')throw configureAttempts[1].reason;
+  const configured=configureAttempts[1].value,hostNewestSurvived=configureAttempts[0].status==='rejected'&&(await (await fetch('/configuration')).json()).streamId===configured.streamId,camera=JSON.stringify(viewer.camera),opacityAtConfigure=[viewer.placements[viewer.instanceLookup.get('floorCAD')*20+19],viewer.placements[viewer.instanceLookup.get('hiddenCAD')*20+19]],buffers=[viewer.assemblyVertices,viewer.assemblyIndices,viewer.assemblyInstances];await ext.command('physics');
+  let firstPacket,lastPacket,packetCount=0,baselineImage;const until=performance.now()+500;
+  while(performance.now()<until){const states=await (await fetch('/poll')).json();for(const state of states){send({physics:{component:'component',physicsRevision:'native-fixture',state}});if(state.deformation){firstPacket??=state.deformation;lastPacket=state.deformation;packetCount++;if(!baselineImage)baselineImage=(await viewer.captureView({ids:['live-particles/ball'],width:160,height:120,camera:viewer.camera})).image;}}await new Promise(resolve=>setTimeout(resolve,20));}
+  await fetch('/pause');await new Promise(resolve=>setTimeout(resolve,60));const state=await ext.command('physics-particles',{action:'state'}),afterImage=(await viewer.captureView({ids:['live-particles/ball'],width:160,height:120,camera:viewer.camera})).image;
+  const visible=viewer.placements[viewer.instanceLookup.get('live-particles/ball')*20+19]>0,rigidHidden=viewer.placements[viewer.instanceLookup.get('physics/ball/0')*20+19]===0;
+  // Stale stream and older ticks cannot overwrite a newer authoritative surface.
+  send({physics:{component:'component',physicsRevision:'native-fixture',state:{state:{bodies:{}},deformation:{...lastPacket,streamId:'stale-stream',tick:lastPacket.tick+1000}}}});send({physics:{component:'component',physicsRevision:'native-fixture',state:{state:{bodies:{}},deformation:firstPacket}}});
+  const staleIgnored=(await ext.command('physics-particles',{action:'state'})).lastTick===state.lastTick;
+  send({physics:{component:'component',physicsRevision:'native-fixture',state:{state:{bodies:{}},deformation:{...lastPacket,tick:lastPacket.tick+1,bodies:{ball:{representation:'rigid'}}}}}});
+  const rigidFallback=viewer.placements[viewer.instanceLookup.get('physics/ball/0')*20+19]===1&&viewer.placements[viewer.instanceLookup.get('live-particles/ball')*20+19]===0;
+  send({physics:{component:'component',physicsRevision:'native-fixture',state:{state:{bodies:{}},deformation:{...lastPacket,tick:lastPacket.tick+2}}}});
+  // Explicit invalidation/reset hides live surface, restores proxy and releases GPU resources without rebuilding CAD buffers.
+  send({outdated:true});const reset=await ext.command('physics-particles',{action:'state'}),hiddenAfterReset=viewer.placements[viewer.instanceLookup.get('live-particles/ball')*20+19]===0;
+  const preserved=buffers.every((b,i)=>b===[viewer.assemblyVertices,viewer.assemblyIndices,viewer.assemblyInstances][i]),cameraPreserved=JSON.stringify(viewer.camera)===camera,selected=selection.state().selectedIds,opacityAtReset=[viewer.placements[viewer.instanceLookup.get('floorCAD')*20+19],viewer.placements[viewer.instanceLookup.get('hiddenCAD')*20+19]];
+  revision='new-cad';send({physics:{component:'component',physicsRevision:'native-fixture',state:{state:{bodies:{}},deformation:lastPacket}}});const noRevival=!(await ext.command('physics-particles',{action:'state'})).enabled;
+  ext.dispose();
+  const {installLiveParticles}=await import('/web/live-particles.js'),parallel=installLiveParticles({viewer,revision:()=>revision}),config={...configured,sourceRevision:revision,visualIds:{ball:['physics/ball/0']}};
+  const attempts=await Promise.allSettled([parallel.configure({...config,streamId:'older'}),parallel.configure({...config,streamId:'newer'})]);
+  const newestSurvived=attempts[0].status==='rejected'&&attempts[1].status==='fulfilled'&&parallel.state().streamId==='newer';parallel.apply({...lastPacket,streamId:'newer'});
+  const opacityAfterReconfigure=[viewer.placements[viewer.instanceLookup.get('floorCAD')*20+19],viewer.placements[viewer.instanceLookup.get('hiddenCAD')*20+19]];parallel.dispose();
+  await viewer.device.queue.onSubmittedWorkDone();viewer.device.destroy();return {configured:configured.presentation.enabled,packetCount,pointCount:firstPacket.bodies.ball.particles.length,visible,rigidHidden,imageChanged:baselineImage!==afterImage,rigidFallback,staleIgnored,resetDisabled:!reset.enabled,resetGpuCount:reset.gpu.length,hiddenAfterReset,preserved,cameraPreserved,selected,opacityAtConfigure,opacityAtReset,opacityAfterReconfigure,newestSurvived,hostNewestSurvived,noRevival,gpuErrors,state};
+ });
+ assert.equal(result.configured,true);assert.ok(result.packetCount>2);assert.equal(result.pointCount,43);for(const key of ['visible','rigidHidden','rigidFallback','imageChanged','staleIgnored','resetDisabled','hiddenAfterReset','preserved','cameraPreserved','noRevival','newestSurvived','hostNewestSurvived'])assert.equal(result[key],true,key);assert.equal(result.resetGpuCount,0);assert.deepEqual(result.selected,['floorCAD']);assert.ok(Math.abs(result.opacityAtConfigure[0]-.37)<1e-6);assert.equal(result.opacityAtConfigure[1],0);assert.deepEqual(result.opacityAtReset,result.opacityAtConfigure);assert.deepEqual(result.opacityAfterReconfigure,result.opacityAtConfigure);assert.deepEqual(result.gpuErrors,[]);assert.deepEqual(nativeErrors,[]);console.log(JSON.stringify({ok:true,scope:'Synthetic native soft sphere live transport/presentation, not physical qualification',checks:result}));
+}finally{native.close();await browser.close();server.stop(true);}

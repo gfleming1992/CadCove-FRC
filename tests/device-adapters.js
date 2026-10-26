@@ -25,7 +25,7 @@ try{
  const phoenix=options['--native-libraries']?await run([java,'-Djava.library.path='+path.resolve(options['--native-libraries']),'-cp',classpath,'org.instantcad.frc.PhoenixAdapterTest']):null;
  const bridgeResult=[];
  for(const controlSource of ['agent','driverstation'])bridgeResult.push(options['--native-libraries']?await run([java,'-Djava.library.path='+path.resolve(options['--native-libraries']),'-cp',classpath,'org.instantcad.frc.MotorBridgeTest'],{
-  INSTANTCAD_CONTROL_SOURCE:controlSource,INSTANTCAD_ROOT:directory,INSTANTCAD_BUILD:directory,INSTANTCAD_WORLD:path.join(directory,'world.json'),INSTANTCAD_SIM_BINARY:path.resolve(options['--native-binary']),INSTANTCAD_CLOCK:'wall',INSTANTCAD_BRIDGE_PORT:'0',
+  INSTANTCAD_CONTROL_SOURCE:controlSource,INSTANTCAD_ALLIANCE_STATION:'Red2',INSTANTCAD_ROOT:directory,INSTANTCAD_BUILD:directory,INSTANTCAD_WORLD:path.join(directory,'world.json'),INSTANTCAD_SIM_BINARY:path.resolve(options['--native-binary']),INSTANTCAD_CLOCK:'wall',INSTANTCAD_BRIDGE_PORT:'0',
   CADCOVE_SESSION_FILE:path.join(directory,'session.json'),CADCOVE_SESSION_TOKEN:randomBytes(32).toString('hex'),CADCOVE_SESSION_OWNER:randomUUID(),INSTANTCAD_PROJECT:path.join(directory,'robot.sim.json'),CADCOVE_PROJECT_ID:'device-contract'
  }):null);
  console.log(JSON.stringify({ok:true,fullBridgeCompile:true,nativeClosedLoop:true,phoenixJNI:phoenix!==null,bridgeLifecycle:bridgeResult!==null,native,phoenix,bridge:bridgeResult}));

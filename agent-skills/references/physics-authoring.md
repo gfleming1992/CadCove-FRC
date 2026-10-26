@@ -208,3 +208,67 @@ See `docs/CUSTOM-SIMULATOR.md` in the matching release and its
 `examples/custom-mechanism` crate. Keep this separate from season scoring.
 Select `runtime.customSimulator` in robot.sim.json and run `cadcove sim-build`
 explicitly. Rebuild/restart after source changes; preserve calibration evidence.
+
+
+## Numerical sweeps without a live session
+
+For playability testing, 50 Hz (`dt: 0.02`) is an available candidate; determine
+its suitability with actual driving, contacts and ball handling. It is not a
+universal physics accuracy requirement. A world can opt into
+`solver_schedule: "per_tick"` and `max_contact_substeps` (1–64) to budget global
+contact refreshes. Fewer refreshes can miss or distort fast contacts. Defaults
+remain motion-driven; local solver refinement and CCD still run.
+
+Use `cadcove physics-batch --world WORLD_JSON --input PLAN_JSON --output NEW_REPORT`
+to run isolated unpaced native trials. The plan contains `profiles` with `id` and
+`settings`, `segments` with `seconds` and motor `volts`, and optional `checks`
+(`maxLinearSpeed`, final `positions` ranges by body/axis, and final `joints`
+ranges). Each profile resets source state. Set a smaller `dt` and
+`max_contact_substeps: null` for finer offline checks; this removes the cap without
+relabeling gameplay approximations as detailed physics. The CLI is suitable for
+an exported subsystem world. It does not run WPILib code or change a live world.
+
+The editor MCP tools `physics_batch_start`, `physics_batch_status`, and
+`physics_batch_cancel` expose these trials as background jobs. Start with a plan,
+then poll the returned job ID. Optional `worldFile` selects a workspace-relative
+native subsystem world instead of the configured simulation world. Reports retain
+numerical settings, source/binary hashes and caller-defined acceptance outcomes.
+No explicit checks means `accepted: null`. A successful trial is not hardware
+sign-off; use full robot-code tests and calibration for that purpose.
+
+### Subsystem boundaries and dependency completeness
+
+Subsystem selection is an authored graph overlay, not a prefix filter on body names. Use the schema and resolver in `.cadcove/skills/references/subsystems.md` (source: `docs/SUBSYSTEMS.md`): CAD hierarchy, body ownership, joint graph, cross-branch transmissions, stationary support geometry, material requirements and fixed/external test boundaries remain distinct. Declare expected missing feeder shafts, joints and motors explicitly; do not hide them by leaving their geometry attached to chassis. An isolated view must retain the surrounding guides, supports, drive motors and belt/gear dependencies needed to explain and test the mechanism.
+
+Resolve membership first, compile the resulting complete physical graph with explicit restraints, then run native load/stepping/contact checks. A subsystem completeness report checks declared data presence, not solver validity, successful transport or hardware safety. Use actual material records, preserve estimated/unknown provenance and report exclusions or external dependencies. Do not silently fix a free pivot, remove a guide, alter foam dimensions or teleport a ball to obtain a passing feed test; authored test fixtures may lock a pivot or seed an approach only when that assumption is disclosed. Keep rendering, playback, contact test execution and offline sign-off separate actions.
+
+
+### Recorded compression in the unified canvas
+
+Use `canvas` action `replay` with a workspace `replayFile` to load authoritative
+particle recordings paused, then explicitly play, pause, seek or unload. Follow
+`.cadcove/skills/references/physics-replay.md` (source: `docs/PHYSICS-REPLAY.md`). Preserve the native acceptance result and contact
+evidence; slow playback never converts a failed feed into a passing shot. Resolve
+all presentation hardware from the subsystem definition, not just collision
+bodies. GPU compute interpolates vertices and normals, but ingestion and uploads
+still have CPU cost. Captures show the deformed GPU surface; CPU picking and mesh
+export use the initial surface and cannot measure compression. Source/physics
+edits rebuild asynchronously and reset the whole simulation stopped while
+preserving camera, selection and isolation. Do not migrate live velocities across
+changed colliders, mass or joints.
+
+### Source-pinned concave mesh contacts
+
+A moving concave guide must not be replaced by one filled convex hull. The shared physical model supports `mesh_file` colliders with an explicit workspace-relative `.ctm` path, SHA-256 pin, body-local metre coordinates, rotation vector and cooking mode. Legacy mechanism entries use `centerMm` / `rotationRad`; SI shapes use `center` / `rotation`; native export uses `position` / `rotation`. Set `cooking: "convex_decomposition"` for a reviewed moving concave approximation. Decomposition is not exact source-surface contact: compare clearance/contact probes against the triangle reference before claiming a guide works. Moving `trimesh` and `cuboid_or_mesh` are rejected.
+
+Collider CTM1 vertices are metres, independently of the legacy model’s millimetre source. Assets must resolve inside the workspace, retain matching hashes and pass format/index checks; symlink escapes fail. Set legacy `physics.source` to `{kind:"cadquery", sha256: CAD_SOURCE_REVISION, entities:[SOURCE_OCCURRENCE_IDS]}` when geometry-derived bodies must be invalidated by a changed CAD revision. The canvas checks this source pin before preparation. Background preparation resolves assets from the workspace and runs an isolated construction/stepping check; it does not certify decomposition fidelity or calibrated foam contacts. Asset changes invalidate preparation. A physical-only mesh body needs explicit CAD visual geometry for the canvas; an empty or fabricated collision preview is not substituted.
+
+### Explicit selective sphere compliance
+
+Compliance is opt-in solver data, never inferred from a label such as foam. An SI body may declare `compliance: {frequencyHz, subdivisions, entryMargin, exitMargin, recoveryTolerance}`; all fields are required. Frequency is positive and at most300Hz; subdivisions is integer0,1or2; margins/tolerance are positive native-representable SI distances; exitMargin exceeds entryMargin and recoveryTolerance is less than5%of the sphere radius. The model also requires explicit `complianceZones: [{body, center, half, lookahead}]`, in body-local metres/seconds. Zone bodies must be rigid, half-extents positive, and lookahead between0.005and0.2seconds. Zones describe where this approximation may activate, not proof of compression fidelity.
+
+A compliant body must be dynamic, own no joints and have exactly one centered spherical collider. Its authored center of mass must be zero and inertia must match a homogeneous sphere, `I=2/5*m*r^2`, with zero cross terms. The compiler verifies this assumption before omitting native inertia overrides; it does not discard incompatible measured inertia. Material and compliance calibration remain explicit provenance responsibilities.
+
+Legacy `mm-deg` mechanisms can declare an independent game piece using body `free:true, fixed:false` with no joints. A free body stays at its authored CAD pose until physics runs; it is not attached to a robot by a fabricated joint. Legacy compliance lives under `physics.compliance` with the same SI parameter fields; top-level `complianceZones` remains SI despite CAD geometry using millimetres. A legacy ball collider uses `radiusMm` and `centerMm`. The rest of the rotary hierarchy is unchanged, and free/fixed or free/joint conflicts fail validation.
+
+Activation zones create explicit physics dependency edges to compliant spheres, even if their contact masks differ, so background validation cannot split an activation frame away from its sphere. Rendering membership stays independent: no subsystem silently acquires a free ball merely because it is nearby. Removing the opt-in compliance declaration leaves an ordinary rigid sphere. Particle rendering and transport must be explicitly enabled separately; these parameters alone do not enable a live demo or feed a ball.

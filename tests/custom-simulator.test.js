@@ -2,7 +2,7 @@ import {test,expect} from 'bun:test';
 import {mkdtemp,mkdir,writeFile,readFile,rm,access} from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import {nativeExecutable,validateCustomSimulator,requireMechanismCapabilities} from '../lib/runtime-location.js';
+import {nativeExecutable,validateCustomSimulator,requireMechanismCapabilities,requireSolverScheduleCapability} from '../lib/runtime-location.js';
 import {buildCustomSimulator} from '../lib/custom-simulator.js';
 
 test('project custom engine is explicit, project-local and overrides legacy environment',()=>{
@@ -41,4 +41,26 @@ test('old or wrong native binaries cannot silently ignore custom mechanism data'
  expect(()=>requireMechanismCapabilities({features:['custom-mechanisms-v1'],mechanisms:['team.drag-v1']},selected)).not.toThrow();
  expect(()=>requireMechanismCapabilities({},[])).not.toThrow();
  expect(()=>requireMechanismCapabilities({},undefined)).not.toThrow();
+});
+
+test('per-tick scheduling cannot silently fall back on an older native runtime',()=>{
+ expect(()=>requireSolverScheduleCapability({},{})).not.toThrow();
+ expect(()=>requireSolverScheduleCapability({},{solver_schedule:'per_refresh'})).not.toThrow();
+ expect(()=>requireSolverScheduleCapability({},{solver_schedule:'per_tick'})).toThrow('solver-schedule-v1');
+ expect(()=>requireSolverScheduleCapability({features:['solver-schedule-v1']},{solver_schedule:'per_tick'})).not.toThrow();
+ for(const solver_schedule of [null,'fast',1])expect(()=>requireSolverScheduleCapability({features:['solver-schedule-v1']},{solver_schedule})).toThrow('Unknown solver schedule');
+});
+
+import {requirePhysicsNumericsCapabilities} from '../lib/runtime-location.js';
+test('local cylinder refresh is explicit and cannot silently run on an older engine',()=>{
+ expect(()=>requirePhysicsNumericsCapabilities({},{local_cylinder_contacts:true})).toThrow('local-cylinder-contacts-v1');
+ expect(()=>requirePhysicsNumericsCapabilities({},{local_cylinder_contacts:false})).not.toThrow();
+ expect(()=>requirePhysicsNumericsCapabilities({features:['local-cylinder-contacts-v1']},{local_cylinder_contacts:true})).not.toThrow();
+ for(const value of [null,1,'true',{}])expect(()=>requirePhysicsNumericsCapabilities({},{local_cylinder_contacts:value})).toThrow('boolean');
+});
+test('contact refresh budgets cannot be ignored by old runtimes',()=>{
+ expect(()=>requirePhysicsNumericsCapabilities({},{})).not.toThrow();
+ expect(()=>requirePhysicsNumericsCapabilities({},{max_contact_substeps:2})).toThrow('contact-refresh-budget-v1');
+ expect(()=>requirePhysicsNumericsCapabilities({features:['contact-refresh-budget-v1']},{max_contact_substeps:2})).not.toThrow();
+ for(const max_contact_substeps of [null,0,-1,65,1.5,'2',NaN])expect(()=>requirePhysicsNumericsCapabilities({features:['contact-refresh-budget-v1']},{max_contact_substeps})).toThrow('1..64');
 });

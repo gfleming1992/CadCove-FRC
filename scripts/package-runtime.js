@@ -88,8 +88,14 @@ try {
   await cp(path.join(root,'vendor/cad-core/src/native/geometry.py'),path.join(staging,'geometry.py'));
   await cp(path.join(root,'vendor/cad-core/src/native/discovery.py'),path.join(staging,'discovery.py'));
   for(const name of ['step_kinematics.py','sketch_solver.py','cad_references.py','fea_request.py','fea_geometry.py','fea_freecad.py','drawing_geometry.py','drawing_freecad.py','flat_export.py','dxf_preview.py','sheetmetal_geometry.py','sheetmetal_freecad.py','fold_diagram.py','sheetmetal_fold.py'])await cp(path.join(root,'vendor/cad-core/src/native',name),path.join(staging,name));
-  for(const [source,name] of [['solver.py','mate-solver.py'],['upstream.json','ondsel-upstream.json'],['LICENSE.Ondsel','ONDSEL-LICENSE.txt']])await cp(path.join(root,'vendor/cad-core/src/native/ondsel',source),path.join(staging,name));
-  const extra=['step_kinematics.py','sketch_solver.py','cad_references.py','fea_request.py','fea_geometry.py','fea_freecad.py','drawing_geometry.py','drawing_freecad.py','flat_export.py','dxf_preview.py','sheetmetal_geometry.py','sheetmetal_freecad.py','fold_diagram.py','sheetmetal_fold.py','mate-solver.py','ondsel-upstream.json','ONDSEL-LICENSE.txt','cad-worker.py','discovery.py','geometry.py','cad-requirements.txt',...(external?['cadcove.js','launcher.rs']:[])];
+  await cp(path.join(root,'vendor/cad-core/src/native/mate_contract.py'),path.join(staging,'mate-contract.py'));
+  await cp(path.join(root,'vendor/cad-core/src/native/physical_properties.py'),path.join(staging,'physical_properties.py'));
+  await cp(path.join(root,'lib/rapier-mates.py'),path.join(staging,'rapier-mates.py'));
+  const matchClient=await Bun.build({entrypoints:[path.join(root,'web/match-client.js')],target:'browser',format:'esm',minify:true});
+  if(!matchClient.success)throw Error('Match client bundle failed');
+  await writeFile(path.join(staging,'match-client.js'),await matchClient.outputs[0].text());
+  await cp(path.join(root,'web/match.html'),path.join(staging,'match.html'));
+  const extra=['match-client.js','match.html','rapier-mates.py','step_kinematics.py','sketch_solver.py','cad_references.py','fea_request.py','fea_geometry.py','fea_freecad.py','drawing_geometry.py','drawing_freecad.py','flat_export.py','dxf_preview.py','sheetmetal_geometry.py','sheetmetal_freecad.py','fold_diagram.py','sheetmetal_fold.py','mate-contract.py','physical_properties.py','cad-worker.py','discovery.py','geometry.py','cad-requirements.txt',...(external?['cadcove.js','launcher.rs']:[])];
   if(options['--team-example']){await packageTeamExample(path.resolve(options['--team-example']),path.join(staging,'team-example.cpack'));extra.push('team-example.cpack');}
   const files = [];
   for (const name of [...names,...extra,'bridge-sources.json','cad-reference.json','training-example.json','native-build.json','cli-build.json','THIRD-PARTY-NOTICES.txt','dependency-inventory.json']) {

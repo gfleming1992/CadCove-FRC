@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 import path from 'node:path';
-import {access, stat} from 'node:fs/promises';
+import {access, stat,readFile} from 'node:fs/promises';
 import {constants} from 'node:fs';
 import {initializeToolbox,updateToolboxGuidance} from '../lib/toolbox-project.js';
 import {readRobotProject, auditRobotProject} from '../lib/robot-project.js';
@@ -18,6 +18,11 @@ import {createPhysicsMode} from '../lib/physics-modes.js';
 import {buildCustomSimulator} from '../lib/custom-simulator.js';
 
 const optionsByCommand = {
+  'subsystem': ['workspace','entry','manifest','id','action'],
+  'physics-batch': ['world','input','output','asset-root'],
+  'match-serve': ['config','output','host','port'],
+  'match-visuals': ['robot','field','output'],
+  'match-benchmark': ['config','scenario','output'],
   'sim-build': ['project'],
   'cad-sketch': ['action','input','output','python'],
   'cad-cut-preview': ['action','input','output','python','workspace','show'],
@@ -26,7 +31,7 @@ const optionsByCommand = {
   'cad-drawing': ['action','input','output','python','workspace','entry','freecad'],
   'cad-analysis': ['action','input','output','python','workspace','entry','freecad','gmsh','ccx'],
   'cad-references': ['workspace','entry','python','input'],
-  'cad-mates': ['action','input','output','python','solver','workspace','target'],
+  'cad-mates': ['action','input','output','python','solver','workspace','target','backend'],
   'cad-build': ['workspace','entry','python'],
   'cad-session': ['workspace','entry','python'],
   'cad-inspect': ['workspace','entry','python','script'],
@@ -68,7 +73,7 @@ const optionsByCommand = {
   'season-search': ['directory','query','offset','limit'],
   doctor: ['project'], audit: ['project'], 'sim-validate': ['project'], capabilities: [], help: [],
   'cad-status': ['workspace','entry'], 'cad-preview': ['workspace','entry'],
-  'sim-run': ['project'], 'sim-state': ['project'], 'sim-objects': ['project','query-file'], 'sim-controls': ['project','input'], 'sim-stop': ['project'],
+  'sim-run': ['project'], 'sim-state': ['project'], 'sim-objects': ['project','query-file'], 'sim-controls': ['project','input'], 'sim-place': ['project','input'], 'sim-manipulate': ['project','input'], 'sim-stop': ['project'],
   'sim-recover': ['project'], 'bridge-export': ['workspace','review'],
   'sim-scene': ['project'],
   'sim-capture': ['project','options'], 'sim-view': ['project','options'], 'sim-viewer-state': ['project'],
@@ -99,6 +104,10 @@ async function regularFile(file, executable = false) {
 
 async function run() {
   const {command, options} = parse(process.argv.slice(2));
+  if(command==='subsystem'){const {subsystemCommand}=await import('../lib/subsystem-command.js');return subsystemCommand(options);}
+  if(command==='match-serve'){const {matchServeCommand}=await import('../lib/match-session.js');return matchServeCommand(options);}
+  if(command==='match-visuals'){const {matchVisualsCommand}=await import('../lib/match-visuals.js');return matchVisualsCommand(options);}
+  if(command==='match-benchmark'){const {matchBenchmarkCommand}=await import('../lib/match-benchmark.js');return matchBenchmarkCommand(options);}
   if(command==='cad-cut-preview'){const {cutPreviewCommand}=await import('../lib/cut-preview-command.js');return cutPreviewCommand(options);}
   if(command==='cad-sheetmetal'){const {sheetmetalCommand}=await import('../lib/sheetmetal-command.js');return sheetmetalCommand(options);}
   if(command==='cad-flat'){const {flatCommand}=await import('../lib/flat-command.js');return flatCommand(options);}
@@ -125,6 +134,10 @@ async function run() {
   if(command==='cad-open'){const {openRobotCad}=await import('../lib/mcp-proxy.js');const result=await openRobotCad(options.workspace??process.cwd());if(result.ok===false)process.exitCode=1;return result;}
   if (command === 'mcp') {const {runMcpProxy}=await import('../lib/mcp-proxy.js');await runMcpProxy(options.workspace??process.cwd());return;}
   if (command === 'help') return {schema: 1, ok: true, commands: {
+    'subsystem': 'cadcove subsystem --workspace PATH --action list|inspect|validate|show [--id ID] [--manifest config/subsystems.json] (shared assembly selection and explicit physics completeness; show does not start motors)',
+    'match-visuals': 'cadcove match-visuals --robot CAD_DIRECTORY --field CAD_DIRECTORY --output NEW_DIRECTORY (CPU-only visual LOD preparation; preserves CAD and physics)',
+    'match-benchmark': 'cadcove match-benchmark --config MATCH_SERVER.json --scenario CONTROLLERS.json --output NEW_DIRECTORY (headless real robot programs and physics; no graphics)',
+    'match-serve': 'cadcove match-serve --config MATCH_SERVER.json --output NEW_SESSION_DIRECTORY [--host 127.0.0.1 --port 0] (server physics and robot programs, browser rendering; no prediction)',
     'cad-visibility': 'cadcove cad-visibility --workspace PATH --options visibility.json (action hide/show/isolate/show-all/state, ids?, names?; defaults to user selection)',
     'cad-reveal': 'cadcove cad-reveal --workspace PATH [--options reveal.json] (ids?, cycles 1–10, intervalMs 500–5000; defaults to highlighted parts, 2 cycles)',
     'cad-reveal-stop': 'cadcove cad-reveal-stop --workspace PATH',
@@ -146,13 +159,13 @@ async function run() {
     'cad-move': 'cadcove cad-move --workspace PATH --part ID --degrees DELTA',
     'cad-selection': 'cadcove cad-selection --workspace PATH [--entry models.py]',
     'cad-motion-state': 'cadcove cad-motion-state --workspace PATH [--entry models.py]',
-    'canvas': 'cadcove canvas --workspace PATH [--target active|cad|field] --action capabilities|state|selection|highlight|opacity|visibility|reveal|view|motion|capture|place|physics|motors|zero|cad [--input JSON_FILE] (lengths mm, angles deg, time seconds)',
+    'canvas': 'cadcove canvas --workspace PATH [--target active|cad|field] --action capabilities|state|selection|highlight|opacity|visibility|reveal|view|motion|capture|place|physics|motors|zero|cad|physics-particles|replay [--input JSON_FILE] (lengths mm, angles deg, time seconds)',
     'mechanism-preview-open': 'cadcove mechanism-preview-open --workspace PATH [--field true] (cached native CAD and optional field context; no WPILib)',
     'mechanism-preview': 'cadcove mechanism-preview --workspace PATH --action state|view|capture|selection|visibility|place|motion|physics|motors|zero|cad [--input JSON_FILE]',
     'mechanism-export': 'cadcove mechanism-export --workspace PATH [--entry models.py] --output NEW_DIRECTORY (validated world and occurrence bindings)',
     'cad-build': 'cadcove cad-build --workspace PATH [--entry models.py] [--python PYTHON]',
     'cad-session': 'cadcove cad-session --workspace PATH [--entry models.py] [--python PYTHON] (warm JSONL build/inspect/export; stdin EOF stops worker)',
-    'cad-mates': 'cadcove cad-mates --action capabilities|solve|solve-mechanism|animate|inspect-step [--input REQUEST.json --output NEW_RESULT.json] [--solver EXECUTABLE] (animate: --workspace PATH --target cad|field; uses current cached geometry and pose)',
+    'cad-mates': 'cadcove cad-mates --action capabilities|solve|solve-mechanism|animate|inspect-step [--backend rapier] [--input REQUEST.json --output NEW_RESULT.json] [--solver EXECUTABLE] (animate: --workspace PATH --target cad|field; uses current cached geometry and pose)',
     'cad-sketch': 'cadcove cad-sketch --action capabilities|solve [--input REQUEST.json --output NEW_RESULT.json --python PYTHON] (optional PlaneGCS)',
     'cad-cut-preview': 'cadcove cad-cut-preview --action preview --input PATHS.json --output NEW_CAD_DIRECTORY --workspace . [--show]',
     'cad-sheetmetal': 'cadcove cad-sheetmetal --action unfold|preview --input REQUEST.json|UNFOLD_DIRECTORY --output NEW_DIRECTORY --workspace . --freecad /path/to/FreeCADCmd --sheetmetal /path/to/SheetMetal [--seconds 4] [--explain] [--show]',
@@ -168,6 +181,7 @@ async function run() {
     mcp: 'cadcove mcp --workspace PATH (stdio bridge to the automatic VS Code MCP server)',
     init: 'cadcove init --workspace PATH [--name NAME] [--id ID] [--cad-dir cad] [--build-dir build/cadcove] [--dry-run]',
     'guidance-update': 'cadcove guidance-update --workspace PATH [--dry-run] (preserves edited guidance and writes reviewable proposals)',
+    'physics-batch': 'cadcove physics-batch --world WORLD_JSON --input PLAN_JSON --output NEW_REPORT_JSON [--asset-root DIRECTORY] (isolated headless trials; no robot code or live changes)',
     'sim-mode': 'cadcove sim-mode --project DETAILED_PROJECT --mode accurate|gameplay --output NEW_DIRECTORY [--recipe JSON_FILE] (separate build; gameplay requires a source-hash-pinned recipe)',
     'example-create': 'cadcove example-create --workspace NEW_DIRECTORY [--example team3310-rebuilt|training-robot] (default: ready-to-play team robot; requires Team Robot edition and WPILib JDK)',
     'season-import': 'cadcove season-import --workspace PATH --pack SEASON_JSON --pdf LOCAL_PDF --revision LABEL [--kind manual|updates] [--pages EXTRACTED_PAGES_JSON]',
@@ -181,6 +195,8 @@ async function run() {
     'cad-preview': 'cadcove cad-preview --workspace PATH',
     'sim-run': 'cadcove sim-run --project PATH (foreground; ready/stopped JSON events, robot logs on stderr)',
     'sim-state': 'cadcove sim-state --project PATH',
+    'sim-manipulate': 'cadcove sim-manipulate --project PATH --input JSON_FILE (move/release/status; finite force, SI units)',
+    'sim-place': 'cadcove sim-place --project PATH --input JSON_FILE (existing game pieces; metres, optional body frame)',
     'sim-objects': 'cadcove sim-objects --project PATH [--query-file JSON_FILE]',
     'sim-controls': 'cadcove sim-controls --project PATH --input JSON_FILE (one input packet; enable lease expires after one second)',
     'sim-stop': 'cadcove sim-stop --project PATH',
@@ -205,6 +221,20 @@ async function run() {
   };
   if (command === 'init') return initializeToolbox({workspace: options.workspace, name: options.name, id: options.id, cadDirectory: options['cad-dir'], buildDirectory: options['build-dir'], dryRun: !!options['dry-run']});
   if(command==='guidance-update'){const result=await updateToolboxGuidance({workspace:options.workspace,dryRun:!!options['dry-run']});process.exitCode=result.ok?0:1;return result;}
+  if(command==='physics-batch'){
+    if(!options.world||!options.input||!options.output)throw Error('physics-batch requires --world, --input and --output');
+    const {runPhysicsBatch,batchSummary}=await import('../lib/physics-batch.js');
+    const controller=new AbortController(),stop=()=>controller.abort();process.on('SIGINT',stop);process.on('SIGTERM',stop);
+    // Reserve exclusively before spending time on a batch; never overwrite evidence.
+    const {open}=await import('node:fs/promises'),file=await open(options.output,'wx');
+    try{
+      const world=JSON.parse(await readFile(options.world,'utf8')),plan=JSON.parse(await readFile(options.input,'utf8'));
+      const report=await runPhysicsBatch({binary:nativeExecutable(),world,plan,assetRoot:path.resolve(options['asset-root']??path.dirname(options.world)),signal:controller.signal});
+      await file.writeFile(JSON.stringify(report,null,2)+'\n');process.exitCode=report.ok?0:1;
+      return {...batchSummary(report),reportFile:path.resolve(options.output)};
+    }catch(error){await file.writeFile(JSON.stringify({schema:1,ok:false,cancelled:controller.signal.aborted,error:error.message})+'\n');throw error;}
+    finally{await file.close();process.off('SIGINT',stop);process.off('SIGTERM',stop);}
+  }
   if(command==='sim-mode')return createPhysicsMode({project:options.project,mode:options.mode,output:options.output,recipeFile:options.recipe});
   if(command==='example-create')return createExample({workspace:options.workspace,example:options.example,phoenixDescriptor:options['phoenix-descriptor']});
   if(command==='season-import')return importSeasonKnowledge({workspace:options.workspace,packFile:options.pack,pdf:options.pdf,pagesFile:options.pages,revision:options.revision,kind:options.kind});
@@ -239,11 +269,11 @@ async function run() {
     finally{process.off('SIGINT',stop);process.off('SIGTERM',stop);}
   }
   if(command.startsWith('sim-')){
-    if(command==='sim-controls'&&!options.input)throw Error('--input JSON_FILE is required');
-    const route={'sim-state':'state','sim-objects':'objects','sim-controls':'controls','sim-stop':'shutdown','sim-match':'match','sim-autonomous':'autonomous','sim-devices':'devices','sim-motor-controls':'motor-controls'}[command];
+    if(['sim-controls','sim-place','sim-manipulate'].includes(command)&&!options.input)throw Error('--input JSON_FILE is required');
+    const route={'sim-state':'state','sim-objects':'objects','sim-controls':'controls','sim-place':'game-pieces','sim-manipulate':'game-pieces','sim-stop':'shutdown','sim-match':'match','sim-autonomous':'autonomous','sim-devices':'devices','sim-motor-controls':'motor-controls'}[command];
     const body=command==='sim-stop'?{}:options.input?await Bun.file(options.input).json():undefined;
     const query=options['query-file']?await Bun.file(options['query-file']).json():undefined;
-    const result=await sessionRequest(project,route,{body,query});return {schema:1,ok:true,command,result};
+    const result=await sessionRequest(project,route,{body:command==='sim-manipulate'?{command:body}:body,query});return {schema:1,ok:true,command,result};
   }
   const audit = await auditRobotProject(project);
   if (command === 'audit') { process.exitCode = audit.canLoad ? 0 : 1; return {schema: 1, command, ok: audit.canLoad, ...audit}; }

@@ -78,3 +78,17 @@ within 40,000 cells. The result reports actual cell size and half-cell diagonal
 as the raster boundary approximation. Fine kerfs on large sheets may exceed the
 budget; crop the stock or use a focused job rather than silently hiding a kerf.
 The source part remains separate; this preview does not export a modified BREP.
+
+## Router cut order and workholding
+
+When authoring router demonstrations, normally cut internal holes, pockets and
+windows first and the exterior perimeter last, so the surrounding stock keeps
+the part supported. Use a different sequence only with an explicit workholding
+reason. Consider tabs, an onion-skin layer, clamps or vacuum hold-down, cutter
+clearance from fixtures, and securing internal cutouts as well as the finished
+part so neither becomes loose during cutting.
+
+State the holding assumptions and any omitted retention features. The preview
+does not plan or validate workholding, cut order, fixture clearance or loose-piece
+motion; a visual demonstration is not machine-ready code. Preserve a supplied
+toolpath's order and flag concerns rather than silently resequencing it.

@@ -14,6 +14,7 @@ pub(crate) use self::inv::inv;
 pub use self::isometry_ops::{PoseOps, PoseOpt};
 #[cfg(feature = "alloc")]
 pub use self::median::median;
+pub(crate) use self::point_cloud_support_point::point_cloud_support_point_id_relative;
 pub use self::point_cloud_support_point::{
     point_cloud_support_point, point_cloud_support_point_id,
 };

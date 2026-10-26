@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "sourceRevision": "fce21df4373811925f5307cbc0a441f547622918",
+  "sourceRevision": "4fe3fa39cccf7efdbe162361f0c0f3870432b12b",
   "policy": "config/toolbox-source.json",
   "files": {
     ".gitattributes": {
@@ -8712,8 +8712,8 @@
       "sha256": "1cea8122373a638ba6330841b09a391f283abe29fa526697a8dc50ed1c7ad96f"
     },
     "tests/toolbox-extension-runner.cjs": {
-      "bytes": 66584,
-      "sha256": "8ee94ce664dd1c9cf1136ae560acdb1e567ce273936709771fc1696047ab165c"
+      "bytes": 67188,
+      "sha256": "14937dbfe80bef94b740c475e328adba1454cb8fad8a430ab2eefdc4b83ed1c3"
     },
     "tests/toolbox.test.js": {
       "bytes": 7393,

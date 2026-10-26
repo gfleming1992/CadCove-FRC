@@ -6,6 +6,13 @@ const {execFile,spawn}=require('node:child_process');
 const {promisify}=require('node:util');
 const execute=promisify(execFile);
 const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+// Native startup and browser animation frames are asynchronous on CI hosts.
+// Wait for the asserted state, with a bounded deadline and last-state diagnostics.
+async function waitState(read,predicate,timeout=10000){
+ const deadline=Date.now()+timeout;let state;
+ do{state=await read();if(predicate(state))return state;await delay(100);}while(Date.now()<deadline);
+ assert.fail('State did not settle: '+JSON.stringify(state));
+}
 exports.run=async function(){
  const folder=vscode.workspace.workspaceFolders[0].uri.fsPath;
  const reportFile=path.join(folder,'extension-test-report.json');let api,mcpClient,simulationStarted=false;
@@ -99,8 +106,8 @@ def build(ctx):
   const trajectory={units:'deg-s',tracks:[{target:'upright',endPosition:30,segments:[{seconds:.1,acceleration:3000},{seconds:.1,acceleration:-3000}]}]};
   const playing=await motion({action:'play',trajectory});assert.ok(playing.playback.id);
   await motion({action:'pause'});const sought=await motion({action:'seek',seconds:.1});assert.equal(sought.angles['arm-axis'],15);
-  await motion({action:'resume'});await delay(400);
-  const completed=await motion({action:'state'});assert.equal(completed.playback.status,'completed');assert.equal(completed.angles['arm-axis'],30);
+  await motion({action:'resume'});
+  const completed=await waitState(()=>motion({action:'state'}),s=>s.playback?.status==='completed');assert.equal(completed.playback.status,'completed');assert.equal(completed.angles['arm-axis'],30);
   assert.equal((await motion({action:'move',part:'arm-axis',degrees:15})).angles['arm-axis'],45);
   const mechanismFile=path.join(folder,'cad/mechanism.json');
   const definition=JSON.parse(await fs.readFile(mechanismFile,'utf8'));
@@ -541,7 +548,7 @@ def build(ctx):
       await canvas('place',{position:[2000,3000,500]});
       assert.equal((await canvas('motion',{action:'state'})).angles.spin,60);
       let physics;const physicsUntil=Date.now()+30000;do{physics=await req('physics');if(!physics.ok){assert.equal(physics.pending,true,JSON.stringify(physics));await delay(100);}}while(!physics.ok&&Date.now()<physicsUntil);assert.equal(physics.mode,'physics');
-      await delay(100);const handed=await req('state');assert.ok(Number.isFinite(handed.physics.joints.spin.position));assert.ok(Number.isFinite(handed.physics.joints.steer.position));
+      const handed=await waitState(()=>req('state'),s=>s.physics?.joints?.spin&&s.physics?.joints?.steer);assert.ok(Number.isFinite(handed.physics.joints.spin.position));assert.ok(Number.isFinite(handed.physics.joints.steer.position));
       await req('motors',{volts:{'steer-motor':.2,'spin-motor':.2},seconds:.3});await delay(600);
       const driven=await req('state');assert.deepEqual(driven.selection.selectedIds,['wheel','field/obstacle']);assert.equal(driven.mode,'physics');assert.ok(driven.physics.tick>0);assert.ok(Math.abs(driven.physics.joints.spin.position)>.001);assert.ok(Math.abs(driven.physics.joints.steer.position)>.001);
       assert.deepEqual(driven.selection.opacity.parts.filter(p=>p.id!=='field/obstacle').map(p=>[p.id,p.opacity]).sort(),[['base',.25],['carrier',.25]]);
@@ -607,8 +614,9 @@ def build(ctx):
       await canvas('motion',{action:'seek',seconds:1});
       assert.equal((await canvas('state')).motion.playback.kind,'fold');
       await canvas('view',{zoom:.8});assert.equal((await canvas('state')).camera.distance,36);
-      await canvas('motion',{action:'resume'});await delay(2500);
-      assert.equal((await canvas('motion',{action:'state'})).playback.status,'completed');
+      await canvas('motion',{action:'resume'});
+      const foldState=await waitState(()=>canvas('motion',{action:'state'}),s=>s.playback?.status==='completed');
+      assert.equal(foldState.playback.status,'completed',JSON.stringify(foldState));
       assert.deepEqual((await canvas('selection')).selectedIds,['strip']);
       await canvas('motion',{action:'reset'});
       assert.equal((await canvas('motion',{action:'state'})).playback,null);

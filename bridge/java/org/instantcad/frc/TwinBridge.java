@@ -30,6 +30,7 @@ public final class TwinBridge {
   private static final List<EncoderBinding> encoders = new ArrayList<>();
   private static Pigeon2 pigeon;
   private static String gyroBody="chassis";
+  private static DeviceMath.GyroYaw gyroYaw;
   private static volatile JsonNode latest = JSON.createObjectNode();
   private record Input(JsonNode value,long received) {}
   private static volatile Input input = new Input(JSON.createObjectNode(),0);
@@ -51,6 +52,7 @@ public final class TwinBridge {
   private static JsonNode transportState;
   private static int lastWireBytes;
   private static final boolean externalDriverStation="driverstation".equals(System.getenv("INSTANTCAD_CONTROL_SOURCE"));
+  private static volatile String allianceStation="external";
   private static final boolean physicsClock="physics".equals(System.getenv("INSTANTCAD_CLOCK"));
   private static double clockOrigin;
   private static volatile double pace=1;
@@ -60,6 +62,8 @@ public final class TwinBridge {
   private static PhoenixSimulationEnable phoenixEnable;
   private static volatile long lastPhysicsProgress;
   private static Process physics;
+  private static Socket matchSocket;
+  private static boolean coordinatorPacing;
   private static BufferedWriter writer;
   private static BufferedReader reader;
   private static long steps;
@@ -141,6 +145,8 @@ public final class TwinBridge {
   public static synchronized void start() {
     if(!enabled()||executor!=null)return;
     try {
+      if(System.getenv("CADCOVE_MATCH_PORT")!=null)
+        com.ctre.phoenix6.unmanaged.Unmanaged.setPhoenixDiagnosticsStartTime(-1);
       managedSession=ManagedSession.fromEnvironment();
       Runtime.getRuntime().addShutdownHook(new Thread(TwinBridge::stop));
       if(managedSession!=null)managedSession.watchLauncher(()->{
@@ -193,14 +199,41 @@ public final class TwinBridge {
         if(!found)throw new IllegalArgumentException("Unknown trace body "+body);
         inputTrace=new InputTrace(Path.of(tracePath),body,nativeBinary);
       }
-      physics=new ProcessBuilder(nativeBinary.toString()).directory(new File(root)).redirectError(ProcessBuilder.Redirect.INHERIT).start();
-      writer=new BufferedWriter(new OutputStreamWriter(physics.getOutputStream(),StandardCharsets.UTF_8));
-      reader=new BufferedReader(new InputStreamReader(physics.getInputStream(),StandardCharsets.UTF_8));
+      String matchPort=System.getenv("CADCOVE_MATCH_PORT");
+      if(matchPort!=null){
+        if(resetAllowed)throw new IllegalStateException("Shared matches must be reset by their coordinator");
+        // A local coordinator owns the only physics process. Each JVM retains its
+        // own WPILib/HAL/vendor state and receives its own namespaced sensor view.
+        matchSocket=new Socket();matchSocket.connect(new InetSocketAddress("127.0.0.1",Integer.parseInt(matchPort)),5000);
+        matchSocket.setTcpNoDelay(true);matchSocket.setSoTimeout(30000);
+        writer=new BufferedWriter(new OutputStreamWriter(matchSocket.getOutputStream(),StandardCharsets.UTF_8));
+        reader=new BufferedReader(new InputStreamReader(matchSocket.getInputStream(),StandardCharsets.UTF_8));
+        JsonNode joined=exchange(JSON.createObjectNode().put("op","join").put("robotId",Objects.requireNonNull(System.getenv("CADCOVE_MATCH_ROBOT")))
+            .put("token",Objects.requireNonNull(System.getenv("CADCOVE_MATCH_TOKEN"))).put("coordinatorPacing",true));
+        coordinatorPacing="coordinator".equals(joined.path("pacing").asText());
+        // No remote NetworkTables client is needed for this coordinator path.
+        // Stop the default diagnostics server rather than sharing another robot's ports.
+        NetworkTableInstance.getDefault().stopServer();
+      }else{
+        physics=new ProcessBuilder(nativeBinary.toString()).directory(new File(root)).redirectError(ProcessBuilder.Redirect.INHERIT).start();
+        writer=new BufferedWriter(new OutputStreamWriter(physics.getOutputStream(),StandardCharsets.UTF_8));
+        reader=new BufferedReader(new InputStreamReader(physics.getInputStream(),StandardCharsets.UTF_8));
+      }
       var load=JSON.createObjectNode().put("op","load");load.set("world",world);latest=exchange(load).path("state");
+      if(latest.path("bodies").has("chassis")){
+        var chassis=latest.path("bodies").path("chassis");var position=DeviceMath.vector(chassis,"position",3);
+        initialPose=new double[]{position[0],position[1],Math.toRadians(DeviceMath.yawDegrees(chassis))};
+      }
+      if(pigeon!=null){
+        gyroYaw=new DeviceMath.GyroYaw(DeviceMath.yawDegrees(latest.path("bodies").path(gyroBody)));
+        pigeon.getSimState().setSupplyVoltage(supplyVoltage);pigeon.getSimState().setRawYaw(0);
+      }
       if(physicsClock)SimHooks.pauseTiming();
       clockOrigin=Timer.getFPGATimestamp();
       if(!externalDriverStation){
-      DriverStationSim.setDsAttached(true);DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
+      allianceStation=System.getenv().getOrDefault("INSTANTCAD_ALLIANCE_STATION","Blue1");
+      if(!Set.of("Blue1","Blue2","Blue3","Red1","Red2","Red3").contains(allianceStation))throw new IllegalArgumentException("Invalid INSTANTCAD_ALLIANCE_STATION");
+      DriverStationSim.setDsAttached(true);DriverStationSim.setAllianceStationId(AllianceStationID.valueOf(allianceStation));
       for(int port=0;port<2;port++){DriverStationSim.setJoystickAxisCount(port,6);DriverStationSim.setJoystickButtonCount(port,10);DriverStationSim.setJoystickPOVCount(port,1);DriverStationSim.setJoystickIsXbox(port,true);DriverStationSim.setJoystickName(port,"InstantCAD Virtual Xbox "+port);DriverStationSim.setJoystickPOV(port,0,-1);}
       DriverStationSim.notifyNewData();
       }
@@ -208,7 +241,7 @@ public final class TwinBridge {
       if(bridgePort<0||bridgePort>65535||(bridgePort==0&&managedSession==null))throw new IllegalArgumentException("Invalid bridge port");
       server=HttpServer.create(new InetSocketAddress("127.0.0.1",bridgePort),0);
       matchSnapshot=JSON.valueToTree(match.snapshot());
-      context("/state",e->{var response=JSON.createObjectNode().put("runId",runId).put("resetAvailable",resetAllowed&&!resetting).put("worldHash",worldHash).put("error",failure).put("batteryVolts",supplyVoltage).put("stepMs",lastStepMs).put("maxStepMs",maxStepMs).put("overruns",overruns).put("physicsDt",physicsDt).put("pace",pace).put("controlMode",appliedMode).put("controlSource",externalDriverStation?"driverstation":"agent");response.set("state",latest);response.set("robot",telemetry);response.set("match",matchSnapshot);response.set("clock",clockSnapshot);response.set("physicsPerformance",physicsPerformance);if(vision!=null)response.set("vision",vision.snapshot());if(bridgeProfile)response.set("tickTimings",tickTimings);respond(e,response);});
+      context("/state",e->{var response=JSON.createObjectNode().put("runId",runId).put("resetAvailable",resetAllowed&&!resetting).put("worldHash",worldHash).put("error",failure).put("batteryVolts",supplyVoltage).put("stepMs",lastStepMs).put("maxStepMs",maxStepMs).put("overruns",overruns).put("physicsDt",physicsDt).put("pace",pace).put("controlMode",appliedMode).put("controlSource",externalDriverStation?"driverstation":"agent").put("allianceStation",allianceStation).put("gyroReference","boot-relative");response.set("state",latest);response.set("robot",telemetry);response.set("match",matchSnapshot);response.set("clock",clockSnapshot);response.set("physicsPerformance",physicsPerformance);if(vision!=null)response.set("vision",vision.snapshot());if(bridgeProfile)response.set("tickTimings",tickTimings);respond(e,response);});
       context("/reset",e->{
         if(!e.getRequestMethod().equals("POST")){e.sendResponseHeaders(405,-1);e.close();return;}
         try {
@@ -261,6 +294,27 @@ public final class TwinBridge {
       // Read-only host-side requests explain why a mechanism is unpowered or
       // holding a setpoint. This is not a firmware acknowledgement or an atomic
       // physics snapshot; keep acquisition off the 200 Hz stepping path.
+      context("/game-pieces",e->{
+        if(!e.getRequestMethod().equals("POST")){e.sendResponseHeaders(405,-1);e.close();return;}
+        try {
+          String origin=e.getRequestHeaders().getFirst("Origin");
+          if(origin!=null&&!Set.of("http://127.0.0.1:8911","http://localhost:8911").contains(origin))throw new IllegalArgumentException("untrusted origin");
+          byte[] bytes=e.getRequestBody().readNBytes(16385);
+          if(bytes.length>16384)throw new IllegalArgumentException("request too large");
+          JsonNode request=JSON.readTree(bytes);
+          JsonNode result;
+          synchronized(TwinBridge.class){
+            if(resetting||!runId.equals(request.path("runId").asText()))throw new IllegalArgumentException("Stale simulation run");
+            var command=JSON.createObjectNode().put("op",request.has("command")?"manipulate_game_piece":"place_game_pieces");
+            if(request.has("command")) command.set("command",request.path("command"));
+            else command.set("placements",request.path("placements"));
+            result=exchange(command);latest=result.path("state");
+          }
+          var response=JSON.createObjectNode().put("ok",true).put("runId",runId).put("worldHash",worldHash).put("tick",result.path("state").path("tick").asLong());
+          response.set("placed",result.path("placed"));
+          response.set("manipulation",result.path("manipulation"));respond(e,response);
+        }catch(Exception ex){respondError(e,ex);}
+      });
       context("/motor-controls",e->{
         if(!e.getRequestMethod().equals("GET")){e.sendResponseHeaders(405,-1);e.close();return;}
         try {
@@ -369,7 +423,7 @@ public final class TwinBridge {
     long started=System.nanoTime();tick();
     ScheduledExecutorService loop=executor;
     if(loop==null||loop.isShutdown()||!failure.isEmpty())return;
-    long delay=gameplayPacing.afterStep(started,System.nanoTime());
+    long delay=coordinatorPacing?0:gameplayPacing.afterStep(started,System.nanoTime());
     try {loop.schedule(TwinBridge::gameplayTick,delay,TimeUnit.NANOSECONDS);}
     catch(RejectedExecutionException ignored) {/* Shutdown raced the next schedule. */}
   }
@@ -397,7 +451,7 @@ public final class TwinBridge {
       long exchanged=bridgeProfile?System.nanoTime():0;
       for(var e:motors.entrySet()){var m=state.path("motors").path(e.getKey());e.getValue().feedback(new MotorAdapter.Feedback(DeviceMath.number(m,"rotor_turns"),DeviceMath.number(m,"rotor_rps")));}
       for(var e:encoders){var feedback=e.scale().convert(state.path("joints").path(e.joint()));var sim=e.device().getSimState();sim.setSupplyVoltage(supply);sim.setRawPosition(feedback.rotorTurns());sim.setVelocity(feedback.rotorRps());}
-      if(pigeon!=null){var body=state.path("bodies").path(gyroBody);double yaw=DeviceMath.yawDegrees(body),rate=DeviceMath.vector(body,"angular_velocity",3)[2];var sim=pigeon.getSimState();sim.setSupplyVoltage(supply);sim.setRawYaw(yaw);sim.setAngularVelocityZ(Math.toDegrees(rate));}
+      if(pigeon!=null){var body=state.path("bodies").path(gyroBody);double yaw=DeviceMath.yawDegrees(body),rate=DeviceMath.vector(body,"angular_velocity",3)[2];var sim=pigeon.getSimState();sim.setSupplyVoltage(supply);sim.setRawYaw(gyroYaw.update(yaw));sim.setAngularVelocityZ(Math.toDegrees(rate));}
       // Explicit provisional battery model: 12.6 V open circuit, 20 milliohm pack+wiring.
       supplyVoltage=Math.max(6.0,12.6-0.020*totalCurrent);
       RoboRioSim.setVInVoltage(supplyVoltage);match.advance(state);
@@ -476,5 +530,5 @@ public final class TwinBridge {
     result.put("active",table.getEntry("active").getString(""));result.put("selected",table.getEntry("selected").getString(""));result.put("default",table.getEntry("default").getString(""));return result;
   }
   private static void respondError(com.sun.net.httpserver.HttpExchange e,Exception error)throws IOException {byte[] bytes=JSON.createObjectNode().put("error",error.getMessage()==null?error.toString():error.getMessage()).toString().getBytes(StandardCharsets.UTF_8);e.getResponseHeaders().set("Content-Type","application/json");e.sendResponseHeaders(400,bytes.length);e.getResponseBody().write(bytes);e.close();}
-  public static void stop(){failure="Bridge stopped";if(phoenixEnable!=null)phoenixEnable.close();if(physicsClock)SimHooks.resumeTiming();synchronized(TwinBridge.class){if(executor!=null)executor.shutdownNow();if(physics!=null)physics.destroy();if(server!=null)server.stop(0);if(vision!=null)vision.close();if(inputTrace!=null)try{inputTrace.close();}catch(IOException e){e.printStackTrace();}}}
+  public static void stop(){failure="Bridge stopped";if(matchSocket!=null)try{matchSocket.close();}catch(IOException ignored){}if(phoenixEnable!=null)phoenixEnable.close();if(physicsClock)SimHooks.resumeTiming();synchronized(TwinBridge.class){if(executor!=null)executor.shutdownNow();if(physics!=null)physics.destroy();if(server!=null)server.stop(0);if(vision!=null)vision.close();if(inputTrace!=null)try{inputTrace.close();}catch(IOException e){e.printStackTrace();}}}
 }

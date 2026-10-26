@@ -70,6 +70,7 @@ pub(super) const OUTCOME_CLEARED_IN_GRAPH: u8 = 6;
 pub(super) fn process_pair(
     edge: &mut crate::data::graph::Edge<ContactPair>,
     edge_id: u32,
+    profile_stages: &mut Option<[f64; 2]>,
     prediction_distance: Real,
     dt: Real,
     contact_clustering: bool,
@@ -446,6 +447,8 @@ pub(super) fn process_pair(
                 )
             } else { None }
         );
+        let mut stage_timer = crate::counters::Timer::new();
+        if profile_stages.is_some() { stage_timer.start(); }
         // Rigid-vs-rigid and soft-vs-rigid collisions.
         let _ = query_dispatcher.contact_manifolds(
             &pos12,
@@ -458,6 +461,12 @@ pub(super) fn process_pair(
 
         #[cfg(all(feature = "query-motion", feature = "dim3"))]
         drop(motion_scope);
+
+        if let Some(stages) = profile_stages.as_mut() {
+            stage_timer.pause();
+            stages[0] = stage_timer.time_ms();
+            stage_timer.start();
+        }
 
         if let Some(soft) =
             soft.filter(|_| co1.deformable_mesh_ref.is_some() || co2.deformable_mesh_ref.is_some())
@@ -472,6 +481,11 @@ pub(super) fn process_pair(
                 prediction_distance + soft_body_prediction,
                 soft,
             );
+        }
+
+        if let Some(stages) = profile_stages.as_mut() {
+            stage_timer.pause();
+            stages[1] = stage_timer.time_ms();
         }
 
         let zero = RigidBodyDominance(0); // The value doesn't matter, it will be MAX because of the effective groups.

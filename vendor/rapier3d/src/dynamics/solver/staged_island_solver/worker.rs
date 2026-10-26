@@ -87,6 +87,7 @@ pub(super) unsafe fn run_worker(ctx: &SharedCtx, worker_id: usize) {
                         gyro.principal_inertia = rb.mprops.local_mprops.principal_inertia();
                         gyro.inv_principal_inertia = rb.mprops.local_mprops.inv_principal_inertia;
                         gyro.principal_frame = rb.mprops.local_mprops.principal_inertia_local_frame;
+                        gyro.rotation_locks = rb.locked_axes();
                         gyro.enabled = true;
                         // SAFETY: shared atomic; claimed slots make the writes disjoint.
                         unsafe { &*ctx.any_gyroscopic }.store(true, Ordering::Relaxed);
@@ -300,14 +301,33 @@ pub(super) unsafe fn run_worker(ctx: &SharedCtx, worker_id: usize) {
                                 // World-space principal axes = body rotation ∘ principal frame.
                                 let principal_axes =
                                     vs.solver_bodies.poses[i].rotation * gyro.principal_frame;
+                                // Gyroscopic velocity and constraint responses must use the
+                                // same current inertia frame. Keeping ii at the outer-step
+                                // orientation injects energy when oblique anisotropic shafts
+                                // rotate between solver substeps.
+                                let mut lhs = crate::math::Matrix::from_quat(principal_axes);
+                                let rhs = lhs.transpose();
+                                lhs.x_axis *= gyro.inv_principal_inertia.x;
+                                lhs.y_axis *= gyro.inv_principal_inertia.y;
+                                lhs.z_axis *= gyro.inv_principal_inertia.z;
+                                let mut ii = crate::math::AngularInertia::from_sdp_matrix(lhs * rhs);
+                                use crate::dynamics::LockedAxes;
+                                if gyro.rotation_locks.contains(LockedAxes::ROTATION_LOCKED_X) { ii.m11=0.0; ii.m12=0.0; ii.m13=0.0; }
+                                if gyro.rotation_locks.contains(LockedAxes::ROTATION_LOCKED_Y) { ii.m22=0.0; ii.m12=0.0; ii.m23=0.0; }
+                                if gyro.rotation_locks.contains(LockedAxes::ROTATION_LOCKED_Z) { ii.m33=0.0; ii.m13=0.0; ii.m23=0.0; }
+                                vs.solver_bodies.poses[i].ii = ii;
                                 let angular = vs.solver_bodies.vels[i].angular;
-                                vs.solver_bodies.vels[i].angular = gyroscopic_corrected_angvel(
+                                let mut corrected = gyroscopic_corrected_angvel(
                                     angular,
                                     principal_axes,
                                     gyro.principal_inertia,
                                     gyro.inv_principal_inertia,
                                     params.dt,
                                 );
+                                if gyro.rotation_locks.contains(LockedAxes::ROTATION_LOCKED_X) { corrected.x=0.0; }
+                                if gyro.rotation_locks.contains(LockedAxes::ROTATION_LOCKED_Y) { corrected.y=0.0; }
+                                if gyro.rotation_locks.contains(LockedAxes::ROTATION_LOCKED_Z) { corrected.z=0.0; }
+                                vs.solver_bodies.vels[i].angular = corrected;
                             }
                         }
                     }

@@ -37,6 +37,16 @@ pub(crate) struct SoftContactElement {
 /// cell's when the body collides through a skin the cells hold.
 pub(crate) const CONTACT_ANCHORS: usize = DIM + 1;
 
+#[cfg(feature = "dim3")]
+#[derive(Copy, Clone, Debug)]
+pub(crate) struct LocalCylinderContact {
+    radius: Real,
+    half_height: Real,
+    /// Collider frame relative to the solver body's center-of-mass frame.
+    pose: crate::math::Pose,
+    skin: Real,
+}
+
 /// A contact side on a FEM soft body: the constraint acts through the body's augmented mass, not
 /// the anchors' lumped masses (see `soft_fem`). The responses `A⁻¹Jᵀ` (normal, then tangents)
 /// live in `SoftConstraintsSet::fem_responses`, one vector per particle, from `start`.
@@ -67,6 +77,8 @@ impl FemContactSide {
 /// One contact point between a soft surface element and a solver body.
 #[derive(Copy, Clone, Debug)]
 pub(crate) struct SoftContact {
+    #[cfg(feature = "dim3")]
+    pub local_cylinder: Option<LocalCylinderContact>,
     pub source: SoftContactSource,
     /// Index of the surface's soft body in the solver's awake list, and the particle indices
     /// holding the contact point in it (the FEM solver's load).
@@ -130,6 +142,53 @@ pub(crate) struct SoftContact {
 }
 
 impl SoftContact {
+    #[cfg(feature = "dim3")]
+    pub fn enable_local_cylinder(&mut self, collider: &crate::geometry::Collider,
+        com_pose: Option<&crate::math::Pose>, skin: Real) {
+        let Some(cylinder) = collider.shape().as_cylinder() else { return; };
+        self.local_cylinder = Some(LocalCylinderContact {
+            radius: cylinder.radius, half_height: cylinder.half_height,
+            pose: com_pose.map_or(*collider.position(), |p| p.inverse() * *collider.position()),
+            skin,
+        });
+    }
+
+    #[cfg(feature = "dim3")]
+    fn refresh_cylinder(&mut self, bodies: &SolverBodies) {
+        use parry::query::PointQuery;
+        let Some(cylinder) = self.local_cylinder else { return; };
+        // FEM responses were factored for the original normal; their refresh
+        // requires a separate refactorization path.
+        if self.element.is_some() || self.fem.iter().any(Option::is_some) { return; }
+        let body_pose = (self.body != u32::MAX).then(|| bodies.get_pose(self.body).pose());
+        let pose = body_pose.map_or(cylinder.pose, |p| p * cylinder.pose);
+        let ps = self.surface_point(bodies);
+        let local = pose.inverse_transform_point(ps);
+        let projected = parry::shape::Cylinder::new(cylinder.half_height,cylinder.radius)
+            .project_local_point(local,false);
+        let displacement = local - projected.point;
+        let length = displacement.length();
+        if length <= Real::EPSILON { return; }
+        let sign = if projected.is_inside { -1.0 } else { 1.0 };
+        let dir = pose.rotation * (displacement * (sign / length));
+        let po = pose * projected.point;
+        let tangent_impulse = self.tangents[0]*self.impulse_tangent[0]
+            + self.tangents[1]*self.impulse_tangent[1];
+        let tangent_acc = self.tangents[0]*self.impulse_tangent_acc[0]
+            + self.tangents[1]*self.impulse_tangent_acc[1];
+        self.impulse_normal *= self.dir.dot(dir).max(0.0);
+        self.dir = dir;
+        self.tangents = Self::tangent_basis(dir);
+        for j in 0..DIM-1 {
+            self.impulse_tangent[j] = tangent_impulse.dot(self.tangents[j]);
+            self.impulse_tangent_acc[j] = tangent_acc.dot(self.tangents[j]);
+        }
+        self.surface_point0 = ps;
+        self.body_point0 = po;
+        self.body_local_point = body_pose.map_or(po, |p| p.inverse_transform_point(po));
+        self.body_arm = body_pose.map_or(Vector::ZERO, |p| po-p.translation);
+        self.dist0 = sign*length-cylinder.skin;
+    }
     /// Current world position of the surface point (barycentric blend of the particles).
     #[inline]
     fn surface_point(&self, bodies: &SolverBodies) -> Vector {
@@ -171,6 +230,8 @@ impl SoftContact {
     /// Updates the separation, rhs and effective masses from the current solver state.
     /// `wo_bias`: relax pass (speculative term only, no softness, no tangent drift bias).
     pub fn update(&mut self, bodies: &SolverBodies, params: &IntegrationParameters, wo_bias: bool) {
+        #[cfg(feature = "dim3")]
+        if !wo_bias { self.refresh_cylinder(bodies); }
         let inv_dt = params.inv_dt();
         let ps = self.surface_point(bodies);
         let po = self.body_point(bodies);
@@ -443,6 +504,7 @@ mod zero_impulse_tests {
     use super::*;
     fn contact() -> SoftContact {
         SoftContact {
+            local_cylinder: None,
             source: SoftContactSource {
                 collider1: ColliderHandle::invalid(),
                 collider2: ColliderHandle::invalid(),

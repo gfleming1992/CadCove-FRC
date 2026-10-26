@@ -17,7 +17,8 @@ const message=(text,error=false)=>{status.textContent=text;status.dataset.error=
 const report=(phase,extra={})=>host.report({phase,revision:head??null,workerLoaded:host.nativeLoaded,parts:viewer.scene?.parts.length??0,gpuBytes:viewer.gpuBytes??0,camera:viewer.camera,upload:viewer.lastUpload,...extra}).catch(()=>{});
 const selectionBadge=document.createElement('div');selectionBadge.style.cssText='position:fixed;bottom:12px;left:12px;max-width:80vw;padding:7px 10px;background:#16212ee8;color:#ffe17a;border-radius:6px;font:12px system-ui;pointer-events:none;z-index:5';selectionBadge.hidden=true;document.body.append(selectionBadge);
 const selection=installSelection(viewer,state=>{selectionBadge.hidden=!state.selectedIds.length;selectionBadge.textContent=state.parts.map(p=>p.name+' · '+p.id).join(' | ');});
-const canvasCommand=createCanvasCommands({viewer,motion,selection,revision:()=>head});
+const extension=globalThis.CAD_SCENE_EXTENSION?.({viewer,motion,selection,host,config,revision:()=>head})??{};
+const canvasCommand=createCanvasCommands({viewer,motion,selection,revision:()=>head,mode:()=>extension.mode?.()??'cad'});
 const source=async()=>snapshot(await host.readSources(),config.entry,identity);
 async function execute(revision, current) {
   current??=await source();
@@ -112,7 +113,9 @@ inspect.onclick=()=>{
   };
 };
 host.onAgentRequest(async(method,args)=>{
+ const handled=await extension.command?.(method,args);if(handled!==undefined)return handled;
  if(!['capture',...CANVAS_COMMANDS].includes(method))throw Error('Unknown source viewer request');
+ if(['view','state','selection','visibility','opacity','highlight','reveal','capabilities'].includes(method)&&head)return {ok:true,revision:head,...canvasCommand(method,args),...(['state','capabilities'].includes(method)?extension.describe?.():{})};
  if(building||!initialized||!head)throw Error('CAD is still building');
  let current=await source();
  if(current.revision!==head){await refresh();current=await source();}
@@ -139,11 +142,12 @@ host.onAgentRequest(async(method,args)=>{
 });
 window.addEventListener('cad-configuration-changed',()=>message('CAD folder settings changed. Close and reopen this model to use the new folders.'));
 host.watch(()=>{clearTimeout(timer);timer=setTimeout(()=>refresh(),100);});
-window.addEventListener('beforeunload',()=>{disposed=true;motion.stop();clearTimeout(timer);void host.nativeCancel();host.dispose();});
+window.addEventListener('beforeunload',()=>{disposed=true;extension.dispose?.();motion.stop();clearTimeout(timer);void host.nativeCancel();host.dispose();});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){viewer.request();void refresh();}});
 (async()=>{
   try{
     await viewer.init();
+    await extension.init?.();
     const current=await source();
     const cached=await host.cache(current.revision);
     const cachedScene=await currentCachedScene(cached,current.revision,identity);

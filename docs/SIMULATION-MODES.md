@@ -27,7 +27,25 @@ The value 4 is an example experiment, not a universal recommended solver setting
 Advanced recipes may explicitly declare `dt`, `soft_contact_max_angle_rad`,
 `gameplay` mechanism transport, and `fieldFoamSubdivisions`. Author them for the
 actual robot and season; the CLI does not infer conveyors or tune mechanisms.
+A recipe with `gameplay.robot_compliance: true` retains the authored ball
+materials and all mechanism activation zones, including moving robot zones. It
+requires passive storage and physical launcher pickup regions. Field-only foam
+and robot compliance are mutually exclusive; neither changes the detailed source.
+In robot-compliance mode, a ball at a physical pickup can join and remain in
+the feeder inventory even when its reserved storage slot is elsewhere. Inventory
+membership applies no holding force. Once outside pickup and more than 0.35 m
+from that storage target, the ball is released to the field inventory.
 Native `sim-validate` checks the resulting native world before execution.
+
+`solver_schedule` defaults to `per_refresh`: each collision refresh runs
+`solver_iterations` base temporal substeps. An explicit `per_tick` recipe instead
+uses `ceil(solver_iterations / collision_refreshes)` base substeps per refresh,
+with at least one. This preserves the nominal maximum internal timestep and all
+collision refreshes; adaptive island substeps remain enabled. It changes the
+numerical trajectory and needs mechanism and whole-match validation. It is not
+a guarantee of equal accuracy or real-time performance. The native runtime must
+advertise `solver-schedule-v1`; launch and validation reject older runtimes.
+
 
 ```sh
 cadcove sim-mode --project robot.sim.json --mode accurate --output build/detailed
@@ -136,3 +154,147 @@ cost may be detailed chassis/field CCD or state transport, rather than sphere
 solving. Use the measured stage breakdown before choosing a planar ball model,
 coarser collision proxies, or a transport change. Keep accurate-mode geometry and
 settings available independently.
+
+### Contact-only subsystem experiments
+
+`cadcove sim-manipulate --project robot.sim.json --input move.json` provides a
+finite-force virtual hand in the running full simulator. MCP exposes the same
+contract as `simulation_manipulate_game_piece`. Query object IDs first. Example:
+
+```json
+{"action":"move","id":"ball-id","frame":"shooter-body-id",
+ "position":[0,0,0.1],"duration":3,"max_force":5,"max_speed":0.15,"hold_seconds":1}
+```
+
+Coordinates are metres in the optional live rigid-body frame (world otherwise).
+The target starts at the current ball position, travels linearly over `duration`,
+holds for `hold_seconds`, then releases automatically. The force-limited velocity
+servo retains contacts and soft-body deformation; an obstruction can stop the
+ball from reaching its target. Force is capped in newtons, commanded speed in
+metres/second. A moving frame may make the target unreachable at that speed.
+This is an external test fixture, not a model of a human hand.
+
+Use `{"action":"release","id":"ball-id"}` to release early, or
+`{"action":"status"}` to read active tracking errors and applied forces. Release
+preserves physical velocity. Manipulated bodies bypass practice capture,
+conveyor ownership and automatic launch, including after release. Explicitly use
+`{"action":"restore_gameplay","id":"ball-id"}` after release to restore those
+approximations. A match reset also resets these transient controls. Motors are
+not enabled by this command. Motor control remains with the selected control
+owner. Camera and rendering are unaffected; no geometry rebuild is needed.
+
+An exiting ball is not automatically a successful shot. Inspect contacts,
+trajectory, motor speed and tracking error; report jams and escapes. The API
+does not infer material calibration or declare hardware performance verified.
+
+
+## Gameplay cadence and isolated numerical batches
+
+A gameplay profile can explicitly select `dt: 0.02` (50 Hz), with
+`solver_schedule: "per_tick"` and `max_contact_substeps: 1..64`. The optional
+contact budget caps the adaptive **whole-world collision refreshes** per tick;
+it does not cap Rapier's local solver refinement or CCD. Without it, the original
+motion-driven refresh policy remains in effect. This trades contact accuracy for
+cost and may change pickup, jamming, penetration and shot outcomes. It is not a
+local collision scheduler. `minimum_substeps` above the selected budget is
+rejected; use a separate finer world for offline work. Detailed profiling reports
+both requested and applied refresh counts and the selected cap. Runtimes must
+advertise `contact-refresh-budget-v1` to accept this setting through managed tools.
+
+Evaluate gameplay against practical requirements: controllable driving and
+braking, robot contacts, ball pickup/release, volleys, conservation of game pieces,
+bounded penetration/energy, and measured tick deadlines. Exact agreement with a
+fine-step trajectory is not a gameplay acceptance requirement. Record the
+scenario and numerical settings alongside results; a clean finite-state check
+alone does not establish playability or real time.
+
+Agents can run independent, unpaced mechanism/world trials with:
+
+```sh
+cadcove physics-batch --world build/world.json --input trials.json --output build/trial-report.json --asset-root .
+```
+
+The output file must be new. This starts only native physics, and does not load
+CAD graphics, start robot programs or change a live session. The input is:
+
+```json
+{
+  "profiles": [
+    {"id": "play-50hz", "settings": {"dt": 0.02, "solver_schedule": "per_tick", "max_contact_substeps": 2}},
+    {"id": "offline-200hz", "settings": {"dt": 0.005, "solver_schedule": "per_refresh", "max_contact_substeps": null}}
+  ],
+  "segments": [{"seconds": 1, "volts": {"motor": 2}}],
+  "checks": {"maxLinearSpeed": 15, "joints": [{"id": "shaft", "min": 0.1, "max": 6.3}]}
+}
+```
+
+Replace motor/joint IDs and acceptance ranges with those of the subsystem. Each
+profile starts from the same source poses. Null `max_contact_substeps` removes a
+cap for offline checking. Finer timesteps do not remove gameplay approximations
+or establish hardware calibration. Supported timestep range is greater than zero
+through 20 ms. Segment boundaries are quantized to ticks; the report records
+actual applied tick ranges. Limit: eight profiles, 600 simulated seconds and
+500,000 ticks per profile. Voltages are bounded to ±12 V. Every returned tick is
+checked for finite body/joint states and unique robot inventory. Optional speed
+limits apply throughout the trial; position and joint ranges apply at the end.
+Without explicit acceptance criteria, `accepted` is null, even if structural
+checks pass. Reports include source-world, selected-world, plan and binary hashes,
+final state, simulated/elapsed time and observed maximum linear speed. Asset
+files referenced by path must remain unchanged during a run; their contents are
+not included in these hashes. This is an open-loop native experiment, not a
+closed-loop WPILib test or a match throughput benchmark.
+
+The editor MCP exposes `physics_batch_start`, `physics_batch_status`, and
+`physics_batch_cancel`. Start returns a job ID while a native process works in the
+background; the editor stays available. One batch runs at a time, with profiles
+executed sequentially. It defaults to the configured simulation world; an
+optional workspace-relative `worldFile` selects an exported subsystem native
+world (assets resolve relative to that file). Poll status for progress and the
+saved report path. Cancellation and editor shutdown terminate the owned native
+process. The batch uses isolated state; changes to CAD or a running match do not
+update an already-started trial. Validate report source hashes before using it
+for a later revision. Background computation still competes for CPU with live
+play, so do not run it during a throughput benchmark.
+
+## Physics-definition edits
+
+Collider, mass, inertia, and joint definition edits invalidate the running simulation.
+The entire scene prepares and validates asynchronously, then returns to authored
+initial conditions with motor commands cleared. Explicit start is required; no
+poses, velocities, or contact caches transfer across a changed definition.
+All components must finish validation before starting. Camera, selection, and
+isolation remain presentation state. Ordinary motor commands do not rebuild.
+
+### Opt-in live deformable surface stream
+
+The unified native mechanism canvas can stream explicitly authored compliant
+spheres to the same GPU deformation backend used by recorded replays. Return to
+stopped CAD mode, then use `canvas` action `physics-particles` with options
+`{"action":"enable","bodyIds":["ball-body-id"],"maxHz":20}`. Query with
+`{"action":"state"}` or disable with `{"action":"disable"}`. Enabling does not
+start physics, drive a motor, or feed a ball; use the usual physics controls later.
+Rigid-only bodies are rejected. Material/compliance values must already exist in
+the validated physical definition; this command does not infer or author them.
+
+This is deliberately bounded to one connected native physics component, one to
+four selected spheres, subdivisions zero through two (at most 163 particles per
+sphere), and one to thirty samples per second. After an ordinary native step,
+serialized read-only particle queries retrieve only active compliant bodies.
+There is no extra physics step or client prediction. Inactive bodies use their
+existing rigid visual. Topology is sent once per stream; subsequent samples carry
+only body representation and particle coordinates, with authoritative tick/time
+and physics revision. Samples between the configured rate limit are omitted.
+
+Enabling allocates presentation topology once and preserves the camera. Updates,
+soft/rigid switches and invalidation reuse the CAD GPU buffers. Particle positions
+and normals are evaluated on the GPU; the CPU validates/packs incoming particles,
+not the surface vertices. CAD reset, stale source revisions, disposal and failed
+physics preparation retire the presentation. Return to CAD and re-enable after a
+reset. Placement currently supports translation only. Captures use the deformed
+GPU geometry; CPU mesh picking/export still uses authored CAD geometry.
+
+This path is supported by the direct native mechanism session. The separate
+WPILib-managed match transport does not yet forward soft particles. A synthetic
+native sphere and real WebGPU integration test verify transport, visible motion,
+rigid fallback, source/stream/tick rejection and resource cleanup. They do not
+qualify any team's foam material, shooter behavior or full-match performance.

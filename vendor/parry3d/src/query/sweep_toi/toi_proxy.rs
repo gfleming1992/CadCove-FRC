@@ -147,18 +147,7 @@ impl<'a> ToiProxy<'a> {
     /// origin.
     #[inline]
     pub fn support(&self, direction: Vector) -> u32 {
-        let points = self.points();
-        let origin = points[0];
-        let mut best_index = 0;
-        let mut best_value = 0.0;
-        for (i, pt) in points.iter().enumerate().skip(1) {
-            let value = direction.dot(*pt - origin);
-            if value > best_value {
-                best_index = i;
-                best_value = value;
-            }
-        }
-        best_index as u32
+        crate::utils::point_cloud_support_point_id_relative(direction, self.points()) as u32
     }
 
     /// The axis-aligned bounding box of this proxy under the given pose.

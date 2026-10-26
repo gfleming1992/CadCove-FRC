@@ -145,6 +145,7 @@ pub(crate) fn update_pair_soft_rigid(
         (sb, mesh, soft_co),
         other_co,
         reach,
+        ctx.params.soft_bodies.local_cylinder_contacts,
     );
     if soft.patch.is_some() || !soft.vertices.is_empty() {
         rigid.soft = Some(soft);
@@ -161,10 +162,15 @@ fn detect_rigid_vertices(
     (sb, mesh, soft_co): (&SoftBody, &SoftCollisionMesh, &Collider),
     other_co: &Collider,
     reach: Real,
+    local_cylinder_contacts: bool,
 ) {
     let previous = core::mem::take(out);
     let shape = other_co.shape();
     let compound = shape.as_compound().is_some();
+    #[cfg(feature = "dim3")]
+    let local_cylinder = local_cylinder_contacts && shape.as_cylinder().is_some();
+    #[cfg(not(feature = "dim3"))]
+    let local_cylinder = { let _ = local_cylinder_contacts; false };
     if !shape.is_convex() && !compound {
         return;
     }
@@ -185,6 +191,13 @@ fn detect_rigid_vertices(
             }
             candidates.extend(mesh.element(element).iter().map(|&v| (v, mi as u32)));
         }
+    }
+    if local_cylinder && !manifolds.is_empty() {
+        // Reserve every surface vertex on an already-detected pair. The local
+        // worker projects these candidates each substep, so contacts can move
+        // onto previously untouched vertices without another global refresh.
+        candidates.clear();
+        candidates.extend((0..mesh.vertices().len()).map(|v| (v as u32,0)));
     }
     candidates.sort_unstable_by_key(|c| c.0);
     let pose = other_co.position();
@@ -227,9 +240,9 @@ fn detect_rigid_vertices(
         // `dir` pushes the soft surface away from the rigid shape. Its
         // exposed side faces the other way, toward the approaching shape.
         // Open cloth/shells have two sides: retain either exposed orientation.
-        if dist >= reach
+        if !local_cylinder && (dist >= reach
             || !(mesh.vertex_exposed(sb, vertex, -dir)
-                || (!mesh.is_solid() && mesh.vertex_exposed(sb, vertex, dir)))
+                || (!mesh.is_solid() && mesh.vertex_exposed(sb, vertex, dir))))
         {
             continue;
         }
@@ -242,7 +255,7 @@ fn detect_rigid_vertices(
         else {
             continue;
         };
-        if alignment < 0.7 {
+        if !local_cylinder && alignment < 0.7 {
             continue;
         }
         while previous.peek().is_some_and(|c| c.vertex < vertex) {

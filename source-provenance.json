@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "sourceRevision": "90c94858b56bd0bcb6e96a5ac7617da6ef96d6ea",
+  "sourceRevision": "d0c3b62f7e1e7cc5b47aa517f44aebe9fa2be0f7",
   "policy": "config/toolbox-source.json",
   "files": {
     ".gitattributes": {
@@ -15,45 +15,49 @@
       "bytes": 78,
       "sha256": "930dcbd44afd6b5d5f9c88bddd1dc757df5bfb9ffd47790cdd3b22158d2d9822"
     },
+    ".github/workflows/marketplace-identity.yml": {
+      "bytes": 805,
+      "sha256": "87388fa7c74f5d9c7bf442b0a200fb142883c96a4d89c2b012e30c6da63ffb5d"
+    },
     ".github/workflows/toolbox-source.yml": {
-      "bytes": 3621,
-      "sha256": "d0fd3907dd43a01ce4c4e0ad93f378510d5fe05d7be6080ae6334edd8ae6c7ee"
+      "bytes": 6343,
+      "sha256": "caf129734418d64f9bdedd115a1a6795c6276366014d95c218fbe7c57e9ddfc6"
     },
     ".gitignore": {
       "bytes": 396,
       "sha256": "020150c56438ef9cc08d677b28d1e66a8d0cb32e5855b2785eb760771f903ad7"
     },
     "AGENTS.md": {
-      "bytes": 1183,
-      "sha256": "ce03a9588ed8e2f061a11cbf461910fa8563d206f0b5521f03c475b9de339bc9"
+      "bytes": 1097,
+      "sha256": "615c1f794cab9de5c40fa077e20fdbe9987946a3b59079bb553d72f4d7b53e59"
     },
     "CHANGELOG.md": {
-      "bytes": 1814,
-      "sha256": "0c13a731400f4c80e17ff3d2d257a2ebebaab05afd558fa55fa1324cc2109ae9"
+      "bytes": 6112,
+      "sha256": "57e40fe293daaae973dd71ca9fabc4e823164e2e8b334d63f0874b295a7cf3c6"
     },
     "CLAUDE.md": {
       "bytes": 55,
       "sha256": "f514d08d08f54bada6c8107692b6cea3c2ad1962f49102523745acb633fb998b"
     },
     "CONTRIBUTING.md": {
-      "bytes": 2606,
-      "sha256": "bcad8ff0d67aff250484bf5b29956cc46345e8aa0eef4143a00c38c9de2f43bf"
+      "bytes": 6512,
+      "sha256": "62ab9c77442787303c02861a7e79784d0e39f0ceb3654a730aed96602b0dad88"
     },
     "Cargo.lock": {
-      "bytes": 21232,
-      "sha256": "59bef591fa19e16a1adfc6c4e4cd3040dfe532b5b6f0fb5e24287b4cdd5c9cf4"
+      "bytes": 21363,
+      "sha256": "8230f5bdd3c6cd8caaedbff258ab36d6da0dc3dc7618f4a418decafa53b50a7c"
     },
     "Cargo.toml": {
-      "bytes": 277,
-      "sha256": "69f564de4f1a8790434aa473828d0455b18238259d16838d4a9c0e96da012bf1"
+      "bytes": 306,
+      "sha256": "79d2ea43bfdcbc9e9e7372ef1a8aec25c841d9f187ff774b2a6a74718d7f9855"
     },
     "LICENSE": {
       "bytes": 1077,
       "sha256": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6"
     },
     "README.md": {
-      "bytes": 15272,
-      "sha256": "150136ed0202c8642102b90c42bb0a6c8a785c01b3169f41e4108dd92f2e8f2e"
+      "bytes": 5144,
+      "sha256": "9ede4fb206cf7dc2cb365870318ae9a1384198da25453a7bd218fa797ccebc61"
     },
     "SECURITY.md": {
       "bytes": 1619,
@@ -84,8 +88,8 @@
       "sha256": "c04b8dec6c082152ac65c6cf747f7ce60f3c9cc69bd4347241011af1c27a6fb5"
     },
     "agent-skills/references/cad-authoring.md": {
-      "bytes": 2973,
-      "sha256": "1fca8bd023e374f91078f60dbc290c74010234c29050442dc143e76c20359a0f"
+      "bytes": 17429,
+      "sha256": "1fd7ea2933d1b65c9a0301293b172a6be77f43b5b9026cb90eb49dcbd3c3a6bb"
     },
     "agent-skills/references/cadquery-api.md": {
       "bytes": 2578,
@@ -96,28 +100,28 @@
       "sha256": "df42f61f638b665d86918d96030c5eb9315935349b38ebe69ac8f2ff76318425"
     },
     "agent-skills/references/native-cadquery.md": {
-      "bytes": 4702,
-      "sha256": "1cf2dfbe2d9b30986f04fe28351be6ee134d03f913d00d735d0cf4ce2fbb05b4"
+      "bytes": 18758,
+      "sha256": "9bd9b1b2bd21e46c5ea416a5ca662666dbfa8ebf669af5e4c340253b34739f7a"
     },
     "agent-skills/references/physics-authoring.md": {
-      "bytes": 11446,
-      "sha256": "a89f69e46c900732586e617149d5ea56dd15f7ab762694586113157dbd149670"
+      "bytes": 19752,
+      "sha256": "a2c9c9c973f14be4d0499081781abefbb8a497556fe65f9fb3ab93fdbbe16e6b"
     },
     "agent-skills/references/physics-world-example.json": {
       "bytes": 1083,
       "sha256": "db50539af755e159e84f154508ab56d531a95057c52c131dc1ae7bead7fee306"
     },
     "bin/cadcove.js": {
-      "bytes": 14731,
-      "sha256": "32f689a15c09517562bdc76527c5d466f3636adc87bd95d32a7423d57e18d5c4"
+      "bytes": 29153,
+      "sha256": "12d47edcc94b9c810eb6a7f9aaea29f8c448f6be2a4a10801938cbb8ea159a6c"
     },
     "bin/launcher.rs": {
-      "bytes": 1809,
-      "sha256": "9d4d0273a2eace97680b260fcee27def7449db7926fb6d3e3f2d3a63818ea964"
+      "bytes": 4139,
+      "sha256": "2e6508c4c071178283163fe7f0904d41275e9ceba81176c090b5347bd057d0c2"
     },
     "bridge/java/org/instantcad/frc/DeviceMath.java": {
-      "bytes": 1771,
-      "sha256": "c9caec4b8e58b96996cc48d40bdda9530ae69b507ed2eea73051e2904d9e78ec"
+      "bytes": 2471,
+      "sha256": "e4c649bbcd4e0577b7ccd8b1205763b323a867cd79c96a2c77f69352b8a37cc5"
     },
     "bridge/java/org/instantcad/frc/GameplayPacing.java": {
       "bytes": 854,
@@ -172,28 +176,40 @@
       "sha256": "5ef38f95245d16696723eb3058ab1e3db47b198e65a4586545127163e8828209"
     },
     "bridge/java/org/instantcad/frc/TwinBridge.java": {
-      "bytes": 39163,
-      "sha256": "c8ad77ca191a4e399ffaf10415c2985baa94f40f9c8dd07a0659d44b129659ed"
+      "bytes": 43331,
+      "sha256": "1d1f1a6630b9ebd02dc64789eaf38d89dbf4d9c9d8dffa98488a033e64e70026"
     },
     "bun.lock": {
-      "bytes": 56991,
-      "sha256": "d0bf29cb8dabe10bef6f94f5b45d0340d5331615c4b5f9d114256aabe5f71d10"
+      "bytes": 57179,
+      "sha256": "09004fe6ed67e45503f6d394df8dc50b105ec7115cec73535d08fc78e6ef4c48"
     },
     "config/toolbox-source.json": {
-      "bytes": 5380,
-      "sha256": "5846f0c115188b537fe8194dc8d9c3cc8812594b6cea023ae257c682c458ec1b"
+      "bytes": 8631,
+      "sha256": "4b92c552f579ec013459ef6d7e2779562d34482b56c0b18040d2ec650665ce68"
     },
     "crates/sim-core/Cargo.toml": {
-      "bytes": 779,
-      "sha256": "cb0cbf68893d4a6b28404919ea00ee580eb1d8173ab84f1f4361d622eea96540"
+      "bytes": 806,
+      "sha256": "995ce6a6e3868287eb6be435dd612f1b32a2fe3aba4a61c629a636e2964582a0"
     },
     "crates/sim-core/LICENSE": {
       "bytes": 1077,
       "sha256": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6"
     },
+    "crates/sim-core/src/lib.rs": {
+      "bytes": 150,
+      "sha256": "836987b60310e75c6876412897fab43d952e592aa9f44accc835ce9423d1b526"
+    },
     "crates/sim-core/src/main.rs": {
-      "bytes": 7023,
-      "sha256": "3b3d190623ec5768a97a4c1b939150a3c509e325bacff80a03c24d98fd6839e6"
+      "bytes": 80,
+      "sha256": "06bba426f79105c02e45aae8b09edb88d31e3bc88cc326df5d25e2bbfa52c76a"
+    },
+    "crates/sim-core/src/mate_solver.rs": {
+      "bytes": 12833,
+      "sha256": "c2fcb00fdf38ecf3933aa0d673be292ffb09a93cf0d50a7552c857a8ada5103b"
+    },
+    "crates/sim-core/src/mechanism.rs": {
+      "bytes": 8527,
+      "sha256": "d6709f5cd3e14f5d97f19b147e768532eacd8e8133e515211e71a14795a9b556"
     },
     "crates/sim-core/src/mesh.rs": {
       "bytes": 9474,
@@ -220,8 +236,8 @@
       "sha256": "d02c7cb70090e986756241d911eb20952f7efe985f9d697d73cf71bb797529c2"
     },
     "crates/sim-core/src/mesh/dispatcher/support_point_tests.rs": {
-      "bytes": 2259,
-      "sha256": "b87c4759caabb821835dbb92391d93cab127305c12ef5e6e7246627cbf5ad039"
+      "bytes": 4808,
+      "sha256": "4d9c08491ae9df085bcdf05764b39967dda969dddd4caca68cd9e6c2cce65813"
     },
     "crates/sim-core/src/mesh/dispatcher/tests.rs": {
       "bytes": 7462,
@@ -235,45 +251,89 @@
       "bytes": 6210,
       "sha256": "a99c3ba5729c4b9a4bc1afa938535c0e022b7c10d85d7d9089c7d8d1cd511d59"
     },
+    "crates/sim-core/src/protocol.rs": {
+      "bytes": 8893,
+      "sha256": "e3df33e219acd0b45f5220911d321178bd109d61fb14fb7003510aa87a2b651e"
+    },
     "crates/sim-core/src/state_delta.rs": {
-      "bytes": 3373,
-      "sha256": "8bdf082a4cb71e2751953e0dd76539a0dfd252abcb5f06d3c16408b7e5a1c9ee"
+      "bytes": 3507,
+      "sha256": "5486a3e935cd365f17fbad933a9dcdb802bf86edb6fdedb121271e56fe73befb"
     },
     "crates/sim-core/src/transmission.rs": {
-      "bytes": 4699,
-      "sha256": "ee11776fc85af925684fb51dfc238a644262dc8d1891141687c64cec520ca9a9"
+      "bytes": 12488,
+      "sha256": "cb0d349ba4da416edee099b35b30ca8c7c78639edc5e1290b984ddfc2ec8831a"
     },
     "crates/sim-core/src/world.rs": {
-      "bytes": 87873,
-      "sha256": "43a8bb8c4a72fe5760d9662f5e6144a9158e589abc547921ccef7ac0a07df936"
+      "bytes": 106444,
+      "sha256": "267e567fbca9c4ec84bb8b575514b06c975ff0b9c113e4b7b782999972370838"
     },
     "crates/sim-core/src/world/compliance.rs": {
-      "bytes": 43591,
-      "sha256": "a1e0277e4dfdb8d2912e1e77eff61c0f0358f5b0bcf3cae29666620e3e57a771"
+      "bytes": 48210,
+      "sha256": "af5edef555a96a9e49e585a2d32d9b00b17f7f631b04f0431807a8e358bdedbe"
+    },
+    "crates/sim-core/src/world/contact_groups.rs": {
+      "bytes": 9880,
+      "sha256": "f31dc5048d603cdaf75e30924bac2e50bed23f56686ef5a47008ed88f57954d5"
     },
     "crates/sim-core/src/world/field_transport.rs": {
-      "bytes": 9167,
-      "sha256": "07cfbbd4cd2c3eb293beba3f9b88341bad2a4dc1c955ce5df9a73f8a8e3af5a8"
+      "bytes": 9463,
+      "sha256": "02bbdb5c9434cfb98937920301bd2466a91859ad82f7204183a1292893fd0153"
     },
     "crates/sim-core/src/world/gameplay.rs": {
-      "bytes": 29028,
-      "sha256": "d752b77c5a71e5644537a014ef828cfde6410a80c2055fd21efe15486a95946e"
+      "bytes": 49478,
+      "sha256": "79beb447da8ff25f39628ba733e9cfcea7db9c019a729f4e8b03327bc08f8a3a"
+    },
+    "crates/sim-core/src/world/manipulation.rs": {
+      "bytes": 8393,
+      "sha256": "80a0bf3de438869b224abf3107947b3bad7832169b0ec221bdb2e2ebf2099ff2"
+    },
+    "crates/sim-core/src/world/multiplayer.rs": {
+      "bytes": 2772,
+      "sha256": "8009470797f82d155e9d28d40edc241267e2f0f401b33dca049f3dbf11f43497"
     },
     "crates/sim-core/src/world/visibility.rs": {
       "bytes": 2600,
       "sha256": "bb363712b0cf32a4fd4318b990614a0dcd7c7f3acf5fca852059a2f7af6d6430"
     },
+    "crates/sim-core/tests/fixtures/oblique-shooter-drive.json": {
+      "bytes": 5012,
+      "sha256": "036b7af315cc6b8857dc5a6c3c50423c04e2e0c8f613b73a4b68c909cd58ab3d"
+    },
     "docs/AGENT-QUICKSTART.md": {
-      "bytes": 5553,
-      "sha256": "ce7e8961271466b6d7ef7d830cafc8491aa3416ff50d7c41b3d38f3345abdf9a"
+      "bytes": 10231,
+      "sha256": "d45abb0f7a9ed857aec4e92dc6b7fc5db6bd43b1316787e0cfb916a8f7542323"
     },
     "docs/BUN-REBUILD.md": {
       "bytes": 12559,
       "sha256": "fed30f4925f0ceaa6e97b1bec7ea969b3d4d3f009547b30ed7785be557ea31c4"
     },
+    "docs/CAD-CUT-PREVIEW.md": {
+      "bytes": 5245,
+      "sha256": "f58bdf478c7c5d7abbb3f1cce5e8735a7836c82445e474558d6887563b54a930"
+    },
+    "docs/CAD-DRAWINGS.md": {
+      "bytes": 3359,
+      "sha256": "a4a6c6c1db4830707a8eee2fa4ee785fb9d6d5f0d13b56461b7510d9dc9a5224"
+    },
+    "docs/CAD-FLAT-EXPORT.md": {
+      "bytes": 2937,
+      "sha256": "9b133a86f2e42005d2c73e8bff007eaaf639cbbe2239aa8881dc9bb7a2f3f9f2"
+    },
+    "docs/CAD-MATE-BACKENDS.md": {
+      "bytes": 996,
+      "sha256": "f22d92b0a2a8fec6e228fc7195331659263fab8fc9f3de9b4491f95a299dc4cd"
+    },
+    "docs/CAD-SHEET-METAL.md": {
+      "bytes": 8215,
+      "sha256": "4629aa23026e85817dfbd897123b75c88464df29ff80d78e08b39b4e8717e526"
+    },
+    "docs/CUSTOM-SIMULATOR.md": {
+      "bytes": 4408,
+      "sha256": "ce2d2eef7fbfdadbe5720ce890dad6c1125c35638722532977514ef810c00a07"
+    },
     "docs/DEVICE-ADAPTERS.md": {
-      "bytes": 9041,
-      "sha256": "feba2286136d26afdbece8cd16b805f93da370e5de313c9fdb20d45feb41c341"
+      "bytes": 9814,
+      "sha256": "ade75e56a49657636581f883f9e98ed8b4811754d5bb9ded684e684a85b059bf"
     },
     "docs/DRIVER-STATION.md": {
       "bytes": 2514,
@@ -284,16 +344,24 @@
       "sha256": "4fe87f1a4d1718875d7d64566229d0e70db8fde0b711cf1c4ab22de80f505f67"
     },
     "docs/INSTALL.md": {
-      "bytes": 3557,
-      "sha256": "f451b01ba83b5a031bbcef79a320518ddf13b01f20e19338cdbe66e1ceece5ef"
+      "bytes": 4835,
+      "sha256": "e3feb47127f9832a5dfd8c0c061017697d4f763b7ac768bf2b70ee89b0099b26"
     },
     "docs/LAUNCH-POST.md": {
-      "bytes": 2536,
-      "sha256": "821646dfb079c0af8382954329df5762c8705e7bc91d0a3809200f688ab833f5"
+      "bytes": 3687,
+      "sha256": "e3de61efa0187052120fe61cf10e31e0b43793cd4d7f8f6d79cd4c030fe6a7ef"
+    },
+    "docs/MARKETPLACE.md": {
+      "bytes": 4705,
+      "sha256": "d07f282f005e19ca3841154e965a5472faae783c735675fa6f005eaf3df8736a"
     },
     "docs/NATIVE-CADQUERY-PROFILE.md": {
-      "bytes": 14036,
-      "sha256": "1164b3d125915f6afcfe4cdd23234f49e315961b43594765d55b6f51568722fe"
+      "bytes": 15426,
+      "sha256": "61bf073b32ace1549dfc666d7d61c92edfb2bea2bd158ef0311cc632e167cc90"
+    },
+    "docs/PHYSICS-REPLAY.md": {
+      "bytes": 4050,
+      "sha256": "0928fdab548ab6b87ac59b76785dc20ba046550d2f2a7fa43d892423ce0b1505"
     },
     "docs/ROBOT-PROJECTS.md": {
       "bytes": 12535,
@@ -303,21 +371,33 @@
       "bytes": 5681,
       "sha256": "0ba657cfc87449523aca027fae5ebd17d260403c1322195846d87a1c08fbe973"
     },
+    "docs/SHARED-MATCH.md": {
+      "bytes": 21803,
+      "sha256": "359f16fba621766a6851c3f93214217244b0848737e181165bfd7bfd5d40555c"
+    },
     "docs/SIMULATION-MODES.md": {
-      "bytes": 8477,
-      "sha256": "fb64b73056fece6db1c2c456fa868504503bf16cc9dbabf4318e9e00f35c0a99"
+      "bytes": 18356,
+      "sha256": "de8d94b1e143530bda8743dfb671f278c1b540239fa3ebeb7fbbbc81848af8df"
+    },
+    "docs/SUBSYSTEMS.md": {
+      "bytes": 9465,
+      "sha256": "2d7f05a297f4fce4d8e13ca0477fbd2d698ca1c7c0d59ee8b9c16bcfb4c982df"
     },
     "docs/SYSTEM-CARD.md": {
-      "bytes": 8772,
-      "sha256": "4c74783c00024b85b35e59b34167f494472bf32e4f0818986789ed42d0d4fc83"
+      "bytes": 4631,
+      "sha256": "24ced94b9d469d5abb0ce8a1b4496c25393531308d35d1d66e99c850a247874c"
     },
     "docs/TOOLBOX-RELEASE.md": {
-      "bytes": 6178,
-      "sha256": "b6cbb9750ff91aeaba40c6a719da22b18d7fea4f03b4e823519323cea6b03433"
+      "bytes": 7278,
+      "sha256": "218c91d1776f6a5f15c9cc05e4cbdc06583cee66cd3ba3853c454469cafdc402"
+    },
+    "docs/UNIFIED-SCENE.md": {
+      "bytes": 10423,
+      "sha256": "096b39b6278d81d967dade6f06863bb3f66619cd6a66e873587dc625b0327b81"
     },
     "docs/WINDOWS-CHECK.md": {
-      "bytes": 3161,
-      "sha256": "525dc736c1d71e15ab5dd6da8fa8b275315293771dafcaf22296385b77e98970"
+      "bytes": 5040,
+      "sha256": "6c1e336c5210ede0089153a5e6fa1cbb754524e7833a0b4fdf3ab8817635a338"
     },
     "docs/release-evidence/external-bun-macos-wpilib.json": {
       "bytes": 7153,
@@ -339,6 +419,34 @@
       "bytes": 3211,
       "sha256": "b113194a63c75a88381a3109873ec1ef6b7770ad871ce25728218cc6e1047e4d"
     },
+    "examples/custom-mechanism/Cargo.toml": {
+      "bytes": 268,
+      "sha256": "c37043c473130dbfe0745b91cb78dd82884ca96eeafb41ebdce0dc3155bb7167"
+    },
+    "examples/custom-mechanism/LICENSE": {
+      "bytes": 1077,
+      "sha256": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6"
+    },
+    "examples/custom-mechanism/src/main.rs": {
+      "bytes": 1231,
+      "sha256": "4d156e12842ec62ad3abcafa6a766ae98a66564a38f02ab451ab876935ad94a8"
+    },
+    "examples/rotary-mechanism/README.md": {
+      "bytes": 3779,
+      "sha256": "2d1d461450995b976a7269f77596bf8f141e8638f21527b624d862c90b1f1d0f"
+    },
+    "examples/rotary-mechanism/cad/geometry.json": {
+      "bytes": 3148,
+      "sha256": "8cc2d5b0d048e12039e8cdfaed639074596a691f5779fffed6b919c2e90db883"
+    },
+    "examples/rotary-mechanism/cad/mechanism.json": {
+      "bytes": 10151,
+      "sha256": "df80a8c9ceae1005c96d89e22830d3007a33aa7d6552bf7ce17962f18c7f9b28"
+    },
+    "examples/rotary-mechanism/cad/models.py": {
+      "bytes": 2659,
+      "sha256": "48009fbe3d6d30b648da9041e47d44065d81d110dfa4994890ff736003babe7f"
+    },
     "examples/season-plugin/README.md": {
       "bytes": 1484,
       "sha256": "f8722935473201051a0d951c6e55123f185949e3a30ea8626adcbae3cf781725"
@@ -356,8 +464,8 @@
       "sha256": "1e0364e42e70cf88fe9188aec67b58e2ffbe364b6a9f0c45c393ebd3fc6ba971"
     },
     "examples/team3310-rebuilt/README.md": {
-      "bytes": 6938,
-      "sha256": "d9c3634e403201b3a9be8792b9f89d0448ecee0b12c420247974e0940cade5ca"
+      "bytes": 6920,
+      "sha256": "9d9147d66b64a65369a7db876e9fcd94ef35caec7f7d796b8b23f50ba53e2def"
     },
     "examples/team3310-rebuilt/THIRD-PARTY-NOTICES.md": {
       "bytes": 1275,
@@ -2960,8 +3068,8 @@
       "sha256": "5817a4af8d23a9e43cd58725d120a9a2308cc5ef5f4bdb04ad6d99ad03068ddf"
     },
     "examples/team3310-rebuilt/source/cad-assets/robot/models.py": {
-      "bytes": 3276,
-      "sha256": "87f8514801f4942c73cb65040ba03432d8dfb029ea8036cac3feea2e19fdc2f5"
+      "bytes": 3680,
+      "sha256": "a3f4fc61a558a0e75e5dda9ed22922c62f8cde16e078e8565804aa110b08097b"
     },
     "examples/team3310-rebuilt/source/cad-assets/robot/native/README.md": {
       "bytes": 3360,
@@ -5649,7 +5757,7 @@
     },
     "examples/team3310-rebuilt/source/scene-bindings.json": {
       "bytes": 1100706,
-      "sha256": "55f87878cf5d8663c68e0ce09210ce495e826050251563bcb522ef009d0c6214"
+      "sha256": "3670eb3e80f2fadbca922c6b4dc600427b8463ba2ec3dbc9384250338ea5fcfd"
     },
     "examples/team3310-rebuilt/source/world.json": {
       "bytes": 825802,
@@ -5704,36 +5812,48 @@
       "sha256": "b5fbd095d3376c8f6d5393e9683c958981508c6b69e2658d0b865c4b1bfe3c57"
     },
     "extensions/vscode/README.md": {
-      "bytes": 10283,
-      "sha256": "4840a97f236afdeb993bddc4a7291958a7c7ca9e7a4f5ad768997aeb6ef9e2c3"
+      "bytes": 3804,
+      "sha256": "215b28c8d1dcffadd615c1b8fe2ef1adcb841936f1fba16e25e841da4a4c6350"
     },
     "extensions/vscode/package.json": {
-      "bytes": 3282,
-      "sha256": "9cfc717258aa24eba763457e3d43dd4565dad0988073a5c84b536cfc31862c09"
+      "bytes": 3526,
+      "sha256": "b13174eb68d3879f657532ff0942c60be059b8c67257c91c75140852f2b23d4e"
     },
     "extensions/vscode/src/extension.js": {
-      "bytes": 14502,
-      "sha256": "a00b007a3fe3cf629d17dd6b8ee262f6e79488ad9f5e56b70074046d38f82660"
+      "bytes": 17888,
+      "sha256": "a92185a26e7de1837640e5a002fbe370128890a0467a57f8be253c3f33a4f0fc"
     },
     "extensions/vscode/src/mcp.js": {
-      "bytes": 9272,
-      "sha256": "9312f05573623e5b9804642d3e5d59725b0cfc338f254f4fdc3e1e73f42b0775"
+      "bytes": 25456,
+      "sha256": "832d9724d5f0e0f36a643d53c205ee1f06b67847f214a2965aed6df592a5686b"
+    },
+    "extensions/vscode/src/model-menu.js": {
+      "bytes": 4862,
+      "sha256": "5dfeabeb6d14573c3df4c3c4060cec156cd3500f9628b69aaa620e4501731c81"
     },
     "extensions/vscode/src/robot-panel.js": {
-      "bytes": 4161,
-      "sha256": "7f63fd63af8dea1fdaa74ae09b7755928a37e9b0d50dc24c314bf9b692e4c224"
+      "bytes": 4672,
+      "sha256": "74de170d87ba4362db0d6cab40e0a3a13a0085858a543a5006f07edcd5ae1e22"
+    },
+    "extensions/vscode/src/scene-services.js": {
+      "bytes": 10680,
+      "sha256": "09f6d759b095fc3651307f75ea7de56f53a7d19a55c5f8aa9096dc5082ac3a31"
     },
     "extensions/vscode/src/simulation-panel.js": {
-      "bytes": 8659,
-      "sha256": "4c8be633015ad7baeed1cace7100af06f65152407cc24921d372ae81b8ba9d26"
+      "bytes": 7152,
+      "sha256": "a12d5d7f5e34c774015cd36c2c0d7b9a1f517358e784f7b4c1181cdd42464442"
     },
     "extensions/vscode/src/simulation-tasks.js": {
       "bytes": 1830,
       "sha256": "00f965ce97c8bfd6360c0d2f57ba60628f0603be6f26fa68fcf3ba0b46932e9f"
     },
     "lib/agent-guidance.js": {
-      "bytes": 2250,
-      "sha256": "d8261c1ca6b181551fda3b2770830e6c2d8a6a2159909ba3432f1c29ef062080"
+      "bytes": 2934,
+      "sha256": "f745511f85f50ed93e10bcaa7e9160063b168a8cf2ced187cd770c652ca5f575"
+    },
+    "lib/analysis-command.js": {
+      "bytes": 4052,
+      "sha256": "464702fbc795e2adcef93d7c9284894840e381f30254a396c90b03a6d75efb13"
     },
     "lib/bridge-export.js": {
       "bytes": 4463,
@@ -5744,76 +5864,196 @@
       "sha256": "7ac3f12527132af30441a11044b4e741ee94e88ef74542e43ecacf8204bcdc54"
     },
     "lib/cad-command.js": {
-      "bytes": 2870,
-      "sha256": "1edbf1e125ad1169a4b969855dad053c2f8bc3545f7b74395183e252bc3b46ef"
+      "bytes": 4735,
+      "sha256": "74b3e155672bdc4614e277c80457849f0ae59db0d315e377e7a13caffc825691"
     },
     "lib/cad-feedback.js": {
       "bytes": 3965,
       "sha256": "3842e913d242d20f0ecdaa146b0ee1d00d09c4e1e47d1dd0d24008c87dea242d"
     },
+    "lib/cad-highlights.js": {
+      "bytes": 1040,
+      "sha256": "23cf59b1cbcb42d95125cb5fb8e7fa9413f4ec89ebeee9d10a57c53e3d638c0b"
+    },
+    "lib/cad-motion.js": {
+      "bytes": 1795,
+      "sha256": "ecdb6eda05b1e8fd9c5e712922c40621e7f73ce0d73168f94387ec15f3f3fae6"
+    },
     "lib/cad-project.js": {
-      "bytes": 814,
-      "sha256": "761be261c43e507a5bea9a9ec596b1c3c888576b8524ccd9e3fbdf7113c239e5"
+      "bytes": 1035,
+      "sha256": "03f6c62b6465ddf37c28cb97449cf3f36e9da02cfad2ebeb94d30b53a92113b0"
     },
     "lib/cad-reference.js": {
       "bytes": 1330,
       "sha256": "da216ff6a7ff4125d23a763cca23589d6a754da427044fd868892b4c97ccff84"
     },
+    "lib/cad-view.js": {
+      "bytes": 1141,
+      "sha256": "b17a12d34514bbe1fb114fd53c3b0902e438e672c0543127703fa5dd5bc5176c"
+    },
+    "lib/canvas-router.js": {
+      "bytes": 2437,
+      "sha256": "cecb0697cdf5a66275f4465e7e00e626789dee3924189b53ba0eb295787cae9c"
+    },
     "lib/cli-build-provenance.js": {
       "bytes": 3891,
       "sha256": "220e7bebc02434cda8543563a29bf0a21f6a8f00737a2904c326ce760e7c0384"
     },
+    "lib/custom-simulator.js": {
+      "bytes": 2953,
+      "sha256": "42fd5a12d2f8c6836a67ba1ba0ad6ab39626073df493adc7e5d3e016d2562640"
+    },
+    "lib/cut-preview-command.js": {
+      "bytes": 5313,
+      "sha256": "d58264d64fa994989e0322b35cdd1f0ccc184bd15d81ab6c3aeed8cc287f6028"
+    },
     "lib/dependency-notices.js": {
-      "bytes": 20315,
-      "sha256": "47bffb84ccb5a58382956f36dd2a7071f5c637e1fcb66efadf2ff1440e05cc36"
+      "bytes": 20342,
+      "sha256": "20fa3d1a119c3b85b7574581ceb024654b469eb34538b0d349f3ff5fe6bf7e8b"
+    },
+    "lib/design-command.js": {
+      "bytes": 2187,
+      "sha256": "241e580e8fbda47171d1c582a47606c769e3eaf3ce2a85f9b7a4dc39c0b95ec0"
+    },
+    "lib/directory-publish.js": {
+      "bytes": 1296,
+      "sha256": "ff20223df00311c41f1b720678a4e975c9e54ca74436e73fa26c790d5355975f"
+    },
+    "lib/drawing-command.js": {
+      "bytes": 3848,
+      "sha256": "337f1b3df494e94cd7b225e51337bde2005611576f706eccb657f870282e0fdb"
     },
     "lib/example-bundle.js": {
       "bytes": 2471,
       "sha256": "d76f6fe5cf9873fb5cf5ee110d304ecd3aae24a5f8624917201cc8e80835ba76"
     },
     "lib/example-create.js": {
-      "bytes": 4627,
-      "sha256": "d82512e220749b23cc1d4bf0b47f6af53b2f326c087c2a4904766d0cf8adf874"
+      "bytes": 4679,
+      "sha256": "82fadae4fe6d1b41dc214d3dbd6bb64a04718a006a41ab510c69321b4c1ce0de"
+    },
+    "lib/flat-command.js": {
+      "bytes": 4141,
+      "sha256": "ac6d135f408508867240def6897b6f8959b781d586d97bcec8ff48e7c35be639"
     },
     "lib/guidance-update.js": {
-      "bytes": 6648,
-      "sha256": "a2e3d16fccc8dc31c90f4eba5d521b99b968921ff206af3a6f9fd537ff43e77b"
+      "bytes": 7495,
+      "sha256": "6006f14db89000f07ddac54e8b6b57e1e4ee04dfbb95e0492db6a9abecf75c40"
     },
     "lib/java-runtime.js": {
       "bytes": 1058,
       "sha256": "350c75a9edda1a0a9f6b549614167a3956d289ff58f223b8c5ec55aaeca20975"
     },
+    "lib/match-assets.js": {
+      "bytes": 3364,
+      "sha256": "81eba638b5856cfaab7f6396bff85975a5f9fca9048cb59bbbc1238b1b8e9210"
+    },
+    "lib/match-benchmark.js": {
+      "bytes": 11144,
+      "sha256": "7ae7d2104cbb0cfb83954bee31c3555444435591c45c1f3c6aedd0fdf573d7d6"
+    },
+    "lib/match-coordinator.js": {
+      "bytes": 8897,
+      "sha256": "531d291f372d60382edc5c4f36517f1c1499692d72b4c421002c33b44eee0c09"
+    },
+    "lib/match-server.js": {
+      "bytes": 9481,
+      "sha256": "92ebda9f591514d0e6fe4c9d5fbf2adb15fa2375a6d564b15d067df6748a9f13"
+    },
+    "lib/match-session.js": {
+      "bytes": 7508,
+      "sha256": "ec5f7e3e063e7ed91eff40001e87c99035988416c2d14aaca29526f04e3082fd"
+    },
+    "lib/match-visuals.js": {
+      "bytes": 4481,
+      "sha256": "9385637e1b6cce93178d00a3b7c5340bed0af52f7b57fdf073838593801a6dc6"
+    },
+    "lib/match-wire.js": {
+      "bytes": 3484,
+      "sha256": "d512eb3ae4943cc855c9a4e06e1444f45aec1443d6ae0c8fc910ccb5b014563f"
+    },
+    "lib/match-world.js": {
+      "bytes": 4350,
+      "sha256": "02a6ea2aaab6ede9ccc786157348fb65add060415eef0fec7ba3671bc4d1328f"
+    },
+    "lib/mate-command.js": {
+      "bytes": 8609,
+      "sha256": "fc6c787eb06bd3d522e05163cd1d9f637f07a8f2a486303f4d889fcdc2236157"
+    },
     "lib/mcp-proxy.js": {
-      "bytes": 2605,
-      "sha256": "8efb3403e73505ef92235aac2c5aefea459f76268b4af1c8a84c969cdec121bc"
+      "bytes": 3254,
+      "sha256": "463e6bbdaa43a7eb9014c37ef3c19adb3cee5af1d4aa76955936a1559b59de90"
     },
     "lib/mcp-server.js": {
-      "bytes": 3144,
-      "sha256": "dd80dba77113fa90a098095efab53fecbc7d930309ebfa93eb091e04e897dedd"
+      "bytes": 3167,
+      "sha256": "e43bf96ec69a317a0fef7594dd91fa2cc66fc557e176b4a1f0f43feb2ae7659e"
+    },
+    "lib/mechanism-export.js": {
+      "bytes": 10845,
+      "sha256": "21f8e04e12cc45705b0d12a1c0e90ce77a7879ff015305ca9c834d3e91e0b9eb"
+    },
+    "lib/mechanism-preview.js": {
+      "bytes": 2574,
+      "sha256": "a136092a6010963a3e43f9a6bd30a324ec207a83fe6b92d3f2cba53a71a2cbee"
+    },
+    "lib/mechanism-session.js": {
+      "bytes": 5016,
+      "sha256": "cd645ac5746ac57403b81e1c10331ed390e684492c59397206f0b71cc1749485"
     },
     "lib/native-build-provenance.js": {
       "bytes": 2979,
       "sha256": "02901a12201fde063d0f656cdd8eeeb24fc79f5e3cd3757c974963c98c6dc84f"
     },
+    "lib/particle-stream.js": {
+      "bytes": 3782,
+      "sha256": "7a696e8048a86b4f7497f8ab8afd294ecfe5244d760cec834b2c87d6823cb4d5"
+    },
+    "lib/physical-model.js": {
+      "bytes": 6585,
+      "sha256": "07fe99d3d3af8030666074c63b093d640e22146cac7377d5735f4606df9b5ca3"
+    },
+    "lib/physics-batch.js": {
+      "bytes": 9404,
+      "sha256": "ff23df77912029643eb5571d06356095923013de2b597d5ba79d12bda61c37d3"
+    },
+    "lib/physics-build-pool.js": {
+      "bytes": 1051,
+      "sha256": "57e4d826f407c9d8fa2f755a5890958bcd723cf39dcd37f31f6fe1b15f1c9809"
+    },
+    "lib/physics-capabilities.js": {
+      "bytes": 2988,
+      "sha256": "23f285631c6a8f42c405f55799476f4fdff0f75c476e3110b20dfa85789ed23a"
+    },
+    "lib/physics-coordinator.js": {
+      "bytes": 6313,
+      "sha256": "b129d96e6dd6c3ad56a234d47f7779ca1db5c0a0a2b2a8c8f3982c1489b66b88"
+    },
     "lib/physics-modes.js": {
-      "bytes": 5810,
-      "sha256": "7eccd52184a4b706444d277569fe22aaf18ca880748432bfcd4130abf95cd54b"
+      "bytes": 6909,
+      "sha256": "e077403ee38bec63d6584414dd5468bbb76563331d59dd6e6ae11111b2e1aca2"
+    },
+    "lib/physics-preparation.js": {
+      "bytes": 2290,
+      "sha256": "fa37095b501ab12d3fcacf466fe6cba453a2edaea808a487ea039163b6b6ec42"
     },
     "lib/practice-controls.js": {
       "bytes": 2175,
       "sha256": "d4e1af2d27ac35ba6a836e2b80dd2d71ba5ddbd7c5993248f39b19c2881581b7"
     },
+    "lib/rapier-mates.py": {
+      "bytes": 5638,
+      "sha256": "0ca213aa749a9717b06b1cb83624e2ad2e5e46a9b62c7022c502ae0ab979228b"
+    },
     "lib/robot-project.js": {
-      "bytes": 7533,
-      "sha256": "06cc4709a6ba572eee8d3b2ec62d94e798bdab9a68bf62d1bcdbfa5c025b40f7"
+      "bytes": 7702,
+      "sha256": "7de3fad5215dff3ee95382000e5ca03580bca8998931bfd38eed14d201729877"
     },
     "lib/runtime-install.js": {
-      "bytes": 8835,
-      "sha256": "3bc3b92ab725b267ef3e24469c8a4a2535e6449a0dd8cfbfa16aea43e5db26f8"
+      "bytes": 9776,
+      "sha256": "e7a4e8e7dc959f854cbceb79dc23cf07f3145584eaa3aca6157e2c9538ee8ba6"
     },
     "lib/runtime-location.js": {
-      "bytes": 1076,
-      "sha256": "5b29006ed25f64badab02905021027447625ec564cae60bbef8eb73379a115a2"
+      "bytes": 1562,
+      "sha256": "85715b957b44c97c5abb94703dfc8840c4d487e9c3853f9eb560d2071bcedb4a"
     },
     "lib/scene-bindings.js": {
       "bytes": 3741,
@@ -5823,29 +6063,45 @@
       "bytes": 9667,
       "sha256": "1730c2400689f3e25417321dbadea5cce36131c66f1724e44722e5da32ef8421"
     },
+    "lib/sheetmetal-command.js": {
+      "bytes": 9857,
+      "sha256": "9f4227a9b54712cf40dfd2b64c1dab39081237042b4d0f3930df82f5be71d31d"
+    },
     "lib/simulation-client.js": {
-      "bytes": 2394,
-      "sha256": "25e0e3ac8aebfd92c8f27c46de6d9ba2858adbf35bddbef742c046fbc6fb4a0f"
+      "bytes": 2533,
+      "sha256": "359e0e2e5e7d0a581fe5deef65a6287cec1810201a679f1fe10e8ab583eaca3d"
     },
     "lib/simulation-session.js": {
-      "bytes": 9221,
-      "sha256": "45e072f3f4cace1e62eb72184873a523ca7c3d637443c5ff32c013f791a73359"
+      "bytes": 9503,
+      "sha256": "0b301e2fa4baa1e23b76014a44a548b43f6e1635d1e719130bc371588162b4eb"
     },
     "lib/simulation-validation.js": {
-      "bytes": 3638,
-      "sha256": "03e24a459d0e6a95102d299df357ca2067fb21d840221e997d922402ac844ce2"
+      "bytes": 3874,
+      "sha256": "89979f956fd73d1ff5ed7403433060928158348cbdd956327cf69cca872c49be"
     },
     "lib/source-freshness.js": {
       "bytes": 2768,
       "sha256": "6fabd705546abb2a759e93075a3f93482b8b8f8d61d1f39a42ff464b453a261d"
     },
+    "lib/subsystem-command.js": {
+      "bytes": 4377,
+      "sha256": "de3a94f1db540ba613d9e37ab4d8bab9c412a2c5b26ad7e1033600bee99f381c"
+    },
+    "lib/subsystem-model.js": {
+      "bytes": 14977,
+      "sha256": "a9b37d9233dff67ba48f791157da87410626793c4235047eb8517829524a2048"
+    },
+    "lib/svg-preview.js": {
+      "bytes": 997,
+      "sha256": "57eb3cc48bb59becf3c08ac5c70ae3e7d0970063a34db722084bb4a56a1bc7f6"
+    },
     "lib/team-example.js": {
-      "bytes": 6558,
-      "sha256": "f34aa50ea35c877ea6635421abae449084efa23f852e2d096ec472f0cdbb13d2"
+      "bytes": 6610,
+      "sha256": "6110572589d38518e9aff974f6f30a46228177f45d57abd7c4b6c46660a2f223"
     },
     "lib/toolbox-project.js": {
-      "bytes": 20247,
-      "sha256": "197b120af12849c596d79d380c5bacd543b2a91d1e43f8437c335f2e74f231dd"
+      "bytes": 21867,
+      "sha256": "5df8aadda49253026459d02e999e70062cb7324f1ac5dedfe896804dc99adf91"
     },
     "lib/transforms.js": {
       "bytes": 2212,
@@ -5856,8 +6112,8 @@
       "sha256": "7bab8667c400bbdc98db98121e75062a426268123e654c594f06c3b29bcd797a"
     },
     "licenses/README.md": {
-      "bytes": 8799,
-      "sha256": "b1d1328ee31a61aeed9ca5af3f983e865e7d72ffb41297ada150836e9eea1d04"
+      "bytes": 9852,
+      "sha256": "0806f0ddf09862896731030dcf89a00d276c9ca3f2fbfba2c46e1ad8b253e73f"
     },
     "licenses/bun-polyfills.json": {
       "bytes": 72012,
@@ -8048,8 +8304,8 @@
       "sha256": "3aa41caccecaeddad6fcf2f36ce14146ab7baae57064b05b12ecc6b52d5e917f"
     },
     "package.json": {
-      "bytes": 1834,
-      "sha256": "f638600f2677b933cf4fb47bcbd911ede9709e728f0fb064f8b0b75ee0d2b7c9"
+      "bytes": 3429,
+      "sha256": "00811c06f88e349b17823df6994bf207998f82ca6a279ed59955b7eba1b19b4d"
     },
     "scripts/build-example-field.js": {
       "bytes": 658,
@@ -8060,8 +8316,8 @@
       "sha256": "00a6ad7ac7dad5dcd5c7bf0536d75c535b6472e0e260c96f6b93a0d3f9c31448"
     },
     "scripts/build-toolbox-extension.js": {
-      "bytes": 4738,
-      "sha256": "6bd44d4c519146b08f6303fb85588aa64e3d9dea53bc816ebf5b2ab647c5bbfb"
+      "bytes": 5142,
+      "sha256": "dfe656a23afec046250535d7b76e677f0ef5c591c41c9e3ebabf7c1a377de980"
     },
     "scripts/build-training-example.js": {
       "bytes": 7764,
@@ -8091,17 +8347,21 @@
       "bytes": 1386,
       "sha256": "b1fb608033fc9ab883abe96273bb2920c0273f25e60e71ce5e87e5c6d333f8eb"
     },
+    "scripts/marketplace-artifacts.js": {
+      "bytes": 3486,
+      "sha256": "8f8bbe2e9f2d4af09b30fa88f3dccaf1ee44e2cfee21cecb4d349d6b10e6e597"
+    },
     "scripts/native-field.py": {
-      "bytes": 6980,
-      "sha256": "84c415643317dfb44b490b7c9d0aaa0f49a81ccff49cf89d4d4617b8cc3f3105"
+      "bytes": 7615,
+      "sha256": "df0b1b62b20bfb8e5e344431d7e4ee7ae979df60d62505dbc57d8244801c1fec"
     },
     "scripts/package-runtime.js": {
-      "bytes": 8977,
-      "sha256": "e6d389424536c753bce6c0644a3aeeedcb5f1abbee16ba2c837e7a3ebea93bd3"
+      "bytes": 10781,
+      "sha256": "cce4ee634fa41f4b6ba048a3c3f7ac6f2f47502c6f4b63189bf77c8e06c7016f"
     },
     "scripts/package-toolbox-extension.js": {
-      "bytes": 4928,
-      "sha256": "80ca8283ba806a83bfab1ab3f7a1a081a4a0b76bd60f5e15fdd3cf6e316dddad"
+      "bytes": 5099,
+      "sha256": "ae1f5f5f95c0a5b877e5c58a046d3754334ee582cd29a897737beceee8ea8cc1"
     },
     "scripts/package-training-example.js": {
       "bytes": 2495,
@@ -8111,33 +8371,37 @@
       "bytes": 11194,
       "sha256": "b4c43917de578a77c1f9d88be0570cb69f4c3f8f71511a36e32ffb9962f3741f"
     },
+    "scripts/publish-marketplace.js": {
+      "bytes": 4713,
+      "sha256": "d5978ab0750f8e5b4a3389d749bdc905f6febee9f3e11092ca2d87bd994157d7"
+    },
     "scripts/seed-bun-build-cache.js": {
       "bytes": 2874,
       "sha256": "6e300735c293f51142e115e3bbc1a6f4823e65221f7af8b80ef3b9fcef6bf5d1"
     },
     "scripts/setup-team-example.js": {
-      "bytes": 8502,
-      "sha256": "13dec2f0a967b5695bd6ec4a6bbdf3c67c20854be2ace2cf73f8890f6e6b3640"
+      "bytes": 8582,
+      "sha256": "0b12ba3197ea8e93a93d0f9183b18390bbb3f5df00810378a06342f439c71d8c"
     },
     "scripts/test-toolbox-extension.js": {
-      "bytes": 11019,
-      "sha256": "8798827a2bc718ac60f12996c5c81ea17b7d65e2e1bac5fe1447f2e1a6ccb93c"
+      "bytes": 12344,
+      "sha256": "e98514fb102e97d7179be98e442fec62450650e46f74b567b15d7eb12db7f592"
     },
     "scripts/vendor-cad-core.js": {
-      "bytes": 2201,
-      "sha256": "99ea2c44699ce863620ecbe31215d8d8a10aa7aeeb836168d503539325636413"
+      "bytes": 3403,
+      "sha256": "1bff071db1ace0670eaf29d8643dc1296621589df8b2c91c282c89e2f165064e"
     },
     "scripts/verify-team-example.js": {
-      "bytes": 3400,
-      "sha256": "9a58d56bb8104757b82b24a9352d076901d54e1343ff619b182479a30647fca7"
+      "bytes": 3436,
+      "sha256": "557df6c9119d2efe79206144ea2edc8b6e2effd79574705606e221554e9a1be2"
     },
     "scripts/verify-toolbox-source.js": {
-      "bytes": 4145,
-      "sha256": "40dbe401f1423ab8c22ef5eb7bfe1d65cecc7d71da13d134c1e1ebf3a7fbfda6"
+      "bytes": 4555,
+      "sha256": "8dba9106aa54a2b8cf125a665a2de8c2b3b2ed2eae9f1e011413e0893b8977d8"
     },
     "scripts/verify-training-example.js": {
-      "bytes": 3331,
-      "sha256": "82e91a672a04d729dcb8c08da837c0e2525368208c19c59052f325913d15fa94"
+      "bytes": 3471,
+      "sha256": "76b2566b960f7a76980c2a5a623a4f1d4ddf24c214670bd7215056613716c472"
     },
     "seasons/2026/season.json": {
       "bytes": 965,
@@ -8164,16 +8428,16 @@
       "sha256": "d89d422f99f2dffcc4100711439dd41c5a386a4a29ea3758cd39c7cc14c33bbb"
     },
     "tests/MotorBridgeTest.java": {
-      "bytes": 5440,
-      "sha256": "96a6d7a79688a17c521d871e1b597a9f33b873a91c61956d6482caa58ca2c43f"
+      "bytes": 6259,
+      "sha256": "0b9b28f3fd679f45f2620219e3f9dac3d8e3a3447a8e7cf5b06f96859ecd8472"
     },
     "tests/ObjectQueryTest.java": {
       "bytes": 3253,
       "sha256": "f78167655cdcd1556e6e1a175e45ca1c1426f3dd5faa4fc746293deeff48182c"
     },
     "tests/PhoenixAdapterTest.java": {
-      "bytes": 3001,
-      "sha256": "6c5e028ed4d2ce2a6ae6a66a02ed38abc28bf57f40e8faaf7824ebbf2ea6820b"
+      "bytes": 4306,
+      "sha256": "9865997be0c377a5a63e999dc93425090ac9c5d10410bb42df8a99f19802dfe4"
     },
     "tests/RebuiltMatchTest.java": {
       "bytes": 3525,
@@ -8196,32 +8460,56 @@
       "sha256": "634cc9a3a15a24b840c0e6d40297515bc3ebfeb76111a4e69b3089e0bebc5fb0"
     },
     "tests/bridge-export.test.js": {
-      "bytes": 4951,
-      "sha256": "5acb67e3d2b696bec6946a03ac6d60f10492c13a5731721741db49f66ff53183"
+      "bytes": 5280,
+      "sha256": "82d6aad299cda91ecfa95ab62c7855d52c45ad6cb3406f531c2eabf8a6107a20"
     },
     "tests/bun-source.test.js": {
       "bytes": 1776,
       "sha256": "38bacac80e11246aa1c7799ed11d6985da2ac29de973475bb03b7032aa696083"
     },
     "tests/cad-command.test.js": {
-      "bytes": 1712,
-      "sha256": "6fa6bc8be83c254dc30a6c552d59503376e3a3051145796fa045eb725eec555f"
+      "bytes": 4408,
+      "sha256": "4acf4f2328ac58208d71adb786a091181094f5b37118b3e521a8a990cb351624"
     },
     "tests/cad-feedback.test.js": {
       "bytes": 5536,
       "sha256": "706630aacce5742022769e36b4485f9b25b1eaf8b2837484f786a9bdb306f731"
     },
+    "tests/canvas-router.test.js": {
+      "bytes": 3484,
+      "sha256": "23321032e495f3d799c3379c6a1d1488898e50c74353446bd49f0a6498953172"
+    },
     "tests/cli-build-provenance.test.js": {
       "bytes": 2581,
       "sha256": "91785d2580adb63e2ef58fd6a1b142dc459b21954cedd3896f6092a9da78a007"
+    },
+    "tests/custom-simulator.test.js": {
+      "bytes": 5386,
+      "sha256": "ec68d49a30d0d3bc180bfc8334f17771a50ac0ea3e22c2ad9da693d5e86ab544"
+    },
+    "tests/cut-preview-command.test.js": {
+      "bytes": 3608,
+      "sha256": "9ccd97694a35f87b0335d593bc1dd5cce1ae1f0e6ee8ee7660400418cdabeaac"
+    },
+    "tests/deformation-gpu-browser.js": {
+      "bytes": 7698,
+      "sha256": "bbe1ad8dd50a0c41a26d723de690554ec975b1a94928e3e9f438161fb4f18f4e"
     },
     "tests/dependency-notices.test.js": {
       "bytes": 3122,
       "sha256": "c002494996f38ac3e92c338992e0accb1d23e205e507e4eef046cf068581a85b"
     },
+    "tests/design-command.test.js": {
+      "bytes": 7660,
+      "sha256": "ab01730642372db2bbe3d376ba204df6943eb00bc50454b02db1bb21863811c6"
+    },
     "tests/device-adapters.js": {
-      "bytes": 3576,
-      "sha256": "46902fa0fd8eafb65f825bedf0eb9b5599b46b70c76999b5108672b904424def"
+      "bytes": 3611,
+      "sha256": "335cd61354ce597530e9f54ace034c0f5c8ad9fab7a931e1e9dc265904d12e26"
+    },
+    "tests/drawing-command.test.js": {
+      "bytes": 3641,
+      "sha256": "cb46d427d58694f5a758c7bd6505c3c7de1658a51a32236b9496a5e72e39772e"
     },
     "tests/example-bundle.test.js": {
       "bytes": 1751,
@@ -8231,33 +8519,121 @@
       "bytes": 6268,
       "sha256": "2e324528345ea80630960ddfc563e28638bae1a18fad69694ba7f5cc37b4d68d"
     },
+    "tests/field-material-native.py": {
+      "bytes": 2770,
+      "sha256": "eab40cfce36cd8ce517fa14f52bd3f43d0b93401b0f3fbc0752776a3f8aeae4e"
+    },
+    "tests/field-material.test.js": {
+      "bytes": 565,
+      "sha256": "6f8aec4f8b893d9722dc774479bd2893c1e4415c25325395e74842e46f2813c4"
+    },
     "tests/fixtures/season-compatibility.json": {
       "bytes": 13479,
       "sha256": "30e6b4d2b5e2e6863f3c55933b81b014fd9e8989728dce49be41356d62b57a80"
     },
+    "tests/flat-command.test.js": {
+      "bytes": 4070,
+      "sha256": "e32376ad60094a24ffa701d4c3f3e7ce0bace2e0235ee4a78eb87764beade545"
+    },
     "tests/guidance-update.test.js": {
-      "bytes": 6709,
-      "sha256": "5fc65fd65e84a88ae042841639e55ec8062f23f3d8c5d433226f7bb16675901f"
+      "bytes": 8885,
+      "sha256": "bd43bbc196e944368a479146420bad5e12ebc26fc63f41ef5daad6f4329595a2"
     },
     "tests/live-motion.test.js": {
       "bytes": 1251,
       "sha256": "09faa29f49c47aa013d693805b6e44dab8160569d2f41d82fa48e0bf495a5650"
     },
+    "tests/live-particles-browser.js": {
+      "bytes": 10209,
+      "sha256": "89d033790ed2a92b607093ec22554169d647007b12df4b4e6a5f499cb566145e"
+    },
+    "tests/marketplace-publish.test.js": {
+      "bytes": 4817,
+      "sha256": "e85f01a6f6c619927f53189815a72f67d9135dd0ebe546b396e9a4e7cd783897"
+    },
+    "tests/match-browser.js": {
+      "bytes": 3582,
+      "sha256": "6962551ed2de5c4bf481984e8b5ffd794bff3a4197568b9a6c3484c0cf96724e"
+    },
+    "tests/match-fixture.js": {
+      "bytes": 1762,
+      "sha256": "0aecccdbca8edc223116cd07df916a320c1532baf50946a5c6eede9a2e3eca41"
+    },
+    "tests/match-motion.test.js": {
+      "bytes": 2216,
+      "sha256": "271a6b7789b937ba3f48ef8eb287b6789371a404b5a160e0b3382a0ee618ac05"
+    },
+    "tests/match-render-check.js": {
+      "bytes": 2454,
+      "sha256": "6c06c6f146bf98e47f5b670a590b2093e9a94d82f0b8920e413a5447e33e8e57"
+    },
+    "tests/match-server.test.js": {
+      "bytes": 9198,
+      "sha256": "031da7bd56ac64c3131e7537bfec6afaa6c14ada42e0e497d4cb88a9cc17f6db"
+    },
+    "tests/match-visuals.test.js": {
+      "bytes": 6719,
+      "sha256": "7a87d05eec4ec56af0632cfcef421f4bd66ab5e5e1d1dcf3f046ef85c920213a"
+    },
+    "tests/match.test.js": {
+      "bytes": 7783,
+      "sha256": "b43a6d993d5ef7c04953a734a2151b2e144cc115c595946ae77b4387126ccae1"
+    },
+    "tests/mate-command.test.js": {
+      "bytes": 4127,
+      "sha256": "d882e9263d234602a988e82fe53c69c77c1f0a1cf6e014007dafc79ed6a9ca23"
+    },
     "tests/mcp.test.js": {
-      "bytes": 1706,
-      "sha256": "fc05b26bd96958f3021a8f4f2f8d1d573507790af6df4a7e9058cf990eab1473"
+      "bytes": 5624,
+      "sha256": "59292dae30970cc971c414b3ae4aa4a8fca68d0954bceef7a3ce27b9d4543254"
+    },
+    "tests/mechanism-export.test.js": {
+      "bytes": 8965,
+      "sha256": "51abc8bcaff89d32094a3ce9c8b84ee6631ae4daac597b726b50c0f2f965c408"
+    },
+    "tests/mechanism-session.test.js": {
+      "bytes": 1794,
+      "sha256": "0f3c2731271dfc56f0ccab6446f8bac869c993af762f5caa8e48477850ad7525"
+    },
+    "tests/model-menu.test.js": {
+      "bytes": 4055,
+      "sha256": "722b6ab3a18f36220f38434ea6e6194d6e7082f562344889a840c5814df596f7"
     },
     "tests/native-build-provenance.test.js": {
       "bytes": 1890,
       "sha256": "01dbec0a01951ce89c5c6919298adad5bf343b705d36f29b5128fbf41c357882"
     },
     "tests/packaged-runtime.js": {
-      "bytes": 19156,
-      "sha256": "55f12bc4a0b58abcdae363600f481cecbe7d1316468cc9bf5fec3f5ee2a5c5fe"
+      "bytes": 22425,
+      "sha256": "1bb4987bde2b19ef50c7ed127afdf7f025e7b2a337a2af6017d9eddfb03bcaa9"
+    },
+    "tests/particle-stream.test.js": {
+      "bytes": 3736,
+      "sha256": "2f3de5332f0d6db16915f1e382918f37784df94828661c2ab48d897eb4bcf9cd"
+    },
+    "tests/physics-batch.test.js": {
+      "bytes": 6348,
+      "sha256": "950335ba86d5fa812f7ef4455e0de04e633f02ff12949c783bda854cbcf46a25"
+    },
+    "tests/physics-coordinator.test.js": {
+      "bytes": 3078,
+      "sha256": "32dcb58ca4a4ddf7ef9955f9daf30787182713de951749ff217ec85f059fb029"
     },
     "tests/physics-modes.test.js": {
-      "bytes": 6544,
-      "sha256": "fc8b00f3efa79e27b592a023b3b0f9664eedffbf4c9baf429cc66b187d707cc3"
+      "bytes": 9340,
+      "sha256": "07e49c4caef1d61804822ae8fd51ddbc120f17213bac21d6b9d06d3c449ca384"
+    },
+    "tests/physics-preparation.test.js": {
+      "bytes": 9597,
+      "sha256": "077c333cddcbfe1aba87c93796c67aa9041b301bd9d73f236397043b46ed99cc"
+    },
+    "tests/physics-replay-browser.js": {
+      "bytes": 9136,
+      "sha256": "ebec1784347157df080b77a934e4422e69d1803008b6747f00a2966e292588d2"
+    },
+    "tests/physics-replay.test.js": {
+      "bytes": 2318,
+      "sha256": "8ed4c4b270eafd9be2d61bd10b52e7bc127394fa6b2bb35752d38d3aa2c2b1ff"
     },
     "tests/practice-controls.test.js": {
       "bytes": 2129,
@@ -8267,37 +8643,49 @@
       "bytes": 2402,
       "sha256": "9f6367c0a2dcc882d8465c443b0495a41da2988f9c89cf098efdabdf54594d8a"
     },
+    "tests/rapier-mates-native.py": {
+      "bytes": 4961,
+      "sha256": "f15f0f9a2335e145c263eb652f4faaf02253fdf9f0a1b6a1cb3fd868fb6cea1d"
+    },
+    "tests/rapier-mates.test.js": {
+      "bytes": 532,
+      "sha256": "45800d52b66d34d6a551e83de56eb8e8e17d8ace16f40efa88222be1207dd885"
+    },
     "tests/robot-project.test.js": {
-      "bytes": 9818,
-      "sha256": "19f4e7277869386ad96718be50c72fe67b7a4d736507071e7459be614ef7157b"
+      "bytes": 9993,
+      "sha256": "d1cbb67a728468a3b246113c4e43e02e7c950e668a9c3b75acb46487c4b6a898"
     },
     "tests/run-managed-session.js": {
-      "bytes": 6494,
-      "sha256": "78326521edabb597323f131588a4db25f0b5388d8322e23acd2fe550b6a49609"
+      "bytes": 6978,
+      "sha256": "63c6fa90053a83446741da1a0ef9370f32a4bdadccfd8f9e2156d955a238c3de"
     },
     "tests/run-sim-vision.js": {
       "bytes": 1252,
       "sha256": "f964160643e073d06cc90b720e792d965b8c383d477f4bb539bbeaff4faeb210"
     },
     "tests/runtime-install.test.js": {
-      "bytes": 9894,
-      "sha256": "8b8351246a50eae81ef6a62731611b75804e304ee7ace5e144aa5f586597f773"
+      "bytes": 11206,
+      "sha256": "8e3afeebdb7933ec3d4ead96fcd58dadf7c17d3e3cfc318fe6ea554cce69da23"
     },
     "tests/season-knowledge.test.js": {
-      "bytes": 6566,
-      "sha256": "126e3a132f901c76e3764d946e7cae80bc17cac6fd9ab3289fc9349320c0fa03"
+      "bytes": 6604,
+      "sha256": "74d29ffac6c092ae75278b694072c0fa7e373a6c9ab4eca3566362fbf044d824"
     },
     "tests/season-plugins.js": {
       "bytes": 3016,
       "sha256": "43865a6947357b70ecfca1104cdd7a088d91eec9271546751841f2a78cd3e361"
     },
+    "tests/sheetmetal-command.test.js": {
+      "bytes": 5154,
+      "sha256": "fa6f4b0a91d3f435a033c49d3a0a5e1fc7eace42d866a2abf7ff459e294b1e95"
+    },
     "tests/simulation-scene.test.js": {
-      "bytes": 4826,
-      "sha256": "a3941b12ebb23d6a223ea4e23e616d8e61d43bbfa5e84b7752a58fa7382b0609"
+      "bytes": 9099,
+      "sha256": "8a990a8f3d85e1ae644500b9abe202d2d695d869898c278cbfc73f563d8c415d"
     },
     "tests/simulation-session.test.js": {
-      "bytes": 6371,
-      "sha256": "155132882935a6dd7c6f03b326730113f71f9531212ae459486927a3ac04c055"
+      "bytes": 8176,
+      "sha256": "c26258baf138bbd1f08c9104b00c70065fa097b37a2177e88feaeb233a4688c2"
     },
     "tests/simulation-tasks.test.js": {
       "bytes": 2860,
@@ -8307,21 +8695,41 @@
       "bytes": 2446,
       "sha256": "523f660c7a84cf874383d38fe21478b6b079eb8d22e4427dc2f5cba1a4e862be"
     },
+    "tests/subsystem-command.test.js": {
+      "bytes": 5078,
+      "sha256": "5ee39014ffda6b3ef1e23bad98ff7f14387273e8ab17ff4e2c5898f658fbb476"
+    },
+    "tests/subsystem-model.test.js": {
+      "bytes": 11403,
+      "sha256": "3292512dc18a57e9db2e56eb0b7c9c0db4e51d1d3c6cdd43efee7d9be214f104"
+    },
+    "tests/subsystem-presentation-browser.js": {
+      "bytes": 6124,
+      "sha256": "c5a1cc4a2416f45e32ab0787fd83ec7870ef92f3c3082942095d8b28d1123c01"
+    },
     "tests/team-example-source.test.js": {
-      "bytes": 6785,
-      "sha256": "49db4c3647f57e86d0dfa09b04dd8c1a0c42b624795f353c382ac0eb1211b57d"
+      "bytes": 11250,
+      "sha256": "1cea8122373a638ba6330841b09a391f283abe29fa526697a8dc50ed1c7ad96f"
     },
     "tests/toolbox-extension-runner.cjs": {
-      "bytes": 23190,
-      "sha256": "d7f8db6c4a72f86c91111a06daa38acce0a2e3309a658ea8523f4cde311cb0ea"
+      "bytes": 66402,
+      "sha256": "3a6cf6b0e044c30eede4280581862c9bbdd47890ecf1a1d3fdac581254d20d38"
     },
     "tests/toolbox.test.js": {
-      "bytes": 7342,
-      "sha256": "66799ab71414889ab50203254232986b56ffef1e222424e626298d4b017cf15f"
+      "bytes": 7393,
+      "sha256": "6990c000faf3701ced6426196618a859e3bf43e3a1ace8fc7f6a9c008bffba76"
     },
     "tests/training-robot.js": {
       "bytes": 7778,
       "sha256": "cb7a2a20a557e7598315fbc3600d6f56501617aac19a629a517994b98e0856ae"
+    },
+    "tests/unified-extension-runner.cjs": {
+      "bytes": 9707,
+      "sha256": "77af1cedadd148f2a939513e72cc7e3d6d8ccc1f43cccba3cb035b40b4c85246"
+    },
+    "tests/unified-scene-browser.js": {
+      "bytes": 9405,
+      "sha256": "1c5aa0301927407ae382c98de49b7a71cac3efdd406062b2e578a5725d6fd773"
     },
     "tests/viewer-client.test.js": {
       "bytes": 2284,
@@ -8331,17 +8739,29 @@
       "bytes": 1077,
       "sha256": "ec7609967307a7ce2cde77b6750a06d938b9688916ba0f2ba5c4657c19f0c6f6"
     },
+    "vendor/cad-core/docs/ASSEMBLY-SOLVER.md": {
+      "bytes": 818,
+      "sha256": "d517f4e21ebc988ccf48bde74bb85c2a29b3e6b03b5abceb30c8f724519e85aa"
+    },
+    "vendor/cad-core/docs/DESIGN-SERVICES.md": {
+      "bytes": 7674,
+      "sha256": "9f29b3eb9ad8f3bd4da095cb95939e9f0959d81c0483373f61822ce660f2e6e4"
+    },
+    "vendor/cad-core/docs/DRAWINGS.md": {
+      "bytes": 3359,
+      "sha256": "a4a6c6c1db4830707a8eee2fa4ee785fb9d6d5f0d13b56461b7510d9dc9a5224"
+    },
     "vendor/cad-core/docs/NATIVE-CADQUERY.md": {
-      "bytes": 5898,
-      "sha256": "7f336b6a12738baaeaa806a0f0f5d3545e90273c0754d7c5428febb9602e0614"
+      "bytes": 17790,
+      "sha256": "d3ad46b32b402de8d747f7820fe9f61593cbaeee1086f010e1c03abde984ca1b"
     },
     "vendor/cad-core/extensions/vscode/src/extension.js": {
-      "bytes": 13696,
-      "sha256": "87015da13b96639447f7fb86d912566fab8b46deb79c7427efb6de0ab10c3562"
+      "bytes": 16679,
+      "sha256": "f3edba043f44d18fb44913b936e1437d1dff5eadd60b228a1c3eccfce9925dd6"
     },
     "vendor/cad-core/extensions/vscode/src/project-files.js": {
-      "bytes": 4179,
-      "sha256": "f614994f6f3799a89a396597a7bb75bbfba984ed895863ca28e1e01c4735998f"
+      "bytes": 6148,
+      "sha256": "efd35802687b7c5192be0de04bd5f7cde88a660835c202a0ea97454284a29857"
     },
     "vendor/cad-core/extensions/vscode/src/step-source.js": {
       "bytes": 862,
@@ -8352,44 +8772,136 @@
       "sha256": "fcad867ac158d07305548ab75c0b10665b7475006d135e65160d09055fcaaab3"
     },
     "vendor/cad-core/src/core/assembly-capture.js": {
-      "bytes": 5788,
-      "sha256": "4c1d765ad7c1c5ed6d2d02e3b2ccc458c1f5188b3ccf69a020c9162486c90671"
+      "bytes": 5458,
+      "sha256": "ac6f1ae2b8a80ecd748fd7f10120032e3b2e772136f118b8fe4c383f67aae8f6"
     },
     "vendor/cad-core/src/core/assembly-viewer.js": {
-      "bytes": 7168,
-      "sha256": "7223359f10177581e822ac32b3716c8bb56d7b9a385471800f353f40a344dcd7"
+      "bytes": 13208,
+      "sha256": "726fe1b02b387c88b9c8c1e7e774552f2787690a7d56de4dc569f4e8deaa0d61"
+    },
+    "vendor/cad-core/src/core/belt-motion.js": {
+      "bytes": 8886,
+      "sha256": "35367cf4876fa2b281f48307c3d2bc7eccd19a3d74f5a2e2f1b9efd327f5f7f0"
+    },
+    "vendor/cad-core/src/core/canvas-commands.js": {
+      "bytes": 3559,
+      "sha256": "adbf071bc243156f6cec434828eded9ffd456e096fd0312f05d839772d9d9062"
+    },
+    "vendor/cad-core/src/core/cut-motion.js": {
+      "bytes": 11842,
+      "sha256": "e623e2e37acee60f2a2ff87cb0bbe8ea6875d9e5ca6af16f91d6d0ff9f38551d"
+    },
+    "vendor/cad-core/src/core/fold-motion.js": {
+      "bytes": 7010,
+      "sha256": "a341a527dcbca4827fe8a794634ff5254b3f7519fe499921190f7950f57e8c64"
+    },
+    "vendor/cad-core/src/core/mechanism-motion.js": {
+      "bytes": 13126,
+      "sha256": "11a7b56f62d1b5d677e3e46f85423b01eab5a6ebd91c8835d05d321deee6846a"
+    },
+    "vendor/cad-core/src/core/mechanism-solver.js": {
+      "bytes": 5157,
+      "sha256": "7e4d7c38181e629c3fbcf0aed2391af1b8971ef0bdc4b9252002b11590ba30f6"
+    },
+    "vendor/cad-core/src/core/mechanism.js": {
+      "bytes": 6543,
+      "sha256": "3084adefa16ccbb1d49f33be13194c4da367b5956c37420a907f496d3ef2a0aa"
     },
     "vendor/cad-core/src/core/mesh.js": {
       "bytes": 2670,
       "sha256": "359f6d1e0df22ba37dc3f05dd0b20b647ded8712a5c432f4aa331d987390b9ab"
     },
+    "vendor/cad-core/src/core/physical-model.js": {
+      "bytes": 11340,
+      "sha256": "18bfb8dae07742b7a3289b2830fcbec75b14ee49300351e66580cc098dbf83db"
+    },
     "vendor/cad-core/src/core/revision.js": {
-      "bytes": 946,
-      "sha256": "a4908d7914e77b51f3c770bf396e593a4b4a7b25d03e109698daf2d22fc18fff"
+      "bytes": 1283,
+      "sha256": "98c425469b91daa9850a6f6ed5793b973e6857d3c6c3a2d087f76fbdf035a729"
+    },
+    "vendor/cad-core/src/core/scene-cache.js": {
+      "bytes": 515,
+      "sha256": "e23f76df33c93a2c1dee3fc55e1e2d6b9ba6ec9807e195153c66ff7d9251538b"
     },
     "vendor/cad-core/src/core/scene-capture.js": {
       "bytes": 3894,
       "sha256": "759697908092eb815861145dbebd65d4a41433abb02acee7ae10d07ce657ca07"
+    },
+    "vendor/cad-core/src/core/selection.js": {
+      "bytes": 15183,
+      "sha256": "d1fe0174c3b39333c1554cd2439ce3d2ca0fdcf27ee24932fb7034a805a75403"
+    },
+    "vendor/cad-core/src/core/solved-motion.js": {
+      "bytes": 4559,
+      "sha256": "0cac6029f45e0e2da7ad2920943f10d83863d74af206ef83b6d007c065c2d306"
     },
     "vendor/cad-core/src/core/source-limits.js": {
       "bytes": 397,
       "sha256": "156ef65c49fa50ccdfd168d268d08aae0a8b0d750234bc8fbb1408ed1f6b1937"
     },
     "vendor/cad-core/src/core/viewer.js": {
-      "bytes": 14314,
-      "sha256": "d311faeea3ee12482f833e39fe5c41ff0fdc058cc7aa166d1a432cffb1de407b"
+      "bytes": 16941,
+      "sha256": "5028ed1d038a12c929464a684de9f6d07bc057e5673171d1b520738d723bb8cc"
     },
     "vendor/cad-core/src/hosts/vscode.js": {
-      "bytes": 3633,
-      "sha256": "64a4c443640e7bd24e5ebf44682b95a647988a24a41ebb13e2735bb9cdfdf9f1"
+      "bytes": 3796,
+      "sha256": "3a503b0ef00537bf076bb2b3da1ad243f74932e58235be6681daaf3010bcdbe2"
+    },
+    "vendor/cad-core/src/native/cad_references.py": {
+      "bytes": 5472,
+      "sha256": "e6549f5d7a455a8179e6e230b34bc410d2ee1f70a2127570c562ea88377faeea"
     },
     "vendor/cad-core/src/native/client.js": {
-      "bytes": 3412,
-      "sha256": "15b4922729dc1d660c9060f677e834c02ea4a726988896a992d0e41543554a4a"
+      "bytes": 4413,
+      "sha256": "210f1e1f6376b7e3b2e8346c6d1e7cd456b13e2cd51efb99f723c86000e8de6a"
+    },
+    "vendor/cad-core/src/native/discovery.py": {
+      "bytes": 11846,
+      "sha256": "1c984bb4bf4df65d366679d74427980dc5e61b6ed5f1309a8fb224639a91a1c6"
+    },
+    "vendor/cad-core/src/native/drawing_freecad.py": {
+      "bytes": 9166,
+      "sha256": "85e70c472c9026f88ac7152aee91ed848037fd2e62f6b78b08615f623c92b8aa"
+    },
+    "vendor/cad-core/src/native/drawing_geometry.py": {
+      "bytes": 4617,
+      "sha256": "66475de57f61f04976b78757d32e9ada633ad0a99efdb85caec7d76fc6fdb1d3"
+    },
+    "vendor/cad-core/src/native/dxf_preview.py": {
+      "bytes": 3217,
+      "sha256": "6c43c562fdc556d1acd8c009ff33c3abd007312a7f872d19b00d4d3b386cce82"
+    },
+    "vendor/cad-core/src/native/fea_freecad.py": {
+      "bytes": 8892,
+      "sha256": "de32c950d9981f6a5b8acb1d43469a3d38fc463dc760017c380815cf6c042c61"
+    },
+    "vendor/cad-core/src/native/fea_geometry.py": {
+      "bytes": 4548,
+      "sha256": "27362a46a11098e26f40ce0a788c4879e41af5d8b24c3a977771c23e6c6081a7"
+    },
+    "vendor/cad-core/src/native/fea_request.py": {
+      "bytes": 6443,
+      "sha256": "5802586a889cba62b2cc2c3383c965ebab5fc3be5c8c185fe9fbb7d999a062e4"
+    },
+    "vendor/cad-core/src/native/flat_export.py": {
+      "bytes": 4726,
+      "sha256": "0f229dd43adeeb28aab403f2744150307a5f4a9b75b763aa6fd3804a8af1d7f4"
+    },
+    "vendor/cad-core/src/native/fold_diagram.py": {
+      "bytes": 4716,
+      "sha256": "1a71c8a289d82d3a4360aa818929da884765a6fc9d113fdd76f6a564848e8c8b"
     },
     "vendor/cad-core/src/native/geometry.py": {
       "bytes": 2451,
       "sha256": "252178b10b44c4e3e319f085fe378e5e98d1d40bae4905482177429d9120a790"
+    },
+    "vendor/cad-core/src/native/mate_contract.py": {
+      "bytes": 12275,
+      "sha256": "726c71fba2355467bc13372b14a8d5fa3eb1167b377e007d16a69341d481fc29"
+    },
+    "vendor/cad-core/src/native/physical_properties.py": {
+      "bytes": 1534,
+      "sha256": "9a7f0b9f38fae75445bb0f428c6a28ab81ebafe05ed6e2ba61976e32b367a0cf"
     },
     "vendor/cad-core/src/native/requirements.txt": {
       "bytes": 44,
@@ -8399,29 +8911,165 @@
       "bytes": 3805,
       "sha256": "3d873adfe5ca372bfc79cc78ea0c2ebdc5c4775502ff70dd66687e434685d8e0"
     },
+    "vendor/cad-core/src/native/sheetmetal_fold.py": {
+      "bytes": 4246,
+      "sha256": "d0c728b60d9c7c542bfd4e8822a367ff276da1798b604a6c5169b7169ff5ec39"
+    },
+    "vendor/cad-core/src/native/sheetmetal_freecad.py": {
+      "bytes": 6464,
+      "sha256": "d6ddcc254917c3373b6c04aa0a508ae8d3941ca09cf3150de5d52fd6a07b5686"
+    },
+    "vendor/cad-core/src/native/sheetmetal_geometry.py": {
+      "bytes": 6508,
+      "sha256": "e1cbaff4b3d74a0648392458ac064fa02679aa80a80ec4decda418cdc03cf4bc"
+    },
+    "vendor/cad-core/src/native/sketch_solver.py": {
+      "bytes": 8349,
+      "sha256": "649c898384d5ec8745547d73ee9ecd7f160a192348153fadd2797be5f5b6c82e"
+    },
+    "vendor/cad-core/src/native/step_kinematics.py": {
+      "bytes": 7784,
+      "sha256": "3b3d5251734a955d6abae9b9c5f588ab977dcf55ce9cca2edffa69c2599ca21f"
+    },
     "vendor/cad-core/src/native/worker.py": {
-      "bytes": 15251,
-      "sha256": "71d671cd16c140ad9a4ba2cf78bc8c4bca027e8b8eef16fa03a22348d3a952d6"
+      "bytes": 21242,
+      "sha256": "01fbed7a91cedae02b07d640e87179450efafa93a8702d28e87305c351edff92"
     },
     "vendor/cad-core/src/vscode-main.js": {
-      "bytes": 8318,
-      "sha256": "fe2546b63292b54f27f54843bf07022124ff1d18d0105f6505b5dff5ac87496f"
+      "bytes": 12096,
+      "sha256": "1c52ad7e48c10fb1e0cb576a9d3d6df080a195eda080df9beaf9e50c99a18336"
+    },
+    "vendor/cad-core/tests/belt-browser.js": {
+      "bytes": 6688,
+      "sha256": "e16fa829a781f717a6ac97bd69074a4511061c9c95e0c4fa6e751bbeedaa6e4b"
+    },
+    "vendor/cad-core/tests/belt-motion.test.js": {
+      "bytes": 4327,
+      "sha256": "fb57c5ceaea38bffdbd3118a4830d7c9e5b20154fdfc2f6c3b835a02b87bd997"
+    },
+    "vendor/cad-core/tests/cut-browser.js": {
+      "bytes": 4386,
+      "sha256": "3053d1fc522e07e8694ee8e25abb70524fea05d9df928c68d9d543329bba82d4"
+    },
+    "vendor/cad-core/tests/cut-motion.test.js": {
+      "bytes": 7168,
+      "sha256": "5d94ef6f155542e48eab7b88a647cc0cb7023555260ad4bbfd2c4bcf5be05050"
+    },
+    "vendor/cad-core/tests/discovery-native.py": {
+      "bytes": 3400,
+      "sha256": "43caeb0d161813e3c08465f83c6005512f47be0512b269cb0456585355fc156d"
+    },
+    "vendor/cad-core/tests/discovery.test.js": {
+      "bytes": 531,
+      "sha256": "df9ddcfa35c9a43f89c4230cfc2df53b2947084934159d6f92e4ba360b4f43b3"
+    },
+    "vendor/cad-core/tests/drawing-native.py": {
+      "bytes": 2145,
+      "sha256": "d6a3e32e29d22498ddffe5ee4d859b85b155b001875a575637507c858d95eeb9"
+    },
+    "vendor/cad-core/tests/fea-native.py": {
+      "bytes": 5249,
+      "sha256": "b26fba7500c95f78f0d9676967be7db121c10c2389b37f0c675d401d9e74e9de"
+    },
+    "vendor/cad-core/tests/fea.test.js": {
+      "bytes": 490,
+      "sha256": "2c5db3ca7611dd3eea903b1f37bd2c14c1be2e864e8de38a96e2c5c700cb1ab7"
+    },
+    "vendor/cad-core/tests/flat-export-native.py": {
+      "bytes": 4637,
+      "sha256": "a2389d06111afc2ba23087c274461ee5627426b547c822dbaf0df06caee39c96"
+    },
+    "vendor/cad-core/tests/fold-browser.js": {
+      "bytes": 4475,
+      "sha256": "3ddae086b7dd0383a3bd3cfeb9dceabac8e318eb51b423ba4b61d012eedf5b38"
+    },
+    "vendor/cad-core/tests/fold-motion.test.js": {
+      "bytes": 6932,
+      "sha256": "52a8f718eba987f959b5c80d2791dfc5687aab433a7c35054c94727479779a78"
+    },
+    "vendor/cad-core/tests/fold-native.py": {
+      "bytes": 2880,
+      "sha256": "b356f391ee29f45938f1dc91409a5da3a90f69ca23744ba38eece1637f4e8697"
+    },
+    "vendor/cad-core/tests/mate-contract-native.py": {
+      "bytes": 1425,
+      "sha256": "b934c383f26fc65a10b088ed79636555dfbbbcebe3d9cb9be1768f3e1c508cd5"
+    },
+    "vendor/cad-core/tests/mate-contract.test.js": {
+      "bytes": 454,
+      "sha256": "fd749b03d4c0e29bfa0cf26293db907e3216edec25291fb021e2e4d864389ca7"
+    },
+    "vendor/cad-core/tests/mechanism-browser.js": {
+      "bytes": 4413,
+      "sha256": "3fe18ff43442e7fa9d7ad711f6daa2427e261e96e2045542eead5f31c8dc62b7"
+    },
+    "vendor/cad-core/tests/mechanism-solver.test.js": {
+      "bytes": 3502,
+      "sha256": "e30f253e26b272631bfea0e01a03e0ec06ae345844a14f0da43bc21576577135"
+    },
+    "vendor/cad-core/tests/mechanism.test.js": {
+      "bytes": 9494,
+      "sha256": "5fc905dde299afccd876141a8f6980ec426f34a54e6021c9d97796f01a032a83"
     },
     "vendor/cad-core/tests/native-cad.test.js": {
-      "bytes": 6248,
-      "sha256": "f08a76edfa88234eb3442dab79198c68784f7d6720f3717f7610f68db56e947e"
+      "bytes": 6828,
+      "sha256": "2459341a1afd314e2a846c1e209399f93da4bd885436d27140976af98136be30"
     },
     "vendor/cad-core/tests/native-session.test.js": {
-      "bytes": 3091,
-      "sha256": "50d665c29aff71d7f334285068d53504c6f9a9a49afebd772495975706e7eb29"
+      "bytes": 7945,
+      "sha256": "052b4f016593dbd18aaf5b881ef53279954b9088ceaf48e3181cdf084852630e"
+    },
+    "vendor/cad-core/tests/physical-model.test.js": {
+      "bytes": 3745,
+      "sha256": "ca95c8c2e6d238ac6591fd93a8f5a153df64ca0994de47ac857f026a1c4217ed"
+    },
+    "vendor/cad-core/tests/physical-properties-native.py": {
+      "bytes": 590,
+      "sha256": "b38da97f53018db0a9b4af48e61f32a5b6eb739f170510dacf77c99bdd00b11b"
+    },
+    "vendor/cad-core/tests/selection-browser.js": {
+      "bytes": 13930,
+      "sha256": "76cc6b9afa57d12a14051db47dbbd175bde8396edb3d30e3b2efee58502b6e30"
+    },
+    "vendor/cad-core/tests/selection.test.js": {
+      "bytes": 813,
+      "sha256": "f67c35390772935c984e1bfae43e2be538263c78bf179639459740aadb5b81f5"
+    },
+    "vendor/cad-core/tests/sheetmetal-native.py": {
+      "bytes": 6269,
+      "sha256": "47f6009964544164ab51bd3d4181b2e963d9760268170d07b7c89a2b30f7c802"
+    },
+    "vendor/cad-core/tests/sketch-native.py": {
+      "bytes": 4829,
+      "sha256": "fee72b919157950a610728ecf078f387fbee829846ce0600ea5fa9a3f6dd76ce"
+    },
+    "vendor/cad-core/tests/sketch.test.js": {
+      "bytes": 524,
+      "sha256": "3a75eb1597bb34b12c290c139cd854392582aabd780dae0bbf58d78a9be7c4ee"
+    },
+    "vendor/cad-core/tests/solved-motion.test.js": {
+      "bytes": 3867,
+      "sha256": "57071a60f99689e299080409ae3dadf9586657c82e45bd4f700548aa93f9e03e"
+    },
+    "vendor/cad-core/tests/step-kinematics-native.py": {
+      "bytes": 3598,
+      "sha256": "7083e33478502dab326895e20b61153dfb811534415ef1957a34d8e54e636a48"
+    },
+    "vendor/cad-core/tests/step-kinematics.test.js": {
+      "bytes": 597,
+      "sha256": "a6fcdbcacd7b03d9622816c97238e418d920abc660cea806f67c7e04ff9230f5"
+    },
+    "vendor/cad-core/tests/viewer-marker-browser.js": {
+      "bytes": 4649,
+      "sha256": "ac3dbb79cab899415bc8ab91ee38f3a54d8b415dbb24a80c47a691b38c589bcb"
     },
     "vendor/cad-core/tests/vscode-host.test.js": {
-      "bytes": 5822,
-      "sha256": "209d4aed68465c9713a4be1d32c66a5bf74942c6524a83ecb900138f3163301c"
+      "bytes": 11073,
+      "sha256": "b277fc6f9487a2244f184f271ff2e171c6f516c51b0de2f33734c451783a4a7d"
     },
     "vendor/cad-core/upstream.json": {
-      "bytes": 2472,
-      "sha256": "0bb3bb4ebb75108acbe64329c15a7e4f0e41370d09eacc246688d90884918458"
+      "bytes": 8555,
+      "sha256": "1fd53e0bb9eb631d34e119d7fe03cb80bd332563aa4ca4c4c3f8cecdb90768b5"
     },
     "vendor/glamx/.gitignore": {
       "bytes": 21,
@@ -9520,8 +10168,8 @@
       "sha256": "29ea7906d88e10c2853888979cf47df008ab09dd52f4191c58b905736d078479"
     },
     "vendor/parry3d/src/query/sweep_toi/toi_proxy.rs": {
-      "bytes": 6535,
-      "sha256": "6275314acc6d1a24c677dca0f0932517c43bdfc13ed84d48e0590d82d440672b"
+      "bytes": 6228,
+      "sha256": "6d7771970fb16291562ae7c071263217f6975cd921cd8dac5fa011b5ee03638c"
     },
     "vendor/parry3d/src/shape/ball.rs": {
       "bytes": 8666,
@@ -9984,8 +10632,8 @@
       "sha256": "cfbb47788f6cc19eca9a4ac4a2a9048dd6e7cf61a71248d8fb1b2b3a320a1b9f"
     },
     "vendor/parry3d/src/utils/mod.rs": {
-      "bytes": 2408,
-      "sha256": "fd94d6fe6c9c843a21cd05aaa98789ffcc1e61ed477a0721762471566db5ea93"
+      "bytes": 2495,
+      "sha256": "22fcb59934505043ed2847b555dddd42d76a248fd92c6d67bd7e52bf3cb134b2"
     },
     "vendor/parry3d/src/utils/morton.rs": {
       "bytes": 1422,
@@ -9996,8 +10644,8 @@
       "sha256": "9fae8d8a2abb19f7b2b2dac28a848b32a8fdd8f74ee551a6cf68341b0e20086b"
     },
     "vendor/parry3d/src/utils/point_cloud_support_point.rs": {
-      "bytes": 5283,
-      "sha256": "e428defc14d599acde99c59d7d5db383a057f7dc5fe326f522f6710114562172"
+      "bytes": 6993,
+      "sha256": "fa3f56b38d3a94cd2724453c61903dec67aab04429f9958975fa6066f4ddf2ed"
     },
     "vendor/parry3d/src/utils/point_in_poly2d.rs": {
       "bytes": 10990,
@@ -10632,8 +11280,8 @@
       "sha256": "0de0d5e578dfd2f04bfe77d6a5ab327a1874d214faf3feeca07e98f9ae895310"
     },
     "vendor/rapier3d/src/dynamics/soft_body/soft_body_settings.rs": {
-      "bytes": 3858,
-      "sha256": "2602bcf0114ef946e92eb236e45b972e52db181aec86447d61dfbd5c09767ec0"
+      "bytes": 4101,
+      "sha256": "0d36ed105bbeb48f352b9f72fe688a1a9808e8eab4d504d38663216de2e8c363"
     },
     "vendor/rapier3d/src/dynamics/soft_body/soft_body_shape_matching.rs": {
       "bytes": 2535,
@@ -10804,8 +11452,8 @@
       "sha256": "06efb0c5a52f53c6d73b813a3c1e1dac7ce61ba1c0ca388a3ca2e426ab28828e"
     },
     "vendor/rapier3d/src/dynamics/solver/soft_constraint/soft_contact.rs": {
-      "bytes": 21708,
-      "sha256": "2ffecbb0ee96d3570152b63eb796e8002f16d8c9cae9c7b99647de0deefa322a"
+      "bytes": 24686,
+      "sha256": "4b8e751d0ff16d7ee013fbe2870370999a83601267a2dfa46a8963a34874f1d1"
     },
     "vendor/rapier3d/src/dynamics/solver/soft_constraint/soft_contact_assembly/mod.rs": {
       "bytes": 801,
@@ -10816,16 +11464,16 @@
       "sha256": "30eccb88f5eaa993a073c7bb84223995b7f057bc2f912356fadc2228b1aac873"
     },
     "vendor/rapier3d/src/dynamics/solver/soft_constraint/soft_contact_assembly/soft_contact_assembly_body_contacts.rs": {
-      "bytes": 46570,
-      "sha256": "0ca2a29d36a315d6c561be69e78f75272135c98f7b9d6121b19c445232f5e268"
+      "bytes": 47428,
+      "sha256": "71b98c2b513dd55487c6cddad00da758dfa63d26f894d524cf15cf2b149e015c"
     },
     "vendor/rapier3d/src/dynamics/solver/soft_constraint/soft_contact_assembly/soft_contact_assembly_edge_contacts.rs": {
-      "bytes": 12042,
-      "sha256": "821a437dbc8dad5cbf193b4246085cc98d2a5624a8cafb01193cd9ae09def4d3"
+      "bytes": 12137,
+      "sha256": "b78323fc67863dd434bcdd01873b4d22e7d6a92e2b3993728ca7f0484bf3d613"
     },
     "vendor/rapier3d/src/dynamics/solver/soft_constraint/soft_contact_assembly/soft_contact_assembly_vertex_contacts.rs": {
-      "bytes": 23873,
-      "sha256": "bda8d6991e2a6ceed20d145f926fdbd662919b1bf351a56a1779f86f896bc3ba"
+      "bytes": 23960,
+      "sha256": "553827bd0d71a5c9fd750c675ede3de5b508bd890144ac1abaec186483788226"
     },
     "vendor/rapier3d/src/dynamics/solver/soft_constraint/soft_contact_assembly/soft_contact_assembly_volume_constraints.rs": {
       "bytes": 13863,
@@ -10944,12 +11592,12 @@
       "sha256": "c8c2b7551e11051f8cdc04dad0ab810695403c9ff99259e8158b2329780fe7cf"
     },
     "vendor/rapier3d/src/dynamics/solver/staged_island_solver/worker.rs": {
-      "bytes": 51570,
-      "sha256": "cff3ee2493e7f84e831cd371f1c2ecfd095cca2da0c81f43a4031ef307a36793"
+      "bytes": 53411,
+      "sha256": "aa38d4ea46b6abd6c585cd60980671f27e8205db581971358464ab2632e8bdeb"
     },
     "vendor/rapier3d/src/dynamics/solver/velocity_solver.rs": {
-      "bytes": 2603,
-      "sha256": "d95803cafe7f6a9ea063f0c5918e952eebeab2c7fdc31d5f65716d0c5ca13bb4"
+      "bytes": 2722,
+      "sha256": "103d46ee337b78bd563b154c11c0ec115d4a3a8f6306595ac2cfdc3c41583b19"
     },
     "vendor/rapier3d/src/geometry/broad_phase_bvh/mod.rs": {
       "bytes": 15718,
@@ -10984,8 +11632,8 @@
       "sha256": "9bb123df4444adb390b826b7265d45a283d7dd9db25f92b245edeb63ac6d3442"
     },
     "vendor/rapier3d/src/geometry/contact_pair.rs": {
-      "bytes": 45004,
-      "sha256": "77c5e799c2b4cc047ab64ab6e1184a435f6ec5865a7eb0544b6659396ea51642"
+      "bytes": 45275,
+      "sha256": "512f6b708bfbdd1150e32b9a8556f639dd9019ae10e31233084509123b0b0912"
     },
     "vendor/rapier3d/src/geometry/interaction_graph.rs": {
       "bytes": 10916,
@@ -11012,8 +11660,8 @@
       "sha256": "93a89fd9834e2c52bccf0ae25c2289eba6d4ca8b8391a9c929bbd7dd54d5494f"
     },
     "vendor/rapier3d/src/geometry/narrow_phase/contacts.rs": {
-      "bytes": 19647,
-      "sha256": "598239d0e5e7bf602dc529e4deaf3573c1514fc3e2f977664fcf29ed36d61414"
+      "bytes": 20000,
+      "sha256": "1000c3289525082afd7589bc5692b8e6d81b799b188f24584b67e21289d3233c"
     },
     "vendor/rapier3d/src/geometry/narrow_phase/intersections.rs": {
       "bytes": 9328,
@@ -11028,8 +11676,8 @@
       "sha256": "237316fb7394aceb3624d2d643ee499a4c77b9511f5650192d941fcb04f36c84"
     },
     "vendor/rapier3d/src/geometry/narrow_phase/pair_update.rs": {
-      "bytes": 38247,
-      "sha256": "4d05f7b4061e9e98dd6717a80f514ec3ff132923915b8ad45430137c3e349d95"
+      "bytes": 38739,
+      "sha256": "9a900dac159a49437a28224b0b8896d77ed3bde27b07ab1e016d4cc5c14cea9e"
     },
     "vendor/rapier3d/src/geometry/narrow_phase/queries.rs": {
       "bytes": 11083,
@@ -11052,8 +11700,8 @@
       "sha256": "9d332da4842a8b2e2dd710c3440ea66ef0c64d7caeb61260d754617c6f99f422"
     },
     "vendor/rapier3d/src/geometry/narrow_phase/soft_contacts/soft_contacts_pairs.rs": {
-      "bytes": 13897,
-      "sha256": "0c50942434ce89ddd5253ffaf985ea00a6374bbc29f65f44c33984410d60e583"
+      "bytes": 14639,
+      "sha256": "2c9a0b8283431cb24dd7d888c427e99f46b564cb7dd0700796f62a93a136f392"
     },
     "vendor/rapier3d/src/geometry/narrow_phase/soft_contacts/soft_contacts_types.rs": {
       "bytes": 18374,
@@ -11551,25 +12199,69 @@
       "bytes": 2287,
       "sha256": "5739f4c3cb6eb5c12b0ecbe5822477a2b6e762d78d0c2a83f5d8174a048b74de"
     },
-    "web/editor-robot.js": {
-      "bytes": 1546,
-      "sha256": "f0caf3bc5b55587332a1787218d939dc00538c4fd4d86e5acb47afcc71b0eb0d"
+    "web/deformation-data.js": {
+      "bytes": 3680,
+      "sha256": "7ae0b20345efbab671edf80736b12a3bccfe5f5fbbb57997e48e0216ca9d0be9"
     },
-    "web/editor-simulation.js": {
-      "bytes": 6043,
-      "sha256": "cf466d14123dc3d1623e0e2f35629d46400586afb1ea7da1a3c4627166f688db"
+    "web/deformation-gpu.js": {
+      "bytes": 8000,
+      "sha256": "f4bbe03c00e5770bd5dc871891910f8ce1a63a0f07d85fd94e0f63c9803d76b4"
+    },
+    "web/editor-robot.js": {
+      "bytes": 2696,
+      "sha256": "a34f82eff7ba0ed699cf04953af10e6670ac8f27959088f122708c8197346505"
+    },
+    "web/editor-scene.js": {
+      "bytes": 163,
+      "sha256": "03ca8a805126abe530fca93602ab7b88cb0c95583438f7bd12ff48a9ad5d96c8"
     },
     "web/live-motion.js": {
       "bytes": 1296,
       "sha256": "0f85241d1ad516ee37744c18e728ddb78a9186f4a904932bea76f5e090ba789d"
     },
+    "web/live-particles.js": {
+      "bytes": 5290,
+      "sha256": "0540d22b9d0f6526d0c6b65bcd3c153d37bd43208b5eba45c418376362c89c90"
+    },
+    "web/match-client.js": {
+      "bytes": 8460,
+      "sha256": "1d75ee05e1061eec57e0085ca7b213b9142ed79601a7a85cb47589e7508b282b"
+    },
+    "web/match-motion.js": {
+      "bytes": 2951,
+      "sha256": "cf02de3b29d4f85094998f384efa28f43b6695ac6c3a0ad5fe7bd3d57cde5aab"
+    },
+    "web/match-viewer.js": {
+      "bytes": 11016,
+      "sha256": "b72ff6a0c9a5d8e9375b2e18a19e5761a2110539f38b3992ef5e88d5573abff9"
+    },
+    "web/match.html": {
+      "bytes": 2104,
+      "sha256": "33f143e69e350df748c7f9751eb9b38ff42ecb969309c4c21766df3ffef05397"
+    },
+    "web/physical-shapes.js": {
+      "bytes": 2559,
+      "sha256": "8a2fe35d16e039ecbd01b0872ed87fa9b6ddec3d6842a9397260c6d86c3ee3c9"
+    },
+    "web/physics-replay.js": {
+      "bytes": 4298,
+      "sha256": "e79877dbfd9819aebd7d005274448fa4c464b3bd3ae5000154288a5d3d2f18d7"
+    },
     "web/practice-input.js": {
       "bytes": 2760,
       "sha256": "764aafd02a8c2e4b3d21531bbda798d56b5721b9877bebc3f10402f29f2a2fc0"
     },
+    "web/scene-extension.js": {
+      "bytes": 16954,
+      "sha256": "ae542d6627eaee6febba272f909ede20be5b4c7961bd76b03fbb078340a63259"
+    },
+    "web/scene-replay.js": {
+      "bytes": 3083,
+      "sha256": "745bba05261d99ffb7cd73eb85b5b434f8c2dc6a4197a50e71760a84f1dfa569"
+    },
     "web/simulation-scene.js": {
-      "bytes": 4113,
-      "sha256": "8b1bf6d83d36a35b4c44a5018334cfa8000f69376562e4b8ea38ecf28faf36be"
+      "bytes": 7129,
+      "sha256": "69edcba914017a36968c9bfeaceb44a392bf0dbb16372f99182e889549c91479"
     }
   }
 }

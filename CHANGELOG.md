@@ -2,8 +2,17 @@
 
 ## Unreleased
 
+- Attach full simulation to existing CAD occurrences without reloading robot
+  meshes or replacing GPU buffers. Reuse field geometry and restore CAD poses
+  and visibility when detaching; keep background physics preparation enabled.
+- Share the CAD viewport with direct physics and managed simulation, preserving
+  camera and selection. Prepare and validate changed physics components in
+  background native processes, with dependency-scoped readiness events.
+- Add an SI physical graph with full inertia tensors, collision properties,
+  fixed/revolute/prismatic joints and transmissions. Remove the Ondsel backend.
+
 - Add solver-backed motion commands for the active CAD or field canvas using
-  optional OndselSolver. Preserve the current pose and cached geometry; reject
+  the native Rapier backend. Preserve the current pose and cached geometry; reject
   stale definitions or concurrent pose changes before playback. Solved pulley
   motion drives the existing belt mesh, including full turns, reverse and seek.
 - Connect current CadQuery solids to an optional headless FreeCAD/Gmsh/CalculiX

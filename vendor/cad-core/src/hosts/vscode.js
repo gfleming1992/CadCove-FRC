@@ -19,6 +19,7 @@ export function createVSCodeHost(config) {
   }
   return {
     entry:config.entry,
+    request,
     onAgentRequest:handler=>{agentHandler=handler;},
     get nativeLoaded(){return nativeLoaded;},
     async nativeBuild(revision){

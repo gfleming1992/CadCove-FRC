@@ -297,6 +297,10 @@ impl SoftConstraintsSet {
                     // and a shell (an unoriented surface) holds every body on the side it is on.
                     let skinned = mesh.is_skinned();
                     let closed = mesh.is_solid() && self_particle.is_none() && !skinned;
+                    #[cfg(feature = "dim3")]
+                    let local_cylinder = params.soft_bodies.local_cylinder_contacts && other_co.shape().as_cylinder().is_some();
+                    #[cfg(not(feature = "dim3"))]
+                    let local_cylinder = false;
                     // A body centered inside a solid surface is not held in it. In 2D parry's
                     // oriented polyline gives it no contact at all; a 3D mesh's contacts stay
                     // two-sided whatever its `ORIENTED` flag, so they are dropped here.
@@ -577,6 +581,8 @@ impl SoftConstraintsSet {
                                 data.warmstart_tangent_world.dot(tangents[1]) * warm_share,
                             ];
                             let contact = SoftContact {
+                                #[cfg(feature = "dim3")]
+                                local_cylinder: None,
                                 source: SoftContactSource {
                                     collider1: pair.collider1,
                                     collider2: pair.collider2,
@@ -656,11 +662,11 @@ impl SoftConstraintsSet {
                     let other_pose = other_co.position();
                     held_vertices.sort_unstable();
                     for (index, vc) in vertex_contacts.iter().enumerate() {
-                        if held_vertices.binary_search(&vc.vertex).is_ok() {
+                        if !local_cylinder && held_vertices.binary_search(&vc.vertex).is_ok() {
                             continue;
                         }
                         // A vertex of the volume patch is left to the volume constraint.
-                        if rigid_patch.as_ref().is_some_and(|(depths, _)| {
+                        if !local_cylinder && rigid_patch.as_ref().is_some_and(|(depths, _)| {
                             depths
                                 .get(vc.vertex as usize)
                                 .is_some_and(|d| *d > Real::NEG_INFINITY)
@@ -673,7 +679,7 @@ impl SoftConstraintsSet {
                         let dir = other_pose.rotation * vc.local_dir;
                         // A closed surface's reversed contact (a body inside it) is dropped, like
                         // the manifold constraints'.
-                        if closed
+                        if !local_cylinder && closed
                             && manifold_element(manifold)
                                 .and_then(|(id, _)| mesh.element_outward_normal(sb, id))
                                 .and_then(|n| n.try_normalize())
@@ -726,6 +732,8 @@ impl SoftConstraintsSet {
                             dir,
                         ));
                         out.contacts.push(SoftContact {
+                            #[cfg(feature = "dim3")]
+                            local_cylinder: None,
                             source: SoftContactSource {
                                 collider1: pair.collider1,
                                 collider2: pair.collider2,
@@ -771,6 +779,10 @@ impl SoftConstraintsSet {
                             impulse_tangent: warm_tangent,
                             impulse_tangent_acc: core::array::from_fn(|k| -warm_tangent[k]),
                         });
+                        #[cfg(feature = "dim3")]
+                        if params.soft_bodies.local_cylinder_contacts {
+                            out.contacts.last_mut().unwrap().enable_local_cylinder(other_co,other_com_pose.as_ref(),surface_co.contact_skin()+other_co.contact_skin());
+                        }
                     }
                 }
                 // Self contacts (the body's own vertices and edges against its surface), then

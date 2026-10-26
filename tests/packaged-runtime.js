@@ -7,6 +7,7 @@ import os from 'node:os';
 import {createHash} from 'node:crypto';
 import {mkdtemp, mkdir, rm, realpath, readFile, writeFile, access} from 'node:fs/promises';
 import {installRuntime} from '../lib/runtime-install.js';
+import {matchFixture} from './match-fixture.js';
 
 assert.ok(process.argv[2], 'Pass a packaged runtime directory');
 const source = path.resolve(process.argv[2]);
@@ -44,6 +45,19 @@ try {
   assert.deepEqual(drawing.formats,['pdf','svg','FCStd']);
   for(const name of ['drawing_geometry.py','drawing_freecad.py'])assert.ok(manifest.files.some(f=>f.name===name&&!f.executable));
   const capabilities = await command(['capabilities']);
+  for(const name of ['match-serve','match-visuals','match-benchmark'])assert.ok(capabilities.commands.includes(name));
+  const visualFixture=await matchFixture();
+  try{
+    const baked=await command(['match-visuals','--robot',visualFixture.root+'/robot','--field',visualFixture.root+'/field','--output',path.join(workspace,'visuals')]);
+    assert.equal(baked.physicsChanged,false);
+    const catalog=JSON.parse(await readFile(path.join(workspace,'visuals/robot/catalog.json'),'utf8'));
+    assert.equal(catalog.part.lods.length,3);
+  }finally{await rm(visualFixture.root,{recursive:true,force:true});}
+
+  for(const name of ['match-client.js','match.html']){
+    assert.ok(manifest.files.some(f=>f.name===name&&!f.executable));
+    assert.ok((await readFile(path.join(installed.directory,name))).length>0);
+  }
   assert.equal(capabilities.distribution, external?'external-bun-runtime':'standalone-runtime'); assert.equal(capabilities.version, manifest.version);
   const inventory=JSON.parse(await readFile(path.join(installed.directory,'dependency-inventory.json'),'utf8'));
   assert.equal(inventory.schema,1);assert.equal(typeof inventory.releaseReady,'boolean');
@@ -194,23 +208,36 @@ try {
   sim.stdin.write('{"op":"capabilities"}\n'); sim.stdin.end();
   const reply = JSON.parse(await new Response(sim.stdout).text());
   assert.equal(await sim.exited, 0);
-  for(const feature of ['gameplay-mechanisms-v1','practice-field-conveyors-v1','practice-cargo-contacts-v1'])assert.ok(reply.features.includes(feature),feature);
+  for(const feature of ['local-cylinder-contacts-v1','contact-groups-inspection-v1','solver-schedule-v1','contact-refresh-budget-v1','gameplay-mechanisms-v1','practice-field-conveyors-v1','practice-cargo-contacts-v1'])assert.ok(reply.features.includes(feature),feature);
   // Execute the actual installed reference, not a separate test-only copy.
   const physicsGuide=await readFile(path.join(workspace,'.cadcove/skills/references/physics-authoring.md'),'utf8');
   assert.match(physicsGuide,/scaled axis-angle/);assert.match(physicsGuide,/sim-validate/);
   const benchWorld=JSON.parse(await readFile(path.join(workspace,'.cadcove/skills/references/physics-world-example.json'),'utf8'));
+  benchWorld.solver_schedule='per_tick';benchWorld.max_contact_substeps=2;
   const bench=Bun.spawn([native.path],{cwd:workspace,env,stdin:'pipe',stdout:'pipe',stderr:'pipe'});
   bench.stdin.write(JSON.stringify({op:'load',world:benchWorld})+'\n');
-  bench.stdin.write(JSON.stringify({op:'step',volts:{'bench-motor':2},steps:20})+'\n');bench.stdin.end();
+  bench.stdin.write(JSON.stringify({op:'step',volts:{'bench-motor':2},steps:20})+'\n');
+  bench.stdin.write('{"op":"contact_groups"}\n{"op":"state"}\n');bench.stdin.end();
   const [benchOut,benchErr,benchCode]=await Promise.all([new Response(bench.stdout).text(),new Response(bench.stderr).text(),bench.exited]);
   assert.equal(benchCode,0,benchErr);
-  const [initial,moved]=benchOut.trim().split('\n').map(JSON.parse);
+  const [initial,moved,groups,afterInspection]=benchOut.trim().split('\n').map(JSON.parse);
   assert.equal(initial.ok,true);assert.equal(initial.state.tick,0);
   assert.equal(moved.ok,true);assert.equal(moved.state.tick,20);
   assert.ok(moved.state.joints['driver-axis'].position>0);
   assert.ok(moved.state.joints['follower-axis'].position<0);
   assert.ok(moved.state.motors['bench-motor'].rotor_turns>0);
+  assert.equal(groups.ok,true);assert.equal(groups.contactGroups.execution,'inspection_only');
+  assert.equal(groups.contactGroups.tick,20);
+  assert.deepEqual(groups.contactGroups.groups,[['driver','follower']]);
+  assert.ok(groups.contactGroups.dependencies.some(d=>d.reasons.includes('transmission')));
+  assert.deepEqual(afterInspection.state,moved.state);
+  const batchWorld=path.join(workspace,'batch-world.json'),batchPlan=path.join(workspace,'batch-plan.json'),batchReport=path.join(workspace,'batch-report.json');
+  await writeFile(batchWorld,JSON.stringify(benchWorld));
+  await writeFile(batchPlan,JSON.stringify({profiles:[{id:'play',settings:{dt:.02,local_cylinder_contacts:true}},{id:'offline',settings:{dt:.005,max_contact_substeps:null}}],segments:[{seconds:.04,volts:{'bench-motor':2}}],checks:{joints:[{id:'driver-axis',min:.0001,max:10}]}}));
+  const batch=await command(['physics-batch','--world',batchWorld,'--input',batchPlan,'--output',batchReport]);
+  assert.equal(batch.ok,true);assert.deepEqual(batch.trials.map(t=>t.ticks),[2,8]);assert.ok(batch.trials.every(t=>t.accepted));
+  assert.equal(JSON.parse(await readFile(batchReport,'utf8')).trials[0].final.tick,2);
   const offline = await installRuntime({manifest, cacheDirectory: path.join(root, 'cache'), fetchImpl: () => {throw Error('Unexpected network');}});
   assert.equal(offline.reused, true);
-  console.log(JSON.stringify({ok: true, target: manifest.target, version: manifest.version, standaloneCLI: !external, externalBun:external, nativeRuntime: true, nativeWorldValidation:true, physicsAuthoringExample:true, workspaceInitialization: true, seasonImportAndSearch:true, exampleExport:true, bridgeExport:true, offlineReuse: true, compilerRequiredForTheseCommands: false, fullRobotLaunchTested: false}));
+  console.log(JSON.stringify({ok: true, target: manifest.target, version: manifest.version, standaloneCLI: !external, externalBun:external, nativeRuntime: true, nativeWorldValidation:true, physicsAuthoringExample:true, physicsBatch:true, workspaceInitialization: true, seasonImportAndSearch:true, exampleExport:true, bridgeExport:true, offlineReuse: true, compilerRequiredForTheseCommands: false, fullRobotLaunchTested: false}));
 } finally { await rm(root, {recursive: true, force: true}); }

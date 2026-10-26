@@ -9,6 +9,11 @@ const payload = Buffer.from('fixture executable bytes, not a real runtime');
 const target = `${process.platform}-${process.arch}`;
 const suffix = process.platform === 'win32' ? '.exe' : '';
 const manifest = () => ({schema: 1, version: '0.1.0-test', target, files: ['cadcove', 'instantcad-sim'].map(name => ({name: name + suffix, executable: true, bytes: payload.length, sha256: createHash('sha256').update(payload).digest('hex'), url: `https://releases.example.test/${name}${suffix}`}))});
+test('runtime accommodates native helper modules with a bounded manifest',()=>{
+ const m=manifest();for(let i=2;i<64;i++)m.files.push({...m.files[0],name:`helper-${i}.py`,executable:false});
+ expect(validateRuntimeManifest(m).files.length).toBe(64);
+ m.files.push({...m.files[0],name:'too-many.py'});expect(()=>validateRuntimeManifest(m)).toThrow('file list');
+});
 async function fixture(fn) { const root = await mkdtemp(path.join(os.tmpdir(), 'cadcove-install-')); try { await fn(root); } finally { await rm(root, {recursive: true, force: true}); } }
 
 test('verified runtime installs atomically and an offline repeat validates and reuses the cache', () => fixture(async cacheDirectory => {

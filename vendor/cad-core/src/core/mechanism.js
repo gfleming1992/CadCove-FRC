@@ -11,21 +11,23 @@ export function validateMechanism(value, partIds) {
   const bodies=new Map(),joints=new Map(),owners=new Map(),children=new Set(),incoming=new Map();
   for(const b of m.bodies){
     if(typeof b.id!=='string'||!b.id||bodies.has(b.id)||!vector(b.origin)||typeof b.fixed!=='boolean'||!Array.isArray(b.parts)||!b.parts.length) fail('Invalid or duplicate rigid body');
+    if(b.free!==undefined&&typeof b.free!=='boolean'||b.free&&b.fixed)fail('Free body must be dynamic: '+b.id);
     for(const id of b.parts){if(typeof id!=='string'||owners.has(id)||(partIds&&!partIds.includes(id))) fail('Unknown or multiply owned part '+id);owners.set(id,b.id);}
     bodies.set(b.id,b);
   }
   for(const j of m.joints){
     if(typeof j.id!=='string'||!j.id||joints.has(j.id)||j.type!=='revolute'||!bodies.has(j.parent)||j.parent===j.child||!bodies.has(j.child)||bodies.get(j.child).fixed||children.has(j.child)||!vector(j.origin)||!vector(j.axis)||Math.abs(Math.hypot(...j.axis)-1)>1e-6) fail('Expected unique revolute joints between bodies with unit axes');
+    if(bodies.get(j.parent).free||bodies.get(j.child).free)fail('Free body cannot own rotary joints');
     j.bindAngleDeg??=0;if(!finite(j.bindAngleDeg))fail('Invalid bind angle');
     if(j.limitsDeg&&(!Array.isArray(j.limitsDeg)||j.limitsDeg.length!==2||!j.limitsDeg.every(finite)||j.limitsDeg[0]>=j.limitsDeg[1]||j.bindAngleDeg<j.limitsDeg[0]||j.bindAngleDeg>j.limitsDeg[1]))fail('Invalid joint limits');
     children.add(j.child);joints.set(j.id,j);
   }
-  for(const b of m.bodies)if(!b.fixed&&!children.has(b.id))fail('Moving body has no joint: '+b.id);
+  for(const b of m.bodies)if(!b.fixed&&!b.free&&!children.has(b.id))fail('Moving body has no joint: '+b.id);
   // Each moving body has one parent; require every chain to reach a fixed root.
   // Iterative traversal supports deep assemblies and rejects disconnected cycles.
   const descendants=new Map();
   for(const j of m.joints){if(!descendants.has(j.parent))descendants.set(j.parent,[]);descendants.get(j.parent).push(j.child);}
-  const reached=m.bodies.filter(b=>b.fixed).map(b=>b.id);
+  const reached=m.bodies.filter(b=>b.fixed||b.free).map(b=>b.id);
   for(let i=0;i<reached.length;i++)reached.push(...(descendants.get(reached[i])??[]));
   if(reached.length!==m.bodies.length)fail('Body hierarchy contains a cycle or lacks a fixed root');
   const relationIds=new Set();
@@ -69,7 +71,7 @@ export function mechanismPose(m, part, degrees, previous={}) {
   const angles=Object.fromEntries(m.joints.map(j=>[j.id,previous[j.id]??j.bindAngleDeg]));angles[root]=angle;
   const visit=id=>{for(const r of m.relations.filter(r=>r.driver===id)){angles[r.follower]=angles[id]*r.ratio+r.phaseDeg;visit(r.follower);}};visit(root);
   const transforms={},bodyTransforms=new Map(),descendants=new Map(),queue=[];
-  for(const b of m.bodies)if(b.fixed){queue.push(b.id);bodyTransforms.set(b.id,identityTransform());}
+  for(const b of m.bodies)if(b.fixed||b.free){queue.push(b.id);bodyTransforms.set(b.id,identityTransform());}
   for(const j of m.joints){
     const q=angles[j.id];if(!finite(q)||j.limitsDeg&&(q<j.limitsDeg[0]||q>j.limitsDeg[1]))fail('Joint limit exceeded: '+j.id);
     if(!descendants.has(j.parent))descendants.set(j.parent,[]);descendants.get(j.parent).push(j);

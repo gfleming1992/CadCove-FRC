@@ -31,7 +31,7 @@ if(process.env.CADCOVE_EXTENSION_VERSION){
 }
 await copyFile(path.join(root,'LICENSE'),path.join(out,'LICENSE.txt'));
 await writeFile(path.join(out,'.vscodeignore'),'*.vsix\n');
-const viewer=await Bun.build({entrypoints:[path.join(core,'src/vscode-main.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'main.js'});
+const viewer=await Bun.build({entrypoints:[path.join(root,'web/editor-scene.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'main.js'});
 if(!viewer.success)throw Error(viewer.logs.join('\n'));
 // Tests may leave bytecode or local solver build outputs beside the sources.
 // Only the reviewed, hash-checked files belong in a distributable extension.
@@ -41,10 +41,6 @@ for(const name of Object.keys(pin.files).filter(name=>name.startsWith('src/nativ
  await copyFile(path.join(core,name),destination);
 }
 await copyFile(path.join(core,'index.html'),path.join(media,'index.html'));
-const simulation=await Bun.build({entrypoints:[path.join(root,'web/editor-simulation.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'simulation.js'});
-if(!simulation.success)throw Error(simulation.logs.join('\n'));
-const mechanism=await Bun.build({entrypoints:[path.join(root,'web/editor-mechanism.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'mechanism.js'});
-if(!mechanism.success)throw Error(mechanism.logs.join('\n'));
 const robot=await Bun.build({entrypoints:[path.join(root,'web/editor-robot.js')],target:'browser',format:'iife',minify:true,outdir:media,naming:'robot.js'});
 if(!robot.success)throw Error(robot.logs.join('\n'));
 await writeFile(path.join(media,'manifest.json'),JSON.stringify({main:'main.js'}));

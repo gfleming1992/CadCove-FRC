@@ -34,6 +34,12 @@ pub struct Status {
     pub carried: Vec<String>,
 }
 impl World {
+    pub(super) fn release_field_cargo(&mut self, id: &str) {
+        for cargo in &mut self.field_transport.cargo {
+            if cargo.as_ref().is_some_and(|c| c.id == id) { *cargo = None; }
+        }
+    }
+
     pub(super) fn validate_field_transport(&mut self) -> Result<()> {
         let Some(g) = &self.spec.gameplay else {
             return Ok(());
@@ -114,6 +120,7 @@ impl World {
         // Each lane owns at most one ball. Choose the closest available lane;
         // other balls remain physical upstream, rather than entering a hidden queue.
         for id in &g.balls {
+                if self.physical_only(id) || self.any_robot_carries(id) { continue; }
             let h = self.body_ids[id];
             let b = &self.bodies[h];
             if !b.is_enabled() {

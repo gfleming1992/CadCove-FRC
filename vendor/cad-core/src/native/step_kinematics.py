@@ -106,6 +106,11 @@ def inspect_step(filename):
             "linkRepresentations": representations, "unsupportedEntities": unsupported,
             "coordinates": "Raw STEP representation coordinates; units and assembly context are not resolved",
             "solverReady": False, "geometryTransferred": False,
+            "dependencies": {"nodes": [link["id"] for link in links],
+                             "edges": [{"id": pair["id"], "links": pair["links"], "kind": pair["kind"]} for pair in pairs]},
+            "physicalProperties": {"status": "unresolved", "target": "mechanism.json physical, m-kg-s-rad",
+                "required": ["body occurrence bindings", "mass", "center of mass", "inertia tensor about COM",
+                             "collision geometry", "friction and restitution", "joint frames and damping", "property provenance"]},
             "requiredBeforeSolving": ["Resolve representation units and reference frames", "Bind kinematic links to current CAD occurrences", "Map supported constraints and report all unsupported entities"]}
 
 

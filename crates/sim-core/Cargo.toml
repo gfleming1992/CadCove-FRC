@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 [features]
+simd8 = ["rapier3d/simd8"]
 x86-support-batch = ["rapier3d/x86-support-batch"]
 contact-audit = ["rapier3d/contact-audit"]
 parallel = ["rapier3d/parallel"]

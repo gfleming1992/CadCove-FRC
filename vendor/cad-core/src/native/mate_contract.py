@@ -1,16 +1,10 @@
-"""Headless Ondsel adapter. Public input uses mm, degrees, seconds and local mate frames.
+"""Solver-independent mate validation and residual checks. Public input uses mm, degrees, seconds and local mate frames.
 
 This is a solver request, not a replacement CAD/mechanism persistence format.
 Geometry and meshes never cross this boundary. Only explicit authored/reviewed mates do.
 """
-import argparse
-import hashlib
 import json
 import math
-import os
-from pathlib import Path
-import subprocess
-import tempfile
 
 IDENTITY = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
 TYPES = {"fixed": 0, "revolute": 1, "slider": 2}
@@ -190,32 +184,3 @@ def verify(request, result):
         sample['coordinates']=coordinates
         sample['angles']={b['joint']:continuous[b['mate']]*b.get('scale',1)+b.get('offsetDeg',0) for b in request.get('jointBindings',[])}
     return {'maxPositionResidualMm':max_pos,'maxRotationMatrixResidual':max_rot,'collisionChecked':False,'mobilityCertified':False}
-
-def solve(request, executable=None, timeout=60, pin_file=None):
-    payload=encode(request)
-    executable=executable or os.environ.get('CADCOVE_MATE_SOLVER')
-    if not executable: raise ValueError('Set CADCOVE_MATE_SOLVER to the built cadcove-ondsel executable')
-    with tempfile.TemporaryDirectory(prefix='cadcove-mates-') as work:
-        output=Path(work)/'result.json'
-        # Isolate native failures and incidental solver files from CAD sources.
-        with open(Path(work)/'diagnostics.log','w+b') as log:
-            proc=subprocess.run([str(Path(executable).resolve()),str(output)],input=payload.encode(),stdout=log,stderr=log,cwd=work,timeout=timeout)
-            log.seek(0,2);size=log.tell();log.seek(max(0,size-8000));diagnostics=log.read().decode(errors='replace')
-        if proc.returncode or not output.exists(): raise RuntimeError('Ondsel solve failed: '+diagnostics)
-        if output.stat().st_size>128*1024*1024: raise ValueError('Solver result exceeds budget')
-        result=json.loads(output.read_text())
-    checks=verify(request,result)
-    result.update(schema=1,solver=json.loads(Path(pin_file or Path(__file__).with_name('upstream.json')).read_text()),units='mm-deg-s',checks=checks,executableSha256=hashlib.sha256(Path(executable).read_bytes()).hexdigest(),requestHash=hashlib.sha256(json.dumps(request,sort_keys=True,separators=(',',':')).encode()).hexdigest(),sourceRevision=request.get('sourceRevision'),bodies=request['bodies'])
-    result['jointBindings']=request.get('jointBindings',[])
-    result['mates']=request['mates']
-    result['couplings']=request.get('couplings',[])
-    return result
-
-if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--input',required=True);parser.add_argument('--output',required=True);parser.add_argument('--solver');parser.add_argument('--pin');args=parser.parse_args()
-    try:
-        request=json.loads(Path(args.input).read_text());result=solve(request,args.solver,pin_file=args.pin)
-        with open(args.output,'x') as out: json.dump(result,out,allow_nan=False)
-        print(json.dumps({'ok':True,'output':args.output,'frames':len(result['frames']),'checks':result['checks']}))
-    except Exception as error:
-        print(json.dumps({'ok':False,'error':str(error)}));raise SystemExit(1)

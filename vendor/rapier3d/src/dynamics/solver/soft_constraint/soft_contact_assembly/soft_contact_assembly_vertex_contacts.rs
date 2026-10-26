@@ -460,6 +460,8 @@ impl SoftConstraintsSet {
                     tangent_impulse: warm_tangent_world,
                 });
                 out.contacts.push(SoftContact {
+                    #[cfg(feature = "dim3")]
+                    local_cylinder: None,
                     source: SoftContactSource {
                         collider1: surface_handle,
                         collider2: other_surface_handle,

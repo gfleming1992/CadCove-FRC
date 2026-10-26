@@ -1,0 +1,236 @@
+{
+  "dt": 0.005,
+  "gravity": [
+    0,
+    0,
+    0
+  ],
+  "solver_iterations": 8,
+  "bodies": [
+    {
+      "id": "chassis",
+      "fixed": true,
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "mass": 42.97418734539964,
+      "center_of_mass": [
+        0.10377844487825998,
+        1.706326864102808e-16,
+        0.2630965709451434
+      ],
+      "principal_inertia": [
+        3.840594262031189,
+        5.37221265487536,
+        6.826457866259956
+      ],
+      "friction": 0.4,
+      "colliders": [],
+      "membership": 1,
+      "filter": 0
+    },
+    {
+      "id": "turret/left",
+      "fixed": true,
+      "position": [
+        -0.1626,
+        0.1735,
+        0.3812
+      ],
+      "mass": 2.5189835505298763,
+      "center_of_mass": [
+        -0.005100800812165375,
+        -1.8963999848722323e-06,
+        0.10019501762205192
+      ],
+      "principal_inertia": [
+        0.05167286099442053,
+        0.049848862095145656,
+        0.06809797290708708
+      ],
+      "friction": 0.4,
+      "colliders": [],
+      "membership": 1,
+      "filter": 0
+    },
+    {
+      "id": "flywheel/left",
+      "fixed": false,
+      "membership": 1,
+      "filter": 0,
+      "position": [
+        -0.0595930009592115,
+        0.226676996129459,
+        0.4699
+      ],
+      "mass": 0.6,
+      "center_of_mass": [
+        0.005802585607528812,
+        -0.007048444680549494,
+        4.080016585248814e-05
+      ],
+      "principal_inertia": [
+        0.002911614664563036,
+        0.0023363935986670317,
+        0.003319526638250074
+      ],
+      "friction": 1.2,
+      "colliders": []
+    },
+    {
+      "id": "flywheel/left/input",
+      "fixed": false,
+      "position": [
+        -0.208298793830783,
+        0.0316630935192327,
+        0.4522724
+      ],
+      "mass": 0.04474747800108976,
+      "center_of_mass": [
+        -5.4853899200679736e-15,
+        -2.3270274596143282e-15,
+        0
+      ],
+      "principal_inertia": [
+        1.1462825801770429e-05,
+        1.5274401191798126e-05,
+        1.2001863843027164e-05
+      ],
+      "friction": 0.4,
+      "colliders": [],
+      "membership": 1,
+      "filter": 0
+    },
+    {
+      "id": "flywheel/left/secondary",
+      "fixed": false,
+      "membership": 1,
+      "filter": 0,
+      "position": [
+        -0.07940243010594042,
+        0.21659915478902503,
+        0.36571660911277587
+      ],
+      "mass": 0.16,
+      "center_of_mass": [
+        1.53813846269486e-05,
+        -2.970441060705298e-05,
+        4.6567553795284765e-09
+      ],
+      "principal_inertia": [
+        0.0001590663902590455,
+        0.00010927344109114279,
+        0.00019984323109094383
+      ],
+      "friction": 1.2,
+      "colliders": []
+    }
+  ],
+  "joints": [
+    {
+      "id": "axis/24",
+      "parent": "turret/left",
+      "child": "flywheel/left",
+      "kind": "revolute",
+      "axis": [
+        -0.45985690988547195,
+        0.8879930306205027,
+        -4.996003610813204e-16
+      ],
+      "anchor_parent": [
+        0.10300699904078849,
+        0.05317699612945898,
+        0.08869999999999999
+      ],
+      "anchor_child": [
+        0,
+        0,
+        0
+      ],
+      "initial_position": 0,
+      "damping": 0.0001
+    },
+    {
+      "id": "flywheel/left/input/axis",
+      "parent": "turret/left",
+      "child": "flywheel/left/input",
+      "kind": "revolute",
+      "axis": [
+        -0.45985690988547195,
+        0.8879930306205027,
+        -4.996003610813204e-16
+      ],
+      "anchor_parent": [
+        -0.04569879383078302,
+        -0.1418369064807673,
+        0.07107240000000002
+      ],
+      "anchor_child": [
+        0,
+        0,
+        0
+      ],
+      "initial_position": 0,
+      "damping": 0.0001
+    },
+    {
+      "id": "flywheel/left/secondary/axis",
+      "parent": "turret/left",
+      "child": "flywheel/left/secondary",
+      "kind": "revolute",
+      "axis": [
+        -0.45985690988547195,
+        0.8879930306205027,
+        -4.996003610813204e-16
+      ],
+      "anchor_parent": [
+        0.08319756989405958,
+        0.04309915478902502,
+        -0.015483390887224118
+      ],
+      "anchor_child": [
+        0,
+        0,
+        0
+      ],
+      "initial_position": 0,
+      "damping": 0.0001
+    }
+  ],
+  "transmissions": [
+    {
+      "id": "flywheel/left/drive",
+      "driver": "flywheel/left/input/axis",
+      "follower": "axis/24",
+      "ratio": 1,
+      "phase": 0,
+      "stiffness": 1000,
+      "damping": 5,
+      "max_effort": 8
+    },
+    {
+      "id": "flywheel/left/secondary/drive",
+      "driver": "axis/24",
+      "follower": "flywheel/left/secondary/axis",
+      "ratio": 2,
+      "phase": 0,
+      "stiffness": 1000,
+      "damping": 5,
+      "max_effort": 8
+    }
+  ],
+  "motors": [
+    {
+      "id": "talon/24",
+      "joint": "flywheel/left/input/axis",
+      "rotor_per_unit": 1,
+      "efficiency": 0.9,
+      "resistance": 0.03278688524590164,
+      "torque_constant": 0.01937158469945355,
+      "velocity_constant": 52.64756919477401,
+      "current_limit": 120
+    }
+  ]
+}

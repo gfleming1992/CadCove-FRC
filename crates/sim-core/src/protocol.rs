@@ -19,7 +19,8 @@ pub fn run(registry: crate::mechanism::Registry) -> Result<()> {
         let result = (|| -> Result<Value> {
             let v: Value = serde_json::from_str(&line)?;
             match v["op"].as_str().context("missing op")? {
-                "capabilities" => Ok(json!({"ok":true,"features":["gameplay-mechanisms-v1","practice-field-conveyors-v1","practice-cargo-contacts-v1","custom-mechanisms-v1"],"mechanisms":registry.keys().collect::<Vec<_>>()})),
+                "solve_mates" => crate::mate_solver::solve(v["request"].clone()),
+                "capabilities" => Ok(json!({"ok":true,"features":["local-cylinder-contacts-v1","contact-groups-inspection-v1","solver-schedule-v1","contact-refresh-budget-v1","physical-inertia-tensor-v1","gameplay-mechanisms-v1","practice-field-conveyors-v1","practice-cargo-contacts-v1","custom-mechanisms-v1","place-game-pieces-v1","manipulate-game-piece-v1"],"mechanisms":registry.keys().collect::<Vec<_>>()})),
                 "load" => {
                     #[cfg(feature = "composite-audit")]
                     mesh::dispatcher::reverse_audit::reset();
@@ -70,7 +71,30 @@ pub fn run(registry: crate::mechanism::Registry) -> Result<()> {
                     }
                     Ok(result)
                 }
+                "manipulate_game_piece" => {
+                    let command = serde_json::from_value(v["command"].clone())?;
+                    let w = world.as_mut().context("load world first")?;
+                    let status = w.manipulate_game_piece(command)?;
+                    let mut result = state_delta::reply(w.snapshot(), &mut previous_snapshot, false);
+                    result["manipulation"] = status;
+                    Ok(result)
+                }
+                "place_game_pieces" => {
+                    let placements = serde_json::from_value::<Vec<world::GamePiecePlacement>>(v["placements"].clone())?;
+                    let w = world.as_mut().context("load world first")?;
+                    w.place_game_pieces(&placements)?;
+                    let mut result = state_delta::reply(w.snapshot(), &mut previous_snapshot, false);
+                    result["placed"] = json!(placements.iter().map(|p| &p.id).collect::<Vec<_>>());
+                    Ok(result)
+                }
                 "performance" => Ok(json!({"ok":true,"performance":latest_performance})),
+                "contact_groups" => Ok(json!({"ok":true,"contactGroups":world.as_ref()
+                    .context("load world first")?.inspect_contact_groups()})),
+                "profile" => {
+                    let enabled = v["enabled"].as_bool().context("profile requires boolean enabled")?;
+                    world.as_mut().context("load world first")?.set_profiling(enabled);
+                    Ok(json!({"ok":true,"enabled":enabled}))
+                },
                 "contacts" => Ok(
                     json!({"ok":true,"contacts":world.as_ref().context("load world first")?
                     .inspect_contacts(v["body"].as_str().context("missing body")?,v["details"].as_bool().unwrap_or(false))?}),

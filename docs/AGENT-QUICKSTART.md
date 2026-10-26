@@ -110,3 +110,66 @@ Customized blocks and surrounding team instructions are preserved. Edited
 or deliberately deleted generated guidance yields review proposals and exit 1.
 Merge team knowledge, inspect reported conflicts, and start a new agent session.
 Bridge source upgrades are separate: `cadcove bridge-export --workspace . --review`.
+
+
+### Place game pieces in a running full simulator
+
+Use MCP `simulation_place_game_pieces` or `cadcove sim-place --project robot.sim.json --input placements.json`.
+Query `sim-objects` first for existing game-piece IDs. The request contains
+`placements: [{id, position: [x,y,z], velocity?: [vx,vy,vz], frame?: bodyId}]`.
+Lengths are metres and velocities metres/second. Without `frame`, coordinates
+are world-space; with a body frame, its live pose and velocity are applied.
+The whole batch is validated before any piece moves. Placement releases prior
+practice cargo ownership, resets spin, and keeps collisions and gravity active.
+This repositions authored game pieces; it does not create new geometry,
+change robot enable state, or certify an overlap-free spawn. Keep the ball's
+radius clear of surfaces when dropping it. Jointed bodies are rejected. An
+active deformable ball is reset to its undeformed shape at the requested pose;
+its old soft body is removed, and it can deform again in an authored zone. Current support uses the explicit practice game-piece pool. A ball
+that physically reaches an authored hopper storage slot can enter the practice
+feeder without crossing the intake; feed/launch remain reduced-order mechanisms.
+
+For a hopper with physical support geometry, set `gameplay.passive_storage: true`
+to disable storage-position spring forces: stored balls settle under gravity and
+contact. Author slots at the lower feeding floor, not above the hopper opening.
+Inventory admission still requires contact near an authored slot. Deployment
+geometry and its state must match the tested setup; a retained deployed hopper
+is not evidence that its contact-driven deployment transition is simulated.
+
+Native physics supports `one_way: true` on bounded prismatic joints for ideal
+retention: physical contact or a motor can extend the joint, while its lower
+stop follows the greatest reached position. Reloading a new world clears that
+retention. This adds no deployment force and does not establish an unknown
+linkage, latch-release condition, or contact trajectory.
+
+For deformable lower-hopper transport, `gameplay.robot_compliance: true` requires
+passive storage and a physical `pickup` region on every launcher. Author foam
+properties on game-piece bodies and compliance zones around the moving robot.
+Intake teleport/conveyor capture is disabled in this mode; roller contact moves
+balls. A ball contacting the actual pickup region can enter feeder inventory
+without first resting in a slot. Final launch still uses the declared practice
+model; this is not a resolved wheel-to-ball launch calculation. Foam stiffness,
+roller friction, pickup regions and real-time performance require calibration.
+Field-only compliance and robot compliance are separate, mutually exclusive modes.
+
+For a contact-only subsystem experiment, use `simulation_manipulate_game_piece`
+(or `sim-manipulate --input JSON_FILE`) to approach a roller with a finite-force
+virtual hand, then release. Query physical body IDs first. Specify target position,
+optional rigid body frame, duration, maximum force and speed. The same running
+canvas continues displaying the authoritative physics. Release preserves velocity
+and deformation; practice capture/feed/launch stays disabled for that piece until
+explicitly restored. Read tracking error and actual trajectory before describing
+pull-in, jamming or ejection. See `docs/SIMULATION-MODES.md` for the contract.
+
+### Isolated subsystem view
+
+Use MCP `simulation_view` with `bodies` (exact physical body IDs), `fit: true`
+and optionally `view: "iso"` to inspect any subsystem on a blank background.
+Include the desired game-piece IDs. Use `simulation_objects` to discover bodies;
+include the mechanism's wheels, shafts, guides and supports. This command changes
+presentation only: hidden bodies still participate in physics. It does not create
+an independent test bench or remove contacts, and never starts motors.
+Set `bodies: null` to restore the full scene. Pan/zoom/orbit remain available.
+The CLI equivalent is `sim-view --options FILE` with the same options.
+Use `simulation_manipulate_game_piece` to approach and release a ball physically;
+keep automatic feeding/launch disabled for that ball when testing contact behavior.

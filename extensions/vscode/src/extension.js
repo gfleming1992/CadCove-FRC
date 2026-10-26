@@ -12,7 +12,7 @@ import {cadProjectSettings} from '../../../lib/cad-project.js';
 import {relativePath} from '../../../vendor/cad-core/extensions/vscode/src/project-files.js';
 import {simulationPanels} from './simulation-panel.js';
 import {robotPanels} from './robot-panel.js';
-import {mechanismPanels} from './mechanism-panel.js';
+import {sceneServices} from './scene-services.js';
 import {registerMcp} from './mcp.js';
 import {SimulationTasks} from './simulation-tasks.js';
 import {registerModelMenu} from './model-menu.js';
@@ -93,7 +93,8 @@ export function activate(context) {
     return selected.uri.fsPath;
   }
   const settings=cadProjectSettings;
-  const cad=activateCAD(context,{commandPrefix:'cadcove',viewType:'cadcove.model',outputName:'CadCove CAD',minimalUI:true,nativeStep:true,projectSettings:settings});
+  const scenes=sceneServices({ensureRuntime,simulationProject,cli});
+  const cad=activateCAD(context,{commandPrefix:'cadcove',viewType:'cadcove.model',outputName:'CadCove CAD',minimalUI:true,nativeStep:true,projectSettings:settings,integrate:scenes.integrate});
   async function cli(args,root,timeout=30000){
     const executable=await ensureRuntime();trusted();
     try {const {stdout}=await execute(executable,args,{cwd:root,timeout,maxBuffer:2*1024*1024,windowsHide:true});return JSON.parse(stdout);}
@@ -109,7 +110,7 @@ export function activate(context) {
     return path.join(root,relative);
   }
   async function doctor(resource){const root=workspace(resource);const report=await cli(['doctor','--project',await simulationProject(root)],root,process.platform==='win32'?120000:30000);output.appendLine(JSON.stringify(report,null,2));return report;}
-  const views=simulationPanels(context,{cli,workspace,simulationProject});context.subscriptions.push({dispose:()=>views.closeAll()});
+  const views=simulationPanels(context,{cli,workspace,simulationProject,openScene:resource=>robots.open(resource),scenes});context.subscriptions.push({dispose:()=>views.closeAll()});
   async function startSimulation(resource){
     const root=workspace(resource);
     return tasks.start(root,async(record,assertOpen)=>{
@@ -157,11 +158,15 @@ export function activate(context) {
     const report=await cli(['sim-stop','--project',record?.project??await simulationProject(root)],root);
     output.appendLine(JSON.stringify(report,null,2));return report;
   }
-  const mechanisms=mechanismPanels(context,{workspace,ensureRuntime});
+  const mechanisms={
+    async open(resource,options={}){const root=workspace(resource),config=await settings(root),state=await cad.openModel(vscode.Uri.file(path.join(root,config.sourceDirectory,config.entryPoint)));const until=Date.now()+120000;while(state.diagnostics.phase!=='ready'&&Date.now()<until){if(state.disposed||state.diagnostics.phase==='error')throw Error(state.diagnostics.error??'CAD scene unavailable');await new Promise(r=>setTimeout(r,50));}if(state.diagnostics.phase!=='ready')throw Error('CAD scene loading timed out');if(options.field)await state.requestView('field');return {ok:true,unifiedScene:true,entry:state.entry};},
+    async request(resource,action,args={}){const root=workspace(resource),config=await settings(root);if(action==='command'){action=args.method;args=args.args??{};}else if(action==='place'&&args.position)args={...args,position:args.position.map(x=>x*1000)};const result=await cad.request(root,config.entryPoint,action,args);if(action==='capture'){const directory=path.join(root,config.buildDirectory,'mechanism-preview');await fs.mkdir(directory,{recursive:true});const image=path.join(directory,'preview.png');await fs.writeFile(image,Buffer.from(result.image.split(',')[1],'base64'));return {...result,image};}return result;},
+    canvases:()=>[],closeAll(){}
+  };
   context.subscriptions.push({dispose:()=>mechanisms.closeAll()});
-  const robots=robotPanels(context,{workspace,simulationProject,cad,settings});
+  const robots=robotPanels(context,{workspace,simulationProject,cad,settings,scenes});
   context.subscriptions.push({dispose:()=>robots.closeAll()});
-  const mcp=registerMcp(context,{workspace,simulationProject,robots,mechanisms,cad,cli,startSimulation,stopSimulation,playTeamWorkspace,output});
+  const mcp=registerMcp(context,{workspace,simulationProject,robots,mechanisms,cad,cli,startSimulation,stopSimulation,playTeamWorkspace,output,ensureRuntime});
   context.subscriptions.push(vscode.tasks.onDidEndTask(event=>tasks.ended(event.execution)));
   stopOwnedSimulations=async()=>{
     await mcp.close();robots.closeAll();views.closeAll();mechanisms.closeAll();

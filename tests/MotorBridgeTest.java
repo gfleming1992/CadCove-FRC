@@ -2,6 +2,7 @@ package org.instantcad.frc;
 
 import com.fasterxml.jackson.databind.*;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import java.nio.file.*;
@@ -40,12 +41,15 @@ public final class MotorBridgeTest {
     Files.writeString(Path.of(System.getenv("INSTANTCAD_WORLD")),MotorAdapterTest.world().toString());
     var controller=new Controller();TwinBridge.registerMotor(controller,"lift-motor");
     try{
+      boolean ds="driverstation".equals(System.getenv("INSTANTCAD_CONTROL_SOURCE"));
+      if(ds){DriverStationSim.setAllianceStationId(AllianceStationID.Blue3);DriverStationSim.notifyNewData();}
       TwinBridge.start();session=JSON.readTree(Files.readString(Path.of(System.getenv("CADCOVE_SESSION_FILE"))));
       until(s->s.path("state").path("tick").asLong()>3);MotorAdapterTest.check(controller.configured,"bridge configures external adapter");
       MotorAdapterTest.near(controller.measured.rotorTurns(),0,1e-6,"disabled bridge suppresses requested 6V");
       try{TwinBridge.registerMotor(new Controller(),"another");throw new AssertionError("late registration allowed");}catch(IllegalStateException expected){}
-      boolean ds="driverstation".equals(System.getenv("INSTANTCAD_CONTROL_SOURCE"));
       if(ds){
+        MotorAdapterTest.check(DriverStation.getAlliance().orElseThrow()==DriverStation.Alliance.Blue&&DriverStation.getLocation().orElseThrow()==3,"external DS station preserved");
+        MotorAdapterTest.check(request("/state",null).path("allianceStation").asText().equals("external"),"external station is not claimed by bridge");
         MotorAdapterTest.check(request("/state",null).path("controlSource").asText().equals("driverstation"),"reports input owner");
         DriverStationSim.setDsAttached(true);DriverStationSim.setJoystickAxisCount(1,6);
         DriverStationSim.setJoystickAxis(1,1,-.7);DriverStationSim.setEnabled(true);DriverStationSim.notifyNewData();
@@ -53,7 +57,11 @@ public final class MotorBridgeTest {
           .header("Authorization","Bearer "+session.path("token").asText()).header("X-CadCove-Run",session.path("runId").asText())
           .POST(HttpRequest.BodyPublishers.ofString("{\"mode\":\"disabled\"}")).build(),HttpResponse.BodyHandlers.ofString());
         MotorAdapterTest.check(attempt.statusCode()==400,"DS rejects virtual controls");
-      }else request("/controls","{\"mode\":\"teleop\"}");
+      }else {
+        MotorAdapterTest.check(DriverStation.getAlliance().orElseThrow()==DriverStation.Alliance.Red&&DriverStation.getLocation().orElseThrow()==2,"agent station applied to WPILib");
+        MotorAdapterTest.check(request("/state",null).path("allianceStation").asText().equals("Red2"),"agent station reported");
+        request("/controls","{\"mode\":\"teleop\"}");
+      }
       until(s->s.path("state").path("motors").path("lift-motor").path("rotor_turns").asDouble()>.02);
       MotorAdapterTest.check(controller.measured.rotorTurns()>.01,"native feedback delivered to adapter");
       if(ds){

@@ -96,3 +96,4 @@ test('three-level assembly and simultaneous parent/child tracks compose without 
  near(point(pose.transforms.tool,[13,1,0]),[10,3,-1]);
  expect(pose.angles).toEqual({steer:110,spin:100,'tool-axis':90});
 });
+test('explicit free body is independent of rotary hierarchy and remains at authored CAD pose',()=>{const m=model();m.bodies.push({id:'ball',fixed:false,free:true,origin:[20,10,30],parts:['ball']});const checked=validateMechanism(m);expect(mechanismPose(checked,'a-axis',30).transforms.ball).toEqual([1,0,0,0,0,1,0,0,0,0,1,0]);m.bodies.at(-1).fixed=true;expect(()=>validateMechanism(m)).toThrow('Free body must be dynamic');m.bodies.at(-1).fixed=false;m.joints.push({id:'bad',type:'revolute',parent:'base',child:'ball',origin:[20,10,30],axis:[0,1,0]});expect(()=>validateMechanism(m)).toThrow('Free body cannot own');m.joints.pop();delete m.bodies.at(-1).free;expect(()=>validateMechanism(m)).toThrow('Moving body has no joint');});

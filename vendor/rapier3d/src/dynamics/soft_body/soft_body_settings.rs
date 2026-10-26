@@ -13,6 +13,9 @@ use crate::math::Real;
 #[cfg_attr(feature = "serde-serialize", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "serde-serialize", serde(default))]
 pub struct SoftBodiesSettings {
+    /// Experimental local geometry refresh for existing soft/cylinder contacts.
+    /// Runs inside the island's solver substeps; does not discover new pairs.
+    pub local_cylinder_contacts: bool,
     /// Runtime toggles and tuning for the soft-body tangle detection and recovery stack
     /// (see [`SoftRecoverySettings`]). Every mechanism can be switched off individually.
     pub recovery: SoftRecoverySettings,
@@ -38,6 +41,7 @@ pub struct SoftBodiesSettings {
 impl Default for SoftBodiesSettings {
     fn default() -> Self {
         Self {
+            local_cylinder_contacts: false,
             recovery: SoftRecoverySettings::default(),
             resweep_strain: 0.75,
             max_extra_substeps: 4,

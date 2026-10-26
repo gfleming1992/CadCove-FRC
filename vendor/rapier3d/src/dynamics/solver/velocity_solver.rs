@@ -19,6 +19,7 @@ pub(crate) struct GyroParams {
     /// (`MassProperties::principal_inertia_local_frame`); the gyroscopic pass composes it with
     /// the world rotation, so bodies with tilted principal axes are handled correctly.
     pub principal_frame: Rotation,
+    pub rotation_locks: crate::dynamics::LockedAxes,
     pub enabled: bool,
 }
 
@@ -29,6 +30,7 @@ impl Default for GyroParams {
             principal_inertia: AngVector::ZERO,
             inv_principal_inertia: AngVector::ZERO,
             principal_frame: Rotation::IDENTITY,
+            rotation_locks: crate::dynamics::LockedAxes::empty(),
             enabled: false,
         }
     }
